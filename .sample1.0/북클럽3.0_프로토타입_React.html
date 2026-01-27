@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>북클럽 3.0 프로토타입 (React)</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+        }
+
+        #root {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 375px;
+            height: 667px;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Tablet */
+        @media (min-width: 768px) {
+            #root {
+                padding: 40px;
+            }
+            .app-container {
+                max-width: 768px;
+                height: 1024px;
+                border-radius: 40px;
+            }
+            .book-grid {
+                grid-template-columns: repeat(4, 1fr) !important;
+            }
+            .book-grid-library {
+                grid-template-columns: repeat(4, 1fr) !important;
+            }
+        }
+
+        /* Desktop */
+        @media (min-width: 1024px) {
+            .app-container {
+                max-width: 1200px;
+                height: 800px;
+                border-radius: 20px;
+                flex-direction: row;
+            }
+            .sidebar {
+                display: flex !important;
+                flex-direction: column;
+                width: 250px;
+                background: linear-gradient(180deg, #4A90E2 0%, #357ABD 100%);
+                padding: 30px 20px;
+            }
+            .sidebar-logo {
+                color: white;
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 40px;
+                text-align: center;
+            }
+            .sidebar-nav {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                flex: 1;
+            }
+            .sidebar-nav-item {
+                padding: 15px 20px;
+                color: white;
+                background: rgba(255,255,255,0.1);
+                border-radius: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-size: 16px;
+            }
+            .sidebar-nav-item:hover {
+                background: rgba(255,255,255,0.2);
+                transform: translateX(5px);
+            }
+            .sidebar-nav-item.active {
+                background: white;
+                color: #4A90E2;
+            }
+            .bottom-nav {
+                display: none !important;
+            }
+            .main-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .book-grid {
+                grid-template-columns: repeat(6, 1fr) !important;
+            }
+            .book-grid-library {
+                grid-template-columns: repeat(5, 1fr) !important;
+            }
+        }
+
+        .screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes celebration {
+            0% { transform: scale(0) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(to right, #FFFBF5 0%, #FFF9F0 100%);
+            color: #333;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid #F0E8E0;
+        }
+
+        .header h1 {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: #FF6B35;
+            margin: 0;
+            flex: 1;
+            text-align: left;
+        }
+
+        .header-icon {
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            color: #666;
+        }
+
+        .header-icon:hover {
+            background: rgba(255, 107, 53, 0.1);
+            color: #FF6B35;
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px;
+            height: 0;
+            min-height: 0;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #bbb;
+            border-radius: 4px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #f8f8f8;
+        }
+
+        .nav-item.active {
+            color: #4A90E2;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+        }
+
+        /* Sidebar (Desktop) */
+        .sidebar {
+            display: none;
+        }
+
+        /* Buddy Character */
+        .buddy-container {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(255,152,0,0.2);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .buddy-container:hover {
+            transform: scale(1.02);
+        }
+
+        .buddy-avatar {
+            width: 60px;
+            height: 60px;
+            background: #FF9800;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-right: 15px;
+            animation: bounce 2s infinite;
+            flex-shrink: 0;
+        }
+
+        .buddy-message {
+            flex: 1;
+        }
+
+        .buddy-message h3 {
+            color: #E65100;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .buddy-message p {
+            color: #5D4037;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .section-more {
+            color: #4A90E2;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* Book Cards */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .book-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-cover {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+        }
+
+        .book-progress {
+            width: 100%;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .book-progress-bar {
+            height: 100%;
+            background: #7ED321;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .book-title {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* Library */
+        .level-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+        }
+
+        .level-tabs::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .level-tabs::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 2px;
+        }
+
+        .level-tab {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .level-tab.active {
+            background: #4A90E2;
+            color: white;
+        }
+
+        .book-grid-library {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        /* My Page */
+        .profile-section {
+            background: linear-gradient(135deg, #4A90E2 0%, #5BA3F5 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(74,144,226,0.3);
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .profile-details h2 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .profile-details p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: #7ED321;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4A90E2;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .badge-list {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .badge {
+            min-width: 60px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #F5A623 0%, #FF8C00 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 10px rgba(245,166,35,0.3);
+            flex-shrink: 0;
+        }
+
+        /* Reading Screen */
+        .reader-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background: #FFFEF7;
+        }
+
+        .reader-content {
+            flex: 1;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+            overflow-y: auto;
+        }
+
+        .reader-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .page-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            background: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: #357ABD;
+            transform: scale(1.1);
+        }
+
+        .page-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            background: #7ED321;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #6BC119;
+            transform: translateY(-2px);
+        }
+
+        /* Quiz */
+        .quiz-container {
+            padding: 20px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-progress {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .quiz-progress-bar {
+            height: 100%;
+            background: #4A90E2;
+            transition: width 0.3s;
+        }
+
+        .quiz-question {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            border-color: #4A90E2;
+            background: #f0f7ff;
+        }
+
+        .quiz-option.selected {
+            border-color: #4A90E2;
+            background: #E3F2FD;
+        }
+
+        .quiz-submit {
+            width: 100%;
+            padding: 15px;
+            background: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-submit:hover {
+            background: #357ABD;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 300px;
+            width: 100%;
+            text-align: center;
+            animation: celebration 0.5s ease;
+        }
+
+        .modal-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .modal-text {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-btn:hover {
+            background: #357ABD;
+        }
+
+        /* Button */
+        .btn {
+            padding: 12px 24px;
+            background: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(74,144,226,0.3);
+        }
+
+        .btn:hover {
+            background: #357ABD;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(74,144,226,0.4);
+        }
+
+        .btn-secondary {
+            background: #7ED321;
+            box-shadow: 0 4px 10px rgba(126,211,33,0.3);
+        }
+
+        .btn-secondary:hover {
+            background: #6BC119;
+        }
+
+        /* AI Recommend */
+        .ai-recommend {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .ai-recommend:hover {
+            transform: scale(1.02);
+        }
+
+        .ai-recommend h3 {
+            margin-bottom: 10px;
+        }
+
+        /* Chat */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            animation: fadeIn 0.3s ease;
+            word-wrap: break-word;
+        }
+
+        .chat-message.buddy {
+            background: #E3F2FD;
+            align-self: flex-start;
+        }
+
+        .chat-message.user {
+            background: #4A90E2;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: #4A90E2;
+        }
+
+        .chat-send {
+            padding: 10px 20px;
+            background: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-send:hover {
+            background: #357ABD;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Book data
+        const booksData = {
+            core: [
+                { id: 1, title: '어린왕자', progress: 30, gradient: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)' },
+                { id: 2, title: '해리포터와 마법사의 돌', progress: 0, gradient: 'linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%)' },
+                { id: 3, title: '나무를 심은 사람', progress: 100, gradient: 'linear-gradient(135deg, #A8E6CF 0%, #56AB91 100%)' },
+                { id: 16, title: '안데르센 동화', progress: 45, gradient: 'linear-gradient(135deg, #FFD93D 0%, #F6C90E 100%)' },
+                { id: 17, title: '이솝 우화', progress: 20, gradient: 'linear-gradient(135deg, #C77DFF 0%, #9D4EDD 100%)' },
+                { id: 18, title: '톰 소여의 모험', progress: 55, gradient: 'linear-gradient(135deg, #FF99C8 0%, #FCF6BD 100%)' },
+                { id: 19, title: '쥘 베른의 해저 2만 리', progress: 0, gradient: 'linear-gradient(135deg, #00B4D8 0%, #0077B6 100%)' },
+                { id: 20, title: '보물섬', progress: 70, gradient: 'linear-gradient(135deg, #EF476F 0%, #F78C6B 100%)' },
+                { id: 21, title: '피터팬', progress: 35, gradient: 'linear-gradient(135deg, #06FFA5 0%, #00D9FF 100%)' },
+                { id: 22, title: '이상한 나라의 앨리스', progress: 85, gradient: 'linear-gradient(135deg, #FFB7B2 0%, #FFDFBA 100%)' },
+            ],
+            recommend1: [
+                { id: 4, title: '안데르센 동화집', progress: 0, gradient: 'linear-gradient(135deg, #FFD93D 0%, #F6C90E 100%)' },
+                { id: 5, title: '그리스 로마 신화', progress: 0, gradient: 'linear-gradient(135deg, #C77DFF 0%, #9D4EDD 100%)' },
+                { id: 6, title: '비밀의 화원', progress: 0, gradient: 'linear-gradient(135deg, #FF99C8 0%, #FCF6BD 100%)' },
+            ],
+            recommend2: [
+                { id: 7, title: '바다 탐험 이야기', progress: 0, gradient: 'linear-gradient(135deg, #00B4D8 0%, #0077B6 100%)' },
+                { id: 8, title: '우주 여행', progress: 0, gradient: 'linear-gradient(135deg, #EF476F 0%, #F78C6B 100%)' },
+                { id: 9, title: '숲 속의 친구들', progress: 0, gradient: 'linear-gradient(135deg, #06FFA5 0%, #00D9FF 100%)' },
+            ],
+            library: [
+                { id: 10, title: '토끼와 거북이', progress: 100, gradient: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)' },
+                { id: 11, title: '아기 돼지 삼형제', progress: 60, gradient: 'linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%)' },
+                { id: 12, title: '금도끼 은도끼', progress: 0, gradient: 'linear-gradient(135deg, #A8E6CF 0%, #56AB91 100%)' },
+                { id: 13, title: '개미와 베짱이', progress: 0, gradient: 'linear-gradient(135deg, #FFD93D 0%, #F6C90E 100%)' },
+                { id: 14, title: '늑대와 양치기 소년', progress: 0, gradient: 'linear-gradient(135deg, #C77DFF 0%, #9D4EDD 100%)' },
+                { id: 15, title: '빨간 모자', progress: 0, gradient: 'linear-gradient(135deg, #FF99C8 0%, #FCF6BD 100%)' },
+            ],
+        };
+
+        // BookCard Component
+        function BookCard({ book, onClick }) {
+            return (
+                <div className="book-card" onClick={onClick}>
+                    <div className="book-cover" style={{ background: book.gradient }}>
+                        {book.title.split(' ').map((word, i) => (
+                            <React.Fragment key={i}>
+                                {word}
+                                {i < book.title.split(' ').length - 1 && <br />}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                    <div className="book-progress">
+                        <div className="book-progress-bar" style={{ width: `${book.progress}%` }} />
+                    </div>
+                    <div className="book-title">{book.title}</div>
+                </div>
+            );
+        }
+
+        // BuddyCharacter Component
+        function BuddyCharacter({ onClick }) {
+            return (
+                <div className="buddy-container" onClick={onClick}>
+                    <div className="buddy-avatar">🐿️</div>
+                    <div className="buddy-message">
+                        <h3>독서버디 다람이</h3>
+                        <p>"안녕! 오늘은 어떤 책을 읽을까?"</p>
+                    </div>
+                </div>
+            );
+        }
+
+        // Modal Component
+        function Modal({ isOpen, icon, title, text, onClose }) {
+            if (!isOpen) return null;
+
+            return (
+                <div className="modal-overlay" onClick={onClose}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-icon">{icon}</div>
+                        <div className="modal-title">{title}</div>
+                        <div className="modal-text" dangerouslySetInnerHTML={{ __html: text }} />
+                        <button className="modal-btn" onClick={onClose}>확인</button>
+                    </div>
+                </div>
+            );
+        }
+
+        // HomeScreen Component
+        function HomeScreen({ onNavigate, onBookClick }) {
+            return (
+                <div className="screen">
+                    <div className="content">
+                        <BuddyCharacter onClick={() => onNavigate('buddy-chat')} />
+
+                        <div className="section">
+                            <div className="section-header">
+                                <div className="section-title">코어북 (권리여책 도서)</div>
+                                <div className="section-more">더보기 →</div>
+                            </div>
+                            <div className="book-grid">
+                                {booksData.core.map(book => (
+                                    <BookCard key={book.id} book={book} onClick={() => onBookClick(book)} />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="section">
+                            <div className="section-header">
+                                <div className="section-title">개인 추천 도서 1</div>
+                                <div className="section-more">더보기 →</div>
+                            </div>
+                            <div className="book-grid">
+                                {booksData.recommend1.map(book => (
+                                    <BookCard key={book.id} book={book} onClick={() => onBookClick(book)} />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="section">
+                            <div className="section-header">
+                                <div className="section-title">개인 추천 도서 2</div>
+                                <div className="section-more">더보기 →</div>
+                            </div>
+                            <div className="book-grid">
+                                {booksData.recommend2.map(book => (
+                                    <BookCard key={book.id} book={book} onClick={() => onBookClick(book)} />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // LibraryScreen Component
+        function LibraryScreen({ onNavigate, onBookClick }) {
+            const [activeLevel, setActiveLevel] = useState('PreK-1');
+            const levels = ['PreK-1', 'K 1-1', 'K 1-2', 'K 2-1', 'K 2-2'];
+
+            return (
+                <div className="screen">
+                    <div className="content">
+                        <div className="level-tabs">
+                            {levels.map(level => (
+                                <div
+                                    key={level}
+                                    className={`level-tab ${activeLevel === level ? 'active' : ''}`}
+                                    onClick={() => setActiveLevel(level)}
+                                >
+                                    {level}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="book-grid-library">
+                            {booksData.library.map(book => (
+                                <BookCard key={book.id} book={book} onClick={() => onBookClick(book)} />
+                            ))}
+                        </div>
+
+                        <div className="ai-recommend" onClick={() => onNavigate('ai-recommend')}>
+                            <h3>🤖 AI 독서버디에게 책 추천받기</h3>
+                            <p>다람이가 나에게 딱 맞는 책을 찾아줘요!</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // MyPageScreen Component
+        function MyPageScreen() {
+            return (
+                <div className="screen">
+                    <div className="content">
+                        <div className="profile-section">
+                            <div className="profile-info">
+                                <div className="profile-avatar">👧</div>
+                                <div className="profile-details">
+                                    <h2>김독서</h2>
+                                    <p>책벌레 Level 3 (K 1-1)</p>
+                                </div>
+                            </div>
+                            <div className="progress-bar">
+                                <div className="progress-bar-fill" style={{ width: '65%' }} />
+                            </div>
+                        </div>
+
+                        <div className="section">
+                            <div className="section-title" style={{ marginBottom: '15px' }}>독서 통계</div>
+                            <div className="stats-grid">
+                                <div className="stat-card">
+                                    <div className="stat-number">50</div>
+                                    <div className="stat-label">완료</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-number">15</div>
+                                    <div className="stat-label">진행중</div>
+                                </div>
+                                <div className="stat-card">
+                                    <div className="stat-number">7</div>
+                                    <div className="stat-label">연속일</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="section">
+                            <div className="section-header">
+                                <div className="section-title">획득 배지</div>
+                                <div className="section-more">전체보기 →</div>
+                            </div>
+                            <div className="badge-list">
+                                <div className="badge">🏆</div>
+                                <div className="badge">⭐</div>
+                                <div className="badge">📖</div>
+                                <div className="badge">🎯</div>
+                                <div className="badge">💪</div>
+                            </div>
+                        </div>
+
+                        <div className="section">
+                            <div className="section-title" style={{ marginBottom: '15px' }}>독서 기록</div>
+                            <div style={{ textAlign: 'center', padding: '40px 20px', background: '#f8f8f8', borderRadius: '12px' }}>
+                                <div style={{ fontSize: '40px', marginBottom: '10px' }}>📅</div>
+                                <div style={{ color: '#666' }}>캘린더 뷰</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ReaderScreen Component
+        function ReaderScreen({ book, onNavigate }) {
+            const [currentPage, setCurrentPage] = useState(1);
+            const totalPages = 20;
+
+            const pageContent = {
+                1: [
+                    '어느 날, 나는 사막 한가운데에 불시착했다. 엔진이 고장 나버린 것이다.',
+                    '나는 혼자였다. 도움을 청할 사람도 없었고, 가장 가까운 마을까지도 천 마일이나 떨어져 있었다.',
+                    '그런데 동이 트자, 이상한 목소리가 나를 깨웠다.',
+                    '"저기요... 양 한 마리만 그려주세요!"'
+                ],
+                2: [
+                    '나는 깜짝 놀라 벌떡 일어났다.',
+                    '눈을 비비며 주위를 둘러보니, 작고 신비로운 소년이 서 있었다.',
+                    '그 소년은 진지한 표정으로 나를 바라보고 있었다.',
+                    '"양 한 마리만 그려주세요..." 소년이 다시 말했다.'
+                ]
+            };
+
+            return (
+                <div className="screen">
+                    <div className="reader-container">
+                        <div className="reader-content">
+                            {pageContent[currentPage]?.map((paragraph, i) => (
+                                <p key={i} style={{ marginBottom: '15px' }}>{paragraph}</p>
+                            ))}
+                        </div>
+
+                        <BuddyCharacter onClick={() => {}} />
+
+                        <div className="reader-controls">
+                            <div className="page-nav">
+                                <button
+                                    className="page-btn"
+                                    disabled={currentPage === 1}
+                                    onClick={() => setCurrentPage(p => p - 1)}
+                                >
+                                    ◀
+                                </button>
+                                <span>{currentPage} / {totalPages}</span>
+                                <button
+                                    className="page-btn"
+                                    disabled={currentPage === totalPages}
+                                    onClick={() => setCurrentPage(p => Math.min(p + 1, 2))}
+                                >
+                                    ▶
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="action-buttons">
+                            <button className="action-btn" onClick={() => onNavigate('quiz')}>퀴즈 풀기</button>
+                            <button className="action-btn" onClick={() => onNavigate('activity')}>독후활동</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // QuizScreen Component
+        function QuizScreen({ onNavigate }) {
+            const [selectedOption, setSelectedOption] = useState(null);
+            const [modal, setModal] = useState({ isOpen: false, icon: '', title: '', text: '' });
+
+            const handleSubmit = () => {
+                if (selectedOption === 2) {
+                    setModal({
+                        isOpen: true,
+                        icon: '🎉',
+                        title: '정답이에요!',
+                        text: '정말 잘했어요!<br>다음 문제로 넘어가볼까요?'
+                    });
+                } else {
+                    setModal({
+                        isOpen: true,
+                        icon: '🤔',
+                        title: '다시 생각해봐요!',
+                        text: '조금만 더 생각해보면<br>답을 찾을 수 있을 거예요!'
+                    });
+                }
+            };
+
+            return (
+                <div className="screen">
+                    <div className="quiz-container">
+                        <div className="quiz-header">
+                            <h2>문제 1 / 5</h2>
+                            <div className="quiz-progress">
+                                <div className="quiz-progress-bar" style={{ width: '20%' }} />
+                            </div>
+                        </div>
+
+                        <div className="quiz-question">
+                            어린왕자는 나에게 무엇을 그려달라고 했나요?
+                        </div>
+
+                        <div className="quiz-options">
+                            {['① 코끼리', '② 양', '③ 장미', '④ 비행기'].map((option, index) => (
+                                <div
+                                    key={index}
+                                    className={`quiz-option ${selectedOption === index + 1 ? 'selected' : ''}`}
+                                    onClick={() => setSelectedOption(index + 1)}
+                                >
+                                    {option}
+                                </div>
+                            ))}
+                        </div>
+
+                        <BuddyCharacter onClick={() => {}} />
+
+                        <button className="quiz-submit" onClick={handleSubmit}>제출하기</button>
+                    </div>
+
+                    <Modal
+                        isOpen={modal.isOpen}
+                        icon={modal.icon}
+                        title={modal.title}
+                        text={modal.text}
+                        onClose={() => setModal({ ...modal, isOpen: false })}
+                    />
+                </div>
+            );
+        }
+
+        // ActivityScreen Component
+        function ActivityScreen() {
+            return (
+                <div className="screen">
+                    <div className="content">
+                        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                            <div className="book-cover" style={{
+                                width: '150px',
+                                height: '200px',
+                                margin: '0 auto 20px',
+                                background: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)'
+                            }}>
+                                어린왕자
+                            </div>
+                        </div>
+
+                        <BuddyCharacter onClick={() => {}} />
+
+                        <div style={{ textAlign: 'center', marginTop: '30px' }}>
+                            <button className="btn" style={{ marginBottom: '15px', width: '80%' }}>
+                                🎤 음성으로 말하기
+                            </button>
+                            <button className="btn btn-secondary" style={{ width: '80%' }}>
+                                ⌨️ 텍스트로 입력하기
+                            </button>
+                        </div>
+
+                        <div style={{ marginTop: '30px', padding: '20px', background: '#f8f8f8', borderRadius: '12px' }}>
+                            <h3 style={{ marginBottom: '10px', textAlign: 'center' }}>어떻게 하나요?</h3>
+                            <ol style={{ color: '#666', lineHeight: '1.8', paddingLeft: '20px' }}>
+                                <li>책에서 가장 기억에 남는 장면을 말해주세요</li>
+                                <li>주인공이 어떤 일을 했는지 설명해주세요</li>
+                                <li>이야기의 결말을 이야기해주세요</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ChatScreen Component
+        function ChatScreen({ type, onNavigate }) {
+            const [messages, setMessages] = useState([
+                {
+                    type: 'buddy',
+                    content: type === 'ai-recommend'
+                        ? '안녕! 오늘은 어떤 책을 찾고 있어?'
+                        : '안녕! 나는 독서버디 다람이야! 😊\n책 읽는 걸 도와줄게!'
+                }
+            ]);
+            const [inputValue, setInputValue] = useState('');
+
+            if (type === 'buddy-chat' && messages.length === 1) {
+                setMessages([
+                    ...messages,
+                    {
+                        type: 'buddy',
+                        content: '무엇을 도와줄까?\n- 책 추천 받기 📚\n- 책 읽기 도움 받기 📖\n- 독서 활동 함께하기 ✨'
+                    }
+                ]);
+            }
+
+            const handleSend = () => {
+                if (!inputValue.trim()) return;
+
+                const userMessage = { type: 'user', content: inputValue };
+                setMessages(prev => [...prev, userMessage]);
+                setInputValue('');
+
+                setTimeout(() => {
+                    let aiResponse = '';
+
+                    if (type === 'ai-recommend') {
+                        if (inputValue.includes('모험') || inputValue.includes('adventure')) {
+                            aiResponse = '모험 이야기를 좋아하는구나! 그럼 이런 책들은 어때?\n📚 "보물섬"\n📚 "80일간의 세계일주"\n📚 "정글북"';
+                        } else {
+                            aiResponse = '좋아! 그럼 재미있는 책들을 추천해줄게!\n📚 "어린왕자"\n📚 "해리포터"\n📚 "나니아 연대기"';
+                        }
+                    } else {
+                        if (inputValue.includes('추천')) {
+                            aiResponse = '책 추천이 필요하구나! 라이브러리에서 "AI 추천" 버튼을 눌러봐! 😊';
+                        } else if (inputValue.includes('안녕')) {
+                            aiResponse = '반가워! 오늘도 즐거운 독서 시간을 보내자! 📚✨';
+                        } else {
+                            aiResponse = '궁금한 게 있으면 언제든지 물어봐! 함께 책을 읽으면 더 재미있을 거야! 😊';
+                        }
+                    }
+
+                    setMessages(prev => [...prev, { type: 'buddy', content: aiResponse }]);
+                }, 1000);
+            };
+
+            return (
+                <div className="screen">
+                    <div className="content" style={{ display: 'flex', flexDirection: 'column' }}>
+                        {type === 'buddy-chat' && (
+                            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                                <div className="buddy-avatar" style={{ width: '100px', height: '100px', fontSize: '50px', margin: '0 auto' }}>
+                                    🐿️
+                                </div>
+                                <h2 style={{ marginTop: '15px', color: '#E65100' }}>다람이</h2>
+                                <p style={{ color: '#666', marginTop: '5px' }}>너의 독서 친구</p>
+                            </div>
+                        )}
+
+                        <div className="chat-container">
+                            {messages.map((msg, index) => (
+                                <div key={index} className={`chat-message ${msg.type}`}>
+                                    {msg.type === 'buddy' && <strong>다람이 🐿️</strong>}
+                                    {msg.type === 'buddy' && <br />}
+                                    {msg.content.split('\n').map((line, i) => (
+                                        <React.Fragment key={i}>
+                                            {line}
+                                            {i < msg.content.split('\n').length - 1 && <br />}
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="chat-input-container">
+                            <input
+                                type="text"
+                                className="chat-input"
+                                placeholder={type === 'ai-recommend' ? '메시지를 입력하세요...' : '다람이에게 말하기...'}
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                            />
+                            <button className="chat-send" onClick={handleSend}>전송</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const [currentScreen, setCurrentScreen] = useState('home');
+            const [selectedBook, setSelectedBook] = useState(null);
+
+            const handleNavigate = (screen) => {
+                setCurrentScreen(screen);
+            };
+
+            const handleBookClick = (book) => {
+                setSelectedBook(book);
+                setCurrentScreen('reader');
+            };
+
+            const renderScreen = () => {
+                switch (currentScreen) {
+                    case 'home':
+                        return <HomeScreen onNavigate={handleNavigate} onBookClick={handleBookClick} />;
+                    case 'library':
+                        return <LibraryScreen onNavigate={handleNavigate} onBookClick={handleBookClick} />;
+                    case 'mypage':
+                        return <MyPageScreen />;
+                    case 'reader':
+                        return <ReaderScreen book={selectedBook} onNavigate={handleNavigate} />;
+                    case 'quiz':
+                        return <QuizScreen onNavigate={handleNavigate} />;
+                    case 'activity':
+                        return <ActivityScreen />;
+                    case 'ai-recommend':
+                        return <ChatScreen type="ai-recommend" onNavigate={handleNavigate} />;
+                    case 'buddy-chat':
+                        return <ChatScreen type="buddy-chat" onNavigate={handleNavigate} />;
+                    default:
+                        return <HomeScreen onNavigate={handleNavigate} onBookClick={handleBookClick} />;
+                }
+            };
+
+            const getHeaderTitle = () => {
+                const titles = {
+                    home: '북클럽',
+                    library: '라이브러리',
+                    mypage: '마이페이지',
+                    reader: selectedBook?.title || '독서',
+                    quiz: '퀴즈',
+                    activity: '독후활동 - 리텔링',
+                    'ai-recommend': 'AI 독서버디 추천',
+                    'buddy-chat': '독서버디 다람이'
+                };
+                return titles[currentScreen] || '북클럽';
+            };
+
+            const showBackButton = !['home', 'library', 'mypage'].includes(currentScreen);
+            const showSearchButton = currentScreen === 'library';
+
+            return (
+                <div className="app-container">
+                    {/* Desktop Sidebar */}
+                    <div className="sidebar">
+                        <div className="sidebar-logo">북클럽</div>
+                        <div className="sidebar-nav">
+                            <div
+                                className={`sidebar-nav-item ${currentScreen === 'home' ? 'active' : ''}`}
+                                onClick={() => handleNavigate('home')}
+                            >
+                                <span>🏠</span> 홈
+                            </div>
+                            <div
+                                className={`sidebar-nav-item ${currentScreen === 'library' ? 'active' : ''}`}
+                                onClick={() => handleNavigate('library')}
+                            >
+                                <span>📚</span> 라이브러리
+                            </div>
+                            <div
+                                className={`sidebar-nav-item ${currentScreen === 'mypage' ? 'active' : ''}`}
+                                onClick={() => handleNavigate('mypage')}
+                            >
+                                <span>👤</span> 마이페이지
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="main-content">
+                        <div className="header">
+                            <h1>{getHeaderTitle()}</h1>
+                            <span
+                                className="header-icon"
+                                onClick={() => showBackButton && handleNavigate('home')}
+                                style={{ cursor: showBackButton ? 'pointer' : 'default', visibility: showBackButton ? 'visible' : 'hidden' }}
+                            >
+                                {showBackButton ? '←' : ''}
+                            </span>
+                        </div>
+
+                        {renderScreen()}
+
+                        {/* Bottom Navigation (Mobile/Tablet) */}
+                        <div className="bottom-nav">
+                            <div
+                                className={`nav-item ${currentScreen === 'home' ? 'active' : ''}`}
+                                onClick={() => handleNavigate('home')}
+                            >
+                                <div className="nav-icon">🏠</div>
+                                <div className="nav-label">홈</div>
+                            </div>
+                            <div
+                                className={`nav-item ${currentScreen === 'library' ? 'active' : ''}`}
+                                onClick={() => handleNavigate('library')}
+                            >
+                                <div className="nav-icon">📚</div>
+                                <div className="nav-label">라이브러리</div>
+                            </div>
+                            <div
+                                className={`nav-item ${currentScreen === 'mypage' ? 'active' : ''}`}
+                                onClick={() => handleNavigate('mypage')}
+                            >
+                                <div className="nav-icon">👤</div>
+                                <div className="nav-label">마이페이지</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
