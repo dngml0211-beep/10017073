@@ -90,53 +90,8 @@
 
         <!-- Main Content -->
         <main class="flex-1 h-full overflow-y-auto">
-            <!-- 이번주 코어북 배너 -->
-            <section class="relative bg-gradient-to-r from-brand-primary to-pink-500 p-6 md:p-8 overflow-hidden">
-                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')] opacity-10"></div>
-
-                <!-- Decorations -->
-                <div class="absolute top-3 right-16 text-2xl animate-pulse">✨</div>
-                <div class="absolute bottom-3 right-32 text-xl animate-pulse" style="animation-delay: 0.5s;">✨</div>
-                <div class="absolute top-1/2 right-8 text-3xl opacity-20">📚</div>
-
-                <div class="relative z-10 flex items-center gap-6">
-                    <!-- 코어북 썸네일 -->
-                    <div class="hidden md:block relative">
-                        <div class="w-28 h-36 bg-white rounded-2xl shadow-2xl flex items-center justify-center text-5xl transform rotate-[-5deg] hover:rotate-0 transition-transform">
-                            🧙‍♂️
-                        </div>
-                        <div class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                            이번주
-                        </div>
-                    </div>
-
-                    <!-- 코어북 정보 -->
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full">이번주 코어북</span>
-                            <span class="bg-white/20 text-white text-xs px-2 py-1 rounded-full">K2-1</span>
-                        </div>
-                        <h2 class="font-jua text-2xl md:text-3xl text-white mb-2">마법사의 물약</h2>
-                        <p class="text-white/90 text-sm md:text-base mb-3">숲속 마법사가 신비로운 물약을 만드는 모험 이야기예요!</p>
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center gap-2 text-white/80 text-sm">
-                                <i class="fa-solid fa-book-open"></i>
-                                <span>32페이지</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-white/80 text-sm">
-                                <i class="fa-solid fa-clock"></i>
-                                <span>약 15분</span>
-                            </div>
-                            <button class="px-4 py-2 bg-white text-brand-primary rounded-full text-sm font-bold hover:bg-orange-50 transition-colors shadow-lg">
-                                바로 읽기 →
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- KRS 단계 필터 -->
-            <div class="sticky top-0 bg-brand-bg/95 backdrop-blur-sm z-10 px-4 md:px-8 py-4 border-b border-orange-100/50">
+            <!-- KRS 단계 필터 (상단 고정) -->
+            <div class="sticky top-0 bg-brand-bg/95 backdrop-blur-sm z-20 px-4 md:px-8 py-4 border-b border-orange-100/50">
                 <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
                     <span class="text-sm text-gray-500 font-medium flex-shrink-0 mr-2">단계</span>
                     <button onclick="selectLevel('PreK1')" class="level-btn locked flex-shrink-0 px-4 py-2 bg-white text-gray-500 rounded-full text-sm font-medium border border-gray-200" data-level="PreK1">
@@ -169,14 +124,62 @@
                 </p>
             </div>
 
+            <!-- 이번주 코어북 배너 -->
+            <section class="mx-4 md:mx-8 mt-5 mb-6">
+                <div class="relative bg-gradient-to-r from-brand-primary to-pink-500 rounded-2xl p-5 md:p-6 overflow-hidden">
+                    <!-- 배경 패턴 -->
+                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')] opacity-10 rounded-2xl"></div>
+
+                    <div class="relative z-10 flex items-center gap-5">
+                        <!-- 코어북 썸네일 -->
+                        <div class="hidden md:block relative flex-shrink-0">
+                            <div class="w-24 h-32 bg-white rounded-xl shadow-xl flex items-center justify-center text-4xl transform rotate-[-3deg] hover:rotate-0 transition-transform">
+                                🧙‍♂️
+                            </div>
+                            <div class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md">
+                                이번주
+                            </div>
+                        </div>
+
+                        <!-- 코어북 정보 -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="bg-white/20 text-white text-xs font-bold px-2.5 py-0.5 rounded-full">이번주 코어북</span>
+                                <span class="bg-white/20 text-white text-[10px] px-2 py-0.5 rounded-full">K2-1</span>
+                            </div>
+                            <h2 class="font-jua text-xl md:text-2xl text-white mb-1">마법사의 물약</h2>
+                            <p class="text-white/90 text-sm mb-3 line-clamp-1">숲속 마법사가 신비로운 물약을 만드는 모험 이야기예요!</p>
+                            <div class="flex items-center gap-3 flex-wrap">
+                                <div class="flex items-center gap-1.5 text-white/80 text-xs">
+                                    <i class="fa-solid fa-book-open"></i>
+                                    <span>32페이지</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-white/80 text-xs">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <span>약 15분</span>
+                                </div>
+                                <button class="px-3 py-1.5 bg-white text-brand-primary rounded-full text-xs font-bold hover:bg-orange-50 transition-colors shadow-md">
+                                    바로 읽기 →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- 읽어야 할 책 -->
             <div class="px-4 md:px-8 py-6">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 bg-brand-primary/10 rounded-lg flex items-center justify-center">
-                        <span class="text-lg">📖</span>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 bg-gradient-to-br from-brand-primary to-orange-500 rounded-xl flex items-center justify-center shadow-sm">
+                            <span class="text-lg">📖</span>
+                        </div>
+                        <div>
+                            <h3 class="font-jua text-lg text-gray-800">읽어야 할 책</h3>
+                            <p class="text-xs text-gray-400">이번 달 학습 도서</p>
+                        </div>
                     </div>
-                    <h3 class="font-jua text-lg text-gray-800">읽어야 할 책</h3>
-                    <span class="text-xs bg-brand-primary/10 text-brand-primary px-2 py-1 rounded-full">5권</span>
+                    <span class="text-sm bg-brand-primary text-white px-3 py-1.5 rounded-full font-bold">5권 남음</span>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -248,152 +251,162 @@
                 </div>
             </div>
 
-            <!-- 다 읽은 책 -->
-            <div class="px-4 md:px-8 py-6 bg-green-50/50">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                        <span class="text-lg">✅</span>
+            <!-- 다 읽은 책 - 차분한 완료 표시 -->
+            <div class="px-4 md:px-8 py-5 bg-gray-50/50 border-t border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-check-circle text-green-500"></i>
+                        <h3 class="font-jua text-base text-gray-600">다 읽은 책</h3>
+                        <span class="text-xs text-gray-400">3권</span>
                     </div>
-                    <h3 class="font-jua text-lg text-gray-800">다 읽은 책</h3>
-                    <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">3권 완독!</span>
+                    <button class="text-xs text-gray-400 hover:text-gray-600">전체보기 →</button>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                     <!-- 완독 책 1 -->
-                    <div class="book-card cursor-pointer" onclick="openBook()">
-                        <div class="relative mb-3">
-                            <div class="aspect-[3/4] bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl shadow-lg overflow-hidden">
-                                <div class="absolute inset-0 flex items-center justify-center text-white/80 text-5xl">🐸</div>
+                    <div class="book-card cursor-pointer group opacity-75 hover:opacity-100 transition-opacity" onclick="openBook()">
+                        <div class="relative mb-2">
+                            <div class="aspect-[3/4] bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl shadow-md overflow-hidden grayscale-[30%] group-hover:grayscale-0 transition-all">
+                                <div class="absolute inset-0 flex items-center justify-center text-white/80 text-4xl">🐸</div>
                             </div>
-                            <!-- 완독 뱃지 -->
-                            <div class="absolute -top-2 -right-2 completed-badge text-white text-[10px] font-bold w-7 h-7 rounded-full flex items-center justify-center shadow-md">
-                                <i class="fa-solid fa-check"></i>
+                            <!-- 완독 체크 뱃지 -->
+                            <div class="absolute -top-1 -right-1 bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center shadow-sm">
+                                <i class="fa-solid fa-check text-xs"></i>
                             </div>
                         </div>
-                        <h4 class="font-bold text-gray-800 text-sm truncate">개구리와 두꺼비</h4>
-                        <p class="text-xs text-green-600 font-medium">완독 · K2-1</p>
+                        <h4 class="font-medium text-gray-600 text-sm truncate">개구리와 두꺼비</h4>
+                        <p class="text-xs text-gray-400">완독 · K2-1</p>
                     </div>
 
                     <!-- 완독 책 2 -->
-                    <div class="book-card cursor-pointer" onclick="openBook()">
-                        <div class="relative mb-3">
-                            <div class="aspect-[3/4] bg-gradient-to-br from-lime-400 to-green-500 rounded-2xl shadow-lg overflow-hidden">
-                                <div class="absolute inset-0 flex items-center justify-center text-white/80 text-5xl">🌲</div>
+                    <div class="book-card cursor-pointer group opacity-75 hover:opacity-100 transition-opacity" onclick="openBook()">
+                        <div class="relative mb-2">
+                            <div class="aspect-[3/4] bg-gradient-to-br from-lime-400 to-green-500 rounded-xl shadow-md overflow-hidden grayscale-[30%] group-hover:grayscale-0 transition-all">
+                                <div class="absolute inset-0 flex items-center justify-center text-white/80 text-4xl">🌲</div>
                             </div>
-                            <div class="absolute -top-2 -right-2 completed-badge text-white text-[10px] font-bold w-7 h-7 rounded-full flex items-center justify-center shadow-md">
-                                <i class="fa-solid fa-check"></i>
+                            <div class="absolute -top-1 -right-1 bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center shadow-sm">
+                                <i class="fa-solid fa-check text-xs"></i>
                             </div>
                         </div>
-                        <h4 class="font-bold text-gray-800 text-sm truncate">나무를 심은 사람</h4>
-                        <p class="text-xs text-green-600 font-medium">완독 · K2-1</p>
+                        <h4 class="font-medium text-gray-600 text-sm truncate">나무를 심은 사람</h4>
+                        <p class="text-xs text-gray-400">완독 · K2-1</p>
                     </div>
 
                     <!-- 완독 책 3 -->
-                    <div class="book-card cursor-pointer" onclick="openBook()">
-                        <div class="relative mb-3">
-                            <div class="aspect-[3/4] bg-gradient-to-br from-yellow-400 to-amber-500 rounded-2xl shadow-lg overflow-hidden">
-                                <div class="absolute inset-0 flex items-center justify-center text-white/80 text-5xl">⭐</div>
+                    <div class="book-card cursor-pointer group opacity-75 hover:opacity-100 transition-opacity" onclick="openBook()">
+                        <div class="relative mb-2">
+                            <div class="aspect-[3/4] bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl shadow-md overflow-hidden grayscale-[30%] group-hover:grayscale-0 transition-all">
+                                <div class="absolute inset-0 flex items-center justify-center text-white/80 text-4xl">⭐</div>
                             </div>
-                            <div class="absolute -top-2 -right-2 completed-badge text-white text-[10px] font-bold w-7 h-7 rounded-full flex items-center justify-center shadow-md">
-                                <i class="fa-solid fa-check"></i>
+                            <div class="absolute -top-1 -right-1 bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center shadow-sm">
+                                <i class="fa-solid fa-check text-xs"></i>
                             </div>
                         </div>
-                        <h4 class="font-bold text-gray-800 text-sm truncate">별을 헤아리며</h4>
-                        <p class="text-xs text-green-600 font-medium">완독 · K1-1</p>
+                        <h4 class="font-medium text-gray-600 text-sm truncate">별을 헤아리며</h4>
+                        <p class="text-xs text-gray-400">완독 · K1-1</p>
                     </div>
                 </div>
             </div>
 
-            <!-- 미리보기만 가능한 책 -->
-            <div class="px-4 md:px-8 py-6 bg-gray-50/50">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <span class="text-lg">👀</span>
+            <!-- 미리보기 - 기대감/설렘 테마 -->
+            <div class="px-4 md:px-8 py-6 bg-gradient-to-r from-violet-50 to-purple-50">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-violet-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md animate-pulse">
+                            <span class="text-xl">🔮</span>
+                        </div>
+                        <div>
+                            <h3 class="font-jua text-lg text-gray-800">곧 만나요!</h3>
+                            <p class="text-xs text-purple-600">다른 단계의 재미있는 책들이에요 ✨</p>
+                        </div>
                     </div>
-                    <h3 class="font-jua text-lg text-gray-800">미리보기</h3>
-                    <span class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full">다른 단계 도서</span>
+                    <div class="bg-gradient-to-r from-violet-400 to-purple-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md flex items-center gap-1">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>미리보기</span>
+                    </div>
                 </div>
-                <p class="text-xs text-gray-400 mb-4">
-                    <i class="fa-solid fa-lock mr-1"></i>
-                    이 책들은 미리보기만 가능해요. 해당 단계에 도달하면 읽을 수 있어요!
+                <p class="text-sm text-purple-600 mb-4 bg-purple-100/50 px-4 py-2 rounded-xl inline-flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    조금만 더 성장하면 이 책들도 읽을 수 있어요! 기대되죠?
                 </p>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                     <!-- 미리보기 책 1 (K4) -->
-                    <div class="book-card preview-only cursor-pointer" onclick="showPreview()">
+                    <div class="book-card cursor-pointer group" onclick="showPreview()">
                         <div class="relative mb-3">
-                            <div class="aspect-[3/4] bg-gradient-to-br from-slate-400 to-slate-600 rounded-2xl shadow-lg overflow-hidden">
+                            <div class="aspect-[3/4] bg-gradient-to-br from-violet-400 to-purple-600 rounded-2xl shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
                                 <div class="absolute inset-0 flex items-center justify-center text-white/80 text-5xl">🏛️</div>
-                                <!-- 잠금 오버레이 -->
-                                <div class="absolute inset-0 preview-overlay flex items-end justify-center pb-4">
-                                    <span class="bg-black/50 text-white text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
-                                        <i class="fa-solid fa-eye text-[8px]"></i> 미리보기
+                                <!-- 기대감 오버레이 -->
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-purple-600/80 to-transparent p-3">
+                                    <span class="text-white text-[11px] font-bold flex items-center justify-center gap-1">
+                                        <i class="fa-solid fa-play-circle"></i> 맛보기
                                     </span>
                                 </div>
                             </div>
-                            <div class="absolute -top-2 -right-2 bg-gray-400 text-white text-[10px] font-bold px-2 py-1 rounded-full">
-                                K4
+                            <!-- 단계 리본 뱃지 -->
+                            <div class="absolute -top-1 -right-1 bg-gradient-to-r from-violet-500 to-purple-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-md">
+                                <i class="fa-solid fa-arrow-up text-[8px] mr-0.5"></i>K4
                             </div>
                         </div>
-                        <h4 class="font-bold text-gray-500 text-sm truncate">고대 문명의 비밀</h4>
-                        <p class="text-xs text-gray-400">역사 · K4</p>
+                        <h4 class="font-bold text-gray-800 text-sm truncate group-hover:text-purple-600 transition-colors">고대 문명의 비밀</h4>
+                        <p class="text-xs text-purple-500 font-medium">역사 · 곧 만나요!</p>
                     </div>
 
                     <!-- 미리보기 책 2 (K5) -->
-                    <div class="book-card preview-only cursor-pointer" onclick="showPreview()">
+                    <div class="book-card cursor-pointer group" onclick="showPreview()">
                         <div class="relative mb-3">
-                            <div class="aspect-[3/4] bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-2xl shadow-lg overflow-hidden">
+                            <div class="aspect-[3/4] bg-gradient-to-br from-indigo-400 to-blue-600 rounded-2xl shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
                                 <div class="absolute inset-0 flex items-center justify-center text-white/80 text-5xl">🔬</div>
-                                <div class="absolute inset-0 preview-overlay flex items-end justify-center pb-4">
-                                    <span class="bg-black/50 text-white text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
-                                        <i class="fa-solid fa-eye text-[8px]"></i> 미리보기
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-blue-600/80 to-transparent p-3">
+                                    <span class="text-white text-[11px] font-bold flex items-center justify-center gap-1">
+                                        <i class="fa-solid fa-play-circle"></i> 맛보기
                                     </span>
                                 </div>
                             </div>
-                            <div class="absolute -top-2 -right-2 bg-gray-400 text-white text-[10px] font-bold px-2 py-1 rounded-full">
-                                K5
+                            <div class="absolute -top-1 -right-1 bg-gradient-to-r from-indigo-500 to-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-md">
+                                <i class="fa-solid fa-arrow-up text-[8px] mr-0.5"></i>K5
                             </div>
                         </div>
-                        <h4 class="font-bold text-gray-500 text-sm truncate">과학자의 발견</h4>
-                        <p class="text-xs text-gray-400">과학 · K5</p>
+                        <h4 class="font-bold text-gray-800 text-sm truncate group-hover:text-indigo-600 transition-colors">과학자의 발견</h4>
+                        <p class="text-xs text-indigo-500 font-medium">과학 · 곧 만나요!</p>
                     </div>
 
                     <!-- 미리보기 책 3 (PreK1) -->
-                    <div class="book-card preview-only cursor-pointer" onclick="showPreview()">
+                    <div class="book-card cursor-pointer group" onclick="showPreview()">
                         <div class="relative mb-3">
-                            <div class="aspect-[3/4] bg-gradient-to-br from-pink-300 to-pink-400 rounded-2xl shadow-lg overflow-hidden">
+                            <div class="aspect-[3/4] bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
                                 <div class="absolute inset-0 flex items-center justify-center text-white/80 text-5xl">🧸</div>
-                                <div class="absolute inset-0 preview-overlay flex items-end justify-center pb-4">
-                                    <span class="bg-black/50 text-white text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
-                                        <i class="fa-solid fa-eye text-[8px]"></i> 미리보기
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-rose-500/80 to-transparent p-3">
+                                    <span class="text-white text-[11px] font-bold flex items-center justify-center gap-1">
+                                        <i class="fa-solid fa-play-circle"></i> 맛보기
                                     </span>
                                 </div>
                             </div>
-                            <div class="absolute -top-2 -right-2 bg-gray-400 text-white text-[10px] font-bold px-2 py-1 rounded-full">
-                                PreK1
+                            <div class="absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-md">
+                                <i class="fa-solid fa-arrow-down text-[8px] mr-0.5"></i>PreK1
                             </div>
                         </div>
-                        <h4 class="font-bold text-gray-500 text-sm truncate">곰돌이와 친구들</h4>
-                        <p class="text-xs text-gray-400">동화 · PreK1</p>
+                        <h4 class="font-bold text-gray-800 text-sm truncate group-hover:text-pink-600 transition-colors">곰돌이와 친구들</h4>
+                        <p class="text-xs text-pink-500 font-medium">동화 · 곧 만나요!</p>
                     </div>
 
                     <!-- 미리보기 책 4 (K6) -->
-                    <div class="book-card preview-only cursor-pointer" onclick="showPreview()">
+                    <div class="book-card cursor-pointer group" onclick="showPreview()">
                         <div class="relative mb-3">
-                            <div class="aspect-[3/4] bg-gradient-to-br from-red-400 to-red-600 rounded-2xl shadow-lg overflow-hidden">
+                            <div class="aspect-[3/4] bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
                                 <div class="absolute inset-0 flex items-center justify-center text-white/80 text-5xl">🗿</div>
-                                <div class="absolute inset-0 preview-overlay flex items-end justify-center pb-4">
-                                    <span class="bg-black/50 text-white text-[10px] px-2 py-1 rounded-full flex items-center gap-1">
-                                        <i class="fa-solid fa-eye text-[8px]"></i> 미리보기
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-red-500/80 to-transparent p-3">
+                                    <span class="text-white text-[11px] font-bold flex items-center justify-center gap-1">
+                                        <i class="fa-solid fa-play-circle"></i> 맛보기
                                     </span>
                                 </div>
                             </div>
-                            <div class="absolute -top-2 -right-2 bg-gray-400 text-white text-[10px] font-bold px-2 py-1 rounded-full">
-                                K6
+                            <div class="absolute -top-1 -right-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-md">
+                                <i class="fa-solid fa-arrow-up text-[8px] mr-0.5"></i>K6
                             </div>
                         </div>
-                        <h4 class="font-bold text-gray-500 text-sm truncate">역사 속 영웅들</h4>
-                        <p class="text-xs text-gray-400">역사 · K6</p>
+                        <h4 class="font-bold text-gray-800 text-sm truncate group-hover:text-orange-600 transition-colors">역사 속 영웅들</h4>
+                        <p class="text-xs text-orange-500 font-medium">역사 · 곧 만나요!</p>
                     </div>
                 </div>
             </div>

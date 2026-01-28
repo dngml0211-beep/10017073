@@ -169,7 +169,7 @@
                                 <i class="fa-solid fa-chevron-left"></i>
                             </button>
                             <div class="text-center min-w-[100px]">
-                                <span id="week-label" class="font-jua text-xl text-gray-800">1주차</span>
+                                <span id="week-label" class="font-jua text-xl text-gray-800">1월 1주차</span>
                                 <p id="week-date" class="text-[11px] text-gray-400">1/6 ~ 1/12</p>
                             </div>
                             <button onclick="nextWeek()" class="week-nav-btn w-9 h-9 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-brand-primary border border-gray-200 hover:border-brand-primary transition-all">
@@ -187,8 +187,8 @@
 
                     <!-- Main Content: 코어북/관리이북 크게 + 스텝 작게 -->
                     <div class="flex gap-5">
-                        <!-- 메인 도서 카드 (코어북/관리이북) -->
-                        <div onclick="openBookViewer()" class="main-book-card flex-1 bg-white rounded-3xl p-5 shadow-md border-2 border-brand-primary relative overflow-hidden cursor-pointer group">
+                        <!-- 메인 도서 카드 (코어북/관리이북) - 진행 중 상태 -->
+                        <div id="book-card-active" onclick="openBookViewer()" class="main-book-card flex-1 bg-white rounded-3xl p-5 shadow-md border-2 border-brand-primary relative overflow-hidden cursor-pointer group">
                             <div class="absolute -right-10 -top-10 w-32 h-32 bg-brand-primary/5 rounded-full"></div>
                             <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-brand-dark/5 rounded-full"></div>
 
@@ -203,12 +203,12 @@
                                 <div class="flex-1 min-w-0 py-1">
                                     <div class="flex items-center gap-2 mb-2">
                                         <span id="book-type-badge" class="bg-gradient-to-r from-brand-primary to-brand-dark text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">코어북</span>
-                                        <span class="text-xs text-brand-primary font-medium">STEP 1</span>
+                                        <span id="step-indicator" class="text-xs text-brand-primary font-medium">STEP 1</span>
                                     </div>
                                     <h4 id="main-book-title" class="font-jua text-xl text-gray-800 mb-1">마법사의 물약</h4>
                                     <p id="main-book-desc" class="text-sm text-gray-500 mb-3 line-clamp-2">숲속 마법사의 신비로운 모험 이야기</p>
 
-                                    <div class="flex items-center gap-3 mb-4">
+                                    <div id="progress-section" class="flex items-center gap-3 mb-4">
                                         <span id="main-book-level" class="text-xs bg-indigo-100 text-indigo-600 px-2.5 py-1 rounded-full font-bold">K2-1</span>
                                         <div class="flex items-center gap-2 flex-1">
                                             <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -218,9 +218,52 @@
                                         </div>
                                     </div>
 
-                                    <button class="w-full py-2.5 bg-gradient-to-r from-brand-primary to-orange-500 text-white rounded-xl text-sm font-bold hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                                    <button id="main-action-btn" class="w-full py-2.5 bg-gradient-to-r from-brand-primary to-orange-500 text-white rounded-xl text-sm font-bold hover:shadow-lg transition-all flex items-center justify-center gap-2">
                                         <i class="fa-solid fa-book-open"></i>
-                                        계속 읽기
+                                        <span id="main-action-text">계속 읽기</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 학습 완료 상태 카드 (숨김 처리) -->
+                        <div id="book-card-completed" class="hidden main-book-card flex-1 bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-5 shadow-md border-2 border-green-400 relative overflow-hidden">
+                            <div class="absolute -right-10 -top-10 w-32 h-32 bg-green-500/10 rounded-full"></div>
+                            <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-500/10 rounded-full"></div>
+
+                            <div class="flex items-start gap-4 relative">
+                                <!-- Completed Badge -->
+                                <div class="w-28 h-40 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl shadow-lg flex-shrink-0 overflow-hidden relative flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div class="text-5xl mb-2">🏆</div>
+                                        <span class="text-white text-xs font-bold bg-white/20 px-2 py-1 rounded-full">완료!</span>
+                                    </div>
+                                </div>
+
+                                <!-- Completed Info -->
+                                <div class="flex-1 min-w-0 py-1">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                                            <i class="fa-solid fa-check"></i> 학습 완료
+                                        </span>
+                                    </div>
+                                    <h4 id="completed-book-title" class="font-jua text-xl text-gray-800 mb-1">마법사의 물약</h4>
+                                    <p class="text-sm text-green-600 mb-3">모든 학습을 완료했어요! 대단해요!</p>
+
+                                    <div class="flex items-center gap-2 mb-4">
+                                        <div class="flex items-center gap-1 bg-yellow-100 px-3 py-1.5 rounded-full">
+                                            <span class="text-lg">⭐</span>
+                                            <span class="text-sm font-bold text-yellow-700">+130</span>
+                                        </div>
+                                        <div class="flex items-center gap-1 bg-purple-100 px-3 py-1.5 rounded-full">
+                                            <span class="text-lg">🏅</span>
+                                            <span class="text-sm font-bold text-purple-700">배지 획득</span>
+                                        </div>
+                                    </div>
+
+                                    <button onclick="loadNextBook()" class="w-full py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl text-sm font-bold hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-arrow-rotate-right"></i>
+                                        다음 책 불러오기
                                     </button>
                                 </div>
                             </div>
@@ -236,21 +279,21 @@
                             <!-- Step Items -->
                             <div class="space-y-2" id="step-list">
                                 <!-- Step 1: 도서 -->
-                                <div class="step-item active flex items-center gap-2.5 px-3 py-2 rounded-xl">
+                                <div id="step-book" class="step-item active flex items-center gap-2.5 px-3 py-2 rounded-xl">
                                     <div class="w-6 h-6 rounded-full bg-white/80 flex items-center justify-center text-sm">📖</div>
                                     <div class="flex-1 min-w-0">
                                         <span id="step1-label" class="text-xs font-medium block truncate">코어북</span>
                                     </div>
-                                    <i class="fa-solid fa-play text-[10px]"></i>
+                                    <i class="step-icon fa-solid fa-play text-[10px]"></i>
                                 </div>
 
                                 <!-- Step 2: 독후퀴즈 -->
-                                <div class="step-item locked flex items-center gap-2.5 px-3 py-2 rounded-xl bg-gray-50 text-gray-400">
+                                <div id="step-quiz" class="step-item locked flex items-center gap-2.5 px-3 py-2 rounded-xl bg-gray-50 text-gray-400">
                                     <div class="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center text-sm">❓</div>
                                     <div class="flex-1 min-w-0">
                                         <span class="text-xs font-medium block truncate">독후퀴즈</span>
                                     </div>
-                                    <i class="fa-solid fa-lock text-[10px]"></i>
+                                    <i class="step-icon fa-solid fa-lock text-[10px]"></i>
                                 </div>
 
                                 <!-- Step 3: AI리텔링 (2,4주차만) -->
@@ -259,16 +302,16 @@
                                     <div class="flex-1 min-w-0">
                                         <span class="text-xs font-medium block truncate">AI 리텔링</span>
                                     </div>
-                                    <i class="fa-solid fa-lock text-[10px]"></i>
+                                    <i class="step-icon fa-solid fa-lock text-[10px]"></i>
                                 </div>
 
                                 <!-- Step 3/4: 어휘챌린지 -->
-                                <div class="step-item locked flex items-center gap-2.5 px-3 py-2 rounded-xl bg-gray-50 text-gray-400">
+                                <div id="step-vocab" class="step-item locked flex items-center gap-2.5 px-3 py-2 rounded-xl bg-gray-50 text-gray-400">
                                     <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-sm">🎮</div>
                                     <div class="flex-1 min-w-0">
                                         <span class="text-xs font-medium block truncate">어휘 챌린지</span>
                                     </div>
-                                    <i class="fa-solid fa-lock text-[10px]"></i>
+                                    <i class="step-icon fa-solid fa-lock text-[10px]"></i>
                                 </div>
                             </div>
                         </div>
@@ -499,7 +542,7 @@
             const data = weeklyData[week];
 
             // Update week label and date
-            document.getElementById('week-label').textContent = week + '주차';
+            document.getElementById('week-label').textContent = '1월 ' + week + '주차';
             document.getElementById('week-date').textContent = weekDates[week - 1];
 
             // Update week indicator dots
@@ -551,7 +594,145 @@
             loadSidebar('home');
             loadLogoutModal();
             selectWeek(1); // 초기 1주차 선택
+            updateLearningProgress(); // 학습 진행 상태 업데이트
         });
+
+        // ===== 학습 진행 상태 관리 =====
+        function updateLearningProgress() {
+            const progress = JSON.parse(sessionStorage.getItem('learningProgress') || '{}');
+            const bookData = JSON.parse(sessionStorage.getItem('currentBook') || '{}');
+
+            // 책 완독 체크
+            const bookCompleted = bookData.completed === true;
+            const quizCompleted = progress.quizCompleted === true;
+            const vocabCompleted = progress.vocabCompleted === true;
+            const weekCompleted = progress.weekCompleted === true;
+
+            // 스텝 상태 업데이트
+            updateStepStatus('step-book', bookCompleted, !bookCompleted);
+            updateStepStatus('step-quiz', quizCompleted, bookCompleted && !quizCompleted);
+            updateStepStatus('step-vocab', vocabCompleted, quizCompleted && !vocabCompleted);
+
+            // 메인 카드 상태 업데이트
+            if (weekCompleted) {
+                // 모든 학습 완료
+                showCompletedCard();
+            } else if (quizCompleted && !vocabCompleted) {
+                // 퀴즈 완료, 어휘 챌린지 대기
+                updateMainCardForVocab();
+            } else if (bookCompleted && !quizCompleted) {
+                // 책 완독, 퀴즈 대기
+                updateMainCardForQuiz();
+            }
+
+            // 진행률 표시 업데이트
+            if (bookCompleted) {
+                document.getElementById('book-progress-bar').style.width = '100%';
+                document.getElementById('book-progress-text').textContent = '완료!';
+            }
+        }
+
+        function updateStepStatus(stepId, isCompleted, isActive) {
+            const step = document.getElementById(stepId);
+            if (!step) return;
+
+            const icon = step.querySelector('.step-icon');
+
+            // 클래스 초기화
+            step.classList.remove('active', 'completed', 'locked');
+            step.classList.remove('bg-gray-50', 'text-gray-400');
+
+            if (isCompleted) {
+                step.classList.add('completed');
+                icon.className = 'step-icon fa-solid fa-check text-[10px]';
+            } else if (isActive) {
+                step.classList.add('active');
+                icon.className = 'step-icon fa-solid fa-play text-[10px]';
+            } else {
+                step.classList.add('locked', 'bg-gray-50', 'text-gray-400');
+                icon.className = 'step-icon fa-solid fa-lock text-[10px]';
+            }
+        }
+
+        function updateMainCardForQuiz() {
+            const btn = document.getElementById('main-action-btn');
+            const text = document.getElementById('main-action-text');
+            const indicator = document.getElementById('step-indicator');
+
+            btn.className = 'w-full py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-sm font-bold hover:shadow-lg transition-all flex items-center justify-center gap-2';
+            btn.onclick = () => window.location.href = 'quiz.html';
+            text.textContent = '독후퀴즈 풀기';
+            btn.querySelector('i').className = 'fa-solid fa-question-circle';
+            indicator.textContent = 'STEP 2';
+        }
+
+        function updateMainCardForVocab() {
+            const btn = document.getElementById('main-action-btn');
+            const text = document.getElementById('main-action-text');
+            const indicator = document.getElementById('step-indicator');
+
+            btn.className = 'w-full py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl text-sm font-bold hover:shadow-lg transition-all flex items-center justify-center gap-2';
+            btn.onclick = () => window.location.href = 'vocabulary-challenge.html';
+            text.textContent = '어휘 챌린지 시작';
+            btn.querySelector('i').className = 'fa-solid fa-gamepad';
+            indicator.textContent = 'STEP 3';
+        }
+
+        function showCompletedCard() {
+            const activeCard = document.getElementById('book-card-active');
+            const completedCard = document.getElementById('book-card-completed');
+            const bookData = JSON.parse(sessionStorage.getItem('currentBook') || '{}');
+
+            // 완료된 책 제목 설정
+            if (bookData.title) {
+                document.getElementById('completed-book-title').textContent = bookData.title;
+            }
+
+            activeCard.classList.add('hidden');
+            completedCard.classList.remove('hidden');
+
+            // 모든 스텝 완료 표시
+            updateStepStatus('step-book', true, false);
+            updateStepStatus('step-quiz', true, false);
+            updateStepStatus('step-vocab', true, false);
+        }
+
+        function loadNextBook() {
+            // 진행 상태 초기화
+            sessionStorage.removeItem('learningProgress');
+            sessionStorage.removeItem('currentBook');
+
+            // 다음 주차로 이동 (또는 같은 주차 새 책)
+            if (currentWeek < 4) {
+                selectWeek(currentWeek + 1);
+            } else {
+                alert('🎉 이번 달 모든 학습을 완료했어요! 다음 달 커리큘럼을 기대해주세요!');
+            }
+
+            // UI 초기화
+            const activeCard = document.getElementById('book-card-active');
+            const completedCard = document.getElementById('book-card-completed');
+            activeCard.classList.remove('hidden');
+            completedCard.classList.add('hidden');
+
+            // 버튼 초기화
+            const btn = document.getElementById('main-action-btn');
+            const text = document.getElementById('main-action-text');
+            btn.className = 'w-full py-2.5 bg-gradient-to-r from-brand-primary to-orange-500 text-white rounded-xl text-sm font-bold hover:shadow-lg transition-all flex items-center justify-center gap-2';
+            btn.onclick = openBookViewer;
+            text.textContent = '계속 읽기';
+            btn.querySelector('i').className = 'fa-solid fa-book-open';
+            document.getElementById('step-indicator').textContent = 'STEP 1';
+
+            // 진행률 초기화
+            document.getElementById('book-progress-bar').style.width = '0%';
+            document.getElementById('book-progress-text').textContent = '0%';
+
+            // 스텝 초기화
+            updateStepStatus('step-book', false, true);
+            updateStepStatus('step-quiz', false, false);
+            updateStepStatus('step-vocab', false, false);
+        }
     </script>
 </body>
 </html>

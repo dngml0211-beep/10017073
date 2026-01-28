@@ -287,6 +287,10 @@ function loadInlineSidebar(container, currentPage) {
                     <i class="fa-solid fa-user text-xl w-6 text-center"></i>
                     <span class="font-jua text-lg">마이페이지</span>
                 </a>
+                <a href="starshop.html" data-page="starshop" class="nav-link flex items-center gap-4 px-6 py-4 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                    <i class="fa-solid fa-star text-xl w-6 text-center"></i>
+                    <span class="font-jua text-lg">스타샵</span>
+                </a>
 
                 <!-- 구분선 -->
                 <div class="pt-4 pb-2 px-2">
@@ -313,10 +317,15 @@ function loadInlineSidebar(container, currentPage) {
                     <span class="font-jua">독서토론</span>
                 </button>
             </nav>
-            <div class="p-6">
-                <button data-logout class="text-gray-400 hover:text-red-400 text-sm font-medium">
-                    <i class="fa-solid fa-right-from-bracket mr-2"></i>로그아웃
-                </button>
+            <div class="p-6 relative z-20 bg-white">
+                <div class="flex items-center justify-between text-gray-400 mb-2 px-2">
+                    <button class="hover:text-brand-primary text-sm font-medium">
+                        <i class="fa-solid fa-gear mr-2"></i>설정
+                    </button>
+                    <button data-logout class="hover:text-red-400 text-sm font-medium">
+                        <i class="fa-solid fa-right-from-bracket mr-2"></i>로그아웃
+                    </button>
+                </div>
             </div>
         </aside>
         <style>
