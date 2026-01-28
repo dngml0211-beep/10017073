@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>북클럽 3.0 - 도서 뷰어</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#FEF3C7', primary: '#FF9F43', dark: '#F368E0', secondary: '#54a0ff', green: '#1dd1a1',
+                            cream: '#FFFBEB', peach: '#FFF7ED', mint: '#ECFDF5'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .font-jua { font-family: 'Jua', sans-serif; }
+
+        body {
+            background: linear-gradient(180deg, #FFF7ED 0%, #FEF3C7 50%, #ECFDF5 100%);
+        }
+
+        .book-page {
+            background: linear-gradient(135deg, #fffef9 0%, #fffbeb 50%, #fff9e6 100%);
+            box-shadow:
+                0 4px 20px rgba(255, 159, 67, 0.15),
+                0 0 0 1px rgba(255, 159, 67, 0.1);
+        }
+
+        .toolbar-btn {
+            transition: all 0.2s ease;
+        }
+        .toolbar-btn:hover {
+            transform: scale(1.08);
+        }
+        .toolbar-btn:active {
+            transform: scale(0.95);
+        }
+        .toolbar-btn.active {
+            background: linear-gradient(135deg, #FF9F43 0%, #F368E0 100%);
+            color: white;
+        }
+
+        .page-nav-btn {
+            transition: all 0.3s ease;
+        }
+        .page-nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(255, 159, 67, 0.3);
+        }
+
+        .panel-card {
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .recording-pulse {
+            animation: pulse 1s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .bounce-soft {
+            animation: bounceSoft 2s ease-in-out infinite;
+        }
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 h-screen overflow-hidden select-none">
+    <!-- Top Header -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-orange-100 shadow-sm">
+        <div class="flex items-center justify-between px-4 py-3">
+            <!-- Left: Back & Book Info -->
+            <div class="flex items-center gap-3">
+                <button onclick="goBack()" class="w-10 h-10 bg-orange-50 hover:bg-orange-100 rounded-xl flex items-center justify-center text-brand-primary transition-colors">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">📖</span>
+                    <div>
+                        <h1 class="font-jua text-base text-gray-800" id="book-title">마법사의 물약</h1>
+                        <p class="text-xs text-gray-400">3장. 신비로운 숲속</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center: Page Progress -->
+            <div class="hidden md:flex items-center gap-3 bg-gradient-to-r from-orange-50 to-amber-50 px-4 py-2 rounded-full border border-orange-100">
+                <span class="text-2xl">🐿️</span>
+                <div class="flex items-center gap-2">
+                    <span class="font-jua text-brand-primary"><span id="current-page">12</span></span>
+                    <span class="text-gray-300">/</span>
+                    <span class="text-gray-500"><span id="total-pages">32</span></span>
+                </div>
+                <div class="w-20 h-2 bg-orange-100 rounded-full overflow-hidden">
+                    <div id="progress-fill" class="h-full bg-gradient-to-r from-brand-primary to-pink-400 rounded-full transition-all" style="width: 37%"></div>
+                </div>
+            </div>
+
+            <!-- Right: Actions -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleBookmark()" class="toolbar-btn w-10 h-10 bg-pink-50 hover:bg-pink-100 rounded-xl flex items-center justify-center text-pink-400 transition-colors" id="bookmark-btn">
+                    <i class="fa-regular fa-heart text-lg"></i>
+                </button>
+                <button onclick="toggleFullscreen()" class="toolbar-btn w-10 h-10 bg-blue-50 hover:bg-blue-100 rounded-xl flex items-center justify-center text-blue-400 transition-colors">
+                    <i class="fa-solid fa-expand"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Book View -->
+    <main class="h-[calc(100vh-130px)] flex items-center justify-center px-4 py-4 relative" id="book-area">
+        <!-- Left Page Navigation -->
+        <button onclick="prevPage(event)" class="page-nav-btn absolute left-4 z-20 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-brand-primary border-2 border-orange-100 hover:border-brand-primary">
+            <i class="fa-solid fa-chevron-left text-lg"></i>
+        </button>
+
+        <!-- Book Container -->
+        <div class="book-page w-full max-w-4xl h-full rounded-3xl overflow-hidden flex relative">
+            <!-- Left Page -->
+            <div class="flex-1 p-6 md:p-10 border-r-2 border-dashed border-orange-100 relative" id="left-page">
+                <div class="h-full flex flex-col">
+                    <div class="flex-1 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="text-7xl md:text-8xl mb-6 bounce-soft">🧙‍♂️</div>
+                            <p class="text-gray-700 text-lg md:text-xl leading-relaxed max-w-sm font-medium">
+                                마법사는 깊은 숲속으로<br>
+                                물약 재료를 찾아 떠났어요.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <span class="inline-block bg-orange-100 text-brand-primary font-jua px-3 py-1 rounded-full text-sm">12</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Page -->
+            <div class="flex-1 p-6 md:p-10 relative" id="right-page">
+                <div class="h-full flex flex-col">
+                    <div class="flex-1 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="text-6xl md:text-7xl mb-6 flex justify-center gap-2">
+                                <span class="bounce-soft" style="animation-delay: 0s">🌳</span>
+                                <span class="bounce-soft" style="animation-delay: 0.2s">🌲</span>
+                                <span class="bounce-soft" style="animation-delay: 0.4s">🌳</span>
+                            </div>
+                            <p class="text-gray-700 text-lg md:text-xl leading-relaxed max-w-sm font-medium">
+                                "파란 꽃잎, 반짝이는 이슬,<br>
+                                무지개빛 나비 날개가 필요해!"
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <span class="inline-block bg-orange-100 text-brand-primary font-jua px-3 py-1 rounded-full text-sm">13</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Fold -->
+            <div class="absolute top-0 bottom-0 left-1/2 w-4 -translate-x-1/2 bg-gradient-to-r from-orange-50 via-orange-100/50 to-orange-50 pointer-events-none"></div>
+        </div>
+
+        <!-- Right Page Navigation -->
+        <button onclick="nextPage(event)" class="page-nav-btn absolute right-4 z-20 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-brand-primary border-2 border-orange-100 hover:border-brand-primary">
+            <i class="fa-solid fa-chevron-right text-lg"></i>
+        </button>
+    </main>
+
+    <!-- Bottom Toolbar -->
+    <footer class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-orange-100 shadow-lg" id="bottom-toolbar">
+        <div class="px-2 py-2">
+            <!-- Tool Icons -->
+            <div class="flex items-center justify-center gap-1 overflow-x-auto hide-scrollbar">
+                <!-- 녹음 -->
+                <button onclick="toggleRecording()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 min-w-[52px]" id="record-btn">
+                    <span class="text-xl">🎙️</span>
+                    <span class="text-[9px] text-gray-600 font-medium">녹음</span>
+                </button>
+
+                <!-- 보기 방식 -->
+                <button onclick="toggleViewMode()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 min-w-[52px]">
+                    <span class="text-xl">👀</span>
+                    <span class="text-[9px] text-gray-600 font-medium">보기</span>
+                </button>
+
+                <!-- 전체화면 저장 -->
+                <button onclick="saveFullScreen()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 min-w-[52px]">
+                    <span class="text-xl">📸</span>
+                    <span class="text-[9px] text-gray-600 font-medium">캡처</span>
+                </button>
+
+                <!-- 마음대로 저장 -->
+                <button onclick="saveCustom()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 min-w-[52px]">
+                    <span class="text-xl">💖</span>
+                    <span class="text-[9px] text-gray-600 font-medium">저장</span>
+                </button>
+
+                <!-- 구분선 -->
+                <div class="w-px h-10 bg-gray-200 mx-1 flex-shrink-0"></div>
+
+                <!-- 사전 -->
+                <button onclick="openDictionary()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 min-w-[52px]">
+                    <span class="text-xl">📚</span>
+                    <span class="text-[9px] text-gray-600 font-medium">사전</span>
+                </button>
+
+                <!-- 감상문 쓰기 -->
+                <button onclick="openReview()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-green-50 hover:bg-green-100 min-w-[52px]">
+                    <span class="text-xl">✏️</span>
+                    <span class="text-[9px] text-gray-600 font-medium">감상문</span>
+                </button>
+
+                <!-- 확대보기 -->
+                <button onclick="toggleZoom()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 min-w-[52px]">
+                    <span class="text-xl">🔍</span>
+                    <span class="text-[9px] text-gray-600 font-medium">확대</span>
+                </button>
+
+                <!-- 구분선 -->
+                <div class="w-px h-10 bg-gray-200 mx-1 flex-shrink-0"></div>
+
+                <!-- 오디오북 보기 -->
+                <button onclick="openAudiobook()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-teal-50 hover:bg-teal-100 min-w-[52px]">
+                    <span class="text-xl">🎧</span>
+                    <span class="text-[9px] text-gray-600 font-medium">오디오북</span>
+                </button>
+
+                <!-- 자동넘김 -->
+                <button onclick="toggleAutoPlay()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 min-w-[52px]" id="autoplay-btn">
+                    <span class="text-xl">▶️</span>
+                    <span class="text-[9px] text-gray-600 font-medium">자동</span>
+                </button>
+
+                <!-- 펼쳐보기 -->
+                <button onclick="toggleSpread()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-violet-50 hover:bg-violet-100 min-w-[52px]">
+                    <span class="text-xl">📖</span>
+                    <span class="text-[9px] text-gray-600 font-medium">펼침</span>
+                </button>
+
+                <!-- 구분선 -->
+                <div class="w-px h-10 bg-gray-200 mx-1 flex-shrink-0"></div>
+
+                <!-- 오디오 제어 -->
+                <button onclick="openAudioControl()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 min-w-[52px]">
+                    <span class="text-xl">🎵</span>
+                    <span class="text-[9px] text-gray-600 font-medium">오디오</span>
+                </button>
+
+                <!-- 화면잠금 -->
+                <button onclick="toggleScreenLock()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-gray-50 hover:bg-gray-100 min-w-[52px]" id="lock-btn">
+                    <span class="text-xl">🔓</span>
+                    <span class="text-[9px] text-gray-600 font-medium">잠금</span>
+                </button>
+
+                <!-- 짝꿍책 보기 -->
+                <button onclick="openPairBook()" class="toolbar-btn flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 min-w-[52px]">
+                    <span class="text-xl">👯</span>
+                    <span class="text-[9px] text-gray-600 font-medium">짝꿍책</span>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Recording Indicator -->
+    <div id="recording-indicator" class="hidden fixed top-20 left-1/2 -translate-x-1/2 z-[100] bg-white border-2 border-red-300 text-red-500 px-6 py-3 rounded-full flex items-center gap-3 shadow-xl">
+        <div class="w-4 h-4 bg-red-500 rounded-full recording-pulse"></div>
+        <span class="font-jua text-lg">녹음 중!</span>
+        <span id="recording-time" class="font-bold">00:00</span>
+    </div>
+
+    <!-- View Mode Panel -->
+    <div id="view-mode-panel" class="hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-[100] bg-white rounded-3xl p-5 shadow-2xl border-2 border-purple-100 panel-card">
+        <p class="text-center font-jua text-purple-600 mb-4">👀 보기 방식</p>
+        <div class="flex gap-4">
+            <button onclick="setViewMode('default')" class="view-mode-btn flex flex-col items-center gap-2 p-4 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-colors border-2 border-transparent hover:border-purple-300" data-mode="default">
+                <span class="text-3xl">📖</span>
+                <span class="text-sm font-medium text-gray-700">기본</span>
+            </button>
+            <button onclick="setViewMode('single')" class="view-mode-btn flex flex-col items-center gap-2 p-4 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-colors border-2 border-transparent hover:border-purple-300" data-mode="single">
+                <span class="text-3xl">📄</span>
+                <span class="text-sm font-medium text-gray-700">단면</span>
+            </button>
+            <button onclick="setViewMode('fill')" class="view-mode-btn flex flex-col items-center gap-2 p-4 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-colors border-2 border-transparent hover:border-purple-300" data-mode="fill">
+                <span class="text-3xl">🖼️</span>
+                <span class="text-sm font-medium text-gray-700">채워보기</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Audio Control Panel -->
+    <div id="audio-control-panel" class="hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-[100] bg-white rounded-3xl p-5 shadow-2xl border-2 border-orange-100 panel-card min-w-[320px]">
+        <p class="text-center font-jua text-orange-500 mb-4">🎵 오디오 제어</p>
+        <div class="flex items-center justify-center gap-4 mb-5">
+            <button class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center hover:bg-orange-100 transition-colors text-xl">
+                ⏪
+            </button>
+            <button class="w-16 h-16 bg-gradient-to-br from-brand-primary to-pink-400 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all text-2xl" id="audio-play-btn">
+                ▶️
+            </button>
+            <button class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center hover:bg-orange-100 transition-colors text-xl">
+                ⏩
+            </button>
+        </div>
+        <div class="flex items-center justify-center gap-3 mb-4">
+            <button class="px-4 py-2 bg-gray-100 rounded-full text-sm hover:bg-gray-200 transition-colors">🐢 느리게</button>
+            <button class="px-4 py-2 bg-orange-100 text-brand-primary rounded-full text-sm font-bold border-2 border-orange-200">보통</button>
+            <button class="px-4 py-2 bg-gray-100 rounded-full text-sm hover:bg-gray-200 transition-colors">🐰 빠르게</button>
+        </div>
+        <button class="w-full py-3 bg-pink-50 text-pink-500 rounded-xl font-medium hover:bg-pink-100 transition-colors flex items-center justify-center gap-2">
+            <span>🔁</span> 반복 재생
+        </button>
+    </div>
+
+    <!-- Dictionary Panel -->
+    <div id="dictionary-panel" class="hidden fixed inset-x-4 bottom-20 md:inset-auto md:bottom-20 md:left-1/2 md:-translate-x-1/2 z-[100] bg-white rounded-3xl p-5 shadow-2xl border-2 border-amber-100 panel-card max-w-md mx-auto">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">📚</span>
+                <h3 class="font-jua text-lg text-amber-600">낱말 사전</h3>
+            </div>
+            <button onclick="closeDictionary()" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="relative mb-4">
+            <input type="text" placeholder="찾고 싶은 낱말을 써보세요!" class="w-full h-12 bg-amber-50 rounded-2xl px-4 pr-12 text-gray-800 outline-none focus:ring-2 focus:ring-amber-300 border border-amber-100">
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-amber-500">
+                <i class="fa-solid fa-search"></i>
+            </button>
+        </div>
+        <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 border border-amber-100">
+            <p class="font-jua text-lg text-gray-800 mb-2">🧪 물약 (物藥)</p>
+            <p class="text-gray-600 mb-3">액체로 된 약이에요. 마시거나 바르는 데 써요!</p>
+            <div class="bg-white rounded-xl p-3 border border-amber-100">
+                <p class="text-sm text-gray-500">📝 예문</p>
+                <p class="text-gray-700">"마법사가 신비한 <strong class="text-brand-primary">물약</strong>을 만들었어요."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Panel -->
+    <div id="review-panel" class="hidden fixed inset-4 z-[100] bg-white rounded-3xl p-6 shadow-2xl border-2 border-green-100 overflow-auto panel-card">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">✏️</span>
+                <h3 class="font-jua text-xl text-green-600">감상문 쓰기</h3>
+            </div>
+            <button onclick="closeReview()" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="mb-4 bg-green-50 rounded-2xl p-4 flex items-center gap-3">
+            <span class="text-3xl">📖</span>
+            <div>
+                <p class="font-jua text-gray-800">마법사의 물약</p>
+                <p class="text-sm text-gray-500">3장. 신비로운 숲속</p>
+            </div>
+        </div>
+        <div class="mb-4">
+            <p class="text-sm text-gray-500 mb-2">💭 이 장면을 읽고 어떤 생각이 들었나요?</p>
+            <textarea placeholder="자유롭게 써보세요! 그림을 그려도 좋아요~ 🎨" class="w-full h-48 bg-green-50 rounded-2xl p-4 text-gray-800 outline-none focus:ring-2 focus:ring-green-300 resize-none border border-green-100"></textarea>
+        </div>
+        <div class="flex gap-3">
+            <button class="flex-1 py-3 bg-gray-100 text-gray-600 rounded-2xl font-jua hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
+                <span>💾</span> 임시저장
+            </button>
+            <button class="flex-1 py-3 bg-gradient-to-r from-green-400 to-emerald-400 text-white rounded-2xl font-jua hover:from-green-500 hover:to-emerald-500 transition-colors flex items-center justify-center gap-2 shadow-lg">
+                <span>✨</span> 저장하기
+            </button>
+        </div>
+    </div>
+
+    <!-- Audiobook Panel -->
+    <div id="audiobook-panel" class="hidden fixed inset-x-4 bottom-20 md:inset-auto md:bottom-20 md:left-1/2 md:-translate-x-1/2 z-[100] bg-white rounded-3xl p-5 shadow-2xl border-2 border-teal-100 panel-card max-w-md mx-auto">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🎧</span>
+                <h3 class="font-jua text-lg text-teal-600">친구들의 녹음</h3>
+            </div>
+            <button onclick="closeAudiobook()" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="space-y-3">
+            <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl hover:from-pink-100 hover:to-rose-100 transition-colors cursor-pointer border border-pink-100">
+                <div class="w-12 h-12 bg-gradient-to-br from-pink-300 to-rose-400 rounded-full flex items-center justify-center text-2xl shadow-md">👧</div>
+                <div class="flex-1">
+                    <p class="font-jua text-gray-800">민지</p>
+                    <p class="text-xs text-gray-500">⏱️ 2분 34초</p>
+                </div>
+                <button class="w-10 h-10 bg-gradient-to-br from-brand-primary to-pink-400 rounded-full flex items-center justify-center shadow-md text-white">
+                    ▶️
+                </button>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl hover:from-blue-100 hover:to-indigo-100 transition-colors cursor-pointer border border-blue-100">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-300 to-indigo-400 rounded-full flex items-center justify-center text-2xl shadow-md">👦</div>
+                <div class="flex-1">
+                    <p class="font-jua text-gray-800">준서</p>
+                    <p class="text-xs text-gray-500">⏱️ 2분 21초</p>
+                </div>
+                <button class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gradient-to-br hover:from-brand-primary hover:to-pink-400 hover:text-white transition-all">
+                    ▶️
+                </button>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl hover:from-green-100 hover:to-emerald-100 transition-colors cursor-pointer border border-green-100">
+                <div class="w-12 h-12 bg-gradient-to-br from-green-300 to-emerald-400 rounded-full flex items-center justify-center text-2xl shadow-md">🧒</div>
+                <div class="flex-1">
+                    <p class="font-jua text-gray-800">서연</p>
+                    <p class="text-xs text-gray-500">⏱️ 2분 45초</p>
+                </div>
+                <button class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gradient-to-br hover:from-brand-primary hover:to-pink-400 hover:text-white transition-all">
+                    ▶️
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for panels -->
+    <div id="panel-overlay" class="hidden fixed inset-0 z-[90] bg-black/30 backdrop-blur-sm" onclick="closeAllPanels()"></div>
+
+    <!-- Scripts -->
+    <script src="../js/common.js"></script>
+    <script>
+        let currentPage = 12;
+        let totalPages = 32;
+        let isRecording = false;
+        let recordingInterval = null;
+        let recordingSeconds = 0;
+        let isAutoPlay = false;
+        let autoPlayInterval = null;
+        let isScreenLocked = false;
+
+        // 초기화 - sessionStorage에서 책 정보 로드
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookData = sessionStorage.getItem('currentBook');
+            if (bookData) {
+                const book = JSON.parse(bookData);
+                document.getElementById('book-title').textContent = book.title || '마법사의 물약';
+            }
+        });
+
+        // 뒤로가기
+        function goBack() {
+            window.history.back();
+        }
+
+        // 페이지 이동
+        function prevPage(e) {
+            e.stopPropagation();
+            if (currentPage > 2) {
+                currentPage -= 2;
+                updatePageDisplay();
+            }
+        }
+
+        function nextPage(e) {
+            e.stopPropagation();
+            if (currentPage < totalPages - 1) {
+                currentPage += 2;
+                updatePageDisplay();
+            }
+        }
+
+        function updatePageDisplay() {
+            document.getElementById('current-page').textContent = currentPage;
+            const progress = (currentPage / totalPages) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+
+        // 북마크
+        function toggleBookmark() {
+            const btn = document.getElementById('bookmark-btn');
+            const icon = btn.querySelector('i');
+            if (icon.classList.contains('fa-regular')) {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid');
+                btn.classList.add('text-pink-500');
+                btn.classList.remove('text-pink-400');
+            } else {
+                icon.classList.remove('fa-solid');
+                icon.classList.add('fa-regular');
+                btn.classList.remove('text-pink-500');
+                btn.classList.add('text-pink-400');
+            }
+        }
+
+        // 전체화면
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // 녹음
+        function toggleRecording() {
+            isRecording = !isRecording;
+            const btn = document.getElementById('record-btn');
+            const indicator = document.getElementById('recording-indicator');
+
+            if (isRecording) {
+                btn.classList.add('active');
+                indicator.classList.remove('hidden');
+                recordingSeconds = 0;
+                recordingInterval = setInterval(() => {
+                    recordingSeconds++;
+                    const mins = Math.floor(recordingSeconds / 60).toString().padStart(2, '0');
+                    const secs = (recordingSeconds % 60).toString().padStart(2, '0');
+                    document.getElementById('recording-time').textContent = `${mins}:${secs}`;
+                }, 1000);
+            } else {
+                btn.classList.remove('active');
+                indicator.classList.add('hidden');
+                clearInterval(recordingInterval);
+            }
+        }
+
+        // 보기 방식
+        function toggleViewMode() {
+            const panel = document.getElementById('view-mode-panel');
+            const overlay = document.getElementById('panel-overlay');
+            panel.classList.toggle('hidden');
+            overlay.classList.toggle('hidden');
+        }
+
+        function setViewMode(mode) {
+            document.querySelectorAll('.view-mode-btn').forEach(btn => {
+                btn.classList.remove('border-purple-400', 'bg-purple-100');
+            });
+            const activeBtn = document.querySelector(`[data-mode="${mode}"]`);
+            activeBtn.classList.add('border-purple-400', 'bg-purple-100');
+            closeAllPanels();
+        }
+
+        // 오디오 제어
+        function openAudioControl() {
+            const panel = document.getElementById('audio-control-panel');
+            const overlay = document.getElementById('panel-overlay');
+            panel.classList.toggle('hidden');
+            overlay.classList.toggle('hidden');
+        }
+
+        // 사전
+        function openDictionary() {
+            document.getElementById('dictionary-panel').classList.remove('hidden');
+            document.getElementById('panel-overlay').classList.remove('hidden');
+        }
+
+        function closeDictionary() {
+            document.getElementById('dictionary-panel').classList.add('hidden');
+            document.getElementById('panel-overlay').classList.add('hidden');
+        }
+
+        // 감상문
+        function openReview() {
+            document.getElementById('review-panel').classList.remove('hidden');
+        }
+
+        function closeReview() {
+            document.getElementById('review-panel').classList.add('hidden');
+        }
+
+        // 오디오북
+        function openAudiobook() {
+            document.getElementById('audiobook-panel').classList.remove('hidden');
+            document.getElementById('panel-overlay').classList.remove('hidden');
+        }
+
+        function closeAudiobook() {
+            document.getElementById('audiobook-panel').classList.add('hidden');
+            document.getElementById('panel-overlay').classList.add('hidden');
+        }
+
+        // 자동넘김
+        function toggleAutoPlay() {
+            isAutoPlay = !isAutoPlay;
+            const btn = document.getElementById('autoplay-btn');
+
+            if (isAutoPlay) {
+                btn.classList.add('active');
+                btn.querySelector('span:first-child').textContent = '⏸️';
+                autoPlayInterval = setInterval(() => {
+                    if (currentPage < totalPages - 1) {
+                        currentPage += 2;
+                        updatePageDisplay();
+                    } else {
+                        toggleAutoPlay();
+                    }
+                }, 5000);
+            } else {
+                btn.classList.remove('active');
+                btn.querySelector('span:first-child').textContent = '▶️';
+                clearInterval(autoPlayInterval);
+            }
+        }
+
+        // 화면 잠금
+        function toggleScreenLock() {
+            isScreenLocked = !isScreenLocked;
+            const btn = document.getElementById('lock-btn');
+
+            if (isScreenLocked) {
+                btn.classList.add('active');
+                btn.querySelector('span:first-child').textContent = '🔒';
+            } else {
+                btn.classList.remove('active');
+                btn.querySelector('span:first-child').textContent = '🔓';
+            }
+        }
+
+        // 기타 기능
+        function saveFullScreen() {
+            alert('📸 화면이 저장되었어요!');
+        }
+
+        function saveCustom() {
+            alert('💖 마음대로 저장했어요!');
+        }
+
+        function toggleZoom() {
+            alert('🔍 확대 모드');
+        }
+
+        function toggleSpread() {
+            alert('📖 펼쳐보기 모드');
+        }
+
+        function openPairBook() {
+            alert('👯 짝꿍책 보기');
+        }
+
+        // 모든 패널 닫기
+        function closeAllPanels() {
+            document.getElementById('view-mode-panel').classList.add('hidden');
+            document.getElementById('audio-control-panel').classList.add('hidden');
+            document.getElementById('dictionary-panel').classList.add('hidden');
+            document.getElementById('audiobook-panel').classList.add('hidden');
+            document.getElementById('panel-overlay').classList.add('hidden');
+        }
+
+        // 키보드 이벤트
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevPage(e);
+            if (e.key === 'ArrowRight') nextPage(e);
+            if (e.key === 'Escape') closeAllPanels();
+        });
+    </script>
+</body>
+</html>

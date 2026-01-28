@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>북클럽 3.0 - 질문렌즈</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#FEF3C7', primary: '#FF9F43', dark: '#F368E0', secondary: '#54a0ff', green: '#1dd1a1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body class="bg-gray-900 font-sans text-white h-screen overflow-hidden">
+    <!-- Background Image (Blurred) -->
+    <div class="absolute inset-0 bg-gradient-to-br from-purple-900 to-blue-900">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/50 via-gray-900/20 to-gray-900/80"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="absolute top-0 w-full h-16 flex items-center justify-between px-6 z-30">
+        <button onclick="goBack()" class="w-10 h-10 bg-white/10 backdrop-blur rounded-xl flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div class="bg-white/10 backdrop-blur px-4 py-2 rounded-full">
+            <span class="font-jua text-purple-300">
+                <i class="fa-solid fa-magnifying-glass mr-2"></i>질문 렌즈
+            </span>
+        </div>
+        <div class="w-10"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative flex flex-col items-center justify-center h-full p-4 pt-20">
+        <!-- Question Cards -->
+        <div class="flex justify-center gap-6 mb-12 question-cards">
+            <!-- Card 1: 누구일까? -->
+            <button onclick="selectQuestion(this, 'who')" class="question-card w-40 h-56 bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl p-4 flex flex-col items-center justify-center shadow-xl hover:scale-105 hover:shadow-blue-500/50 transition-all animate-float border-4 border-transparent">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl mb-4 question-card-icon">
+                    👤
+                </div>
+                <p class="font-jua text-lg text-white">누구일까?</p>
+                <p class="text-xs text-white/70 mt-1">등장인물 찾기</p>
+            </button>
+
+            <!-- Card 2: 무엇일까? -->
+            <button onclick="selectQuestion(this, 'what')" class="question-card w-40 h-56 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl p-4 flex flex-col items-center justify-center shadow-xl hover:scale-105 hover:shadow-green-500/50 transition-all animate-float border-4 border-transparent" style="animation-delay: 0.3s;">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl mb-4 question-card-icon">
+                    📦
+                </div>
+                <p class="font-jua text-lg text-white">무엇일까?</p>
+                <p class="text-xs text-white/70 mt-1">사물 탐구</p>
+            </button>
+
+            <!-- Card 3: 왜 그랬을까? -->
+            <button onclick="selectQuestion(this, 'why')" class="question-card w-40 h-56 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl p-4 flex flex-col items-center justify-center shadow-xl hover:scale-105 hover:shadow-orange-500/50 transition-all animate-float border-4 border-white scale-105" style="animation-delay: 0.6s;">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl mb-4 question-card-icon">
+                    💡
+                </div>
+                <p class="font-jua text-lg text-white">왜 그랬을까?</p>
+                <p class="text-xs text-white/70 mt-1">이유 생각하기</p>
+            </button>
+        </div>
+
+        <!-- AI Character & Speech -->
+        <div class="flex items-end gap-4 mb-8">
+            <!-- Character -->
+            <div class="w-20 h-20 bg-gradient-to-br from-brand-primary to-orange-500 rounded-full flex items-center justify-center text-4xl shadow-lg animate-bounce border-4 border-white">
+                🐿️
+            </div>
+
+            <!-- Speech Bubble -->
+            <div id="speech-bubble" class="relative bg-white rounded-2xl rounded-bl-none px-6 py-4 shadow-lg max-w-sm">
+                <p class="text-gray-800 font-medium" id="speech-text">
+                    <span class="text-brand-primary font-bold">"왜 그랬을까?"</span>를 선택했네요!<br>
+                    둘리가 왜 그런 행동을 했는지 생각해봐요.
+                </p>
+                <!-- Pointer -->
+                <div class="absolute -left-2 bottom-4 w-4 h-4 bg-white transform rotate-45"></div>
+            </div>
+        </div>
+
+        <!-- Record Button -->
+        <div class="relative">
+            <button class="w-24 h-24 bg-gradient-to-br from-purple-500 to-purple-700 rounded-full flex items-center justify-center text-4xl shadow-2xl hover:scale-105 active:scale-95 transition-transform">
+                <i class="fa-solid fa-microphone"></i>
+            </button>
+            <!-- Ping Animation -->
+            <div class="absolute inset-0 rounded-full bg-purple-500 animate-ping opacity-20"></div>
+        </div>
+
+        <p class="text-gray-400 text-sm mt-4">
+            버튼을 누르고 생각을 말해보세요!
+        </p>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../js/common.js"></script>
+    <script>
+        const speeches = {
+            who: {
+                text: '<span class="text-blue-500 font-bold">"누구일까?"</span>를 선택했네요!<br>이 장면에 누가 등장하는지 찾아봐요.',
+                color: 'blue'
+            },
+            what: {
+                text: '<span class="text-green-500 font-bold">"무엇일까?"</span>를 선택했네요!<br>장면에서 특별한 물건을 찾아봐요.',
+                color: 'green'
+            },
+            why: {
+                text: '<span class="text-brand-primary font-bold">"왜 그랬을까?"</span>를 선택했네요!<br>둘리가 왜 그런 행동을 했는지 생각해봐요.',
+                color: 'orange'
+            }
+        };
+
+        function selectQuestion(element, type) {
+            // Remove selection from all cards
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('border-white', 'scale-105');
+                card.classList.add('border-transparent');
+            });
+
+            // Select clicked card
+            element.classList.remove('border-transparent');
+            element.classList.add('border-white', 'scale-105');
+
+            // Update speech
+            document.getElementById('speech-text').innerHTML = speeches[type].text;
+        }
+    </script>
+</body>
+</html>

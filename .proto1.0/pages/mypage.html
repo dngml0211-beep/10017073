@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>북클럽 3.0 - 마이페이지</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#FEF3C7', primary: '#FF9F43', dark: '#F368E0', secondary: '#54a0ff', green: '#1dd1a1', paper: '#FDFBF7'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+
+    <style>
+        .font-jua { font-family: 'Jua', sans-serif; }
+
+        /* 출석 체크 스타일 */
+        .attendance-day {
+            transition: all 0.2s ease;
+        }
+        .attendance-day.checked {
+            background: linear-gradient(135deg, #FF9F43 0%, #F368E0 100%);
+            color: white;
+        }
+        .attendance-day.checked::before {
+            content: '✓';
+            position: absolute;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .attendance-day.today {
+            border: 2px solid #FF9F43;
+            background: #FEF3C7;
+        }
+
+        /* 배지 스타일 */
+        .badge-card {
+            transition: all 0.3s ease;
+        }
+        .badge-card:hover {
+            transform: scale(1.05);
+        }
+        .badge-card.locked {
+            filter: grayscale(100%);
+            opacity: 0.35;
+        }
+        .badge-card.locked:hover {
+            filter: grayscale(60%);
+            opacity: 0.5;
+        }
+
+        /* 작품 카드 */
+        .artwork-card {
+            transition: all 0.3s ease;
+        }
+        .artwork-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+
+        /* 별 버튼 */
+        .star-btn {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            transition: all 0.3s ease;
+        }
+        .star-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(251, 191, 36, 0.4);
+        }
+
+        /* 게임 버튼 */
+        .game-btn {
+            transition: all 0.3s ease;
+        }
+        .game-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        /* 애니메이션 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        .sparkle {
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.9); opacity: 1; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+        .pulse-ring::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: inherit;
+            border: 2px solid currentColor;
+            animation: pulse-ring 1.5s ease-out infinite;
+        }
+
+        /* 프로그레스 바 채우기 애니메이션 */
+        .progress-fill {
+            transition: width 1s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-brand-bg font-sans text-gray-800 h-screen overflow-hidden">
+    <div class="flex w-full h-full">
+        <!-- Sidebar Container -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="flex-1 h-full overflow-y-auto px-4 md:px-8 py-6">
+            <!-- 프로필 헤더 -->
+            <div class="flex items-center gap-4 mb-6">
+                <div class="relative">
+                    <div class="w-16 h-16 bg-gradient-to-br from-brand-primary to-brand-dark rounded-2xl flex items-center justify-center text-3xl shadow-lg">
+                        😎
+                    </div>
+                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-brand-green rounded-full flex items-center justify-center text-white text-[10px] font-bold border-2 border-white">
+                        Lv.8
+                    </div>
+                </div>
+                <div>
+                    <h2 class="font-jua text-xl text-gray-800">지훈이의 독서 공간</h2>
+                    <p class="text-sm text-gray-500">3학년 2반 · 북클럽 회원</p>
+                </div>
+            </div>
+
+            <!-- Row 1: 출석 + 배지 (2열) -->
+            <section class="mb-6">
+                <div class="grid grid-cols-2 gap-5">
+                    <!-- 1. 이번 달 출석 -->
+                    <div class="bg-white rounded-2xl p-5 shadow-soft">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl">📅</span>
+                                <h3 class="font-jua text-base text-gray-800">1월 출석</h3>
+                            </div>
+                            <span class="text-xs bg-brand-green/10 text-brand-green px-2.5 py-1 rounded-full font-bold">18일 출석!</span>
+                        </div>
+
+                        <!-- 미니 달력 -->
+                        <div class="grid grid-cols-7 gap-2 mb-3">
+                            <div class="text-center text-xs text-red-400 font-medium">일</div>
+                            <div class="text-center text-xs text-gray-400">월</div>
+                            <div class="text-center text-xs text-gray-400">화</div>
+                            <div class="text-center text-xs text-gray-400">수</div>
+                            <div class="text-center text-xs text-gray-400">목</div>
+                            <div class="text-center text-xs text-gray-400">금</div>
+                            <div class="text-center text-xs text-blue-400">토</div>
+                        </div>
+                        <div class="grid grid-cols-7 gap-2">
+                            <div class="attendance-day w-9 h-9 rounded-full flex items-center justify-center text-xs text-gray-300 bg-gray-50">26</div>
+                            <div class="attendance-day checked w-9 h-9 rounded-full flex items-center justify-center text-xs relative">27</div>
+                            <div class="attendance-day today w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-brand-primary">28</div>
+                            <div class="attendance-day w-9 h-9 rounded-full flex items-center justify-center text-xs text-gray-300 bg-gray-50">29</div>
+                            <div class="attendance-day w-9 h-9 rounded-full flex items-center justify-center text-xs text-gray-300 bg-gray-50">30</div>
+                            <div class="attendance-day w-9 h-9 rounded-full flex items-center justify-center text-xs text-gray-300 bg-gray-50">31</div>
+                            <div class="w-9 h-9"></div>
+                        </div>
+
+                        <!-- 출석 통계 -->
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-500">이번 달 출석률</span>
+                                <span class="font-bold text-brand-primary">18/28일 (64%)</span>
+                            </div>
+                            <div class="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                <div class="progress-fill h-full bg-gradient-to-r from-brand-primary to-brand-dark rounded-full" style="width: 64%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. 내가 모은 배지 -->
+                    <div class="bg-white rounded-2xl p-5 shadow-soft">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl">🏅</span>
+                                <h3 class="font-jua text-base text-gray-800">내가 모은 배지</h3>
+                            </div>
+                            <button onclick="openBadgeModal()" class="text-xs text-brand-primary font-bold hover:underline">전체보기</button>
+                        </div>
+
+                        <!-- 배지 프리뷰 (2x4) -->
+                        <div class="grid grid-cols-8 gap-2 mb-4">
+                            <div class="badge-card w-10 h-10 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-xl flex items-center justify-center text-lg shadow-sm cursor-pointer" title="첫 완독">⭐</div>
+                            <div class="badge-card w-10 h-10 bg-gradient-to-br from-blue-300 to-blue-500 rounded-xl flex items-center justify-center text-lg shadow-sm cursor-pointer" title="10권 달성">📚</div>
+                            <div class="badge-card w-10 h-10 bg-gradient-to-br from-purple-300 to-purple-500 rounded-xl flex items-center justify-center text-lg shadow-sm cursor-pointer" title="퀴즈왕">🎯</div>
+                            <div class="badge-card w-10 h-10 bg-gradient-to-br from-orange-300 to-red-400 rounded-xl flex items-center justify-center text-lg shadow-sm cursor-pointer" title="연속7일">🔥</div>
+                            <div class="badge-card locked w-10 h-10 bg-gradient-to-br from-amber-300 to-amber-500 rounded-xl flex items-center justify-center text-lg shadow-sm cursor-pointer" title="20권 달성">🏆</div>
+                            <div class="badge-card locked w-10 h-10 bg-gradient-to-br from-cyan-300 to-cyan-500 rounded-xl flex items-center justify-center text-lg shadow-sm cursor-pointer" title="어휘왕">💎</div>
+                            <div class="badge-card locked w-10 h-10 bg-gradient-to-br from-pink-300 to-pink-500 rounded-xl flex items-center justify-center text-lg shadow-sm cursor-pointer" title="영상감독">🎬</div>
+                            <div class="badge-card locked w-10 h-10 bg-gradient-to-br from-green-300 to-emerald-500 rounded-xl flex items-center justify-center text-lg shadow-sm cursor-pointer" title="작가의길">✏️</div>
+                        </div>
+
+                        <!-- 배지 수집 현황 -->
+                        <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-3">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-gray-600">수집 현황</span>
+                                <span class="font-jua text-base text-purple-600">4 / 12개</span>
+                            </div>
+                            <div class="h-2.5 bg-white rounded-full overflow-hidden">
+                                <div class="progress-fill h-full bg-gradient-to-r from-purple-400 to-pink-400 rounded-full" style="width: 33%"></div>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-2">다음 배지까지 3권 더 읽어요!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Row 2: 도전! 100권 읽기 (전체 너비) -->
+            <section class="mb-6">
+                <div class="bg-white rounded-2xl p-5 shadow-soft">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🏃</span>
+                            <h3 class="font-jua text-base text-gray-800">도전! 100권 읽기</h3>
+                        </div>
+                        <span class="text-xs bg-amber-100 text-amber-600 px-2.5 py-1 rounded-full font-bold">11번째 도전</span>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <!-- 현재 도전 진행률 -->
+                        <div class="flex-1 relative">
+                            <div class="h-10 bg-gradient-to-r from-amber-100 to-orange-100 rounded-full overflow-hidden relative">
+                                <div class="progress-fill h-full bg-gradient-to-r from-brand-primary to-pink-500 rounded-full" style="width: 23%"></div>
+                                <div class="absolute top-1/2 -translate-y-1/2 transition-all float-animation" style="left: calc(23% - 14px)">
+                                    <span class="text-2xl">🐿️</span>
+                                </div>
+                                <div class="absolute top-1/2 -translate-y-1/2 right-3">
+                                    <span class="text-xl opacity-30">🏆</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between mt-2 text-xs text-gray-400 px-1">
+                                <span>0권</span>
+                                <span class="font-bold text-brand-primary text-sm">23 / 100권</span>
+                                <span>100권</span>
+                            </div>
+                        </div>
+
+                        <!-- 누적 통계 -->
+                        <div class="flex gap-3">
+                            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 text-center min-w-[120px]">
+                                <p class="text-xs text-gray-500 mb-1">총 읽은 책</p>
+                                <p class="font-jua text-2xl text-indigo-600">1,023권</p>
+                            </div>
+                            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-4 text-center min-w-[120px] relative">
+                                <p class="text-xs text-gray-500 mb-1">전체 랭킹</p>
+                                <p class="font-jua text-2xl text-amber-600">🥇 1등</p>
+                                <span class="absolute top-2 right-2 text-sm">👑</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Row 3: 나의 작품 갤러리 -->
+            <section class="mb-6">
+                <div class="bg-white rounded-2xl p-5 shadow-soft">
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🎨</span>
+                            <h3 class="font-jua text-base text-gray-800">나의 작품 갤러리</h3>
+                            <span class="text-xs bg-pink-100 text-pink-600 px-2.5 py-1 rounded-full">총 24개 작품</span>
+                        </div>
+                        <button onclick="openGallery()" class="text-xs text-brand-primary font-bold hover:underline">전체보기 →</button>
+                    </div>
+
+                    <!-- 작품 카드들 (가로 스크롤) -->
+                    <div class="flex gap-4 overflow-x-auto pb-3 -mx-1 px-1">
+                        <!-- 작품 1 -->
+                        <div class="artwork-card flex-shrink-0 w-52 bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl overflow-hidden border border-pink-100 cursor-pointer" onclick="openArtwork(1)">
+                            <div class="h-28 bg-gradient-to-br from-pink-200 to-rose-300 flex items-center justify-center relative">
+                                <span class="text-5xl">🎬</span>
+                                <div class="absolute top-2 left-2 bg-white/90 text-[10px] px-2 py-1 rounded-full text-pink-600 font-bold">영상리텔링</div>
+                            </div>
+                            <div class="p-3">
+                                <p class="font-medium text-sm text-gray-800 truncate mb-1.5">마법사의 물약 리텔링</p>
+                                <div class="flex items-center gap-1.5 mb-2">
+                                    <div class="w-5 h-6 bg-indigo-400 rounded-sm flex items-center justify-center text-[8px] text-white">📖</div>
+                                    <span class="text-xs text-gray-500 truncate">마법사의 물약</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-1 text-xs text-rose-500">
+                                        <i class="fa-solid fa-heart"></i>
+                                        <span class="font-bold">24</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">1월 25일</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 작품 2 -->
+                        <div class="artwork-card flex-shrink-0 w-52 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl overflow-hidden border border-green-100 cursor-pointer" onclick="openArtwork(2)">
+                            <div class="h-28 bg-gradient-to-br from-green-200 to-emerald-300 flex items-center justify-center relative">
+                                <span class="text-5xl">✏️</span>
+                                <div class="absolute top-2 left-2 bg-white/90 text-[10px] px-2 py-1 rounded-full text-green-600 font-bold">감상문</div>
+                            </div>
+                            <div class="p-3">
+                                <p class="font-medium text-sm text-gray-800 truncate mb-1.5">숲속 친구들 독후감</p>
+                                <div class="flex items-center gap-1.5 mb-2">
+                                    <div class="w-5 h-6 bg-emerald-400 rounded-sm flex items-center justify-center text-[8px] text-white">📖</div>
+                                    <span class="text-xs text-gray-500 truncate">숲속 친구들</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-1 text-xs text-rose-500">
+                                        <i class="fa-solid fa-heart"></i>
+                                        <span class="font-bold">18</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">1월 22일</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 작품 3 -->
+                        <div class="artwork-card flex-shrink-0 w-52 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl overflow-hidden border border-blue-100 cursor-pointer" onclick="openArtwork(3)">
+                            <div class="h-28 bg-gradient-to-br from-blue-200 to-indigo-300 flex items-center justify-center relative">
+                                <span class="text-5xl">🎤</span>
+                                <div class="absolute top-2 left-2 bg-white/90 text-[10px] px-2 py-1 rounded-full text-blue-600 font-bold">녹음</div>
+                            </div>
+                            <div class="p-3">
+                                <p class="font-medium text-sm text-gray-800 truncate mb-1.5">우주 탐험대 낭독</p>
+                                <div class="flex items-center gap-1.5 mb-2">
+                                    <div class="w-5 h-6 bg-violet-400 rounded-sm flex items-center justify-center text-[8px] text-white">📖</div>
+                                    <span class="text-xs text-gray-500 truncate">우주 탐험대</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-1 text-xs text-rose-500">
+                                        <i class="fa-solid fa-heart"></i>
+                                        <span class="font-bold">31</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">1월 18일</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 작품 4 -->
+                        <div class="artwork-card flex-shrink-0 w-52 bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl overflow-hidden border border-purple-100 cursor-pointer" onclick="openArtwork(4)">
+                            <div class="h-28 bg-gradient-to-br from-purple-200 to-violet-300 flex items-center justify-center relative">
+                                <span class="text-5xl">📖</span>
+                                <div class="absolute top-2 left-2 bg-white/90 text-[10px] px-2 py-1 rounded-full text-purple-600 font-bold">독서일기</div>
+                            </div>
+                            <div class="p-3">
+                                <p class="font-medium text-sm text-gray-800 truncate mb-1.5">공주와 용 일기</p>
+                                <div class="flex items-center gap-1.5 mb-2">
+                                    <div class="w-5 h-6 bg-rose-400 rounded-sm flex items-center justify-center text-[8px] text-white">📖</div>
+                                    <span class="text-xs text-gray-500 truncate">공주와 용</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-1 text-xs text-rose-500">
+                                        <i class="fa-solid fa-heart"></i>
+                                        <span class="font-bold">12</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">1월 15일</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 더보기 카드 -->
+                        <div class="flex-shrink-0 w-28 bg-gray-50 rounded-2xl flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors" onclick="openGallery()">
+                            <div class="text-center">
+                                <p class="text-3xl text-gray-400 mb-1">+20</p>
+                                <p class="text-xs text-gray-500">더보기</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Row 4: 별 + 투표 + 대결 -->
+            <section class="mb-6">
+                <div class="grid grid-cols-3 gap-5">
+                    <!-- 내가 모은 별 -->
+                    <button onclick="openStarShop()" class="star-btn rounded-2xl p-5 text-left relative overflow-hidden">
+                        <div class="absolute top-2 right-6 text-white/50 sparkle text-base">✨</div>
+                        <div class="absolute top-6 right-12 text-white/30 sparkle text-sm" style="animation-delay: 0.5s">✨</div>
+                        <div class="flex items-center gap-4 relative z-10">
+                            <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center text-3xl float-animation">⭐</div>
+                            <div>
+                                <p class="text-white/80 text-xs mb-1">내가 모은 별</p>
+                                <p class="font-jua text-3xl text-white">500개</p>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-3 right-4 flex items-center gap-1 text-white/80 text-xs">
+                            <span>스타샵 가기</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </div>
+                    </button>
+
+                    <!-- 우리끼리 투표 -->
+                    <button onclick="openVote()" class="game-btn bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl p-5 text-left relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-7xl opacity-15">🗳️</div>
+                        <div class="relative z-10">
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl mb-3">🗳️</div>
+                            <p class="font-jua text-lg text-white mb-1">우리끼리 투표</p>
+                            <p class="text-xs text-white/70">새 투표 2개</p>
+                        </div>
+                        <div class="absolute top-3 right-3 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold pulse-ring">2</div>
+                    </button>
+
+                    <!-- 프렌즈 대결 -->
+                    <button onclick="openBattle()" class="game-btn bg-gradient-to-br from-red-400 to-pink-500 rounded-2xl p-5 text-left relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-7xl opacity-15">⚔️</div>
+                        <div class="relative z-10">
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl mb-3">⚔️</div>
+                            <p class="font-jua text-lg text-white mb-1">프렌즈 대결</p>
+                            <p class="text-xs text-white/70">도전장 1개</p>
+                        </div>
+                        <div class="absolute top-3 right-3 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-gray-800 text-xs font-bold pulse-ring">1</div>
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 배지 전체보기 모달 -->
+    <div id="badge-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeBadgeModal()"></div>
+        <div class="relative bg-white rounded-3xl w-full max-w-md max-h-[80vh] overflow-hidden">
+            <div class="p-5 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">🏅</span>
+                        <h3 class="font-jua text-lg">배지 컬렉션</h3>
+                        <span class="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full">4/12</span>
+                    </div>
+                    <button onclick="closeBadgeModal()" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                        <i class="fa-solid fa-xmark text-gray-500"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-5 overflow-y-auto max-h-[60vh]">
+                <p class="text-xs text-gray-500 mb-3">획득한 배지</p>
+                <div class="grid grid-cols-4 gap-3 mb-5">
+                    <div class="text-center">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-2xl flex items-center justify-center text-2xl shadow-md">⭐</div>
+                        <p class="text-[10px] text-gray-600 mt-1">첫 완독</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-blue-300 to-blue-500 rounded-2xl flex items-center justify-center text-2xl shadow-md">📚</div>
+                        <p class="text-[10px] text-gray-600 mt-1">10권 달성</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-purple-300 to-purple-500 rounded-2xl flex items-center justify-center text-2xl shadow-md">🎯</div>
+                        <p class="text-[10px] text-gray-600 mt-1">퀴즈왕</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-orange-300 to-red-400 rounded-2xl flex items-center justify-center text-2xl shadow-md">🔥</div>
+                        <p class="text-[10px] text-gray-600 mt-1">연속7일</p>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mb-3">아직 못 모은 배지</p>
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="text-center opacity-40">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-amber-300 to-amber-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">🏆</div>
+                        <p class="text-[10px] text-gray-400 mt-1">20권 달성</p>
+                    </div>
+                    <div class="text-center opacity-40">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-cyan-300 to-cyan-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">💎</div>
+                        <p class="text-[10px] text-gray-400 mt-1">어휘왕</p>
+                    </div>
+                    <div class="text-center opacity-40">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-pink-300 to-pink-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">🎬</div>
+                        <p class="text-[10px] text-gray-400 mt-1">영상감독</p>
+                    </div>
+                    <div class="text-center opacity-40">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-green-300 to-emerald-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">✏️</div>
+                        <p class="text-[10px] text-gray-400 mt-1">작가의길</p>
+                    </div>
+                    <div class="text-center opacity-40">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-indigo-300 to-indigo-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">🌟</div>
+                        <p class="text-[10px] text-gray-400 mt-1">성실왕</p>
+                    </div>
+                    <div class="text-center opacity-40">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-rose-300 to-rose-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">👑</div>
+                        <p class="text-[10px] text-gray-400 mt-1">독서킹</p>
+                    </div>
+                    <div class="text-center opacity-40">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-teal-300 to-teal-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">🎭</div>
+                        <p class="text-[10px] text-gray-400 mt-1">연기왕</p>
+                    </div>
+                    <div class="text-center opacity-40">
+                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-lime-300 to-lime-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">🌈</div>
+                        <p class="text-[10px] text-gray-400 mt-1">무지개</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 작품 갤러리 모달 -->
+    <div id="gallery-modal" class="hidden fixed inset-0 z-[100] flex items-end justify-center">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeGallery()"></div>
+        <div class="relative bg-white rounded-t-3xl w-full max-w-lg max-h-[85vh] overflow-hidden">
+            <div class="p-5 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">🎨</span>
+                        <h3 class="font-jua text-lg">나의 작품 모음</h3>
+                        <span class="text-xs bg-pink-100 text-pink-600 px-2 py-0.5 rounded-full">24개</span>
+                    </div>
+                    <button onclick="closeGallery()" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                        <i class="fa-solid fa-xmark text-gray-500"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-5 overflow-y-auto max-h-[65vh]">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl overflow-hidden border border-pink-100">
+                        <div class="h-28 bg-gradient-to-br from-pink-200 to-rose-300 flex items-center justify-center">
+                            <span class="text-4xl">🎬</span>
+                        </div>
+                        <div class="p-3">
+                            <p class="font-medium text-sm truncate mb-1">마법사의 물약 리텔링</p>
+                            <div class="flex items-center justify-between text-[10px] text-gray-500">
+                                <span>❤️ 24</span>
+                                <span>1월 25일</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl overflow-hidden border border-green-100">
+                        <div class="h-28 bg-gradient-to-br from-green-200 to-emerald-300 flex items-center justify-center">
+                            <span class="text-4xl">✏️</span>
+                        </div>
+                        <div class="p-3">
+                            <p class="font-medium text-sm truncate mb-1">숲속 친구들 독후감</p>
+                            <div class="flex items-center justify-between text-[10px] text-gray-500">
+                                <span>❤️ 18</span>
+                                <span>1월 22일</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl overflow-hidden border border-blue-100">
+                        <div class="h-28 bg-gradient-to-br from-blue-200 to-indigo-300 flex items-center justify-center">
+                            <span class="text-4xl">🎤</span>
+                        </div>
+                        <div class="p-3">
+                            <p class="font-medium text-sm truncate mb-1">우주 탐험대 낭독</p>
+                            <div class="flex items-center justify-between text-[10px] text-gray-500">
+                                <span>❤️ 31</span>
+                                <span>1월 18일</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl overflow-hidden border border-purple-100">
+                        <div class="h-28 bg-gradient-to-br from-purple-200 to-violet-300 flex items-center justify-center">
+                            <span class="text-4xl">📖</span>
+                        </div>
+                        <div class="p-3">
+                            <p class="font-medium text-sm truncate mb-1">공주와 용 일기</p>
+                            <div class="flex items-center justify-between text-[10px] text-gray-500">
+                                <span>❤️ 12</span>
+                                <span>1월 15일</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal Container -->
+    <div id="logout-modal-container"></div>
+
+    <!-- Scripts -->
+    <script src="../js/common.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSidebar('mypage');
+            loadLogoutModal();
+        });
+
+        function openStarShop() {
+            alert('스타샵으로 이동합니다!');
+        }
+
+        function openVote() {
+            alert('우리끼리 투표 앱이 실행됩니다!');
+        }
+
+        function openBattle() {
+            alert('프렌즈 대결 앱이 실행됩니다!');
+        }
+
+        function openGallery() {
+            document.getElementById('gallery-modal').classList.remove('hidden');
+        }
+
+        function closeGallery() {
+            document.getElementById('gallery-modal').classList.add('hidden');
+        }
+
+        function openBadgeModal() {
+            document.getElementById('badge-modal').classList.remove('hidden');
+        }
+
+        function closeBadgeModal() {
+            document.getElementById('badge-modal').classList.add('hidden');
+        }
+
+        function openArtwork(id) {
+            alert('작품 상세보기: ' + id);
+        }
+    </script>
+</body>
+</html>

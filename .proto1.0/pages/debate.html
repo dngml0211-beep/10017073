@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>북클럽 3.0 - 독서토론</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#FEF3C7', primary: '#FF9F43', dark: '#F368E0', secondary: '#54a0ff', green: '#1dd1a1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body class="debate-bg font-sans text-gray-800 h-screen overflow-hidden">
+    <!-- Header -->
+    <header class="absolute top-0 w-full h-16 flex items-center justify-between px-6 z-30">
+        <button onclick="goBack()" class="w-10 h-10 bg-white/80 backdrop-blur rounded-xl flex items-center justify-center text-gray-600 hover:bg-white transition-colors shadow-sm">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div class="bg-white/80 backdrop-blur px-4 py-2 rounded-full shadow-sm">
+            <span class="font-jua text-blue-600">
+                <i class="fa-solid fa-comments mr-2"></i>독서 토론장
+            </span>
+        </div>
+        <div class="w-10"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative flex flex-col items-center justify-center h-full p-4 pt-20 pb-24">
+        <!-- Moderator -->
+        <div class="absolute top-24 left-1/2 -translate-x-1/2 flex items-center gap-3">
+            <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center text-3xl shadow-lg animate-float border-4 border-blue-200">
+                🐿️
+            </div>
+            <div class="bg-white rounded-2xl px-4 py-2 shadow-md">
+                <p class="text-sm text-gray-600">오늘의 토론 주제예요!</p>
+            </div>
+        </div>
+
+        <!-- Debate Board -->
+        <div class="debate-board w-full max-w-3xl p-6 md:p-10 relative">
+            <!-- Topic Image -->
+            <div class="relative mb-6">
+                <div class="aspect-[2.5/1] bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl overflow-hidden flex items-center justify-center">
+                    <div class="text-center">
+                        <span class="text-6xl mb-4 block">📖</span>
+                        <p class="text-gray-500 text-sm">아기 공룡 둘리 - 3장</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question -->
+            <div class="text-center mb-8">
+                <h2 class="font-jua text-xl md:text-2xl text-gray-800 leading-relaxed">
+                    "둘리가 도우너를 괴롭힌 건<br>
+                    <span class="text-blue-600">용서</span>해줘야 할까,
+                    <span class="text-red-500">혼내줘야</span> 할까?"
+                </h2>
+            </div>
+
+            <!-- Vote Buttons -->
+            <div class="flex justify-center gap-6 mb-6">
+                <button id="btn-agree" onclick="castVote('agree')" class="vote-btn flex flex-col items-center gap-3 p-6 bg-blue-50 border-4 border-blue-200 rounded-3xl hover:border-blue-400 hover:bg-blue-100 transition-all animate-pulse-strong group">
+                    <span class="text-5xl group-hover:scale-110 transition-transform">😇</span>
+                    <span class="font-jua text-lg text-blue-600">용서해줘야 해!</span>
+                </button>
+
+                <button id="btn-disagree" onclick="castVote('disagree')" class="vote-btn flex flex-col items-center gap-3 p-6 bg-red-50 border-4 border-red-200 rounded-3xl hover:border-red-400 hover:bg-red-100 transition-all animate-pulse-strong group" style="animation-delay: 0.5s;">
+                    <span class="text-5xl group-hover:scale-110 transition-transform">😠</span>
+                    <span class="font-jua text-lg text-red-500">혼내줘야 해!</span>
+                </button>
+            </div>
+
+            <!-- Vote Result (Hidden by default) -->
+            <div id="vote-result" class="opacity-0 pointer-events-none translate-y-4 transition-all duration-500">
+                <p class="text-sm text-gray-500 text-center mb-3">우리 반 친구들의 생각</p>
+                <div class="flex gap-2 h-8">
+                    <div id="bar-agree" class="vote-bar-fill bg-blue-500 rounded-l-full flex items-center justify-center text-white text-sm font-bold" style="width: 0%"></div>
+                    <div id="bar-disagree" class="vote-bar-fill bg-red-500 rounded-r-full flex items-center justify-center text-white text-sm font-bold" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Action -->
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-30">
+        <button id="btn-opinion" disabled class="px-8 py-4 bg-gray-300 text-white rounded-2xl font-bold text-lg cursor-not-allowed transition-all shadow-lg">
+            <i class="fa-solid fa-hand mr-2"></i> 먼저 투표해주세요
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/common.js"></script>
+    <script>
+        function castVote(side) {
+            const btnAgree = document.getElementById('btn-agree');
+            const btnDisagree = document.getElementById('btn-disagree');
+
+            // Remove pulse animation
+            btnAgree.classList.remove('animate-pulse-strong');
+            btnDisagree.classList.remove('animate-pulse-strong');
+
+            // Highlight selected
+            if (side === 'agree') {
+                btnAgree.classList.add('ring-4', 'ring-blue-400', 'bg-blue-100');
+                btnDisagree.classList.add('opacity-50', 'grayscale');
+            } else {
+                btnDisagree.classList.add('ring-4', 'ring-red-400', 'bg-red-100');
+                btnAgree.classList.add('opacity-50', 'grayscale');
+            }
+
+            // Show results
+            const resultBox = document.getElementById('vote-result');
+            const barAgree = document.getElementById('bar-agree');
+            const barDisagree = document.getElementById('bar-disagree');
+
+            resultBox.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+
+            setTimeout(() => {
+                barAgree.style.width = '60%';
+                barAgree.innerText = '60%';
+                barDisagree.style.width = '40%';
+                barDisagree.innerText = '40%';
+            }, 100);
+
+            // Enable opinion button
+            const btnOpinion = document.getElementById('btn-opinion');
+            btnOpinion.disabled = false;
+            btnOpinion.classList.remove('bg-gray-300', 'cursor-not-allowed');
+            btnOpinion.classList.add('bg-brand-primary', 'hover:bg-orange-600', 'animate-bounce');
+            btnOpinion.innerHTML = `<i class="fa-solid fa-microphone"></i> 발언권 얻기`;
+        }
+    </script>
+</body>
+</html>

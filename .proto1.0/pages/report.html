@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>북클럽 3.0 - 리포트</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#FEF3C7', primary: '#FF9F43', dark: '#F368E0', secondary: '#54a0ff', green: '#1dd1a1', paper: '#FDFBF7',
+                            report: { bg: '#F8FAFC', accent: '#4F46E5', dark: '#1E293B' },
+                            tech: { dark: '#1e293b', purple: '#8b5cf6', blue: '#3b82f6', cyan: '#06b6d4' }
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.05)',
+                        'floating': '0 20px 25px -5px rgba(255, 159, 67, 0.3)',
+                        'glow': '0 0 15px rgba(79, 70, 229, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="bg-brand-report-bg font-sans text-gray-800 h-screen overflow-hidden">
+    <div class="flex w-full h-full">
+        <!-- Sidebar Container -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="flex-1 h-full overflow-y-auto tech-bg">
+            <!-- Header Section -->
+            <section class="px-6 md:px-10 py-8">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <!-- Left: Title & Stats -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-2xl">📊</span>
+                            <h2 class="font-jua text-2xl md:text-3xl text-gray-800">나의 독서 전투력 분석</h2>
+                        </div>
+                        <p class="text-gray-500">2024년 1월 기준 리포트</p>
+                    </div>
+
+                    <!-- Right: Power Score -->
+                    <div class="tech-card rounded-3xl p-6 flex items-center gap-6">
+                        <!-- Circular Progress -->
+                        <div class="relative w-24 h-24">
+                            <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="url(#gradient)" stroke-width="8" stroke-linecap="round"
+                                    stroke-dasharray="251.2" stroke-dashoffset="62.8"/>
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#8b5cf6"/>
+                                        <stop offset="100%" stop-color="#3b82f6"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="font-tech text-xl font-bold text-brand-tech-purple">785</span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">전투력</p>
+                            <p class="font-tech text-3xl font-bold bg-gradient-to-r from-brand-tech-purple to-brand-tech-blue bg-clip-text text-transparent">785점</p>
+                            <p class="text-xs text-green-500 font-medium mt-1">
+                                <i class="fa-solid fa-arrow-up mr-1"></i>상위 15%
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Grid -->
+            <section class="px-6 md:px-10 pb-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 stat-cards">
+                    <!-- Stat 1 -->
+                    <div class="tech-card rounded-2xl p-5">
+                        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-xl mb-3">📚</div>
+                        <p class="text-sm text-gray-500 mb-1">읽은 책</p>
+                        <p class="font-tech text-2xl font-bold text-brand-tech-blue">23권</p>
+                        <p class="text-xs text-green-500 mt-1">+5권 (이번 달)</p>
+                    </div>
+
+                    <!-- Stat 2 -->
+                    <div class="tech-card rounded-2xl p-5">
+                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center text-xl mb-3">⏱️</div>
+                        <p class="text-sm text-gray-500 mb-1">독서 시간</p>
+                        <p class="font-tech text-2xl font-bold text-brand-tech-purple">45시간</p>
+                        <p class="text-xs text-green-500 mt-1">+12시간 (이번 달)</p>
+                    </div>
+
+                    <!-- Stat 3 -->
+                    <div class="tech-card rounded-2xl p-5">
+                        <div class="w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center text-xl mb-3">📝</div>
+                        <p class="text-sm text-gray-500 mb-1">수집한 어휘</p>
+                        <p class="font-tech text-2xl font-bold text-brand-tech-cyan">156개</p>
+                        <p class="text-xs text-green-500 mt-1">+28개 (이번 달)</p>
+                    </div>
+
+                    <!-- Stat 4 -->
+                    <div class="tech-card rounded-2xl p-5">
+                        <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center text-xl mb-3">🎯</div>
+                        <p class="text-sm text-gray-500 mb-1">문해력</p>
+                        <p class="font-tech text-2xl font-bold text-brand-green">B+</p>
+                        <p class="text-xs text-green-500 mt-1">A- 까지 10%</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analysis Grid -->
+            <section class="px-6 md:px-10 pb-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 report-chart-section">
+                    <!-- Brain Analysis -->
+                    <div class="tech-card rounded-3xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-xl">🧠</span>
+                            <h3 class="font-jua text-lg text-gray-800">나의 뇌 구조 분석</h3>
+                        </div>
+                        <div class="flex justify-center mb-4">
+                            <svg viewBox="0 0 200 200" class="w-48 h-48">
+                                <!-- Hexagon Background -->
+                                <polygon points="100,20 175,60 175,140 100,180 25,140 25,60" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                                <polygon points="100,50 150,75 150,125 100,150 50,125 50,75" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                                <polygon points="100,80 125,90 125,110 100,120 75,110 75,90" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                                <!-- Data -->
+                                <polygon points="100,35 160,70 145,130 100,155 55,130 40,70" fill="rgba(139, 92, 246, 0.2)" stroke="#8b5cf6" stroke-width="2"/>
+                                <!-- Labels -->
+                                <text x="100" y="15" text-anchor="middle" class="text-xs fill-gray-500">이해력</text>
+                                <text x="185" y="65" text-anchor="start" class="text-xs fill-gray-500">추론</text>
+                                <text x="185" y="145" text-anchor="start" class="text-xs fill-gray-500">어휘</text>
+                                <text x="100" y="195" text-anchor="middle" class="text-xs fill-gray-500">표현</text>
+                                <text x="15" y="145" text-anchor="end" class="text-xs fill-gray-500">창의</text>
+                                <text x="15" y="65" text-anchor="end" class="text-xs fill-gray-500">기억</text>
+                            </svg>
+                        </div>
+                        <p class="text-sm text-gray-500 text-center">이해력과 추론 능력이 뛰어나요!</p>
+                    </div>
+
+                    <!-- Vocabulary Cloud -->
+                    <div class="tech-card rounded-3xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-xl">💬</span>
+                            <h3 class="font-jua text-lg text-gray-800">수집한 어휘 클라우드</h3>
+                        </div>
+                        <div class="relative h-48 flex flex-wrap items-center justify-center gap-2 overflow-hidden">
+                            <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm animate-float">화들짝</span>
+                            <span class="px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-lg font-bold animate-float" style="animation-delay: 0.2s;">쿵쿵</span>
+                            <span class="px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-sm animate-float" style="animation-delay: 0.4s;">반짝반짝</span>
+                            <span class="px-4 py-2 bg-green-100 text-green-600 rounded-full text-base animate-float" style="animation-delay: 0.6s;">신비로운</span>
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm animate-float" style="animation-delay: 0.8s;">용감한</span>
+                            <span class="px-3 py-1 bg-cyan-100 text-cyan-600 rounded-full text-xs animate-float" style="animation-delay: 1s;">찬란한</span>
+                            <span class="px-4 py-2 bg-orange-100 text-orange-600 rounded-full font-bold animate-float" style="animation-delay: 1.2s;">탐험</span>
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-sm animate-float" style="animation-delay: 1.4s;">모험</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Coaching -->
+                    <div class="tech-card rounded-3xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-xl">🐿️</span>
+                            <h3 class="font-jua text-lg text-gray-800">AI 다람이의 코칭</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-4">
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    <span class="font-bold text-brand-tech-purple">와우!</span> 이번 달 독서량이 많이 늘었어요! 특히 <span class="text-brand-tech-blue font-medium">과학 분야</span>에 관심이 많네요. 다음엔 <span class="text-brand-primary font-medium">역사책</span>도 도전해볼까요?
+                                </p>
+                            </div>
+                            <div class="bg-gray-50 rounded-2xl p-4">
+                                <p class="text-xs text-gray-500 mb-2">추천 목표</p>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-gradient-to-r from-brand-tech-purple to-brand-tech-blue h-2 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                    <span class="text-sm font-bold text-brand-tech-purple">75%</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">이번 달 목표까지 5권 남았어요!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Level Up Section -->
+            <section class="px-6 md:px-10 pb-10">
+                <div class="tech-card rounded-3xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">📈</span>
+                            <h3 class="font-jua text-lg text-gray-800">레벨 업 예측</h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 bg-gradient-to-r from-brand-tech-purple to-brand-tech-blue text-white rounded-full text-xs font-bold shadow-glow">
+                                Lv.5 → Lv.6
+                            </span>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-brand-tech-purple to-brand-tech-blue rounded-full" style="width: 68%"></div>
+                        </div>
+                        <div class="flex justify-between mt-2 text-xs text-gray-500">
+                            <span>현재 785점</span>
+                            <span class="text-brand-tech-purple font-medium">215점 더 필요</span>
+                            <span>1000점</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4 text-center">
+                        현재 속도라면 <span class="font-bold text-brand-primary">2주 후</span> 레벨 업 예상! 🎉
+                    </p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Logout Modal Container -->
+    <div id="logout-modal-container"></div>
+
+    <!-- Scripts -->
+    <script src="../js/common.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSidebar('report');
+            loadLogoutModal();
+        });
+    </script>
+</body>
+</html>
