@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(python -c:*)",
+      "Bash(pip install:*)",
+      "Bash(where:*)",
+      "Bash(python read_excel.py:*)",
+      "Bash(C:Users10017073AppDataLocalMicrosoftWindowsAppspython.exe --version)",
+      "Bash(powershell -Command \"python --version\")",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File:*)",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(chcp:*)",
+      "Bash(py \"c:\\\\우희\\\\02_기획\\\\_2026 기획\\\\북클럽 3.0 기획자료\\\\read_excel_temp.py\")",
+      "Bash(C:Users10017073AppDataLocalMicrosoftWindowsAppspython.exe \"c:\\\\우희\\\\02_기획\\\\_2026 기획\\\\북클럽 3.0 기획자료\\\\read_excel_temp.py\")",
+      "Bash(\"C:/Users/10017073/AppData/Local/Microsoft/WindowsApps/python.exe\" \"c:/우희/02_기획/_2026 기획/북클럽 3.0 기획자료/read_excel_temp.py\")",
+      "Bash(cmd.exe /c \"python \"\"c:\\\\우희\\\\02_기획\\\\_2026 기획\\\\북클럽 3.0 기획자료\\\\read_excel_temp.py\"\"\")"
+    ]
+  }
+}

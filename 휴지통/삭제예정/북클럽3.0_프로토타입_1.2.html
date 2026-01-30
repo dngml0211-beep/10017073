@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>북클럽 3.0 - 2열 레이아웃 (v1.2)</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            min-height: 100vh;
+        }
+
+        #root {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 375px;
+            height: 667px;
+            background: #FFFFFF;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(46, 125, 50, 0.2);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .app-container {
+                max-width: 768px;
+                height: 1024px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .app-container {
+                max-width: 1200px;
+                height: 800px;
+            }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #43A047 0%, #66BB6A 100%);
+            color: white;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(67, 160, 71, 0.2);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #2E7D32 0%, #66BB6A 50%, #2E7D32 100%);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-icon-btn {
+            width: 34px;
+            height: 34px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+
+        .header-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.05);
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #FAFAFA;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #81C784;
+            border-radius: 3px;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            background: linear-gradient(135deg, #66BB6A 0%, #81C784 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(102, 187, 106, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .welcome-icon {
+            font-size: 40px;
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+
+        .welcome-text h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .welcome-text p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        /* Buddy Character */
+        .buddy-container {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F1F8E9 100%);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(139, 195, 74, 0.15);
+            border: 2px solid #C5E1A5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .buddy-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 195, 74, 0.25);
+        }
+
+        .buddy-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8BC34A 0%, #9CCC65 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            flex-shrink: 0;
+            border: 3px solid white;
+            box-shadow: 0 3px 10px rgba(139, 195, 74, 0.3);
+            animation: bounce 2.5s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .buddy-message h3 {
+            color: #558B2F;
+            margin-bottom: 5px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .buddy-message p {
+            color: #689F38;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2E7D32;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title-icon {
+            font-size: 20px;
+        }
+
+        .section-more {
+            color: #66BB6A;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 15px;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .section-more:hover {
+            background: rgba(102, 187, 106, 0.1);
+        }
+
+        /* 2 Column Grid Layout */
+        .book-grid-2col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .book-card-large {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-card-large:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-cover-large {
+            width: 100%;
+            aspect-ratio: 3/4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Book cover shine effect */
+        .book-cover-large::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                rgba(255, 255, 255, 0.3) 0%,
+                transparent 100%);
+        }
+
+        /* Book cover corner fold */
+        .book-cover-large::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 25px 25px 0;
+            border-color: transparent rgba(255, 255, 255, 0.3) transparent transparent;
+        }
+
+        .book-title-large {
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.5;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+            z-index: 1;
+            position: relative;
+        }
+
+        .book-info {
+            padding: 12px 15px;
+        }
+
+        .book-progress-bar-container {
+            margin-bottom: 10px;
+        }
+
+        .progress-label {
+            font-size: 11px;
+            color: #757575;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-percent-text {
+            font-weight: 700;
+            color: #43A047;
+        }
+
+        .book-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #E0E0E0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .book-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #43A047 0%, #66BB6A 100%);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 8px rgba(67, 160, 71, 0.6);
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-read {
+            flex: 1;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #43A047 0%, #66BB6A 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(67, 160, 71, 0.3);
+        }
+
+        .btn-read:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(67, 160, 71, 0.4);
+        }
+
+        .btn-more {
+            padding: 8px 12px;
+            background: #F5F5F5;
+            color: #666;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-more:hover {
+            background: #E0E0E0;
+        }
+
+        /* Book Colors */
+        .color-1 { background: linear-gradient(135deg, #E53935 0%, #C62828 100%); }
+        .color-2 { background: linear-gradient(135deg, #1E88E5 0%, #1565C0 100%); }
+        .color-3 { background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%); }
+        .color-4 { background: linear-gradient(135deg, #FB8C00 0%, #EF6C00 100%); }
+        .color-5 { background: linear-gradient(135deg, #8E24AA 0%, #6A1B9A 100%); }
+        .color-6 { background: linear-gradient(135deg, #00ACC1 0%, #00838F 100%); }
+        .color-7 { background: linear-gradient(135deg, #D81B60 0%, #AD1457 100%); }
+        .color-8 { background: linear-gradient(135deg, #3949AB 0%, #283593 100%); }
+        .color-9 { background: linear-gradient(135deg, #F4511E 0%, #D84315 100%); }
+        .color-10 { background: linear-gradient(135deg, #00897B 0%, #00695C 100%); }
+
+        /* Status Badge */
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            z-index: 2;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-reading {
+            background: #FFA726;
+            color: white;
+        }
+
+        .status-completed {
+            background: #66BB6A;
+            color: white;
+        }
+
+        .status-new {
+            background: #42A5F5;
+            color: white;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            background: #FFFFFF;
+            border-top: 1px solid #E0E0E0;
+            padding: 8px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            transition: all 0.2s;
+            border-radius: 12px;
+            margin: 0 4px;
+        }
+
+        .nav-item:hover {
+            background: #F1F8E9;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #C5E1A5 0%, #AED581 100%);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.15);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #558B2F;
+        }
+
+        .nav-item.active .nav-label {
+            color: #2E7D32;
+            font-weight: 700;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Book data
+        const booksData = {
+            core: [
+                { id: 1, title: '어린왕자', progress: 30, colorClass: 'color-1', status: 'reading' },
+                { id: 2, title: '해리포터와\n마법사의 돌', progress: 0, colorClass: 'color-2', status: 'new' },
+                { id: 3, title: '나무를 심은 사람', progress: 100, colorClass: 'color-3', status: 'completed' },
+                { id: 4, title: '안데르센 동화', progress: 45, colorClass: 'color-4', status: 'reading' },
+                { id: 5, title: '이솝 우화', progress: 20, colorClass: 'color-5', status: 'reading' },
+                { id: 6, title: '톰 소여의 모험', progress: 55, colorClass: 'color-6', status: 'reading' },
+            ],
+            recommend: [
+                { id: 7, title: '해저 2만 리', progress: 0, colorClass: 'color-7', status: 'new' },
+                { id: 8, title: '보물섬', progress: 0, colorClass: 'color-8', status: 'new' },
+                { id: 9, title: '피터팬', progress: 0, colorClass: 'color-9', status: 'new' },
+                { id: 10, title: '이상한 나라의\n앨리스', progress: 0, colorClass: 'color-10', status: 'new' },
+            ],
+            popular: [
+                { id: 11, title: '그리스 로마 신화', progress: 0, colorClass: 'color-4', status: 'new' },
+                { id: 12, title: '비밀의 화원', progress: 0, colorClass: 'color-1', status: 'new' },
+                { id: 13, title: '바다 탐험 이야기', progress: 0, colorClass: 'color-2', status: 'new' },
+                { id: 14, title: '우주 여행', progress: 0, colorClass: 'color-3', status: 'new' },
+            ],
+        };
+
+        // BookCard Component (2-column style)
+        function BookCard({ book, onClick }) {
+            const getStatusText = (status) => {
+                switch(status) {
+                    case 'reading': return '읽는 중';
+                    case 'completed': return '완료';
+                    case 'new': return 'NEW';
+                    default: return '';
+                }
+            };
+
+            return (
+                <div className="book-card-large" onClick={onClick}>
+                    <div className={`book-cover-large ${book.colorClass}`}>
+                        {book.status && (
+                            <div className={`status-badge status-${book.status}`}>
+                                {getStatusText(book.status)}
+                            </div>
+                        )}
+                        <div className="book-title-large">
+                            {book.title.split('\n').map((line, i) => (
+                                <React.Fragment key={i}>
+                                    {line}
+                                    {i < book.title.split('\n').length - 1 && <br />}
+                                </React.Fragment>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="book-info">
+                        <div className="book-progress-bar-container">
+                            <div className="progress-label">
+                                <span>읽기 진행률</span>
+                                <span className="progress-percent-text">{book.progress}%</span>
+                            </div>
+                            <div className="book-progress-bar">
+                                <div className="book-progress-fill" style={{ width: `${book.progress}%` }} />
+                            </div>
+                        </div>
+                        <div className="book-actions">
+                            <button className="btn-read" onClick={(e) => {
+                                e.stopPropagation();
+                                alert(`"${book.title}" 읽기 시작!`);
+                            }}>
+                                {book.progress > 0 ? '이어 읽기' : '읽기 시작'}
+                            </button>
+                            <button className="btn-more" onClick={(e) => {
+                                e.stopPropagation();
+                                alert('상세 정보');
+                            }}>
+                                ⋮
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // BuddyCharacter Component
+        function BuddyCharacter({ onClick }) {
+            return (
+                <div className="buddy-container" onClick={onClick}>
+                    <div className="buddy-avatar">🐿️</div>
+                    <div className="buddy-message">
+                        <h3>독서버디 다람이</h3>
+                        <p>"오늘은 어떤 책을 읽을까? 함께 골라봐요!"</p>
+                    </div>
+                </div>
+            );
+        }
+
+        // HomeScreen Component
+        function HomeScreen({ onNavigate, onBookClick }) {
+            return (
+                <div className="screen">
+                    <div className="content">
+                        <div className="welcome-card">
+                            <div className="welcome-icon">👋</div>
+                            <div className="welcome-text">
+                                <h2>안녕하세요, 김독서님!</h2>
+                                <p>오늘도 즐거운 독서 시간이에요</p>
+                            </div>
+                        </div>
+
+                        <BuddyCharacter onClick={() => alert('독서버디와 대화하기')} />
+
+                        <div className="section">
+                            <div className="section-header">
+                                <div className="section-title">
+                                    <span className="section-title-icon">📚</span>
+                                    코어북
+                                </div>
+                                <div className="section-more">전체보기</div>
+                            </div>
+                            <div className="book-grid-2col">
+                                {booksData.core.map(book => (
+                                    <BookCard key={book.id} book={book} onClick={() => onBookClick(book)} />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="section">
+                            <div className="section-header">
+                                <div className="section-title">
+                                    <span className="section-title-icon">✨</span>
+                                    추천 도서
+                                </div>
+                                <div className="section-more">더보기</div>
+                            </div>
+                            <div className="book-grid-2col">
+                                {booksData.recommend.map(book => (
+                                    <BookCard key={book.id} book={book} onClick={() => onBookClick(book)} />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="section">
+                            <div className="section-header">
+                                <div className="section-title">
+                                    <span className="section-title-icon">🔥</span>
+                                    인기 도서
+                                </div>
+                                <div className="section-more">더보기</div>
+                            </div>
+                            <div className="book-grid-2col">
+                                {booksData.popular.map(book => (
+                                    <BookCard key={book.id} book={book} onClick={() => onBookClick(book)} />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // LibraryScreen Component
+        function LibraryScreen() {
+            return (
+                <div className="screen">
+                    <div className="content">
+                        <div style={{ textAlign: 'center', padding: '80px 20px' }}>
+                            <div style={{ fontSize: '64px', marginBottom: '20px' }}>📖</div>
+                            <h2 style={{ color: '#2E7D32', marginBottom: '10px', fontSize: '20px' }}>라이브러리</h2>
+                            <p style={{ color: '#757575', fontSize: '14px' }}>준비 중입니다</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // MyPageScreen Component
+        function MyPageScreen() {
+            return (
+                <div className="screen">
+                    <div className="content">
+                        <div style={{ textAlign: 'center', padding: '80px 20px' }}>
+                            <div style={{ fontSize: '64px', marginBottom: '20px' }}>👤</div>
+                            <h2 style={{ color: '#2E7D32', marginBottom: '10px', fontSize: '20px' }}>마이페이지</h2>
+                            <p style={{ color: '#757575', fontSize: '14px' }}>준비 중입니다</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const [currentScreen, setCurrentScreen] = useState('home');
+
+            const handleNavigate = (screen) => {
+                setCurrentScreen(screen);
+            };
+
+            const handleBookClick = (book) => {
+                alert(`"${book.title}" 상세보기\n읽기 진행률: ${book.progress}%\n상태: ${book.status}`);
+            };
+
+            const renderScreen = () => {
+                switch (currentScreen) {
+                    case 'home':
+                        return <HomeScreen onNavigate={handleNavigate} onBookClick={handleBookClick} />;
+                    case 'library':
+                        return <LibraryScreen />;
+                    case 'mypage':
+                        return <MyPageScreen />;
+                    default:
+                        return <HomeScreen onNavigate={handleNavigate} onBookClick={handleBookClick} />;
+                }
+            };
+
+            const getHeaderTitle = () => {
+                const titles = {
+                    home: '🌿 북클럽',
+                    library: '📚 라이브러리',
+                    mypage: '👤 마이페이지',
+                };
+                return titles[currentScreen] || '북클럽';
+            };
+
+            return (
+                <div className="app-container">
+                    <div className="header">
+                        <div className="header-left">
+                            <div className="header-icon-btn">🏠</div>
+                            <h1>{getHeaderTitle()}</h1>
+                        </div>
+                        <div className="header-icon-btn">🔔</div>
+                    </div>
+
+                    {renderScreen()}
+
+                    <div className="bottom-nav">
+                        <div
+                            className={`nav-item ${currentScreen === 'home' ? 'active' : ''}`}
+                            onClick={() => handleNavigate('home')}
+                        >
+                            <div className="nav-icon">🏠</div>
+                            <div className="nav-label">홈</div>
+                        </div>
+                        <div
+                            className={`nav-item ${currentScreen === 'library' ? 'active' : ''}`}
+                            onClick={() => handleNavigate('library')}
+                        >
+                            <div className="nav-icon">📚</div>
+                            <div className="nav-label">라이브러리</div>
+                        </div>
+                        <div
+                            className={`nav-item ${currentScreen === 'mypage' ? 'active' : ''}`}
+                            onClick={() => handleNavigate('mypage')}
+                        >
+                            <div className="nav-icon">👤</div>
+                            <div className="nav-label">마이</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

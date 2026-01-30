@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "chrome",
+            "name": "http://127.0.0.1:3000/프로토타입 제작/북클럽3.0_프로토타입_React.html",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/프로토타입 제작/북클럽3.0_프로토타입_React.html"
+        }
+    ]
+}
