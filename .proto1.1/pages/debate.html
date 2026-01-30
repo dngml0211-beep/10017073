@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -31,13 +31,13 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
         body {
             background: linear-gradient(180deg, #EEF2FF 0%, #E0E7FF 50%, #C7D2FE 100%);
@@ -196,7 +196,7 @@
                     </div>
                 </div>
                 <div class="mt-3 bg-white rounded-2xl px-5 py-3 shadow-md inline-block">
-                    <p class="font-jua text-indigo-600">오늘의 토론 주제예요! 찬성? 반대?</p>
+                    <p class="font-noto text-indigo-600">오늘의 토론 주제예요! 찬성? 반대?</p>
                 </div>
             </div>
 
@@ -209,14 +209,14 @@
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">오늘 읽은 책</p>
-                        <p class="font-jua text-gray-800">마법사의 물약</p>
+                        <p class="font-noto text-gray-800">마법사의 물약</p>
                     </div>
                 </div>
 
                 <!-- 토론 주제 -->
                 <div class="text-center mb-6">
                     <p class="text-sm text-indigo-500 font-bold mb-2">💬 토론 주제</p>
-                    <h2 class="font-jua text-2xl text-gray-800 leading-relaxed">
+                    <h2 class="font-noto text-2xl text-gray-800 leading-relaxed">
                         "마법사가 숲속 친구들에게<br>
                         물약을 <span class="text-debate-blue">나눠줘야</span> 할까,<br>
                         <span class="text-debate-red">혼자 간직해야</span> 할까?"
@@ -227,20 +227,20 @@
                 <div class="grid grid-cols-2 gap-4">
                     <button id="vote-agree" onclick="selectVote('agree')" class="vote-btn bg-gradient-to-br from-blue-50 to-indigo-50 border-4 border-blue-200 rounded-2xl p-5 text-center pulse-ring">
                         <span class="text-5xl mb-3 block">😊</span>
-                        <span class="font-jua text-lg text-debate-blue block mb-1">나눠줘야 해!</span>
+                        <span class="font-noto text-lg text-debate-blue block mb-1">나눠줘야 해!</span>
                         <span class="text-xs text-gray-500">함께 나누면 더 좋아요</span>
                     </button>
 
                     <button id="vote-disagree" onclick="selectVote('disagree')" class="vote-btn bg-gradient-to-br from-red-50 to-pink-50 border-4 border-red-200 rounded-2xl p-5 text-center pulse-ring" style="animation-delay: 0.5s;">
                         <span class="text-5xl mb-3 block">🤔</span>
-                        <span class="font-jua text-lg text-debate-red block mb-1">간직해야 해!</span>
+                        <span class="font-noto text-lg text-debate-red block mb-1">간직해야 해!</span>
                         <span class="text-xs text-gray-500">특별한 건 소중하니까</span>
                     </button>
                 </div>
             </div>
 
             <!-- 다음 버튼 -->
-            <button id="btn-next-1" onclick="goToStage2()" disabled class="btn-3d w-full py-4 bg-gray-300 text-white rounded-2xl font-jua text-lg disabled:transform-none disabled:shadow-none" style="box-shadow: 0 6px 0 #9CA3AF;">
+            <button id="btn-next-1" onclick="goToStage2()" disabled class="btn-3d w-full py-4 bg-gray-300 text-white rounded-2xl font-noto text-lg disabled:transform-none disabled:shadow-none" style="box-shadow: 0 6px 0 #9CA3AF;">
                 먼저 투표해주세요
             </button>
         </div>
@@ -251,13 +251,13 @@
                 <div class="inline-block w-16 h-16 bg-white rounded-full flex items-center justify-center text-3xl shadow-lg border-4 border-indigo-200">
                     ✏️
                 </div>
-                <p class="mt-3 font-jua text-lg text-gray-700">왜 그렇게 생각하나요?</p>
+                <p class="mt-3 font-noto text-lg text-gray-700">왜 그렇게 생각하나요?</p>
             </div>
 
             <!-- 선택한 입장 표시 -->
             <div id="selected-stance" class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-2xl p-4 mb-6 text-center">
                 <span class="text-2xl mr-2">😊</span>
-                <span class="font-jua text-lg">나는 "나눠줘야 해!" 를 선택했어요</span>
+                <span class="font-noto text-lg">나는 "나눠줘야 해!" 를 선택했어요</span>
             </div>
 
             <!-- 의견 입력 -->
@@ -284,7 +284,7 @@
             </div>
 
             <!-- 다음 버튼 -->
-            <button id="btn-next-2" onclick="goToStage3()" disabled class="btn-3d w-full py-4 bg-gray-300 text-white rounded-2xl font-jua text-lg disabled:transform-none disabled:shadow-none">
+            <button id="btn-next-2" onclick="goToStage3()" disabled class="btn-3d w-full py-4 bg-gray-300 text-white rounded-2xl font-noto text-lg disabled:transform-none disabled:shadow-none">
                 의견을 작성해주세요
             </button>
         </div>
@@ -295,7 +295,7 @@
                 <div class="inline-block w-20 h-20 bg-white rounded-full flex items-center justify-center text-4xl shadow-lg border-4 border-yellow-200 mb-4">
                     🥁
                 </div>
-                <p class="font-jua text-2xl text-gray-800">두구두구...</p>
+                <p class="font-noto text-2xl text-gray-800">두구두구...</p>
                 <p class="text-gray-500">투표 결과를 공개합니다!</p>
             </div>
 
@@ -328,11 +328,11 @@
                     <!-- 상세 수치 -->
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="bg-blue-50 rounded-2xl p-4">
-                            <p class="font-jua text-3xl text-debate-blue" id="count-agree">0명</p>
+                            <p class="font-noto text-3xl text-debate-blue" id="count-agree">0명</p>
                             <p class="text-sm text-gray-500">나눠줘야 해!</p>
                         </div>
                         <div class="bg-red-50 rounded-2xl p-4">
-                            <p class="font-jua text-3xl text-debate-red" id="count-disagree">0명</p>
+                            <p class="font-noto text-3xl text-debate-red" id="count-disagree">0명</p>
                             <p class="text-sm text-gray-500">간직해야 해!</p>
                         </div>
                     </div>
@@ -340,13 +340,13 @@
                     <!-- 내 선택 표시 -->
                     <div id="my-result" class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl p-4">
                         <span class="text-2xl mr-2">🎯</span>
-                        <span class="font-jua">나는 다수와 같은 생각이에요!</span>
+                        <span class="font-noto">나는 다수와 같은 생각이에요!</span>
                     </div>
                 </div>
             </div>
 
             <!-- 다음 버튼 -->
-            <button id="btn-next-3" onclick="goToStage4()" class="hidden btn-3d w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl font-jua text-lg mt-6" style="box-shadow: 0 6px 0 #4338CA;">
+            <button id="btn-next-3" onclick="goToStage4()" class="hidden btn-3d w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl font-noto text-lg mt-6" style="box-shadow: 0 6px 0 #4338CA;">
                 다른 친구들 의견 보기 <i class="fa-solid fa-arrow-right ml-2"></i>
             </button>
         </div>
@@ -357,7 +357,7 @@
                 <div class="inline-block w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-4xl shadow-lg">
                     🤖
                 </div>
-                <p class="mt-3 font-jua text-lg text-gray-700">AI가 다른 의견을 정리했어요!</p>
+                <p class="mt-3 font-noto text-lg text-gray-700">AI가 다른 의견을 정리했어요!</p>
             </div>
 
             <!-- AI 요약 카드 -->
@@ -367,7 +367,7 @@
                         🤖
                     </div>
                     <div>
-                        <p class="font-jua text-gray-800">AI 독서 버디</p>
+                        <p class="font-noto text-gray-800">AI 독서 버디</p>
                         <p class="text-xs text-gray-500">다른 친구들의 의견을 요약했어요</p>
                     </div>
                 </div>
@@ -387,7 +387,7 @@
                     <div class="bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl p-5 mb-4">
                         <div class="flex items-center gap-2 mb-3">
                             <span class="text-2xl">🤔</span>
-                            <span class="font-jua text-debate-red">"간직해야 해!" 친구들의 생각</span>
+                            <span class="font-noto text-debate-red">"간직해야 해!" 친구들의 생각</span>
                         </div>
                         <p class="text-gray-700 leading-relaxed" id="opposite-summary">
                             "특별한 물약은 아무에게나 주면 위험할 수 있어요. 마법사가 책임감 있게 관리해야 한다고 생각해요. 또 힘들게 만든 물약이니까 소중히 보관하는 게 맞아요."
@@ -404,7 +404,7 @@
             </div>
 
             <!-- 완료 버튼 -->
-            <button id="btn-complete" onclick="completeDebate()" class="hidden btn-3d w-full py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl font-jua text-lg" style="box-shadow: 0 6px 0 #047857;">
+            <button id="btn-complete" onclick="completeDebate()" class="hidden btn-3d w-full py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl font-noto text-lg" style="box-shadow: 0 6px 0 #047857;">
                 <i class="fa-solid fa-check mr-2"></i> 토론 완료!
             </button>
         </div>
@@ -416,21 +416,21 @@
             <div class="reveal-animation w-40 h-40 mx-auto mb-6 bg-white rounded-full flex items-center justify-center shadow-2xl">
                 <span class="text-7xl">🏆</span>
             </div>
-            <h2 class="font-jua text-4xl text-white mb-2">토론 완료!</h2>
+            <h2 class="font-noto text-4xl text-white mb-2">토론 완료!</h2>
             <p class="text-white/90 text-xl mb-8">멋진 생각을 나눠줬어요!</p>
 
             <div class="flex justify-center gap-4 mb-8">
                 <div class="bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/30">
                     <span class="text-3xl mb-1 block">⭐</span>
-                    <span class="text-white font-jua">+30 별</span>
+                    <span class="text-white font-noto">+30 별</span>
                 </div>
                 <div class="bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/30">
                     <span class="text-3xl mb-1 block">🎖️</span>
-                    <span class="text-white font-jua">토론 뱃지</span>
+                    <span class="text-white font-noto">토론 뱃지</span>
                 </div>
             </div>
 
-            <button onclick="goBack()" class="btn-3d px-10 py-4 bg-white text-indigo-600 rounded-2xl font-jua text-lg" style="box-shadow: 0 6px 0 #C7D2FE;">
+            <button onclick="goBack()" class="btn-3d px-10 py-4 bg-white text-indigo-600 rounded-2xl font-noto text-lg" style="box-shadow: 0 6px 0 #C7D2FE;">
                 돌아가기
             </button>
         </div>
@@ -469,7 +469,7 @@
             // 다음 버튼 활성화
             const btn = document.getElementById('btn-next-1');
             btn.disabled = false;
-            btn.className = 'btn-3d w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl font-jua text-lg';
+            btn.className = 'btn-3d w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl font-noto text-lg';
             btn.style.boxShadow = '0 6px 0 #4338CA';
             btn.textContent = '내 의견 말하기 →';
         }
@@ -489,10 +489,10 @@
             const stanceDiv = document.getElementById('selected-stance');
             if (userVote === 'agree') {
                 stanceDiv.className = 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-2xl p-4 mb-6 text-center';
-                stanceDiv.innerHTML = '<span class="text-2xl mr-2">😊</span><span class="font-jua text-lg">나는 "나눠줘야 해!" 를 선택했어요</span>';
+                stanceDiv.innerHTML = '<span class="text-2xl mr-2">😊</span><span class="font-noto text-lg">나는 "나눠줘야 해!" 를 선택했어요</span>';
             } else {
                 stanceDiv.className = 'bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-2xl p-4 mb-6 text-center';
-                stanceDiv.innerHTML = '<span class="text-2xl mr-2">🤔</span><span class="font-jua text-lg">나는 "간직해야 해!" 를 선택했어요</span>';
+                stanceDiv.innerHTML = '<span class="text-2xl mr-2">🤔</span><span class="font-noto text-lg">나는 "간직해야 해!" 를 선택했어요</span>';
             }
         }
 
@@ -504,12 +504,12 @@
             if (text.length >= 5) {
                 userOpinion = text;
                 btn.disabled = false;
-                btn.className = 'btn-3d w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl font-jua text-lg';
+                btn.className = 'btn-3d w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl font-noto text-lg';
                 btn.style.boxShadow = '0 6px 0 #4338CA';
                 btn.textContent = '투표 결과 보기 →';
             } else {
                 btn.disabled = true;
-                btn.className = 'btn-3d w-full py-4 bg-gray-300 text-white rounded-2xl font-jua text-lg disabled:transform-none disabled:shadow-none';
+                btn.className = 'btn-3d w-full py-4 bg-gray-300 text-white rounded-2xl font-noto text-lg disabled:transform-none disabled:shadow-none';
                 btn.textContent = '의견을 작성해주세요';
             }
         }
@@ -545,7 +545,7 @@
                     userOpinion = '[음성 녹음됨]';
                     const btn2 = document.getElementById('btn-next-2');
                     btn2.disabled = false;
-                    btn2.className = 'btn-3d w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl font-jua text-lg';
+                    btn2.className = 'btn-3d w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl font-noto text-lg';
                     btn2.style.boxShadow = '0 6px 0 #4338CA';
                     btn2.textContent = '투표 결과 보기 →';
                 }
@@ -589,10 +589,10 @@
                     // 내 선택 결과
                     const myResult = document.getElementById('my-result');
                     if ((userVote === 'agree' && agreePercent > 50) || (userVote === 'disagree' && disagreePercent > 50)) {
-                        myResult.innerHTML = '<span class="text-2xl mr-2">🎯</span><span class="font-jua">나는 다수와 같은 생각이에요!</span>';
+                        myResult.innerHTML = '<span class="text-2xl mr-2">🎯</span><span class="font-noto">나는 다수와 같은 생각이에요!</span>';
                     } else {
                         myResult.className = 'bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl p-4';
-                        myResult.innerHTML = '<span class="text-2xl mr-2">💡</span><span class="font-jua">나만의 특별한 생각이에요!</span>';
+                        myResult.innerHTML = '<span class="text-2xl mr-2">💡</span><span class="font-noto">나만의 특별한 생각이에요!</span>';
                     }
 
                     // 다음 버튼 표시
@@ -623,7 +623,7 @@
                     summaryText.textContent = '"특별한 물약은 아무에게나 주면 위험할 수 있어요. 마법사가 책임감 있게 관리해야 한다고 생각해요. 또 힘들게 만든 물약이니까 소중히 보관하는 게 맞아요."';
                 } else {
                     document.querySelector('#ai-summary > div:first-child').className = 'bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 mb-4';
-                    document.querySelector('#ai-summary > div:first-child > div').innerHTML = '<span class="text-2xl">😊</span><span class="font-jua text-debate-blue">"나눠줘야 해!" 친구들의 생각</span>';
+                    document.querySelector('#ai-summary > div:first-child > div').innerHTML = '<span class="text-2xl">😊</span><span class="font-noto text-debate-blue">"나눠줘야 해!" 친구들의 생각</span>';
                     summaryText.textContent = '"숲속 친구들도 물약이 필요할 때가 있을 거예요. 함께 나누면 더 많은 좋은 일이 생길 수 있어요. 마법사 혼자만 쓰기엔 너무 아깝다고 생각해요."';
                 }
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -25,7 +25,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="../css/common.css">
 
     <style>
-        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
         .answer-btn {
             transition: all 0.2s ease;
@@ -121,7 +121,7 @@
         <div class="book-page rounded-3xl p-6 md:p-8 mb-6 border-2 border-amber-200">
             <div class="flex items-center gap-2 mb-4">
                 <span class="text-2xl">📖</span>
-                <span class="font-jua text-lg text-amber-700">마법사의 물약</span>
+                <span class="font-noto text-lg text-amber-700">마법사의 물약</span>
                 <span class="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">1장</span>
             </div>
             <div class="bg-white/50 rounded-2xl p-5 border border-amber-100">
@@ -146,7 +146,7 @@
                 </div>
                 <div>
                     <p class="text-xs text-brand-duo-green font-bold mb-1">문제 1</p>
-                    <h3 class="font-jua text-xl text-gray-800" id="question-text">
+                    <h3 class="font-noto text-xl text-gray-800" id="question-text">
                         물약 재료를 찾기 위해 숲속으로 떠난 사람은 누구인가요?
                     </h3>
                 </div>
@@ -192,7 +192,7 @@
                         🎉
                     </div>
                     <div>
-                        <p class="font-jua text-xl">정답이에요!</p>
+                        <p class="font-noto text-xl">정답이에요!</p>
                         <p class="text-green-100 text-sm">잘했어요, 계속 가볼까요?</p>
                     </div>
                 </div>
@@ -203,7 +203,7 @@
                         😅
                     </div>
                     <div>
-                        <p class="font-jua text-xl">아쉬워요!</p>
+                        <p class="font-noto text-xl">아쉬워요!</p>
                         <p class="text-red-100 text-sm" id="wrong-explanation">마법사가 물약 재료를 찾으러 갔어요.</p>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
         </div>
 
         <!-- Next Button (Hidden initially) -->
-        <button id="next-btn" onclick="nextQuestion()" class="hidden w-full mt-6 py-4 bg-gradient-to-r from-brand-duo-green to-green-500 text-white font-jua text-xl rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all">
+        <button id="next-btn" onclick="nextQuestion()" class="hidden w-full mt-6 py-4 bg-gradient-to-r from-brand-duo-green to-green-500 text-white font-noto text-xl rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all">
             다음 문제 <i class="fa-solid fa-arrow-right ml-2"></i>
         </button>
     </main>
@@ -224,7 +224,7 @@
                 <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center text-4xl mx-auto mb-4">
                     😢
                 </div>
-                <h3 class="font-jua text-2xl text-gray-800 mb-2">진단을 그만할까요?</h3>
+                <h3 class="font-noto text-2xl text-gray-800 mb-2">진단을 그만할까요?</h3>
                 <p class="text-gray-500 mb-6">지금까지의 진행이 저장되지 않아요.</p>
                 <div class="flex gap-3">
                     <button onclick="hideExitModal()" class="flex-1 py-3 px-4 bg-gray-100 text-gray-600 rounded-xl font-bold hover:bg-gray-200 transition-colors">

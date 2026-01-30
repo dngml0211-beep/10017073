@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="../css/responsive.css">
 
     <style>
-        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
         /* 출석 스트릭 스타일 (듀오링고) */
         @keyframes flame-dance {
@@ -239,12 +239,12 @@
         }
         .gallery-item {
             flex: 0 0 calc((100% - 48px) / 5); /* 기본 5개 */
-            min-width: 140px;
-            max-width: 180px;
+            min-width: 200px;
+            max-width: 260px;
         }
         .gallery-more {
-            flex: 0 0 80px;
-            min-height: 150px;
+            flex: 0 0 100px;
+            min-height: 220px;
         }
 
         /* 섬 노드 스타일 */
@@ -264,7 +264,7 @@
 
         <!-- Main Content -->
         <main class="flex-1 h-full overflow-y-auto px-4 md:px-8 py-6">
-          <div class="max-w-[1400px] mx-auto">
+          <div class="max-w-[1400px]">
             <!-- 프로필 헤더 -->
             <div class="flex items-center gap-4 mb-6">
                 <div class="relative">
@@ -276,7 +276,7 @@
                     </div>
                 </div>
                 <div>
-                    <h2 class="font-jua text-xl text-gray-800">지훈이의 독서 공간</h2>
+                    <h2 class="font-noto text-xl text-gray-800">우희의 독서공간</h2>
                     <p class="text-sm text-gray-500">3학년 2반 · 북클럽 회원</p>
                 </div>
             </div>
@@ -291,7 +291,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="flame-icon text-xl">🔥</span>
-                                    <h3 class="font-jua text-base text-white">5일 연속 출석</h3>
+                                    <h3 class="font-noto text-base text-white">5일 연속 출석</h3>
                                 </div>
                                 <span class="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full font-bold backdrop-blur-sm">최장 12일</span>
                             </div>
@@ -444,15 +444,15 @@
                             <!-- 통계 & 마일스톤 -->
                             <div class="grid grid-cols-3 gap-2 pt-3 border-t border-gray-100">
                                 <div class="text-center bg-orange-50 rounded-xl py-2">
-                                    <p class="font-jua text-lg text-orange-500">18<span class="text-xs text-gray-400">일</span></p>
+                                    <p class="font-noto text-lg text-orange-500">18<span class="text-xs text-gray-400">일</span></p>
                                     <p class="text-[9px] text-gray-500">이번 달</p>
                                 </div>
                                 <div class="text-center bg-red-50 rounded-xl py-2">
-                                    <p class="font-jua text-lg text-red-500">5<span class="text-xs text-gray-400">일</span></p>
+                                    <p class="font-noto text-lg text-red-500">5<span class="text-xs text-gray-400">일</span></p>
                                     <p class="text-[9px] text-gray-500">현재 연속</p>
                                 </div>
                                 <div class="text-center bg-purple-50 rounded-xl py-2">
-                                    <p class="font-jua text-lg text-purple-500">7일<span class="text-xs text-gray-400"> 🎯</span></p>
+                                    <p class="font-noto text-lg text-purple-500">7일<span class="text-xs text-gray-400"> 🎯</span></p>
                                     <p class="text-[9px] text-gray-500">다음 목표</p>
                                 </div>
                             </div>
@@ -466,7 +466,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="text-xl">📚</span>
-                                    <h3 class="font-jua text-base text-white">도전! 100권 읽기</h3>
+                                    <h3 class="font-noto text-base text-white">도전! 100권 읽기</h3>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full font-bold backdrop-blur-sm">🥇 1위</span>
@@ -529,7 +529,7 @@
                                             <span class="text-2xl bounce-current">🐿️</span>
                                         </div>
                                         <div class="flex flex-col whitespace-nowrap">
-                                            <span class="text-sm font-jua text-orange-500">23권</span>
+                                            <span class="text-sm font-noto text-orange-500">23권</span>
                                             <span class="text-[9px] text-gray-400">77권 남음</span>
                                         </div>
                                     </div>
@@ -563,15 +563,15 @@
                             <!-- 하단 통계 (출석 통계와 동일 스타일) -->
                             <div class="grid grid-cols-3 gap-2 pt-3 border-t border-gray-100">
                                 <div class="text-center bg-emerald-50 rounded-xl py-2">
-                                    <p class="font-jua text-lg text-emerald-500">1,023<span class="text-xs text-gray-400">권</span></p>
+                                    <p class="font-noto text-lg text-emerald-500">1,023<span class="text-xs text-gray-400">권</span></p>
                                     <p class="text-[9px] text-gray-500">올해 누적</p>
                                 </div>
                                 <div class="text-center bg-teal-50 rounded-xl py-2">
-                                    <p class="font-jua text-lg text-teal-500">5<span class="text-xs text-gray-400">권</span></p>
+                                    <p class="font-noto text-lg text-teal-500">5<span class="text-xs text-gray-400">권</span></p>
                                     <p class="text-[9px] text-gray-500">이번 달</p>
                                 </div>
                                 <div class="text-center bg-cyan-50 rounded-xl py-2">
-                                    <p class="font-jua text-lg text-cyan-500">30권<span class="text-xs text-gray-400"> 🎯</span></p>
+                                    <p class="font-noto text-lg text-cyan-500">30권<span class="text-xs text-gray-400"> 🎯</span></p>
                                     <p class="text-[9px] text-gray-500">다음 목표</p>
                                 </div>
                             </div>
@@ -586,95 +586,97 @@
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
                             <span class="text-xl">🏅</span>
-                            <h3 class="font-jua text-base text-gray-800">내가 모은 배지</h3>
+                            <h3 class="font-noto text-base text-gray-800">내가 모은 배지</h3>
                         </div>
                         <span class="text-xs bg-purple-100 text-purple-600 px-2.5 py-1 rounded-full font-bold">4 / 20개</span>
                     </div>
 
-                    <!-- 배지 그리드 (가로로 넓게, 2줄) -->
-                    <div class="grid grid-cols-10 gap-3">
+                    <!-- 배지 그리드 (1:1 비율, 넉넉한 크기) -->
+                    <div class="grid grid-cols-7 gap-4">
                         <!-- Row 1: 획득한 배지들 + 잠긴 배지 -->
-                        <div class="badge-card bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="첫 완독">
-                            <span class="text-2xl mb-1">⭐</span>
-                            <span class="text-[9px] text-white font-medium">첫 완독</span>
+                        <div class="badge-card bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="첫 완독">
+                            <span class="text-3xl mb-1.5">⭐</span>
+                            <span class="text-[10px] text-white font-medium">첫 완독</span>
                         </div>
-                        <div class="badge-card bg-gradient-to-br from-blue-300 to-blue-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="10권 달성">
-                            <span class="text-2xl mb-1">📚</span>
-                            <span class="text-[9px] text-white font-medium">10권</span>
+                        <div class="badge-card bg-gradient-to-br from-blue-300 to-blue-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="10권 달성">
+                            <span class="text-3xl mb-1.5">📚</span>
+                            <span class="text-[10px] text-white font-medium">10권</span>
                         </div>
-                        <div class="badge-card bg-gradient-to-br from-purple-300 to-purple-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="퀴즈왕">
-                            <span class="text-2xl mb-1">🎯</span>
-                            <span class="text-[9px] text-white font-medium">퀴즈왕</span>
+                        <div class="badge-card bg-gradient-to-br from-purple-300 to-purple-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="퀴즈왕">
+                            <span class="text-3xl mb-1.5">🎯</span>
+                            <span class="text-[10px] text-white font-medium">퀴즈왕</span>
                         </div>
-                        <div class="badge-card bg-gradient-to-br from-orange-300 to-red-400 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="연속7일">
-                            <span class="text-2xl mb-1">🔥</span>
-                            <span class="text-[9px] text-white font-medium">연속7일</span>
+                        <div class="badge-card bg-gradient-to-br from-orange-300 to-red-400 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="연속7일">
+                            <span class="text-3xl mb-1.5">🔥</span>
+                            <span class="text-[10px] text-white font-medium">연속7일</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-amber-300 to-amber-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="20권 달성">
-                            <span class="text-2xl mb-1">🏆</span>
-                            <span class="text-[9px] text-white/70 font-medium">20권</span>
+                        <div class="badge-card locked bg-gradient-to-br from-amber-300 to-amber-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="20권 달성">
+                            <span class="text-3xl mb-1.5">🏆</span>
+                            <span class="text-[10px] text-white/70 font-medium">20권</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-cyan-300 to-cyan-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="어휘왕">
-                            <span class="text-2xl mb-1">💎</span>
-                            <span class="text-[9px] text-white/70 font-medium">어휘왕</span>
+                        <div class="badge-card locked bg-gradient-to-br from-cyan-300 to-cyan-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="어휘왕">
+                            <span class="text-3xl mb-1.5">💎</span>
+                            <span class="text-[10px] text-white/70 font-medium">어휘왕</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-pink-300 to-pink-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="영상감독">
-                            <span class="text-2xl mb-1">🎬</span>
-                            <span class="text-[9px] text-white/70 font-medium">영상감독</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-green-300 to-emerald-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="작가의길">
-                            <span class="text-2xl mb-1">✏️</span>
-                            <span class="text-[9px] text-white/70 font-medium">작가</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-indigo-300 to-indigo-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="성실왕">
-                            <span class="text-2xl mb-1">🌟</span>
-                            <span class="text-[9px] text-white/70 font-medium">성실왕</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-rose-300 to-rose-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="독서킹">
-                            <span class="text-2xl mb-1">👑</span>
-                            <span class="text-[9px] text-white/70 font-medium">독서킹</span>
+                        <div class="badge-card locked bg-gradient-to-br from-pink-300 to-pink-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="영상감독">
+                            <span class="text-3xl mb-1.5">🎬</span>
+                            <span class="text-[10px] text-white/70 font-medium">영상감독</span>
                         </div>
 
                         <!-- Row 2 -->
-                        <div class="badge-card locked bg-gradient-to-br from-teal-300 to-teal-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="연기왕">
-                            <span class="text-2xl mb-1">🎭</span>
-                            <span class="text-[9px] text-white/70 font-medium">연기왕</span>
+                        <div class="badge-card locked bg-gradient-to-br from-green-300 to-emerald-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="작가의길">
+                            <span class="text-3xl mb-1.5">✏️</span>
+                            <span class="text-[10px] text-white/70 font-medium">작가</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-lime-300 to-lime-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="무지개">
-                            <span class="text-2xl mb-1">🌈</span>
-                            <span class="text-[9px] text-white/70 font-medium">무지개</span>
+                        <div class="badge-card locked bg-gradient-to-br from-indigo-300 to-indigo-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="성실왕">
+                            <span class="text-3xl mb-1.5">🌟</span>
+                            <span class="text-[10px] text-white/70 font-medium">성실왕</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-sky-300 to-sky-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="30권 달성">
-                            <span class="text-2xl mb-1">🚀</span>
-                            <span class="text-[9px] text-white/70 font-medium">30권</span>
+                        <div class="badge-card locked bg-gradient-to-br from-rose-300 to-rose-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="독서킹">
+                            <span class="text-3xl mb-1.5">👑</span>
+                            <span class="text-[10px] text-white/70 font-medium">독서킹</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-violet-300 to-violet-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="50권 달성">
-                            <span class="text-2xl mb-1">🎖️</span>
-                            <span class="text-[9px] text-white/70 font-medium">50권</span>
+                        <div class="badge-card locked bg-gradient-to-br from-teal-300 to-teal-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="연기왕">
+                            <span class="text-3xl mb-1.5">🎭</span>
+                            <span class="text-[10px] text-white/70 font-medium">연기왕</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-fuchsia-300 to-fuchsia-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="연속14일">
-                            <span class="text-2xl mb-1">💪</span>
-                            <span class="text-[9px] text-white/70 font-medium">연속14일</span>
+                        <div class="badge-card locked bg-gradient-to-br from-lime-300 to-lime-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="무지개">
+                            <span class="text-3xl mb-1.5">🌈</span>
+                            <span class="text-[10px] text-white/70 font-medium">무지개</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-emerald-300 to-emerald-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="어휘마스터">
-                            <span class="text-2xl mb-1">📖</span>
-                            <span class="text-[9px] text-white/70 font-medium">어휘마스터</span>
+                        <div class="badge-card locked bg-gradient-to-br from-sky-300 to-sky-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="30권 달성">
+                            <span class="text-3xl mb-1.5">🚀</span>
+                            <span class="text-[10px] text-white/70 font-medium">30권</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-red-300 to-red-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="열정">
-                            <span class="text-2xl mb-1">❤️</span>
-                            <span class="text-[9px] text-white/70 font-medium">열정</span>
+                        <div class="badge-card locked bg-gradient-to-br from-violet-300 to-violet-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="50권 달성">
+                            <span class="text-3xl mb-1.5">🎖️</span>
+                            <span class="text-[10px] text-white/70 font-medium">50권</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-amber-400 to-yellow-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="탐험가">
-                            <span class="text-2xl mb-1">🧭</span>
-                            <span class="text-[9px] text-white/70 font-medium">탐험가</span>
+
+                        <!-- Row 3 -->
+                        <div class="badge-card locked bg-gradient-to-br from-fuchsia-300 to-fuchsia-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="연속14일">
+                            <span class="text-3xl mb-1.5">💪</span>
+                            <span class="text-[10px] text-white/70 font-medium">연속14일</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="과학왕">
-                            <span class="text-2xl mb-1">🔬</span>
-                            <span class="text-[9px] text-white/70 font-medium">과학왕</span>
+                        <div class="badge-card locked bg-gradient-to-br from-emerald-300 to-emerald-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="어휘마스터">
+                            <span class="text-3xl mb-1.5">📖</span>
+                            <span class="text-[10px] text-white/70 font-medium">어휘마스터</span>
                         </div>
-                        <div class="badge-card locked bg-gradient-to-br from-amber-300 to-yellow-400 rounded-xl p-2 flex flex-col items-center justify-center shadow-sm cursor-pointer" title="100권 달성">
-                            <span class="text-2xl mb-1">✨</span>
-                            <span class="text-[9px] text-white/70 font-medium">100권</span>
+                        <div class="badge-card locked bg-gradient-to-br from-red-300 to-red-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="열정">
+                            <span class="text-3xl mb-1.5">❤️</span>
+                            <span class="text-[10px] text-white/70 font-medium">열정</span>
+                        </div>
+                        <div class="badge-card locked bg-gradient-to-br from-amber-400 to-yellow-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="탐험가">
+                            <span class="text-3xl mb-1.5">🧭</span>
+                            <span class="text-[10px] text-white/70 font-medium">탐험가</span>
+                        </div>
+                        <div class="badge-card locked bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="과학왕">
+                            <span class="text-3xl mb-1.5">🔬</span>
+                            <span class="text-[10px] text-white/70 font-medium">과학왕</span>
+                        </div>
+                        <div class="badge-card locked bg-gradient-to-br from-amber-300 to-yellow-400 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="100권 달성">
+                            <span class="text-3xl mb-1.5">✨</span>
+                            <span class="text-[10px] text-white/70 font-medium">100권</span>
                         </div>
                     </div>
 
@@ -692,7 +694,7 @@
                     <div class="flex items-center justify-between mb-5">
                         <div class="flex items-center gap-2">
                             <span class="text-xl">🎨</span>
-                            <h3 class="font-jua text-base text-gray-800">나의 작품 갤러리</h3>
+                            <h3 class="font-noto text-base text-gray-800">나의 작품 갤러리</h3>
                             <span class="text-xs bg-pink-100 text-pink-600 px-2.5 py-1 rounded-full">총 24개 작품</span>
                         </div>
                         <a href="gallery.html" class="text-xs text-brand-primary font-bold hover:underline">전체보기 →</a>
@@ -702,7 +704,7 @@
                     <div class="gallery-grid flex gap-3" id="gallery-container">
                         <!-- 작품 1 -->
                         <div class="artwork-card gallery-item bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl overflow-hidden border border-pink-100 cursor-pointer" onclick="openArtwork(1)">
-                            <div class="h-24 bg-gradient-to-br from-pink-200 to-rose-300 flex items-center justify-center relative">
+                            <div class="h-36 bg-gradient-to-br from-pink-200 to-rose-300 flex items-center justify-center relative">
                                 <span class="text-4xl">🎬</span>
                                 <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-pink-600 font-bold">영상리텔링</div>
                             </div>
@@ -720,7 +722,7 @@
 
                         <!-- 작품 2 -->
                         <div class="artwork-card gallery-item bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl overflow-hidden border border-green-100 cursor-pointer" onclick="openArtwork(2)">
-                            <div class="h-24 bg-gradient-to-br from-green-200 to-emerald-300 flex items-center justify-center relative">
+                            <div class="h-36 bg-gradient-to-br from-green-200 to-emerald-300 flex items-center justify-center relative">
                                 <span class="text-4xl">✏️</span>
                                 <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-green-600 font-bold">감상문</div>
                             </div>
@@ -738,7 +740,7 @@
 
                         <!-- 작품 3 -->
                         <div class="artwork-card gallery-item bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl overflow-hidden border border-blue-100 cursor-pointer" onclick="openArtwork(3)">
-                            <div class="h-24 bg-gradient-to-br from-blue-200 to-indigo-300 flex items-center justify-center relative">
+                            <div class="h-36 bg-gradient-to-br from-blue-200 to-indigo-300 flex items-center justify-center relative">
                                 <span class="text-4xl">🎤</span>
                                 <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-blue-600 font-bold">녹음</div>
                             </div>
@@ -756,7 +758,7 @@
 
                         <!-- 작품 4 -->
                         <div class="artwork-card gallery-item bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl overflow-hidden border border-purple-100 cursor-pointer" onclick="openArtwork(4)">
-                            <div class="h-24 bg-gradient-to-br from-purple-200 to-violet-300 flex items-center justify-center relative">
+                            <div class="h-36 bg-gradient-to-br from-purple-200 to-violet-300 flex items-center justify-center relative">
                                 <span class="text-4xl">📖</span>
                                 <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-purple-600 font-bold">독서일기</div>
                             </div>
@@ -774,7 +776,7 @@
 
                         <!-- 작품 5 (동적으로 표시/숨김) -->
                         <div class="artwork-card gallery-item bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl overflow-hidden border border-amber-100 cursor-pointer" onclick="openArtwork(5)">
-                            <div class="h-24 bg-gradient-to-br from-amber-200 to-orange-300 flex items-center justify-center relative">
+                            <div class="h-36 bg-gradient-to-br from-amber-200 to-orange-300 flex items-center justify-center relative">
                                 <span class="text-4xl">🎨</span>
                                 <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-amber-600 font-bold">그림일기</div>
                             </div>
@@ -792,7 +794,7 @@
 
                         <!-- 작품 6 (동적으로 표시/숨김) -->
                         <div class="artwork-card gallery-item bg-gradient-to-br from-cyan-50 to-teal-50 rounded-2xl overflow-hidden border border-cyan-100 cursor-pointer" onclick="openArtwork(6)">
-                            <div class="h-24 bg-gradient-to-br from-cyan-200 to-teal-300 flex items-center justify-center relative">
+                            <div class="h-36 bg-gradient-to-br from-cyan-200 to-teal-300 flex items-center justify-center relative">
                                 <span class="text-4xl">🎭</span>
                                 <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-cyan-600 font-bold">역할극</div>
                             </div>
@@ -810,7 +812,7 @@
 
                         <!-- 작품 7 (동적으로 표시/숨김) -->
                         <div class="artwork-card gallery-item bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl overflow-hidden border border-rose-100 cursor-pointer" onclick="openArtwork(7)">
-                            <div class="h-24 bg-gradient-to-br from-rose-200 to-pink-300 flex items-center justify-center relative">
+                            <div class="h-36 bg-gradient-to-br from-rose-200 to-pink-300 flex items-center justify-center relative">
                                 <span class="text-4xl">📝</span>
                                 <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-rose-600 font-bold">편지</div>
                             </div>
@@ -846,7 +848,7 @@
                         <div class="relative z-10 flex items-center gap-3">
                             <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-xl">🗳️</div>
                             <div>
-                                <p class="font-jua text-base text-white">우리끼리 투표</p>
+                                <p class="font-noto text-base text-white">우리끼리 투표</p>
                                 <p class="text-[10px] text-white/70">새 투표 2개</p>
                             </div>
                         </div>
@@ -859,7 +861,7 @@
                         <div class="relative z-10 flex items-center gap-3">
                             <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-xl">⚔️</div>
                             <div>
-                                <p class="font-jua text-base text-white">프렌즈 대결</p>
+                                <p class="font-noto text-base text-white">프렌즈 대결</p>
                                 <p class="text-[10px] text-white/70">도전장 1개</p>
                             </div>
                         </div>
@@ -879,7 +881,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <span class="text-xl">🏅</span>
-                        <h3 class="font-jua text-lg">배지 컬렉션</h3>
+                        <h3 class="font-noto text-lg">배지 컬렉션</h3>
                         <span class="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full">4/12</span>
                     </div>
                     <button onclick="closeBadgeModal()" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
@@ -984,8 +986,8 @@
 
         // 갤러리 반응형 처리
         const TOTAL_WORKS = 24;
-        const CARD_WIDTH = 152; // 카드 너비 + 간격
-        const MORE_WIDTH = 92; // 더보기 카드 너비 + 간격
+        const CARD_WIDTH = 212; // 카드 너비 + 간격
+        const MORE_WIDTH = 112; // 더보기 카드 너비 + 간격
 
         function updateGalleryLayout() {
             const container = document.getElementById('gallery-container');

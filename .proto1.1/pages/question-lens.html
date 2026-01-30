@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -31,13 +31,13 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
         body {
             background: linear-gradient(180deg, #F3E8FF 0%, #E9D5FF 50%, #DDD6FE 100%);
@@ -190,7 +190,7 @@
 
             <div class="flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
                 <span class="text-2xl">🔍</span>
-                <span class="font-jua text-lg text-purple-600">질문 렌즈</span>
+                <span class="font-noto text-lg text-purple-600">질문 렌즈</span>
             </div>
 
             <!-- 책 정보 (책 선택 후 표시) -->
@@ -210,7 +210,7 @@
             <div class="buddy-avatar w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-5xl shadow-xl">
                 🐿️
             </div>
-            <h2 class="font-jua text-2xl text-purple-700 mb-2">안녕! 나는 다람이야!</h2>
+            <h2 class="font-noto text-2xl text-purple-700 mb-2">안녕! 나는 버디야!</h2>
             <p class="text-gray-600 mb-8">우리 어떤 책으로 이야기할까?</p>
 
             <!-- 최근 읽은 책 리스트 -->
@@ -221,7 +221,7 @@
                         🧙‍♂️
                     </div>
                     <div class="flex-1 text-left">
-                        <p class="font-jua text-gray-800 group-hover:text-purple-600">마법사의 물약</p>
+                        <p class="font-noto text-gray-800 group-hover:text-purple-600">마법사의 물약</p>
                         <p class="text-xs text-gray-400">오늘 읽은 책</p>
                     </div>
                     <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors">
@@ -235,7 +235,7 @@
                         🌲
                     </div>
                     <div class="flex-1 text-left">
-                        <p class="font-jua text-gray-800 group-hover:text-purple-600">숲속 친구들</p>
+                        <p class="font-noto text-gray-800 group-hover:text-purple-600">숲속 친구들</p>
                         <p class="text-xs text-gray-400">어제 읽은 책</p>
                     </div>
                     <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors">
@@ -249,7 +249,7 @@
                         🐉
                     </div>
                     <div class="flex-1 text-left">
-                        <p class="font-jua text-gray-800 group-hover:text-purple-600">공주와 용</p>
+                        <p class="font-noto text-gray-800 group-hover:text-purple-600">공주와 용</p>
                         <p class="text-xs text-gray-400">3일 전 읽은 책</p>
                     </div>
                     <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors">
@@ -277,7 +277,7 @@
         <div class="max-w-2xl mx-auto">
             <!-- 초기 상태: 시작 버튼 (책 선택 후 표시) -->
             <div id="start-section" class="hidden text-center">
-                <button onclick="startConversation()" class="btn-3d px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-jua text-lg shadow-lg" style="box-shadow: 0 6px 0 #6D28D9, 0 8px 20px rgba(0,0,0,0.15);">
+                <button onclick="startConversation()" class="btn-3d px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-noto text-lg shadow-lg" style="box-shadow: 0 6px 0 #6D28D9, 0 8px 20px rgba(0,0,0,0.15);">
                     <i class="fa-solid fa-comments mr-2"></i> 대화 시작하기
                 </button>
             </div>
@@ -288,15 +288,15 @@
                 <div class="grid grid-cols-3 gap-3">
                     <button onclick="selectQuestionCard('who')" class="question-card bg-gradient-to-br from-blue-50 to-indigo-50 border-3 border-blue-200 rounded-2xl p-4 text-center" data-card="who">
                         <span class="text-3xl mb-2 block">👤</span>
-                        <span class="font-jua text-blue-600 text-sm">누구일까?</span>
+                        <span class="font-noto text-blue-600 text-sm">누구일까?</span>
                     </button>
                     <button onclick="selectQuestionCard('what')" class="question-card bg-gradient-to-br from-green-50 to-emerald-50 border-3 border-green-200 rounded-2xl p-4 text-center" data-card="what">
                         <span class="text-3xl mb-2 block">❓</span>
-                        <span class="font-jua text-green-600 text-sm">무엇일까?</span>
+                        <span class="font-noto text-green-600 text-sm">무엇일까?</span>
                     </button>
                     <button onclick="selectQuestionCard('why')" class="question-card bg-gradient-to-br from-amber-50 to-orange-50 border-3 border-amber-200 rounded-2xl p-4 text-center" data-card="why">
                         <span class="text-3xl mb-2 block">🤔</span>
-                        <span class="font-jua text-amber-600 text-sm">왜 그랬을까?</span>
+                        <span class="font-noto text-amber-600 text-sm">왜 그랬을까?</span>
                     </button>
                 </div>
             </div>
@@ -316,14 +316,14 @@
 
             <!-- 다음 질문 버튼 -->
             <div id="next-question-section" class="hidden text-center">
-                <button onclick="showNextQuestion()" class="btn-3d px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-jua text-lg shadow-lg" style="box-shadow: 0 6px 0 #6D28D9;">
+                <button onclick="showNextQuestion()" class="btn-3d px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-noto text-lg shadow-lg" style="box-shadow: 0 6px 0 #6D28D9;">
                     다음 질문으로 <i class="fa-solid fa-arrow-right ml-2"></i>
                 </button>
             </div>
 
             <!-- 완료 버튼 -->
             <div id="complete-section" class="hidden text-center">
-                <button onclick="completeSession()" class="btn-3d px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl font-jua text-lg shadow-lg" style="box-shadow: 0 6px 0 #047857;">
+                <button onclick="completeSession()" class="btn-3d px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl font-noto text-lg shadow-lg" style="box-shadow: 0 6px 0 #047857;">
                     <i class="fa-solid fa-check mr-2"></i> 질문 렌즈 완료!
                 </button>
             </div>
@@ -336,21 +336,21 @@
             <div class="complete-badge w-40 h-40 mx-auto mb-6 bg-white rounded-full flex items-center justify-center shadow-2xl">
                 <span class="text-7xl">🔍</span>
             </div>
-            <h2 class="font-jua text-4xl text-white mb-2">질문 렌즈 완료!</h2>
+            <h2 class="font-noto text-4xl text-white mb-2">질문 렌즈 완료!</h2>
             <p class="text-white/90 text-xl mb-8">책에 대해 더 깊이 생각했어요!</p>
 
             <div class="flex justify-center gap-4 mb-8">
                 <div class="bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/30">
                     <span class="text-3xl mb-1 block">⭐</span>
-                    <span class="text-white font-jua">+25 별</span>
+                    <span class="text-white font-noto">+25 별</span>
                 </div>
                 <div class="bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/30">
                     <span class="text-3xl mb-1 block">💬</span>
-                    <span class="text-white font-jua">질문 3개</span>
+                    <span class="text-white font-noto">질문 3개</span>
                 </div>
             </div>
 
-            <button onclick="goBack()" class="btn-3d px-10 py-4 bg-white text-purple-600 rounded-2xl font-jua text-lg" style="box-shadow: 0 6px 0 #DDD6FE;">
+            <button onclick="goBack()" class="btn-3d px-10 py-4 bg-white text-purple-600 rounded-2xl font-noto text-lg" style="box-shadow: 0 6px 0 #DDD6FE;">
                 돌아가기
             </button>
         </div>
@@ -441,6 +441,7 @@
         let currentQuestionIndex = 0;
         let answeredQuestions = 0;
         const totalQuestions = 3;
+        let cameFromBuddy = false; // AI 버디에서 진입했는지 여부
 
         // 책 선택
         function selectBook(bookId) {
@@ -680,6 +681,46 @@
                     sendMessage();
                 }
             });
+
+            // AI 버디에서 책을 이미 선택하고 온 경우 → 책 선택 스킵
+            const buddyBookRaw = sessionStorage.getItem('aiBuddyBook');
+            if (buddyBookRaw) {
+                try {
+                    const buddyBook = JSON.parse(buddyBookRaw);
+                    // 버디 책 → 질문렌즈 매핑 (ID가 다르므로 기본 대화 세트 사용)
+                    const defaultConversations = booksData['magic-potion'].conversations;
+                    selectedBook = {
+                        title: buddyBook.title,
+                        emoji: buddyBook.emoji,
+                        conversations: defaultConversations
+                    };
+                    conversationData = selectedBook.conversations;
+
+                    // 헤더에 책 정보 표시
+                    document.getElementById('header-book-title').textContent = selectedBook.title;
+                    document.getElementById('header-book-info').classList.remove('hidden');
+                    document.getElementById('header-book-info').classList.add('flex');
+                    document.getElementById('header-placeholder').classList.add('hidden');
+
+                    // 책 선택 화면 스킵 → 채팅 영역 바로 표시
+                    document.getElementById('book-selection-screen').classList.add('hidden');
+                    document.getElementById('chat-container').classList.remove('hidden');
+
+                    // 버디 인사 (책 이미 선택된 상태)
+                    addBuddyMessage(`${selectedBook.emoji} '${selectedBook.title}' 이야기 재미있었어?`);
+                    setTimeout(() => {
+                        addBuddyMessage("나랑 같이 이야기해볼래? 뭐가 궁금한지 하나만 골라봐!");
+                        showCardSelection();
+                    }, 1000);
+
+                    // AI 버디에서 진입 플래그 설정
+                    cameFromBuddy = true;
+                    // 사용한 세션 데이터 제거
+                    sessionStorage.removeItem('aiBuddyBook');
+                } catch (e) {
+                    // 파싱 실패 시 기본 책 선택 화면 유지
+                }
+            }
         });
 
         // 뒤로가기
@@ -687,7 +728,17 @@
             // 완료 모달이 열려있으면 닫기
             if (!document.getElementById('complete-modal').classList.contains('hidden')) {
                 document.getElementById('complete-modal').classList.add('hidden');
-                resetToBookSelection();
+                if (cameFromBuddy) {
+                    window.location.href = 'ai-buddy.html';
+                } else {
+                    resetToBookSelection();
+                }
+                return;
+            }
+
+            // AI 버디에서 온 경우 → 버디 챗봇으로 돌아가기
+            if (cameFromBuddy) {
+                window.location.href = 'ai-buddy.html';
                 return;
             }
 

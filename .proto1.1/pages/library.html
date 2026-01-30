@@ -5,779 +5,1339 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>북클럽 3.0 - KRS 리딩트리</title>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            bg: '#FEF3C7', primary: '#FF9F43', dark: '#F368E0', secondary: '#54a0ff', green: '#1dd1a1', paper: '#FDFBF7'
-                        }
-                    },
-                    boxShadow: {
-                        'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.05)',
-                        'floating': '0 20px 25px -5px rgba(255, 159, 67, 0.3)',
+                        brand: { bg: '#FEF3C7', primary: '#FF9F43', dark: '#F368E0', secondary: '#54a0ff', green: '#1dd1a1', paper: '#FDFBF7' }
                     }
                 }
             }
         }
     </script>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/responsive.css">
 
     <style>
-        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
+        .font-batang { font-family: 'Gowun Batang', serif; }
+        .font-display { font-family: 'Playfair Display', serif; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
 
-        /* === Tab Bar === */
-        .view-tab-bar {
-            display: flex;
-            background: #f0ebe3;
-            border-radius: 14px;
-            padding: 4px;
-            gap: 4px;
+        /* === Premium Header === */
+        .library-header {
+            background: linear-gradient(135deg, #fff8f0 0%, #fff4e6 50%, #fef3c7 100%);
+            border-bottom: 1px solid rgba(255, 159, 67, 0.1);
         }
-        .view-tab {
-            flex: 1;
-            padding: 10px 12px;
-            border-radius: 11px;
-            font-family: 'Jua', sans-serif;
-            font-size: 14px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            color: #b8a080;
-            background: transparent;
+        .header-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-brand-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #FF9F43, #f97316);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            user-select: none;
+            font-size: 18px;
+            box-shadow: 0 3px 12px rgba(255, 159, 67, 0.3);
         }
-        .view-tab:hover {
-            color: #8a7060;
+        .header-brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
         }
-        .view-tab.active {
-            background: white;
-            color: #1f2937;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        .header-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
         }
-
-        /* === Tab Content Transition === */
-        .tab-content {
-            display: none;
-            animation: tabFadeIn 0.3s ease;
+        .header-subtitle {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 11px;
+            color: #9ca3af;
+            font-weight: 400;
         }
-        .tab-content.active {
-            display: block;
-        }
-        @keyframes tabFadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* === Progress Gauge === */
-        .level-gauge-track {
-            height: 12px; border-radius: 6px;
-            background: #f0ebe3; overflow: hidden;
-        }
-        .level-gauge-fill {
-            height: 100%; border-radius: 6px;
-            background: linear-gradient(90deg, #FF9F43, #F368E0);
-            transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        /* === This Week Card === */
-        .week-card {
-            background: linear-gradient(135deg, #fff 0%, #FDFBF7 100%);
-            border-radius: 1.25rem;
-            box-shadow: 0 4px 24px rgba(80,60,30,0.10), 0 2px 0 #ede6d8;
-            border: 1px solid #e8e0d4;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-        .week-card:hover {
-            box-shadow: 0 8px 32px rgba(80,60,30,0.15);
-            transform: translateY(-2px);
-        }
-        .week-card-cover {
-            width: 120px; height: 160px; flex-shrink: 0;
-            border-radius: 1rem; overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-        }
-        .week-card-cover img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-
-        /* === Book Grid Card === */
-        .book-card {
-            transition: all 0.25s ease;
-            max-width: 220px;
-        }
-        .book-card:hover {
-            transform: translateY(-6px);
-        }
-        .book-thumb {
-            position: relative;
-            aspect-ratio: 3/4;
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-        .book-thumb-emoji {
-            font-size: 3rem;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        }
-
-        /* === Completed Book === */
-        .book-card.completed { opacity: 0.75; }
-        .book-card.completed:hover { opacity: 1; }
-        .book-card.completed .book-thumb { filter: grayscale(20%); }
-        .book-card.completed:hover .book-thumb { filter: grayscale(0%); }
-
-        /* === Book Grid === */
-        .book-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 16px;
-        }
-
-        /* ============================================
-           KRS 리딩맵 Styles
-           ============================================ */
-        .road-container {
-            position: relative;
-            padding: 30px 0 60px;
-            max-width: 520px;
-            margin: 0 auto;
-        }
-        .road-path {
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 100%;
-            background: #e8e0d4;
-            border-radius: 3px;
-            z-index: 0;
-        }
-        .road-path-fill {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            border-radius: 3px;
-            background: linear-gradient(180deg, #1dd1a1 0%, #FF9F43 100%);
-            transition: height 0.8s ease;
-        }
-
-        /* Road Nodes */
-        .road-node {
-            position: relative;
-            z-index: 2;
+        .header-level-badge {
             display: flex;
             align-items: center;
-            margin-bottom: 12px;
-            padding: 4px 0;
-        }
-        .road-node.align-left {
-            flex-direction: row;
-            padding-left: 16%;
-        }
-        .road-node.align-right {
-            flex-direction: row-reverse;
-            padding-right: 16%;
-        }
-
-        .node-circle {
-            width: 56px; height: 56px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem;
-            font-weight: 700;
-            flex-shrink: 0;
-            position: relative;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .node-circle:hover { transform: scale(1.1); }
-
-        /* Node States */
-        .node-completed .node-circle {
-            background: linear-gradient(135deg, #1dd1a1, #10b981);
-            color: white;
-            box-shadow: 0 4px 0 #0d9668, 0 6px 16px rgba(29,209,161,0.3);
-        }
-        .node-current .node-circle {
-            width: 68px; height: 68px;
-            background: linear-gradient(135deg, #FF9F43, #F368E0);
-            color: white;
-            box-shadow: 0 5px 0 #e0862e, 0 8px 24px rgba(255,159,67,0.4);
-            animation: currentPulse 2s ease-in-out infinite;
-            font-size: 1.5rem;
-        }
-        .node-locked .node-circle {
-            background: linear-gradient(135deg, #e8e0d4, #d4ccc0);
-            color: #b8a080;
-            box-shadow: 0 3px 0 #c4baa8;
-        }
-
-        @keyframes currentPulse {
-            0%, 100% { box-shadow: 0 5px 0 #e0862e, 0 8px 24px rgba(255,159,67,0.4); }
-            50% { box-shadow: 0 5px 0 #e0862e, 0 8px 32px rgba(255,159,67,0.6); }
-        }
-
-        .node-label {
-            padding: 8px 16px;
-            border-radius: 14px;
+            gap: 6px;
             background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            margin: 0 14px;
-            min-width: 120px;
+            border: 1px solid rgba(255, 159, 67, 0.2);
+            border-radius: 20px;
+            padding: 6px 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
-        .node-current .node-label {
-            background: #FFF8F0;
-            border: 2px solid #FFE0B2;
-            box-shadow: 0 2px 12px rgba(255,159,67,0.15);
+        .header-level-badge .level-label {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #FF9F43;
         }
-        .node-locked .node-label { opacity: 0.6; }
+        .header-level-badge .level-bar {
+            width: 56px;
+            height: 5px;
+            background: #f3f4f6;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .header-level-badge .level-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF9F43, #f97316);
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+        .header-level-badge .level-count {
+            font-size: 11px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
 
-        /* Group Divider */
-        .group-divider {
-            text-align: center;
-            padding: 24px 0 14px;
-            position: relative;
-            z-index: 2;
+        /* === Tab Switcher (Duolingo-style) === */
+        .tab-switcher {
+            display: flex;
+            background: white;
+            border-radius: 14px;
+            padding: 4px;
+            gap: 4px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.03);
         }
-        .group-badge {
+        .tab-pill {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 11px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #b0a090;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .tab-pill i {
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab-pill:hover:not(.active) {
+            background: #fdf8f3;
+            color: #8b7560;
+        }
+        .tab-pill.active {
+            background: linear-gradient(135deg, #FF9F43, #f97316);
+            color: white;
+            box-shadow: 0 3px 12px rgba(255, 159, 67, 0.35);
+            transform: scale(1);
+        }
+        .tab-pill.active i {
+            color: white;
+            animation: tabIconPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes tabIconPop {
+            0% { transform: scale(0.8) rotate(-10deg); }
+            60% { transform: scale(1.15) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .tab-pill .tab-emoji {
+            font-size: 16px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        .tab-pill.active .tab-emoji {
+            animation: emojiWave 0.6s ease;
+        }
+        @keyframes emojiWave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-12deg); }
+            75% { transform: rotate(12deg); }
+        }
+
+        .tab-content { display: none; animation: tabFadeIn 0.35s ease; }
+        .tab-content.active { display: block; }
+        @keyframes tabFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* === Page Header === */
+        .page-header {
+            background: transparent;
+            border-bottom: none;
+        }
+
+        /* === Month Section === */
+        .month-section {
+            margin-bottom: 20px;
+        }
+        .month-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 0 4px 10px;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 2px solid #e8e0d4;
+            transition: all 0.2s;
+        }
+        .month-header:hover {
+            border-bottom-color: #FF9F43;
+        }
+        .month-title-text {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #2d1b0e;
+        }
+        .month-title-num {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #FF9F43;
+        }
+        .month-toggle {
+            margin-left: auto;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: rgba(255,159,67,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FF9F43;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        .month-toggle.collapsed { transform: rotate(-90deg); }
+        .month-body {
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            max-height: 2000px;
+            opacity: 1;
+        }
+        .month-body.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+        .month-completed-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(16,185,129,0.1);
+            color: #10b981;
+        }
+
+        /* 완료된 개월 - 비활성 스타일 */
+        .month-section.completed .month-title-num {
+            color: #6b7280;
+        }
+        .month-section.completed .month-toggle {
+            background: rgba(107,114,128,0.1);
+            color: #9ca3af;
+        }
+        .month-section.completed .month-header {
+            opacity: 0.75;
+        }
+
+        /* === Week Card Grid === */
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        @media (max-width: 640px) {
+            .week-grid { grid-template-columns: 1fr; }
+        }
+
+        /* === Week Card === */
+        .week-card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #f0ebe3;
+            overflow: hidden;
+            transition: all 0.25s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .week-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        .week-card.in-progress {
+            background: linear-gradient(135deg, #FFFCF5, #FFF6E8);
+            border: 2px solid #FF9F43;
+            box-shadow: 0 4px 16px rgba(255,159,67,0.15), 0 0 0 3px rgba(255,159,67,0.06);
+        }
+        .week-card.in-progress:hover {
+            box-shadow: 0 8px 28px rgba(255,159,67,0.2), 0 0 0 3px rgba(255,159,67,0.1);
+        }
+        .week-card.in-progress .week-card-header {
+            border-bottom-color: rgba(255,159,67,0.15);
+        }
+        .week-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f5f0e8;
+        }
+        .week-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 20px;
-            border-radius: 9999px;
-            font-family: 'Jua', sans-serif;
-            font-size: 0.9rem;
+        }
+        .week-num {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            background: #2d3748;
+        }
+        .week-level {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #4a5568;
+            background: #f0f0f0;
+            border: 1px solid #e2e8f0;
+        }
+        .week-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .week-status.completed { color: #10b981; }
+        .week-status.in-progress { color: #FF9F43; }
+        .week-status.locked { color: #9ca3af; }
+
+        /* Book Info Area */
+        .week-card-body {
+            padding: 16px;
+            display: flex;
+            gap: 14px;
+        }
+        .book-cover-box {
+            flex-shrink: 0;
+            width: 90px;
+            height: 110px;
+            border-radius: 10px;
+            background: #f5f0e8;
+            border: 1px solid #e8e0d4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        .book-cover-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 9px;
+        }
+        .book-cover-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: 100%;
+            height: 100%;
+        }
+        .book-cover-placeholder i {
+            font-size: 24px;
+            color: #c4b8a8;
+        }
+        .book-cover-placeholder span {
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #b8a89a;
+        }
+        .book-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .book-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+        .book-desc {
+            font-size: 0.75rem;
+            color: #6b7280;
+            line-height: 1.4;
+            margin-bottom: 2px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .book-author {
+            font-size: 0.78rem;
+            color: #9ca3af;
+            margin-bottom: 10px;
+        }
+
+        /* Activity Badges */
+        .activity-section {
+            padding: 0 16px 14px;
+        }
+        .activity-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #b8a89a;
+            margin-bottom: 8px;
             letter-spacing: 0.02em;
         }
-
-        /* Current position indicator */
-        .current-flag {
-            position: absolute;
-            top: -10px; right: -10px;
-            background: #FF9F43;
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 10px;
-            white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(255,159,67,0.3);
-            animation: flagBounce 1.5s ease-in-out infinite;
+        .activity-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
-        @keyframes flagBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
+        .activity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #f8f6f2;
+            color: #4a5568;
+            border: 1px solid #e8e0d4;
+            transition: all 0.2s;
+            cursor: pointer;
         }
-
-        /* Map Summary Card */
-        .map-summary {
-            background: white;
-            border-radius: 1.25rem;
-            padding: 20px 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-            border: 1px solid #f0ebe3;
-            max-width: 520px;
-            margin: 0 auto 24px;
+        .activity-badge:hover {
+            background: #FFF8F0;
+            border-color: #FFE0B2;
+            color: #FF9F43;
         }
-        .map-stat {
-            text-align: center;
-            flex: 1;
+        .activity-badge.done {
+            background: rgba(16,185,129,0.08);
+            border-color: rgba(16,185,129,0.2);
+            color: #10b981;
         }
-        .map-stat-num {
-            font-family: 'Jua', sans-serif;
-            font-size: 1.5rem;
-            line-height: 1;
-        }
-        .map-stat-label {
+        .activity-badge i {
             font-size: 11px;
+        }
+
+        /* === Reading Step Board (ㄹ Path - Light Theme) === */
+        .board-wrapper {
+            background: linear-gradient(180deg, #FEF9F0 0%, #FFF6EA 50%, #FFF2E0 100%);
+            min-height: 100vh;
+            padding: 28px 16px 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .board-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 15% 85%, rgba(255,159,67,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 85% 15%, rgba(139,92,246,0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .board-title {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .board-title h3 {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 25px;
+            font-weight: 800;
+            color: #2d1b0e;
+        }
+        .board-title p {
+            font-size: 14px;
             color: #9ca3af;
             margin-top: 4px;
         }
 
-        /* === Mobile === */
+        /* Summary Bar */
+        .board-summary {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 24px;
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #f0ebe3;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            max-width: 720px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        .bs-item { display: flex; flex-direction: column; align-items: center; flex: 1; }
+        .bs-num { font-family: 'Noto Sans KR', sans-serif; font-size: 1.5rem; font-weight: 800; line-height: 1; }
+        .bs-label { font-size: 12px; color: #9ca3af; margin-top: 4px; }
+        .bs-divider { width: 1px; height: 36px; background: #f0ebe3; }
+
+        /* Board Frame */
+        .board-frame {
+            width: 100%;
+            max-width: 720px;
+            padding: 14px;
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #f0ebe3;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Grid - ㄹ serpentine: 5 cols, 7 rows (all auto height) */
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(7, auto);
+            gap: 6px;
+        }
+
+        /* Base Tile */
+        .b-tile {
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 6px 10px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+            overflow: visible;
+            background: #f8f6f2;
+            border: 1.5px solid #ebe5db;
+            min-height: 96px;
+        }
+        .b-tile:hover {
+            transform: scale(1.06) translateY(-2px);
+            z-index: 5;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+        }
+
+        /* Color band (top of tile) */
+        .b-tile .tile-band {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 7px;
+            border-radius: 14px 14px 0 0;
+        }
+
+        /* Tile content */
+        .tile-lv {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1.1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            margin-top: 4px;
+        }
+        .tile-grade {
+            font-size: 11px;
+            color: #9ca3af;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            margin-top: 3px;
+        }
+        .tile-status-icon {
+            font-size: 15px;
+            margin-top: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Completed */
+        .b-tile.st-completed { background: #f8f6f2; }
+        .b-tile.st-completed .tile-lv { color: #374151; }
+        .b-tile.st-completed .tile-status-icon { color: #10b981; }
+
+        /* Current */
+        .b-tile.st-current {
+            background: linear-gradient(135deg, #FFF8F0, #FFE8CC);
+            border: 3px solid #FF9F43;
+            box-shadow: 0 0 16px rgba(255,159,67,0.25), 0 6px 16px rgba(255,159,67,0.15);
+            animation: currentTileGlow 2s ease-in-out infinite;
+        }
+        .b-tile.st-current .tile-lv { color: #c2410c; font-size: 18px; }
+
+        /* Locked */
+        .b-tile.st-locked { background: #f5f3ef; border-color: #e8e4dc; opacity: 0.6; }
+        .b-tile.st-locked .tile-lv { color: #b8b0a4; font-size: 15px; }
+        .b-tile.st-locked .tile-grade { color: #c8c0b4; }
+
+        /* Corner / Special Tiles */
+        .b-tile.corner-tile {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2.5px solid #f59e0b;
+        }
+        .b-tile.start-tile {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            border-color: #22c55e;
+        }
+        .b-tile.goal-tile {
+            background: linear-gradient(135deg, #fef9c3, #fde047);
+            border-color: #eab308;
+        }
+        .b-tile.island-tile {
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            border-color: #0ea5e9;
+        }
+        .b-tile.key-tile {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            border-color: #ec4899;
+        }
+        .b-tile.bonus-tile {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            border-color: #8b5cf6;
+        }
+        .corner-icon { font-size: 28px; line-height: 1; }
+        .corner-label {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            color: #4a5568;
+            margin-top: 4px;
+        }
+
+        /* Bridge Tile (ㄹ connector between rows) */
+        .b-bridge {
+            border-radius: 14px;
+            min-height: 72px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            background: linear-gradient(135deg, #FFF8F0, #FFF0DD);
+            border: 2.5px dashed #FFD4A0;
+            cursor: default;
+            position: relative;
+        }
+        .b-bridge i {
+            color: #FF9F43;
+            font-size: 22px;
+        }
+        .b-bridge .bridge-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #d4a06a;
+        }
+
+        /* Avatar on current tile */
+        .tile-avatar {
+            position: absolute;
+            top: -10px;
+            right: -5px;
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #FF9F43, #F368E0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 2.5px solid white;
+            box-shadow: 0 3px 10px rgba(255,159,67,0.4);
+            z-index: 3;
+            animation: avatarBounce 1s ease-in-out infinite;
+        }
+
+        @keyframes currentTileGlow {
+            0%, 100% { box-shadow: 0 0 16px rgba(255,159,67,0.25), 0 6px 16px rgba(255,159,67,0.15); }
+            50% { box-shadow: 0 0 28px rgba(255,159,67,0.4), 0 6px 20px rgba(255,159,67,0.25); }
+        }
+        @keyframes avatarBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        /* Legend */
+        .board-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 14px 20px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 16px;
+            border: 1px solid #f0ebe3;
+            max-width: 720px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+        .legend-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(0,0,0,0.08);
+        }
+
+        /* Group color chips */
+        .board-groups {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            max-width: 720px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        .group-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            border: 1px solid #f0ebe3;
+        }
+        .group-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 3px;
+        }
+        .group-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        /* === Responsive === */
         @media (max-width: 768px) {
             main.flex-1 { padding-top: 4rem; }
-            .week-card-cover { width: 90px; height: 120px; }
-            .book-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
-            .node-circle { width: 48px; height: 48px; font-size: 1.1rem; }
-            .node-current .node-circle { width: 58px; height: 58px; font-size: 1.3rem; }
-            .road-node.align-left { padding-left: 8%; }
-            .road-node.align-right { padding-right: 8%; }
-            .view-tab { font-size: 13px; padding: 9px 8px; }
+            .month-title-text, .month-title-num { font-size: 1.1rem; }
+            .header-brand-icon { width: 30px; height: 30px; font-size: 15px; border-radius: 8px; }
+            .header-title { font-size: 14px; }
+            .header-subtitle { font-size: 10px; }
+            .header-level-badge { padding: 4px 10px; gap: 5px; }
+            .header-level-badge .level-label { font-size: 11px; }
+            .header-level-badge .level-bar { width: 44px; }
+            .tab-pill { padding: 8px 14px; font-size: 13px; }
+            .tab-pill .tab-emoji { font-size: 14px; }
+            .week-card-body { gap: 10px; }
+            .book-cover-box { width: 76px; height: 95px; }
+            .book-title { font-size: 0.95rem; }
+            .board-frame { max-width: 100%; padding: 8px; }
+            .board-grid { gap: 4px; }
+            .b-tile { border-radius: 10px; padding: 8px 4px 6px; min-height: 76px; }
+            .b-bridge { min-height: 56px; }
+            .tile-lv { font-size: 14px; }
+            .tile-grade { font-size: 9px; }
+            .tile-status-icon { font-size: 12px; }
+            .corner-icon { font-size: 22px; }
+            .corner-label { font-size: 10px; }
+            .tile-avatar { width: 28px; height: 28px; font-size: 15px; top: -8px; right: -4px; }
+            .board-summary { padding: 12px 16px; gap: 10px; }
+            .bs-num { font-size: 1.25rem; }
         }
     </style>
 </head>
 <body class="bg-brand-bg font-sans text-gray-800 h-screen overflow-hidden">
-    <!-- Mobile hamburger -->
     <button class="sidebar-toggle" id="sidebar-toggle-btn" onclick="toggleSidebar()">
         <i class="fa-solid fa-bars text-gray-600 text-lg"></i>
     </button>
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <div class="flex w-full h-full">
-        <!-- Sidebar Container -->
         <div id="sidebar-container"></div>
 
-        <!-- Main Content -->
-        <main class="flex-1 h-full overflow-y-auto" id="main-scroll">
+        <main class="flex-1 h-full overflow-y-auto" id="main-scroll" style="scroll-behavior:smooth;">
             <!-- Sticky Header -->
-            <div class="sticky top-0 bg-brand-bg/95 backdrop-blur-sm z-20 border-b border-orange-100/50">
-                <div class="px-5 md:px-8 pt-5 pb-4">
-                    <!-- Title Row -->
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-gradient-to-br from-brand-primary to-orange-500 rounded-xl flex items-center justify-center shadow-md">
-                                <i class="fa-solid fa-tree text-white text-lg"></i>
-                            </div>
-                            <div>
-                                <h2 class="font-jua text-xl md:text-2xl text-gray-800">KRS 리딩트리</h2>
-                                <p class="text-xs text-gray-400">K2-2 · 독서 숙달 단계</p>
+            <div class="sticky top-0 z-20 library-header">
+                <div class="px-5 md:px-8 pt-4 pb-4">
+                    <!-- Row 1: Brand + Level -->
+                    <div class="header-top-row">
+                        <div class="header-brand">
+                            <div class="header-brand-icon">📖</div>
+                            <div class="header-brand-text">
+                                <div class="header-title">KRS 리딩 프로그램</div>
+                                <div class="header-subtitle">우희의 독서 여정</div>
                             </div>
                         </div>
+                        <div class="header-level-badge">
+                            <span class="level-label">K2-2</span>
+                            <div class="level-bar">
+                                <div class="level-fill" style="width:42%"></div>
+                            </div>
+                            <span class="level-count"><span id="completed-count">10</span>/24</span>
+                        </div>
                     </div>
-
-                    <!-- Tab Bar -->
-                    <div class="view-tab-bar">
-                        <button class="view-tab active" data-tab="tree" onclick="switchTab('tree')">
-                            <i class="fa-solid fa-book-open text-sm"></i>
-                            KRS 리딩트리
+                    <!-- Row 2: Tab Switcher -->
+                    <div class="tab-switcher" id="view-switcher">
+                        <button class="tab-pill active" id="tab-btn-tree" onclick="switchTab('tree')">
+                            <span class="tab-emoji">🌳</span>
+                            <span>리딩트리</span>
                         </button>
-                        <button class="view-tab" data-tab="map" onclick="switchTab('map')">
-                            <i class="fa-solid fa-map text-sm"></i>
-                            KRS 리딩맵
+                        <button class="tab-pill" id="tab-btn-map" onclick="switchTab('map')">
+                            <span class="tab-emoji">👣</span>
+                            <span>리딩스탭</span>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- ========================================
-                 TAB 1: KRS 리딩트리 (도서 목록)
-                 ======================================== -->
+            <!-- ======== TAB 1: KRS 리딩트리 (Month Cards) ======== -->
             <div class="tab-content active" id="tab-tree">
-                <div class="px-5 md:px-8 py-5">
-
-                    <!-- Level Progress -->
-                    <div class="flex items-center gap-3 mb-6 bg-white/60 rounded-2xl px-4 py-3 border border-orange-100/50">
-                        <span class="text-xs font-bold text-brand-primary bg-orange-100 px-2.5 py-1 rounded-lg flex-shrink-0">K2-2</span>
-                        <div class="flex-1">
-                            <div class="level-gauge-track">
-                                <div class="level-gauge-fill" id="level-gauge" style="width: 10%"></div>
-                            </div>
-                        </div>
-                        <span class="text-xs font-bold text-gray-500 flex-shrink-0">
-                            <span class="text-brand-primary" id="completed-count">10</span>/100권
-                        </span>
-                        <span class="text-xs text-gray-300 flex-shrink-0">→ K3-1</span>
-                    </div>
-
-                    <!-- Section 1: 이번주 책 -->
-                    <section class="mb-8">
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="text-xl">📖</span>
-                            <h3 class="font-jua text-lg text-gray-800">이번주 책</h3>
-                            <span class="text-xs bg-red-100 text-red-500 px-2 py-0.5 rounded-full font-bold">1월 1주차</span>
-                        </div>
-
-                        <div class="week-card cursor-pointer" onclick="openBookViewer()">
-                            <div class="flex gap-4 p-4 md:p-5">
-                                <div class="week-card-cover">
-                                    <img src="../img/book1.jpg" alt="오즈의 마법사" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-4xl\'>🧙‍♂️</div>';">
-                                </div>
-                                <div class="flex-1 min-w-0 flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center gap-2 flex-wrap mb-2">
-                                            <span class="text-[10px] font-bold bg-orange-100 text-orange-600 px-2 py-0.5 rounded-md">
-                                                <i class="fa-solid fa-bookmark text-[8px] mr-0.5"></i> 코어북
-                                            </span>
-                                            <span class="text-[10px] font-bold bg-indigo-50 text-indigo-500 px-2 py-0.5 rounded-md border border-indigo-100">K2-2</span>
-                                        </div>
-                                        <h4 class="font-jua text-lg text-gray-900 mb-0.5">오즈의 마법사</h4>
-                                        <p class="text-xs text-gray-400 mb-2">회오리바람에 날려간 도로시의 신비로운 모험 이야기</p>
-                                        <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed border-l-2 border-orange-200 pl-2">
-                                            쿵! 마침내 회오리바람이 멈추고 집이 땅에 떨어졌어요. 도로시가 집 밖으로 나오자 지팡이를 든 할머니가 다가왔어요.
-                                        </p>
-                                    </div>
-                                    <div class="flex items-center justify-between mt-3">
-                                        <button class="px-4 py-2 bg-gradient-to-r from-brand-primary to-orange-400 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-1.5" onclick="event.stopPropagation(); openBookViewer()">
-                                            <i class="fa-solid fa-book-open"></i>
-                                            <span id="week-action-text">읽기 시작</span>
-                                        </button>
-                                        <div class="flex items-center gap-1.5 text-xs">
-                                            <span class="font-bold text-brand-primary" id="week-pg-current">1</span>
-                                            <span class="text-gray-300">/</span>
-                                            <span class="text-gray-400">8</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="px-4 pb-3 md:px-5">
-                                <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-brand-primary to-orange-300 rounded-full transition-all" id="week-progress-bar" style="width: 0%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Section 2: 다음에 읽을 책 -->
-                    <section class="mb-8">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-2">
-                                <span class="text-xl">📚</span>
-                                <h3 class="font-jua text-lg text-gray-800">다음에 읽을 책</h3>
-                                <span class="text-xs bg-brand-primary/10 text-brand-primary px-2 py-0.5 rounded-full font-bold" id="toread-count">80권</span>
-                            </div>
-                        </div>
-                        <div class="book-grid" id="toread-grid"></div>
-                    </section>
-
-                    <!-- Section 3: 다 읽은 책 -->
-                    <section class="mb-8 bg-gray-50/60 -mx-5 md:-mx-8 px-5 md:px-8 py-6 border-t border-gray-100">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-circle-check text-green-500"></i>
-                                <h3 class="font-jua text-base text-gray-600">다 읽은 책</h3>
-                                <span class="text-xs text-gray-400" id="done-count">9권</span>
-                            </div>
-                        </div>
-                        <div class="book-grid" id="done-grid"></div>
-                    </section>
-
+                <div class="px-5 md:px-8 pt-6 pb-8" id="month-container">
+                    <!-- JS renders month sections -->
                 </div>
             </div>
 
-            <!-- ========================================
-                 TAB 2: KRS 리딩맵 (단계 경로)
-                 ======================================== -->
+            <!-- ======== TAB 2: KRS 리딩맵 ======== -->
             <div class="tab-content" id="tab-map">
-                <div class="px-5 md:px-8 py-5">
-
-                    <!-- Summary Stats -->
-                    <div class="map-summary">
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="map-stat">
-                                <div class="map-stat-num text-green-500">5</div>
-                                <div class="map-stat-label">완료 단계</div>
-                            </div>
-                            <div class="w-px h-8 bg-gray-100"></div>
-                            <div class="map-stat">
-                                <div class="map-stat-num text-brand-primary">K2-2</div>
-                                <div class="map-stat-label">현재 단계</div>
-                            </div>
-                            <div class="w-px h-8 bg-gray-100"></div>
-                            <div class="map-stat">
-                                <div class="map-stat-num text-gray-400">9</div>
-                                <div class="map-stat-label">남은 단계</div>
-                            </div>
-                            <div class="w-px h-8 bg-gray-100"></div>
-                            <div class="map-stat">
-                                <div class="map-stat-num text-violet-500">15</div>
-                                <div class="map-stat-label">전체 단계</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Road Map -->
-                    <div class="road-container" id="road-container">
-                        <div class="road-path">
-                            <div class="road-path-fill" id="road-fill"></div>
-                        </div>
-                        <!-- JS renders road nodes -->
-                    </div>
-
-                    <!-- Map Footer Info -->
-                    <div class="text-center pb-8">
-                        <p class="text-xs text-gray-400">PreK1(만 4세) ~ K10(성인) · 총 15단계 독서 커리큘럼</p>
-                    </div>
-
+                <div class="board-wrapper" id="rmap-container">
+                    <!-- JS renders board game map -->
                 </div>
             </div>
-
         </main>
     </div>
 
-    <!-- Logout Modal Container -->
     <div id="logout-modal-container"></div>
-
-    <!-- Scripts -->
     <script src="../js/common.js"></script>
     <script src="../js/sidebar.js"></script>
     <script>
-        // ===== KRS Level Data =====
-        const krsLevels = [
-            { id: 'PreK1', label: 'PreK1', grade: '만 4~5세', group: '독서기초', groupIcon: '🌱', desc: '한글 해득 집중', status: 'completed', booksRead: 100 },
-            { id: 'PreK2', label: 'PreK2', grade: '만 6세', group: '독서기초', groupIcon: '🌱', desc: '글 경험 확대', status: 'completed', booksRead: 100 },
-            { id: 'K1-1', label: 'K1-1', grade: '초1-1학기', group: '독서 유창성', groupIcon: '📗', desc: '글 경험 확대 및 유창성', status: 'completed', booksRead: 100 },
-            { id: 'K1-2', label: 'K1-2', grade: '초1-2학기', group: '독서 유창성', groupIcon: '📗', desc: '유창성 확보', status: 'completed', booksRead: 100 },
-            { id: 'K2-1', label: 'K2-1', grade: '초2-1학기', group: '독서 유창성', groupIcon: '📗', desc: '유창성 및 교과 연계', status: 'completed', booksRead: 100 },
-            { id: 'K2-2', label: 'K2-2', grade: '초2-2학기', group: '독서 숙달', groupIcon: '📙', desc: '교과 연계 지식 체계화', status: 'current', booksRead: 10 },
-            { id: 'K3-1', label: 'K3-1', grade: '초3-1학기', group: '독서 숙달', groupIcon: '📙', desc: '교과 연계 지식 체계화', status: 'locked', booksRead: 0 },
-            { id: 'K3-2', label: 'K3-2', grade: '초3-2학기', group: '독서 숙달', groupIcon: '📙', desc: '교과 연계 지식 체계화', status: 'locked', booksRead: 0 },
-            { id: 'K4', label: 'K4', grade: '초4', group: '독서 심화', groupIcon: '📕', desc: '교과 연계 지식 체계화', status: 'locked', booksRead: 0 },
-            { id: 'K5', label: 'K5', grade: '초5', group: '독서 심화', groupIcon: '📕', desc: '비판적 이해 및 심화', status: 'locked', booksRead: 0 },
-            { id: 'K6', label: 'K6', grade: '초6', group: '독서 심화', groupIcon: '📕', desc: '비판적 이해 및 심화', status: 'locked', booksRead: 0 },
-            { id: 'K7', label: 'K7', grade: '중1', group: '독서 심화', groupIcon: '📕', desc: '지식 통합 및 전문 독해', status: 'locked', booksRead: 0 },
-            { id: 'K8', label: 'K8', grade: '중2~고1', group: '독서 확장', groupIcon: '📘', desc: '고급 정보글 독해', status: 'locked', booksRead: 0 },
-            { id: 'K9', label: 'K9', grade: '고2~대1', group: '독서 확장', groupIcon: '📘', desc: '학술 텍스트 이해', status: 'locked', booksRead: 0 },
-            { id: 'K10', label: 'K10', grade: '성인', group: '독서 확장', groupIcon: '📘', desc: '전문·학술 독해', status: 'locked', booksRead: 0 }
-        ];
-
-        const groupColors = {
-            '독서기초': { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700' },
-            '독서 유창성': { bg: 'bg-sky-50', border: 'border-sky-200', text: 'text-sky-700' },
-            '독서 숙달': { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700' },
-            '독서 심화': { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-700' },
-            '독서 확장': { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-700' }
-        };
-
-        // ===== Sample Book Data =====
-        const bookEmojis = ['🧙‍♂️','🌳','🚀','🦕','👸','🐸','🌲','⭐','🎪','🐻','🦊','🐰','🦁','🐸','🌻','🍎','🎈','🌈','🐣','🦄','🐳','🎩','🌺','🦋','🏰','🌊','🔮','🎭','🗺️','🎵','🦜','🌙','🍀','🐝','🌸','🎨','🦉','🐢','🌴','🏠','🎠','🌤️','🦩','🐧','🍄','🎃','🐾','🌍','🧸','💎','🎪','🏖️','🎢','🪐','🦈','🐉','🧜‍♀️','🤖','🦇','🌋','🏔️','🚂','🎭','🧚','🪄','🦅','🐬','🌵','🏕️','🎯','🧩','🪁','🎸','🌻','🍉','🦩','🐠','🌪️','🏜️','🎆'];
-        const bookBgs = [
-            'from-blue-400 to-indigo-500','from-emerald-400 to-teal-500','from-violet-400 to-purple-500',
-            'from-amber-400 to-orange-500','from-rose-400 to-pink-500','from-cyan-400 to-blue-500',
-            'from-lime-400 to-green-500','from-fuchsia-400 to-pink-600','from-sky-400 to-blue-600',
-            'from-orange-400 to-red-500','from-teal-400 to-emerald-600','from-indigo-400 to-violet-600'
-        ];
-        const bookTitles = [
-            '숲속 모험가','우주 탐험대','공룡 대탐험','바다의 비밀','마법의 정원',
-            '시간 여행자','하늘을 나는 꿈','별빛 마을','무지개 다리','비밀의 성',
-            '꿈꾸는 로봇','작은 영웅','신비한 동굴','구름 위의 세상','요술 램프',
-            '용감한 기사','해적 보물','마법 학교','동물 왕국','꽃의 요정',
-            '얼음 나라','사막의 오아시스','정글 탐험','번개 소년','달빛 소나타',
-            '바람의 노래','화산 섬','수정 궁전','별똥별 소원','미래 도시',
-            '고래의 노래','나비의 꿈','무인도 일기','마녀의 수프','용의 알',
-            '시계탑 비밀','하늘 정원','깊은 바다','오로라 여행','마법 붓',
-            '달나라 토끼','구름 요리사','번개 고양이','숲의 수호자','보물 지도',
-            '마법의 돌','하늘 나라','깊은 숲','달의 뒷면','별의 탄생',
-            '바닷속 왕국','구름 나라','태양의 집','눈의 여왕','바람의 아이',
-            '무지개 물고기','하늘빛 마차','숲속 음악회','별빛 도서관','마법의 주문',
-            '꽃비 내리는 날','달빛 호수','구름 기차','하늘 등대','별자리 여행',
-            '바다거북 일기','무지개 폭포','마법 망원경','꿈의 궁전','하늘 다리',
-            '빛나는 조약돌','숲속 카페','바람의 편지','별빛 항해','구름 공원',
-            '마법 나침반','하늘 서커스','달빛 정원','무지개 계단','별의 노래'
-        ];
-        const genres = ['판타지','모험','과학','자연','동화','역사','우정','가족','미스터리','예술'];
-
-        function generateBooks(count, startIdx) {
-            const books = [];
-            for (let i = 0; i < count; i++) {
-                const idx = startIdx + i;
-                books.push({
-                    id: idx,
-                    title: bookTitles[idx % bookTitles.length],
-                    emoji: bookEmojis[idx % bookEmojis.length],
-                    bg: bookBgs[idx % bookBgs.length],
-                    genre: genres[idx % genres.length]
-                });
-            }
-            return books;
+    // ============================================================
+    //  MONTHLY DATA (6개월)
+    // ============================================================
+    const monthlyData = [
+        {
+            month: 1, status: 'completed',
+            weeks: [
+                { week: 1, level: 'K2-1', title: '오즈의 마법사', desc: '회오리바람에 날려간 도로시의 신비로운 모험 이야기', author: 'L. 프랭크 바움 원작', img: '../img/book1.jpg', type: 'core', status: 'completed', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ]},
+                { week: 2, level: 'K2-1', title: '약속은 즐거워', desc: '약속과 규칙의 소중함을 배우는 생활 동화', author: '박은경 글', img: '../img/book2.jpg', type: 'managed', status: 'completed', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: true },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ]},
+                { week: 3, level: 'K2-1', title: '오즈의 마법사', desc: '회오리바람에 날려간 도로시의 신비로운 모험 이야기', author: 'L. 프랭크 바움 원작', img: '../img/book1.jpg', type: 'core', status: 'completed', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ]},
+                { week: 4, level: 'K2-1', title: '약속은 즐거워', desc: '약속과 규칙의 소중함을 배우는 생활 동화', author: '박은경 글', img: '../img/book2.jpg', type: 'managed', status: 'completed', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: true },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ]}
+            ]
+        },
+        {
+            month: 2, status: 'completed',
+            weeks: [
+                { week: 1, level: 'K2-1', title: '숭숭이와 나', desc: '특별한 친구와 함께 자라는 우정 이야기', author: '지윤경 글', img: '../img/book3.jpg', type: 'core', status: 'completed', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ]},
+                { week: 2, level: 'K2-1', title: '빨간머리 앤', desc: '상상력 넘치는 소녀 앤의 초록 지붕 집 이야기', author: '몽고메리 원작', img: '../img/book4.jpg', type: 'managed', status: 'completed', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: true },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ]},
+                { week: 3, level: 'K2-1', title: '숭숭이와 나', desc: '특별한 친구와 함께 자라는 우정 이야기', author: '지윤경 글', img: '../img/book3.jpg', type: 'core', status: 'completed', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ]},
+                { week: 4, level: 'K2-2', title: '나무를 심은 사람', desc: '한 사람의 끈기가 숲을 만든 감동 실화', author: '장 지오노 원작', img: '', type: 'managed', status: 'completed', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: true },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ]}
+            ]
+        },
+        {
+            month: 3, status: 'current',
+            weeks: [
+                { week: 1, level: 'K2-2', title: '오즈의 마법사', desc: '회오리바람에 날려간 도로시의 신비로운 모험 이야기', author: 'L. 프랭크 바움 원작', img: '../img/book1.jpg', type: 'core', status: 'in-progress', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 2, level: 'K2-2', title: '약속은 즐거워', desc: '약속과 규칙의 소중함을 배우는 생활 동화', author: '박은경 글', img: '../img/book2.jpg', type: 'managed', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 3, level: 'K2-2', title: '숭숭이와 나', desc: '특별한 친구와 함께 자라는 우정 이야기', author: '지윤경 글', img: '../img/book3.jpg', type: 'core', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 4, level: 'K2-2', title: '빨간머리 앤', desc: '상상력 넘치는 소녀 앤의 초록 지붕 집 이야기', author: '몽고메리 원작', img: '../img/book4.jpg', type: 'managed', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]}
+            ]
+        },
+        {
+            month: 4, status: 'locked',
+            weeks: [
+                { week: 1, level: 'K2-2', title: '꿈꾸는 로봇', desc: '로봇과 아이의 특별한 우정 이야기', author: '이지현 글', img: '', type: 'core', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 2, level: 'K2-2', title: '작은 영웅', desc: '평범한 아이가 용기를 내어 영웅이 되는 이야기', author: '김태영 글', img: '', type: 'managed', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 3, level: 'K2-2', title: '신비한 동굴', desc: '동굴 속에서 발견한 놀라운 비밀 모험', author: '박소연 글', img: '', type: 'core', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 4, level: 'K2-2', title: '구름 위의 세상', desc: '구름 위에서 펼쳐지는 환상적인 하늘 여행', author: '최은영 글', img: '', type: 'managed', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]}
+            ]
+        },
+        {
+            month: 5, status: 'locked',
+            weeks: [
+                { week: 1, level: 'K3-1', title: '미래의 발명가', desc: '작은 발명으로 세상을 바꾸는 꿈 이야기', author: '한지은 글', img: '', type: 'core', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 2, level: 'K3-1', title: '바다의 비밀', desc: '깊은 바다 속 숨겨진 보물과 생물의 세계', author: '아놀드 로벨', img: '', type: 'managed', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 3, level: 'K3-1', title: '별빛 마을', author: '오 헨리', desc: '따뜻한 마음이 모인 작은 마을의 이야기', img: '', type: 'core', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 4, level: 'K3-1', title: '하늘을 나는 꿈', desc: '하늘을 동경하는 아이의 아름다운 꿈 이야기', author: '윤동주', img: '', type: 'managed', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]}
+            ]
+        },
+        {
+            month: 6, status: 'locked',
+            weeks: [
+                { week: 1, level: 'K3-1', title: '시간 여행자', desc: '과거와 미래를 오가는 신비로운 시간 모험', author: '마르쿠스 피스터', img: '', type: 'core', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 2, level: 'K3-1', title: '마법의 정원', desc: '비밀 정원에서 피어나는 자연과 희망의 이야기', author: '장 지오노', img: '', type: 'managed', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 3, level: 'K3-1', title: '공룡 대탐험', desc: '공룡 시대로 떠나는 짜릿한 탐험 이야기', author: '한지은 글', img: '', type: 'core', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]},
+                { week: 4, level: 'K3-1', title: '우주 탐험대', desc: '신비로운 우주를 누비는 어린이 탐험대 이야기', author: '이수정 글', img: '', type: 'managed', status: 'locked', activities: [
+                    { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
+                    { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
+                    { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ]}
+            ]
         }
+    ];
 
-        const completedBooks = [
-            { id: 'c1', title: '개구리와 두꺼비', emoji: '🐸', bg: 'from-cyan-400 to-blue-500', genre: '우정' },
-            { id: 'c2', title: '나무를 심은 사람', emoji: '🌲', bg: 'from-lime-400 to-green-500', genre: '자연' },
-            { id: 'c3', title: '별을 헤아리며', emoji: '⭐', bg: 'from-amber-400 to-orange-500', genre: '동화' },
-            { id: 'c4', title: '작은 왕자', emoji: '👑', bg: 'from-violet-400 to-purple-500', genre: '판타지' },
-            { id: 'c5', title: '바닷속 여행', emoji: '🐳', bg: 'from-sky-400 to-blue-600', genre: '모험' },
-            { id: 'c6', title: '무지개 마을', emoji: '🌈', bg: 'from-rose-400 to-pink-500', genre: '동화' },
-            { id: 'c7', title: '씩씩한 아이', emoji: '💪', bg: 'from-emerald-400 to-teal-500', genre: '가족' },
-            { id: 'c8', title: '달빛 산책', emoji: '🌙', bg: 'from-indigo-400 to-violet-600', genre: '동화' },
-            { id: 'c9', title: '요리사 곰돌이', emoji: '🧸', bg: 'from-orange-400 to-red-500', genre: '생활' }
-        ];
+    // ============================================================
+    //  KRS Levels (for road map)
+    // ============================================================
+    const krsLevels = [
+        { id:'PreK1',label:'PreK1',grade:'만 4~5세',group:'독서기초',groupIcon:'🌱',desc:'한글 해득 집중',status:'completed' },
+        { id:'PreK2',label:'PreK2',grade:'만 6세',group:'독서기초',groupIcon:'🌱',desc:'글 경험 확대',status:'completed' },
+        { id:'K1-1',label:'K1-1',grade:'초1-1',group:'독서 유창성',groupIcon:'📗',desc:'유창성 기초',status:'completed' },
+        { id:'K1-2',label:'K1-2',grade:'초1-2',group:'독서 유창성',groupIcon:'📗',desc:'유창성 확보',status:'completed' },
+        { id:'K2-1',label:'K2-1',grade:'초2-1',group:'독서 유창성',groupIcon:'📗',desc:'교과 연계',status:'completed' },
+        { id:'K2-2',label:'K2-2',grade:'초2-2',group:'독서 숙달',groupIcon:'📙',desc:'지식 체계화',status:'current',booksRead:10 },
+        { id:'K3-1',label:'K3-1',grade:'초3-1',group:'독서 숙달',groupIcon:'📙',desc:'지식 체계화',status:'locked' },
+        { id:'K3-2',label:'K3-2',grade:'초3-2',group:'독서 숙달',groupIcon:'📙',desc:'지식 체계화',status:'locked' },
+        { id:'K4',label:'K4',grade:'초4',group:'독서 심화',groupIcon:'📕',desc:'비판적 이해',status:'locked' },
+        { id:'K5',label:'K5',grade:'초5',group:'독서 심화',groupIcon:'📕',desc:'심화 독해',status:'locked' },
+        { id:'K6',label:'K6',grade:'초6',group:'독서 심화',groupIcon:'📕',desc:'심화 독해',status:'locked' },
+        { id:'K7',label:'K7',grade:'중1',group:'독서 심화',groupIcon:'📕',desc:'전문 독해',status:'locked' },
+        { id:'K8',label:'K8',grade:'중2~고1',group:'독서 확장',groupIcon:'📘',desc:'고급 독해',status:'locked' },
+        { id:'K9',label:'K9',grade:'고2~대1',group:'독서 확장',groupIcon:'📘',desc:'학술 이해',status:'locked' },
+        { id:'K10',label:'K10',grade:'성인',group:'독서 확장',groupIcon:'📘',desc:'전문 독해',status:'locked' }
+    ];
+    const groupColors = {
+        '독서기초':{bg:'bg-emerald-50',border:'border-emerald-200',text:'text-emerald-700'},
+        '독서 유창성':{bg:'bg-sky-50',border:'border-sky-200',text:'text-sky-700'},
+        '독서 숙달':{bg:'bg-amber-50',border:'border-amber-200',text:'text-amber-700'},
+        '독서 심화':{bg:'bg-violet-50',border:'border-violet-200',text:'text-violet-700'},
+        '독서 확장':{bg:'bg-indigo-50',border:'border-indigo-200',text:'text-indigo-700'}
+    };
 
-        const toReadBooks = generateBooks(80, 10);
+    // ============================================================
+    //  TAB SWITCHING
+    // ============================================================
+    let currentTab = 'tree', mapRendered = false;
 
-        // ===== Tab Switching =====
-        let currentTab = 'tree';
-        let mapRendered = false;
+    function switchTab(tab) {
+        if (currentTab === tab) return;
+        currentTab = tab;
 
-        function switchTab(tab) {
-            if (tab === currentTab) return;
-            currentTab = tab;
+        // 탭 버튼 상태 토글
+        document.getElementById('tab-btn-tree').classList.toggle('active', tab === 'tree');
+        document.getElementById('tab-btn-map').classList.toggle('active', tab === 'map');
 
-            // Update tab buttons
-            document.querySelectorAll('.view-tab').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.tab === tab);
-            });
-
-            // Switch content
-            document.querySelectorAll('.tab-content').forEach(el => {
-                el.classList.remove('active');
-            });
-            document.getElementById('tab-' + tab).classList.add('active');
-
-            // Scroll to top
-            document.getElementById('main-scroll').scrollTo({ top: 0, behavior: 'smooth' });
-
-            // Lazy render map on first visit
-            if (tab === 'map' && !mapRendered) {
-                renderRoadMap();
-                mapRendered = true;
-            }
-
-            // Scroll to current node on map
-            if (tab === 'map') {
-                setTimeout(() => {
-                    const currentNode = document.querySelector('.node-current');
-                    if (currentNode) {
-                        currentNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                }, 350);
-            }
-        }
-
-        // ===== Render Book Card =====
-        function renderBookCard(book, isCompleted) {
-            const completedClass = isCompleted ? 'completed' : '';
-            const badge = isCompleted
-                ? '<div class="absolute -top-1.5 -right-1.5 bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center shadow-sm z-10"><i class="fa-solid fa-check text-xs"></i></div>'
-                : '';
-            return `
-                <div class="book-card ${completedClass} cursor-pointer" onclick="openBookViewer()">
-                    <div class="book-thumb bg-gradient-to-br ${book.bg} mb-2">
-                        ${badge}
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="book-thumb-emoji">${book.emoji}</span>
-                        </div>
-                    </div>
-                    <h4 class="font-bold text-sm truncate ${isCompleted ? 'text-gray-500' : 'text-gray-800'}">${book.title}</h4>
-                    <p class="text-xs ${isCompleted ? 'text-gray-400' : 'text-gray-500'}">${book.genre} · K2-2</p>
-                </div>`;
-        }
-
-        // ===== Render Grids =====
-        function renderBookGrids() {
-            document.getElementById('toread-grid').innerHTML = toReadBooks.map(b => renderBookCard(b, false)).join('');
-            document.getElementById('toread-count').textContent = toReadBooks.length + '권';
-
-            document.getElementById('done-grid').innerHTML = completedBooks.map(b => renderBookCard(b, true)).join('');
-            document.getElementById('done-count').textContent = completedBooks.length + '권';
-
-            const total = completedBooks.length + 1;
-            document.getElementById('completed-count').textContent = total;
-            document.getElementById('level-gauge').style.width = total + '%';
-        }
-
-        // ===== Road Map =====
-        function renderRoadMap() {
-            const container = document.getElementById('road-container');
-            let html = '<div class="road-path"><div class="road-path-fill" id="road-fill"></div></div>';
-            let lastGroup = '';
-            const alignments = ['align-left', 'align-right'];
-
-            krsLevels.forEach((level, i) => {
-                if (level.group !== lastGroup) {
-                    lastGroup = level.group;
-                    const gc = groupColors[level.group];
-                    html += `
-                        <div class="group-divider">
-                            <span class="group-badge ${gc.bg} ${gc.text} border ${gc.border}">
-                                ${level.groupIcon} ${level.group}
-                            </span>
-                        </div>`;
-                }
-
-                const nodeState = `node-${level.status}`;
-                const align = alignments[i % 2];
-                let circleContent = '';
-                if (level.status === 'completed') circleContent = '<i class="fa-solid fa-check"></i>';
-                else if (level.status === 'current') circleContent = '<i class="fa-solid fa-star"></i>';
-                else circleContent = '<i class="fa-solid fa-lock text-sm"></i>';
-
-                const currentFlag = level.status === 'current'
-                    ? '<span class="current-flag"><i class="fa-solid fa-location-dot mr-0.5"></i>현재 위치</span>'
-                    : '';
-
-                const progressText = level.status === 'completed' ? '완료'
-                    : level.status === 'current' ? `${level.booksRead}/100권`
-                    : '잠김';
-
-                html += `
-                    <div class="road-node ${nodeState} ${align}" data-level-id="${level.id}">
-                        <div class="node-circle">
-                            ${circleContent}
-                            ${currentFlag}
-                        </div>
-                        <div class="node-label">
-                            <div class="font-jua text-sm ${level.status === 'locked' ? 'text-gray-400' : 'text-gray-800'}">${level.label}</div>
-                            <div class="text-[10px] ${level.status === 'locked' ? 'text-gray-300' : 'text-gray-500'}">${level.grade} · ${level.desc}</div>
-                            <div class="text-[10px] font-bold mt-0.5 ${level.status === 'completed' ? 'text-green-500' : level.status === 'current' ? 'text-brand-primary' : 'text-gray-300'}">${progressText}</div>
-                        </div>
-                    </div>`;
-            });
-
-            container.innerHTML = html;
-
+        // 콘텐츠 전환
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.getElementById(tab === 'tree' ? 'tab-tree' : 'tab-map').classList.add('active');
+        if (tab === 'map') {
+            // 맵 탭: 즉시 top으로 이동 후, 현재 위치까지 부드럽게 스크롤
+            document.getElementById('main-scroll').scrollTo({ top: 0, behavior: 'instant' });
+            if (!mapRendered) { renderRoadMap(); mapRendered = true; }
+            // 렌더링 완료 후 현재 위치로 부드럽게 스크롤
             requestAnimationFrame(() => {
-                const fill = document.getElementById('road-fill');
-                if (!fill) return;
-                const totalNodes = krsLevels.length;
-                const completedNodes = krsLevels.filter(l => l.status === 'completed').length;
-                const fillPct = ((completedNodes + 0.5) / totalNodes) * 100;
-                fill.style.height = fillPct + '%';
+                setTimeout(() => {
+                    const node = document.querySelector('.b-tile.st-current');
+                    if (node) {
+                        node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 300);
             });
+        } else {
+            document.getElementById('main-scroll').scrollTo({ top: 0, behavior: 'smooth' });
         }
+    }
 
-        // ===== Book Viewer =====
-        function openBookViewer() {
-            const bookPayload = {
-                title: '오즈의 마법사',
-                type: '코어북',
-                level: 'K2-2',
-                currentBookPage: 1,
-                totalPages: 8,
-                week: 1
-            };
-            sessionStorage.setItem('currentBook', JSON.stringify(bookPayload));
-            window.location.href = 'book-viewer.html';
-        }
+    // 기존 호출 호환
+    function toggleMapView() {
+        switchTab(currentTab === 'tree' ? 'map' : 'tree');
+    }
 
-        // ===== Week Book Progress =====
-        function updateWeekBookProgress() {
-            const sharedBook = JSON.parse(sessionStorage.getItem('currentBook') || '{}');
-            if (sharedBook.title === '오즈의 마법사' && sharedBook.currentBookPage) {
-                const pg = sharedBook.currentBookPage;
-                const total = sharedBook.totalPages || 8;
-                document.getElementById('week-pg-current').textContent = pg;
-                document.getElementById('week-progress-bar').style.width = ((pg / total) * 100) + '%';
-                if (pg > 1) document.getElementById('week-action-text').textContent = '계속 읽기';
-                if (sharedBook.completed) {
-                    document.getElementById('week-action-text').textContent = '독서 완료';
-                    document.getElementById('week-progress-bar').style.width = '100%';
-                    document.getElementById('week-pg-current').textContent = total;
-                }
-            }
-        }
+    // ============================================================
+    //  RENDER MONTH SECTIONS
+    // ============================================================
+    function renderMonthSections() {
+        const container = document.getElementById('month-container');
+        let html = '';
 
-        // ===== Init =====
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSidebar('library');
-            loadLogoutModal();
-            renderBookGrids();
-            updateWeekBookProgress();
+        monthlyData.forEach(m => {
+            const isCollapsed = m.status === 'completed';
+            const statusBadge = m.status === 'completed'
+                ? `<span class="month-completed-badge"><i class="fa-solid fa-circle-check"></i> 학습 완료</span>`
+                : m.status === 'current'
+                ? `<span class="month-completed-badge" style="background:rgba(255,159,67,0.1); color:#FF9F43;"><i class="fa-solid fa-bolt"></i> 진행 중</span>`
+                : '';
+
+            const completedClass = m.status === 'completed' ? ' completed' : '';
+            html += `
+            <div class="month-section${completedClass}" data-month="${m.month}">
+                <div class="month-header" onclick="toggleMonth(${m.month})">
+                    <span class="month-title-num">${m.month}개월</span>
+                    ${statusBadge}
+                    <div class="month-toggle ${isCollapsed ? 'collapsed' : ''}" id="toggle-${m.month}">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="month-body ${isCollapsed ? 'collapsed' : ''}" id="body-${m.month}">
+                    <div class="week-grid">
+                        ${m.weeks.map(w => renderWeekCard(w)).join('')}
+                    </div>
+                </div>
+            </div>`;
         });
+
+        container.innerHTML = html;
+    }
+
+    function renderWeekCard(w) {
+        // Status display
+        let statusHtml = '';
+        if (w.status === 'completed') {
+            statusHtml = '<span class="week-status completed"><i class="fa-solid fa-circle-check"></i> 학습 완료</span>';
+        } else if (w.status === 'in-progress') {
+            statusHtml = '<span class="week-status in-progress"><i class="fa-solid fa-spinner fa-spin"></i> 진행 중</span>';
+        } else {
+            statusHtml = '<span class="week-status locked"><i class="fa-solid fa-lock"></i> 잠김</span>';
+        }
+
+        // Book cover
+        let coverHtml = '';
+        if (w.img) {
+            coverHtml = `<img src="${w.img}" alt="${w.title}" onerror="this.parentNode.innerHTML='<div class=\\'book-cover-placeholder\\'><i class=\\'fa-solid fa-book-open\\'></i><span>READING TREE</span></div>'">`;
+        } else {
+            coverHtml = `<div class="book-cover-placeholder"><i class="fa-solid fa-book-open"></i><span>READING TREE</span></div>`;
+        }
+
+        // Activities
+        const activitiesHtml = w.activities.map(a => {
+            const doneClass = a.done ? 'done' : '';
+            const doneIcon = a.done ? '<i class="fa-solid fa-check"></i>' : '';
+            return `<span class="activity-badge ${doneClass}"><i class="${a.icon}"></i>${a.name}${doneIcon}</span>`;
+        }).join('');
+
+        const cardClass = w.status === 'in-progress' ? 'week-card in-progress' : 'week-card';
+
+        return `
+        <div class="${cardClass}">
+            <div class="week-card-header">
+                <div class="week-badge">
+                    <span class="week-num">${w.week}주차</span>
+                    <span class="week-level">${w.level}</span>
+                </div>
+                ${statusHtml}
+            </div>
+            <div class="week-card-body">
+                <div class="book-cover-box">
+                    ${coverHtml}
+                </div>
+                <div class="book-info">
+                    <div class="book-title">${w.title}</div>
+                    ${w.desc ? `<div class="book-desc">${w.desc}</div>` : ''}
+                    <div class="book-author">${w.author}</div>
+                </div>
+            </div>
+            <div class="activity-section">
+                <div class="activity-label">학습 활동</div>
+                <div class="activity-badges">
+                    ${activitiesHtml}
+                </div>
+            </div>
+        </div>`;
+    }
+
+    // ============================================================
+    //  TOGGLE MONTH
+    // ============================================================
+    function toggleMonth(monthNum) {
+        const body = document.getElementById('body-' + monthNum);
+        const toggle = document.getElementById('toggle-' + monthNum);
+        body.classList.toggle('collapsed');
+        toggle.classList.toggle('collapsed');
+    }
+
+    // ============================================================
+    //  ROAD MAP
+    // ============================================================
+    // Book Band 색상 (Oxford Reading Tree 참고)
+    const bandColors = {
+        '독서기초':  '#C084FC', // Lilac/Pink
+        '독서 유창성': '#38BDF8', // Blue/Turquoise
+        '독서 숙달':  '#FB923C', // Orange/Gold
+        '독서 심화':  '#A78BFA', // Purple
+        '독서 확장':  '#818CF8', // Indigo
+    };
+
+    function renderRoadMap() {
+        const container = document.getElementById('rmap-container');
+        const completed = krsLevels.filter(l => l.status === 'completed').length;
+        const current = krsLevels.find(l => l.status === 'current');
+        const total = krsLevels.length;
+
+        // ㄹ자 경로: 5열 × 7행
+        // Row 1 (→): START, PreK1, PreK2, K1-1, K1-2
+        //                                         ↓ bridge (col 5)
+        // Row 2 (←): K3-2, K3-1, K2-2★, K2-1, 독서섬
+        // ↓ bridge (col 1)
+        // Row 3 (→): 황금열쇠, K4, K5, K6, K7
+        //                                   ↓ bridge (col 5)
+        // Row 4 (←): GOAL, K10, K9, K8, 보너스
+        const boardTiles = [
+            // Row 1 (→): grid-row 1
+            { r:1, c:1, type:'special', id:'start', icon:'🚀', label:'출발', cls:'start-tile' },
+            { r:1, c:2, type:'level', idx:0 },   // PreK1
+            { r:1, c:3, type:'level', idx:1 },   // PreK2
+            { r:1, c:4, type:'level', idx:2 },   // K1-1
+            { r:1, c:5, type:'level', idx:3 },   // K1-2
+            // Bridge (grid-row 2, col 5) - full-size connector
+            { r:2, c:5, type:'bridge', dir:'down-left' },
+            // Row 2 (←): grid-row 3
+            { r:3, c:5, type:'special', id:'island', icon:'🏝️', label:'독서섬', cls:'island-tile' },
+            { r:3, c:4, type:'level', idx:4 },   // K2-1
+            { r:3, c:3, type:'level', idx:5 },   // K2-2 (현재)
+            { r:3, c:2, type:'level', idx:6 },   // K3-1
+            { r:3, c:1, type:'level', idx:7 },   // K3-2
+            // Bridge (grid-row 4, col 1)
+            { r:4, c:1, type:'bridge', dir:'down-right' },
+            // Row 3 (→): grid-row 5
+            { r:5, c:1, type:'special', id:'key', icon:'🗝️', label:'황금열쇠', cls:'key-tile' },
+            { r:5, c:2, type:'level', idx:8 },   // K4
+            { r:5, c:3, type:'level', idx:9 },   // K5
+            { r:5, c:4, type:'level', idx:10 },  // K6
+            { r:5, c:5, type:'level', idx:11 },  // K7
+            // Bridge (grid-row 6, col 5)
+            { r:6, c:5, type:'bridge', dir:'down-left' },
+            // Row 4 (←): grid-row 7
+            { r:7, c:5, type:'special', id:'bonus', icon:'🎁', label:'보너스', cls:'bonus-tile' },
+            { r:7, c:4, type:'level', idx:12 },  // K8
+            { r:7, c:3, type:'level', idx:13 },  // K9
+            { r:7, c:2, type:'level', idx:14 },  // K10
+            { r:7, c:1, type:'special', id:'goal', icon:'🏆', label:'완주', cls:'goal-tile' },
+        ];
+
+        let tilesHtml = '';
+
+        boardTiles.forEach(t => {
+            const pos = `grid-row:${t.r}; grid-column:${t.c};`;
+
+            if (t.type === 'bridge') {
+                const arrowIcon = t.dir === 'down-left' ? 'fa-arrow-turn-down' : 'fa-arrow-turn-down fa-flip-horizontal';
+                tilesHtml += `
+                <div class="b-bridge" style="${pos}">
+                    <i class="fa-solid ${arrowIcon}"></i>
+                </div>`;
+            } else if (t.type === 'special') {
+                tilesHtml += `
+                <div class="b-tile corner-tile ${t.cls}" style="${pos}">
+                    <div class="corner-icon">${t.icon}</div>
+                    <div class="corner-label">${t.label}</div>
+                </div>`;
+            } else {
+                const lv = krsLevels[t.idx];
+                const bc = bandColors[lv.group] || '#9ca3af';
+                const stClass = lv.status === 'completed' ? 'st-completed' : lv.status === 'current' ? 'st-current' : 'st-locked';
+
+                let statusIcon = '';
+                if (lv.status === 'completed') {
+                    statusIcon = '<div class="tile-status-icon"><i class="fa-solid fa-circle-check"></i></div>';
+                } else if (lv.status === 'locked') {
+                    statusIcon = '<div class="tile-status-icon" style="color:#c8c0b4;"><i class="fa-solid fa-lock" style="font-size:9px;"></i></div>';
+                }
+
+                const avatar = lv.status === 'current' ? '<div class="tile-avatar">🐿️</div>' : '';
+
+                tilesHtml += `
+                <div class="b-tile ${stClass}" style="${pos}">
+                    <div class="tile-band" style="background:${bc};"></div>
+                    ${avatar}
+                    <div class="tile-lv">${lv.label}</div>
+                    <div class="tile-grade">${lv.grade}</div>
+                    ${statusIcon}
+                </div>`;
+            }
+        });
+
+        // 그룹 색상 칩
+        const groupNames = Object.keys(bandColors);
+        const groupChipsHtml = groupNames.map(g =>
+            `<div class="group-chip"><div class="group-dot" style="background:${bandColors[g]};"></div><div class="group-name">${g}</div></div>`
+        ).join('');
+
+        container.innerHTML = `
+        <div class="board-title">
+            <h3>👟 KRS 리딩 스탭</h3>
+            <p>PreK1 ~ K10 · 총 ${total}단계</p>
+        </div>
+        <div class="board-summary">
+            <div class="bs-item">
+                <div class="bs-num" style="color:#10b981;">${completed}</div>
+                <div class="bs-label">완료 단계</div>
+            </div>
+            <div class="bs-divider"></div>
+            <div class="bs-item">
+                <div class="bs-num" style="color:#FF9F43;">${current ? current.label : '-'}</div>
+                <div class="bs-label">현재 단계</div>
+            </div>
+            <div class="bs-divider"></div>
+            <div class="bs-item">
+                <div class="bs-num" style="color:#94a3b8;">${total - completed - 1}</div>
+                <div class="bs-label">남은 단계</div>
+            </div>
+            <div class="bs-divider"></div>
+            <div class="bs-item">
+                <div class="bs-num" style="color:#8b5cf6;">${total}</div>
+                <div class="bs-label">전체</div>
+            </div>
+        </div>
+        <div class="board-frame">
+            <div class="board-grid">
+                ${tilesHtml}
+            </div>
+        </div>
+        <div class="board-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#10b981;"></div>완료</div>
+            <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#FF9F43,#F368E0);"></div>현재</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#b8b0a4;"></div>잠김</div>
+            <div class="legend-item"><span style="font-size:11px;">🚀</span>출발</div>
+            <div class="legend-item"><span style="font-size:11px;">🏆</span>완주</div>
+        </div>
+        <div class="board-groups">${groupChipsHtml}</div>`;
+    }
+
+    // ============================================================
+    //  UTILS
+    // ============================================================
+    function openBookViewer() {
+        sessionStorage.setItem('currentBook', JSON.stringify({ title:'오즈의 마법사', type:'코어북', level:'K2-2', currentBookPage:1, totalPages:8, week:1 }));
+        window.location.href = 'book-viewer.html';
+    }
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+        loadSidebar('library');
+        loadLogoutModal();
+        renderMonthSections();
+    });
     </script>
 </body>
 </html>

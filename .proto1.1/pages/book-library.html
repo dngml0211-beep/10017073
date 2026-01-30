@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -13,14 +13,8 @@
                 extend: {
                     colors: {
                         brand: {
-                            bg: '#FEF3C7', primary: '#FF9F43', dark: '#F368E0', secondary: '#54a0ff', green: '#1dd1a1', paper: '#FDFBF7',
-                            report: { bg: '#F8FAFC', accent: '#4F46E5', dark: '#1E293B' },
-                            tech: { dark: '#1e293b', purple: '#8b5cf6', blue: '#3b82f6', cyan: '#06b6d4' }
+                            bg: '#FEF3C7', primary: '#FF9F43', dark: '#F368E0', secondary: '#54a0ff', green: '#1dd1a1', paper: '#FDFBF7'
                         }
-                    },
-                    boxShadow: {
-                        'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.05)',
-                        'floating': '0 20px 25px -5px rgba(255, 159, 67, 0.3)',
                     }
                 }
             }
@@ -30,7 +24,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -41,24 +35,639 @@
     <link rel="stylesheet" href="../css/responsive.css">
 
     <style>
-        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
+        .font-serif { font-family: 'Gowun Batang', serif; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
 
-        /* === Level Tab Bar === */
-        .level-tab-bar {
+        /* === Cinematic Hero === */
+        .cinema-hero {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            overflow: hidden;
+            background: #1a1a2e;
+        }
+        .cinema-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+        }
+        .cinema-slide.active { opacity: 1; }
+        .cinema-slide-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: blur(2px) brightness(0.4);
+            transform: scale(1.05);
+        }
+        .cinema-slide-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%),
+                        linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 40%);
+        }
+        .cinema-slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            width: 100%;
+        }
+        .cinema-book-cover {
+            flex-shrink: 0;
+            width: 180px;
+            height: 250px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        .cinema-book-cover::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+            border-radius: 12px;
+        }
+        .cinema-text { flex: 1; color: white; }
+        .cinema-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+        }
+        .cinema-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+        }
+        .cinema-quote {
+            font-family: 'Gowun Batang', serif;
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            max-width: 480px;
+            position: relative;
+            padding-left: 16px;
+            border-left: 3px solid rgba(255,159,67,0.6);
+        }
+        .cinema-meta {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 20px;
+        }
+        .cinema-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #FF9F43, #F368E0);
+            color: white;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(255,159,67,0.4);
+        }
+        .cinema-cta:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 12px 35px rgba(255,159,67,0.5); }
+        .cinema-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 5;
+        }
+        .cinema-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .cinema-dot.active { background: #FF9F43; width: 24px; border-radius: 4px; }
+
+        /* === Search Bar (floating over hero) === */
+        .float-search {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            z-index: 10;
+        }
+        .float-search input {
+            width: 260px;
+            height: 42px;
+            border-radius: 21px;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 0 40px 0 42px;
+            font-size: 14px;
+            color: white;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .float-search input::placeholder { color: rgba(255,255,255,0.5); }
+        .float-search input:focus {
+            background: rgba(255,255,255,0.25);
+            width: 320px;
+        }
+        .float-search .s-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            pointer-events: none;
+        }
+        .float-search .s-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            color: rgba(255,255,255,0.7);
+            font-size: 11px;
+        }
+        .float-search .s-clear:hover { background: rgba(255,255,255,0.35); }
+
+        /* === Page Header (below hero) === */
+        .lib-header {
+            background: #FEF3C7;
+            padding: 20px 24px 0;
+        }
+        .lib-header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* === Mode Selector === */
+        .mode-section {
+            padding: 20px 24px 4px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .mode-section-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.05rem;
+            color: #4a3728;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .mode-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 4px 2px 14px;
+            scroll-snap-type: x mandatory;
+        }
+        .mode-scroll::-webkit-scrollbar { display: none; }
+        .mode-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .mode-card {
+            flex-shrink: 0;
+            width: 135px;
+            padding: 16px 10px 14px;
+            border-radius: 1.25rem;
+            background: white;
+            border: 2.5px solid #f0e6d6;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            scroll-snap-align: start;
+            box-shadow: 0 3px 0 #e8dcc8;
+            user-select: none;
+        }
+        .mode-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(255, 159, 67, 0.18);
+        }
+        .mode-card.active {
+            border-color: var(--mode-accent, #FF9F43);
+            box-shadow: 0 4px 16px var(--mode-shadow, rgba(255,159,67,0.25));
+            transform: translateY(-2px) scale(1.03);
+        }
+        .mode-card-emoji { font-size: 2.2rem; margin-bottom: 6px; }
+        .mode-card-label {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 0.82rem;
+            color: #4a3728;
+            line-height: 1.3;
+        }
+        .mode-card.active .mode-card-label { color: var(--mode-accent, #FF9F43); }
+
+        /* === Section Row === */
+        .nf-row {
+            margin-bottom: 32px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 24px;
+        }
+        .nf-row-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .nf-row-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #2d1b0e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nf-row-more {
+            font-size: 0.78rem;
+            color: #FF9F43;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .nf-row-more:hover { text-decoration: underline; }
+        .nf-scroll {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 4px 2px 12px;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+        .nf-scroll::-webkit-scrollbar { display: none; }
+        .nf-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* === Scene Card (Large Visual) === */
+        .scene-card {
+            flex-shrink: 0;
+            width: 280px;
+            height: 200px;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            scroll-snap-align: start;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .scene-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            z-index: 5;
+        }
+        .scene-card-bg {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            transition: transform 0.6s;
+        }
+        .scene-card:hover .scene-card-bg { transform: scale(1.1); }
+        .scene-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px;
+            transition: background 0.3s;
+        }
+        .scene-card:hover .scene-card-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.2) 100%);
+        }
+        .scene-card-quote {
+            font-family: 'Gowun Batang', serif;
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.95);
+            line-height: 1.5;
+            margin-bottom: 8px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease 0.05s;
+        }
+        .scene-card:hover .scene-card-quote { opacity: 1; transform: translateY(0); }
+        .scene-card-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 0.82rem;
+            color: white;
+            font-weight: 600;
+        }
+        .scene-card-meta {
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 2px;
+        }
+        .scene-card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: white;
+            backdrop-filter: blur(8px);
+            z-index: 3;
+        }
+        .scene-card-heart {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+        .scene-card-heart:hover { transform: scale(1.15); }
+        .scene-card-heart i { font-size: 14px; color: rgba(255,255,255,0.7); transition: color 0.2s; }
+        .scene-card-heart.active i { color: #ef4444; }
+
+        /* === Quote Card (Wide) === */
+        .quote-card {
+            flex-shrink: 0;
+            width: 340px;
+            min-height: 160px;
+            border-radius: 20px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            scroll-snap-align: start;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .quote-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+        }
+        .quote-card-text {
+            font-family: 'Gowun Batang', serif;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #2d1b0e;
+            position: relative;
+            z-index: 2;
+        }
+        .quote-card-text::before {
+            content: '\201C';
+            font-size: 3rem;
+            line-height: 1;
+            position: absolute;
+            top: -10px;
+            left: -5px;
+            opacity: 0.15;
+            font-family: serif;
+        }
+        .quote-card-source {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 2;
+        }
+        .quote-card-source-emoji {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+        }
+        .quote-card-deco {
+            position: absolute;
+            top: -20px; right: -20px;
+            font-size: 5rem;
+            opacity: 0.08;
+            transform: rotate(15deg);
+        }
+
+        /* === Wide Preview Card === */
+        .wide-card {
+            flex-shrink: 0;
+            width: 400px;
+            height: 180px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            scroll-snap-align: start;
+            transition: all 0.3s;
+            display: flex;
+        }
+        .wide-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+        }
+        .wide-card-visual {
+            width: 45%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .wide-card-visual::after {
+            content: '';
+            position: absolute;
+            top: 0; right: -1px; bottom: 0;
+            width: 40px;
+            background: linear-gradient(to right, transparent, var(--wide-bg, white));
+        }
+        .wide-card-info {
+            flex: 1;
+            padding: 20px 20px 20px 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .wide-card-series {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #FF9F43;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .wide-card-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.3;
+            margin-bottom: 6px;
+        }
+        .wide-card-desc {
+            font-family: 'Gowun Batang', serif;
+            font-size: 0.82rem;
+            color: #6b7280;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .wide-card-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 10px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #FF9F43;
+        }
+
+        /* === Small Card === */
+        .nf-card {
+            flex-shrink: 0;
+            width: 150px;
+            border-radius: 1rem;
+            background: white;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            scroll-snap-align: start;
+            border: 1.5px solid transparent;
+        }
+        .nf-card:hover {
+            transform: translateY(-6px) scale(1.04);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+            border-color: #FFE0B2;
+            z-index: 5;
+        }
+        .nf-card-thumb {
+            width: 100%;
+            aspect-ratio: 3/4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .nf-card-thumb-emoji {
+            font-size: 2.8rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.3s;
+        }
+        .nf-card:hover .nf-card-thumb-emoji { transform: scale(1.15); }
+        .nf-card-badge {
+            position: absolute;
+            top: 7px; left: 7px;
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 9px;
+            font-weight: 700;
+            backdrop-filter: blur(4px);
+        }
+        .badge-book { background: rgba(59,130,246,0.85); color: white; }
+        .badge-video { background: rgba(239,68,68,0.85); color: white; }
+        .badge-app { background: rgba(16,185,129,0.85); color: white; }
+        .badge-audio { background: rgba(168,85,247,0.85); color: white; }
+        .nf-card-heart {
+            position: absolute;
+            top: 6px; right: 6px;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.85);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 10;
+            transition: transform 0.2s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .nf-card-heart:hover { transform: scale(1.15); }
+        .nf-card-heart i { font-size: 12px; color: #d1d5db; transition: color 0.2s; }
+        .nf-card-heart.active i { color: #ef4444; }
+        .nf-card-info { padding: 9px 11px 11px; }
+        .nf-card-title {
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #1f2937;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .nf-card-meta {
+            font-size: 0.65rem;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        /* === Category Browse Section === */
+        .cat-browse-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px 32px;
+        }
+        .sec-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 1.1rem;
+            color: #4a3728;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .cat-level-bar {
             display: flex;
             align-items: center;
             gap: 8px;
             overflow-x: auto;
             padding-bottom: 4px;
+            margin-bottom: 16px;
         }
-        .level-tab-bar::-webkit-scrollbar { display: none; }
-        .level-tab-bar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .level-tab {
+        .cat-level-bar::-webkit-scrollbar { display: none; }
+        .cat-level-bar { -ms-overflow-style: none; scrollbar-width: none; }
+        .cat-level-tab {
             flex-shrink: 0;
-            padding: 8px 16px;
+            padding: 7px 15px;
             border-radius: 9999px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -66,37 +675,24 @@
             background: white;
             color: #6b7280;
         }
-        .level-tab:hover {
-            border-color: #FF9F43;
-            color: #FF9F43;
-        }
-        .level-tab.active {
+        .cat-level-tab:hover { border-color: #FF9F43; color: #FF9F43; }
+        .cat-level-tab.active {
             background: linear-gradient(135deg, #FF9F43 0%, #F368E0 100%);
             color: white;
             border-color: transparent;
-            box-shadow: 0 4px 15px rgba(255, 159, 67, 0.3);
+            box-shadow: 0 4px 15px rgba(255,159,67,0.3);
             font-weight: 700;
         }
-
-        /* === Category Grid (듀오링고 스타일) === */
         .category-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            max-width: 1350px;
+            gap: 14px;
         }
-        /* 반응형: 화면 커질수록 열 수 증가, 카드 max 크기 제한 */
-        @media (min-width: 860px) {
-            .category-grid { grid-template-columns: repeat(4, 1fr); }
-        }
-        @media (min-width: 1100px) {
-            .category-grid { grid-template-columns: repeat(5, 1fr); }
-        }
-
+        @media (min-width: 860px) { .category-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 1100px) { .category-grid { grid-template-columns: repeat(5, 1fr); } }
         .category-card {
             background: var(--card-bg, linear-gradient(145deg, #FFFDF7, #FFF8EE));
             border-radius: 1.25rem;
-            padding: 0;
             cursor: pointer;
             transition: all 0.2s ease;
             text-align: center;
@@ -110,204 +706,139 @@
             box-shadow: 0 5px 0 var(--card-shadow, #e2d6c4);
             overflow: hidden;
         }
-        .category-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 0 var(--card-shadow, #e2d6c4);
-            border-color: var(--card-accent, #e2d6c4);
-        }
-        .category-card:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 var(--card-shadow, #e2d6c4);
-        }
-
-        /* 기울어진 아이콘 박스 */
+        .category-card:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--card-shadow, #e2d6c4); }
+        .category-card:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--card-shadow, #e2d6c4); }
         .category-card-icon-box {
-            width: 64px; height: 64px;
-            border-radius: 18px;
+            width: 60px; height: 60px;
+            border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
             transform: rotate(-8deg);
             transition: transform 0.3s ease;
             box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-            margin-top: 2px;
         }
-        .category-card:hover .category-card-icon-box {
-            transform: rotate(0deg) scale(1.1);
-        }
-
-        /* 카드 내부 레이아웃 */
+        .category-card:hover .category-card-icon-box { transform: rotate(0deg) scale(1.1); }
         .category-card-inner {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 14px 10px;
-            gap: 6px;
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 12px 8px; gap: 5px;
         }
         .category-card-title {
-            font-family: 'Jua', sans-serif;
-            font-size: 1.05rem;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 0.95rem;
             color: #4a3728;
-            line-height: 1.2;
         }
         .category-card-tagline {
-            font-size: 10.5px;
+            font-size: 10px;
             color: #b08968;
-            line-height: 1.3;
             font-weight: 600;
-            letter-spacing: -0.01em;
         }
+        .cat-lang      .category-card-icon-box { background: linear-gradient(135deg, #58CC02, #46a302); }
+        .cat-social    .category-card-icon-box { background: linear-gradient(135deg, #FF9600, #e08500); }
+        .cat-science   .category-card-icon-box { background: linear-gradient(135deg, #1CB0F6, #0e96d6); }
+        .cat-art       .category-card-icon-box { background: linear-gradient(135deg, #FF4B4B, #e03c3c); }
+        .cat-knowledge .category-card-icon-box { background: linear-gradient(135deg, #A560E8, #8f4cd0); }
+        .cat-english   .category-card-icon-box { background: linear-gradient(135deg, #2B70C9, #1f5eae); }
+        .cat-audio     .category-card-icon-box { background: linear-gradient(135deg, #CE82FF, #b86de6); }
+        .cat-plus      .category-card-icon-box { background: linear-gradient(135deg, #FF86D0, #e670b8); }
+        .cat-textbook  .category-card-icon-box { background: linear-gradient(135deg, #4A90D9, #3a7bc0); }
+        .cat-kinder    .category-card-icon-box { background: linear-gradient(135deg, #FFB020, #e09a10); }
+        .cat-subscribe .category-card-icon-box { background: linear-gradient(135deg, #78C800, #64aa00); }
+        .cat-app       .category-card-icon-box { background: linear-gradient(135deg, #00CD9C, #00b388); }
+        .cat-lang      { --card-bg: linear-gradient(145deg, #f5fce8, #eaf8d4); --card-border: #c8e6a0; --card-shadow: #b0d888; }
+        .cat-social    { --card-bg: linear-gradient(145deg, #fff7ea, #ffeed4); --card-border: #ffd9a0; --card-shadow: #f0c480; }
+        .cat-science   { --card-bg: linear-gradient(145deg, #edf7ff, #d9effe); --card-border: #a8d8f8; --card-shadow: #88c4e8; }
+        .cat-art       { --card-bg: linear-gradient(145deg, #fff0f0, #ffe4e4); --card-border: #ffc0c0; --card-shadow: #f0a0a0; }
+        .cat-knowledge { --card-bg: linear-gradient(145deg, #f6eefe, #eddefa); --card-border: #d4b8f0; --card-shadow: #c0a0e0; }
+        .cat-english   { --card-bg: linear-gradient(145deg, #eef4fc, #dce8f8); --card-border: #a8c8e8; --card-shadow: #90b4d8; }
+        .cat-audio     { --card-bg: linear-gradient(145deg, #f9f0ff, #f0e0fe); --card-border: #dcc0f8; --card-shadow: #c8a8e8; }
+        .cat-plus      { --card-bg: linear-gradient(145deg, #fff0f8, #ffe4f2); --card-border: #ffc0e0; --card-shadow: #f0a0cc; }
+        .cat-textbook  { --card-bg: linear-gradient(145deg, #eff5fc, #dfe9f6); --card-border: #aecce8; --card-shadow: #96b8d8; }
+        .cat-kinder    { --card-bg: linear-gradient(145deg, #fff8e8, #fff0d0); --card-border: #ffd888; --card-shadow: #f0c468; }
+        .cat-subscribe { --card-bg: linear-gradient(145deg, #f2fbe6, #e6f6d0); --card-border: #c0e098; --card-shadow: #a8d078; }
+        .cat-app       { --card-bg: linear-gradient(145deg, #e8fcf5, #d4f6ea); --card-border: #98e8cc; --card-shadow: #78d8b8; }
 
-        /* 카드별 아이콘 박스 컬러 */
-        .cat-lang      .category-card-icon-box { background: linear-gradient(135deg, #58CC02, #46a302); --card-accent: #58CC02; }
-        .cat-social    .category-card-icon-box { background: linear-gradient(135deg, #FF9600, #e08500); --card-accent: #FF9600; }
-        .cat-science   .category-card-icon-box { background: linear-gradient(135deg, #1CB0F6, #0e96d6); --card-accent: #1CB0F6; }
-        .cat-art       .category-card-icon-box { background: linear-gradient(135deg, #FF4B4B, #e03c3c); --card-accent: #FF4B4B; }
-        .cat-knowledge .category-card-icon-box { background: linear-gradient(135deg, #A560E8, #8f4cd0); --card-accent: #A560E8; }
-        .cat-english   .category-card-icon-box { background: linear-gradient(135deg, #2B70C9, #1f5eae); --card-accent: #2B70C9; }
-        .cat-audio     .category-card-icon-box { background: linear-gradient(135deg, #CE82FF, #b86de6); --card-accent: #CE82FF; }
-        .cat-plus      .category-card-icon-box { background: linear-gradient(135deg, #FF86D0, #e670b8); --card-accent: #FF86D0; }
-        .cat-textbook  .category-card-icon-box { background: linear-gradient(135deg, #4A90D9, #3a7bc0); --card-accent: #4A90D9; }
-        .cat-kinder    .category-card-icon-box { background: linear-gradient(135deg, #FFB020, #e09a10); --card-accent: #FFB020; }
-        .cat-subscribe .category-card-icon-box { background: linear-gradient(135deg, #78C800, #64aa00); --card-accent: #78C800; }
-        .cat-app       .category-card-icon-box { background: linear-gradient(135deg, #00CD9C, #00b388); --card-accent: #00CD9C; }
+        /* === Search Overlay === */
+        .search-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(254, 243, 199, 0.97);
+            z-index: 50;
+            padding: 80px 24px 24px;
+            overflow-y: auto;
+        }
+        .search-overlay-inner { max-width: 1400px; margin: 0 auto; }
+        .search-results-header {
+            margin-bottom: 16px;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #4a3728;
+            font-size: 1rem;
+        }
+        .search-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+            gap: 14px;
+        }
+        .search-close-btn {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            z-index: 55;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #f0e6d6;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            color: #6b7280;
+        }
+        .search-close-btn:hover { background: #fff8ee; color: #FF9F43; }
 
-        /* 카드별 미색 배경 + 테두리 + 그림자 (각 accent 컬러 기반) */
-        .cat-lang      { --card-accent: #58CC02; --card-bg: linear-gradient(145deg, #f5fce8, #eaf8d4); --card-border: #c8e6a0; --card-shadow: #b0d888; }
-        .cat-social    { --card-accent: #FF9600; --card-bg: linear-gradient(145deg, #fff7ea, #ffeed4); --card-border: #ffd9a0; --card-shadow: #f0c480; }
-        .cat-science   { --card-accent: #1CB0F6; --card-bg: linear-gradient(145deg, #edf7ff, #d9effe); --card-border: #a8d8f8; --card-shadow: #88c4e8; }
-        .cat-art       { --card-accent: #FF4B4B; --card-bg: linear-gradient(145deg, #fff0f0, #ffe4e4); --card-border: #ffc0c0; --card-shadow: #f0a0a0; }
-        .cat-knowledge { --card-accent: #A560E8; --card-bg: linear-gradient(145deg, #f6eefe, #eddefa); --card-border: #d4b8f0; --card-shadow: #c0a0e0; }
-        .cat-english   { --card-accent: #2B70C9; --card-bg: linear-gradient(145deg, #eef4fc, #dce8f8); --card-border: #a8c8e8; --card-shadow: #90b4d8; }
-        .cat-audio     { --card-accent: #CE82FF; --card-bg: linear-gradient(145deg, #f9f0ff, #f0e0fe); --card-border: #dcc0f8; --card-shadow: #c8a8e8; }
-        .cat-plus      { --card-accent: #FF86D0; --card-bg: linear-gradient(145deg, #fff0f8, #ffe4f2); --card-border: #ffc0e0; --card-shadow: #f0a0cc; }
-        .cat-textbook  { --card-accent: #4A90D9; --card-bg: linear-gradient(145deg, #eff5fc, #dfe9f6); --card-border: #aecce8; --card-shadow: #96b8d8; }
-        .cat-kinder    { --card-accent: #FFB020; --card-bg: linear-gradient(145deg, #fff8e8, #fff0d0); --card-border: #ffd888; --card-shadow: #f0c468; }
-        .cat-subscribe { --card-accent: #78C800; --card-bg: linear-gradient(145deg, #f2fbe6, #e6f6d0); --card-border: #c0e098; --card-shadow: #a8d078; }
-        .cat-app       { --card-accent: #00CD9C; --card-bg: linear-gradient(145deg, #e8fcf5, #d4f6ea); --card-border: #98e8cc; --card-shadow: #78d8b8; }
-
-        /* === Series Detail View (2단계: 시리즈 목록) === */
-        .detail-header {
+        /* === Series Detail Overlay === */
+        .series-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #FEF3C7;
+            z-index: 55;
+            overflow-y: auto;
+        }
+        .series-overlay-header {
+            position: sticky;
+            top: 0; z-index: 5;
+            background: rgba(254, 243, 199, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 24px;
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 8px 0 20px;
+            border-bottom: 1px solid rgba(255,159,67,0.15);
         }
-        .detail-back-btn {
+        .series-back-btn {
             width: 36px; height: 36px;
             border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
             background: white;
             border: 1px solid #e5e7eb;
             cursor: pointer;
-            transition: all 0.2s;
-            flex-shrink: 0;
             color: #6b7280;
         }
-        .detail-back-btn:hover { background: #f9fafb; color: #1f2937; }
-        .detail-title {
-            font-family: 'Jua', sans-serif;
-            font-size: 1.2rem;
-            color: #1f2937;
-        }
-        .detail-desc {
-            font-size: 12px;
-            color: #9ca3af;
-        }
-
-        /* === Series List (세로 목록) === */
-        .series-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .series-item {
-            background: white;
-            border-radius: 1rem;
-            padding: 16px 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 2px solid transparent;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .series-item:hover {
-            border-color: #FFE0B2;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-        }
-        .series-item:active { transform: scale(0.98); }
-        .series-item-icon {
-            width: 48px; height: 48px;
-            border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-        .series-item-info { flex: 1; min-width: 0; }
-        .series-item-title {
-            font-family: 'Jua', sans-serif;
-            font-size: 0.95rem;
-            color: #1f2937;
-        }
-        .series-item-meta {
-            font-size: 11px;
-            color: #9ca3af;
-            margin-top: 2px;
-        }
-        .series-item-arrow {
-            color: #d1d5db;
-            font-size: 0.8rem;
-            flex-shrink: 0;
-        }
-
-        /* === Empty State === */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: #9ca3af;
-        }
-        .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        /* === View transitions === */
-        .view-fade-in {
-            animation: viewFadeIn 0.25s ease;
-        }
-        @keyframes viewFadeIn {
-            from { opacity: 0; transform: translateX(10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        .view-fade-back {
-            animation: viewFadeBack 0.25s ease;
-        }
-        @keyframes viewFadeBack {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* === Series Tab Bar (상세 페이지) === */
+        .series-back-btn:hover { background: #f9fafb; color: #1f2937; }
         .series-tab-bar {
             display: flex;
             align-items: center;
             gap: 8px;
             overflow-x: auto;
-            padding-bottom: 4px;
+            padding: 12px 24px;
         }
         .series-tab-bar::-webkit-scrollbar { display: none; }
         .series-tab-bar { -ms-overflow-style: none; scrollbar-width: none; }
-
         .series-tab {
             flex-shrink: 0;
-            padding: 8px 16px;
+            padding: 7px 15px;
             border-radius: 9999px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -315,25 +846,21 @@
             background: white;
             color: #6b7280;
         }
-        .series-tab:hover {
-            border-color: #FF9F43;
-            color: #FF9F43;
-        }
+        .series-tab:hover { border-color: #FF9F43; color: #FF9F43; }
         .series-tab.active {
             background: linear-gradient(135deg, #FF9F43 0%, #F368E0 100%);
             color: white;
             border-color: transparent;
-            box-shadow: 0 4px 15px rgba(255, 159, 67, 0.3);
+            box-shadow: 0 4px 15px rgba(255,159,67,0.3);
             font-weight: 700;
         }
-
-        /* === Content Grid (콘텐츠 썸네일 그리드) === */
-        .content-grid {
+        .series-content-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
             gap: 14px;
+            padding: 16px 24px 40px;
         }
-        .content-card {
+        .sc-card {
             background: white;
             border-radius: 1rem;
             overflow: hidden;
@@ -341,83 +868,107 @@
             transition: all 0.25s ease;
             border: 1.5px solid transparent;
             box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-            max-width: 500px;
         }
-        .content-card:hover {
+        .sc-card:hover {
             transform: translateY(-3px);
             border-color: #FFE0B2;
             box-shadow: 0 8px 24px rgba(0,0,0,0.08);
         }
-        .content-card:active { transform: scale(0.97); }
-
-        /* 썸네일 영역 */
-        .content-thumb {
+        .sc-card-thumb {
             position: relative;
             width: 100%;
             aspect-ratio: 3/4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             overflow: hidden;
         }
-        .content-thumb-emoji {
-            font-size: 3rem;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        }
-        /* 콘텐츠 타입 뱃지 */
-        .content-type-badge {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            backdrop-filter: blur(4px);
-        }
-        .badge-book { background: rgba(59,130,246,0.85); color: white; }
-        .badge-video { background: rgba(239,68,68,0.85); color: white; }
-        .badge-app { background: rgba(16,185,129,0.85); color: white; }
-        .badge-audio { background: rgba(168,85,247,0.85); color: white; }
-
-        /* 하단 정보 */
-        .content-info {
-            padding: 10px 12px 12px;
-        }
-        .content-title {
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 0.8rem;
+        .sc-card-info { padding: 10px 12px 12px; }
+        .sc-card-title {
+            font-size: 0.78rem;
             font-weight: 600;
             color: #1f2937;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            line-height: 1.3;
         }
-        .content-meta {
-            font-size: 11px;
-            color: #9ca3af;
-            margin-top: 3px;
+        .sc-card-meta { font-size: 11px; color: #9ca3af; margin-top: 3px; }
+        .fav-heart-sc {
+            position: absolute;
+            top: 6px; right: 6px;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.85);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 10;
+            transition: transform 0.2s;
+        }
+        .fav-heart-sc:hover { transform: scale(1.15); }
+        .fav-heart-sc i { font-size: 13px; color: #d1d5db; transition: color 0.2s; }
+        .fav-heart-sc.active i { color: #ef4444; }
+
+        .empty-state { text-align: center; padding: 3rem 2rem; color: #9ca3af; }
+        .empty-state-icon { font-size: 3rem; margin-bottom: 0.75rem; opacity: 0.5; }
+
+        /* === Grid Layout for book rows === */
+        .nf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+            gap: 14px;
+            padding: 4px 2px 12px;
+        }
+        .nf-grid .nf-card {
+            width: 100%;
+            flex-shrink: unset;
+        }
+
+        .fade-in { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* === Mobile === */
         @media (max-width: 768px) {
-            main.flex-1 { padding-top: 4rem; }
-            .category-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: none; }
+            main.flex-1 { padding-top: 0; }
+            .cinema-hero { height: 340px; }
+            .cinema-slide-content { padding: 0 20px; gap: 20px; }
+            .cinema-book-cover { width: 120px; height: 170px; font-size: 3.5rem; }
+            .cinema-title { font-size: 1.3rem; }
+            .cinema-quote { font-size: 0.88rem; }
+            .float-search { right: 16px; top: 14px; }
+            .float-search input { width: 180px; height: 36px; font-size: 13px; }
+            .float-search input:focus { width: 220px; }
+            .mode-section { padding: 16px 16px 0; }
+            .mode-card { width: 110px; padding: 12px 8px 10px; }
+            .mode-card-emoji { font-size: 1.8rem; }
+            .mode-card-label { font-size: 0.75rem; }
+            .nf-row { padding: 0 16px; margin-bottom: 24px; }
+            .scene-card { width: 230px; height: 170px; }
+            .quote-card { width: 280px; min-height: 140px; padding: 18px; }
+            .wide-card { width: 320px; height: 160px; }
+            .nf-card { width: 130px; }
+            .nf-grid { grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); gap: 10px; }
+            .nf-grid .nf-card { width: 100%; }
+            .cat-browse-section { padding: 0 16px 24px; }
+            .category-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
             .category-card { max-width: none; }
-            .category-card-inner { padding: 10px 6px; gap: 5px; }
-            .category-card-icon-box { width: 52px; height: 52px; font-size: 1.6rem; border-radius: 14px; }
-            .category-card-title { font-size: 0.82rem; }
-            .category-card-tagline { font-size: 9.5px; }
-            .series-item { padding: 14px 16px; }
-            .series-item-icon { width: 42px; height: 42px; font-size: 1.3rem; }
-            .content-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-            .content-thumb-emoji { font-size: 2.4rem; }
-            .content-info { padding: 8px 10px 10px; }
-            .content-title { font-size: 0.75rem; }
+            .category-card-icon-box { width: 50px; height: 50px; font-size: 1.5rem; border-radius: 14px; }
+            .category-card-title { font-size: 0.8rem; }
+            .search-overlay { padding: 70px 16px 24px; }
+            .series-content-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; padding: 12px 16px 32px; }
         }
         @media (max-width: 480px) {
+            .cinema-hero { height: 300px; }
+            .cinema-book-cover { width: 100px; height: 140px; font-size: 3rem; }
+            .cinema-title { font-size: 1.1rem; }
+            .cinema-quote { font-size: 0.8rem; display: none; }
+            .float-search input { width: 140px; }
+            .float-search input:focus { width: 180px; }
+            .scene-card { width: 200px; height: 150px; }
+            .quote-card { width: 240px; }
+            .wide-card { width: 280px; height: 140px; }
+            .nf-card { width: 115px; }
+            .nf-grid { grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); }
+            .mode-card { width: 100px; }
             .category-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
@@ -434,108 +985,77 @@
         <div id="sidebar-container"></div>
 
         <!-- Main Content -->
-        <main class="flex-1 h-full overflow-y-auto">
-            <!-- Sticky Header -->
-            <div class="sticky top-0 bg-brand-bg/95 backdrop-blur-sm z-20 border-b border-orange-100/50" id="sticky-header">
-                <!-- Page Title -->
-                <div class="px-6 md:px-10 pt-6 pb-4" id="header-title-area">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3" id="header-left">
-                            <!-- 목록 모드: 책 아이콘 -->
-                            <div class="w-10 h-10 bg-gradient-to-br from-brand-primary to-orange-500 rounded-xl flex items-center justify-center shadow-md" id="header-icon-library">
-                                <i class="fa-solid fa-layer-group text-white text-lg"></i>
-                            </div>
-                            <!-- 상세 모드: 뒤로가기 버튼 (숨김) -->
-                            <button class="w-10 h-10 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-sm cursor-pointer hover:bg-gray-50 transition-all hidden" id="header-back-btn" onclick="backToCategories()">
-                                <i class="fa-solid fa-arrow-left text-gray-600 text-lg"></i>
-                            </button>
-                            <div>
-                                <h2 class="font-jua text-xl md:text-2xl text-gray-800" id="header-title">라이브러리</h2>
-                                <p class="text-xs text-gray-400" id="header-subtitle">전체 도서를 단계별로 탐색해보세요</p>
-                            </div>
-                        </div>
-                        <div class="relative hide-mobile">
-                            <input type="text" placeholder="시리즈, 도서 검색..." class="w-56 h-10 bg-white/80 border border-gray-200 rounded-xl px-4 pr-10 outline-none focus:border-brand-primary focus:bg-white transition-all text-sm">
-                            <i class="fa-solid fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                        </div>
-                    </div>
-                </div>
+        <main class="flex-1 h-full overflow-y-auto" id="main-content">
 
-                <!-- Level Tabs (목록 모드) -->
-                <div class="px-6 md:px-10 pb-4" id="level-tab-wrapper">
-                    <div class="level-tab-bar" id="level-tab-bar">
-                        <span class="text-sm text-gray-500 font-medium flex-shrink-0 mr-1">단계</span>
-                        <button class="level-tab" data-level="lv1" onclick="switchLevel('lv1')">Lv.1</button>
-                        <button class="level-tab active" data-level="lv2-4" onclick="switchLevel('lv2-4')">Lv.2~4</button>
-                        <button class="level-tab" data-level="lv7" onclick="switchLevel('lv7')">Lv.7</button>
-                        <button class="level-tab" data-level="lv7plus" onclick="switchLevel('lv7plus')">Lv.7 이상</button>
-                        <span class="text-sm text-gray-500 font-medium flex-shrink-0 ml-3 mr-1">맞춤</span>
-                        <button class="level-tab" data-level="liked" onclick="switchLevel('liked')">찜한 도서</button>
-                        <button class="level-tab" data-level="recent" onclick="switchLevel('recent')">최근 본 도서</button>
-                    </div>
+            <!-- Cinematic Hero -->
+            <section class="cinema-hero" id="cinema-hero">
+                <!-- Floating search -->
+                <div class="float-search">
+                    <i class="fa-solid fa-search s-icon"></i>
+                    <input type="text" id="search-input" placeholder="도서, 시리즈 검색..."
+                           oninput="handleSearchInput(this.value)">
+                    <button class="s-clear hidden" id="search-clear-btn" onclick="clearSearch()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
+                <!-- Slides rendered by JS -->
+                <div class="cinema-dots" id="cinema-dots"></div>
+            </section>
 
-                <!-- Series Tabs (상세 모드 - 숨김) -->
-                <div class="px-6 md:px-10 pb-4 hidden" id="series-tab-wrapper">
-                    <div class="series-tab-bar" id="series-tab-bar">
-                        <!-- JS에서 동적으로 렌더링 -->
-                    </div>
+            <!-- Mode Selector -->
+            <section class="mode-section" id="mode-section">
+                <div class="mode-section-title">
+                    <i class="fa-solid fa-masks-theater text-brand-primary"></i> 오늘은 어떤 모드?
                 </div>
-            </div>
+                <div class="mode-scroll" id="mode-scroll"></div>
+            </section>
 
-            <!-- Content Area -->
-            <div class="py-6 px-6 md:px-10" id="library-content">
+            <!-- Content Rows -->
+            <div id="nf-rows-container"></div>
 
-                <!-- ===== 카테고리 그리드 뷰 (1단계) ===== -->
-                <div id="category-grid-view">
-                    <div class="category-grid" id="category-grid">
-                        <!-- JS에서 동적으로 렌더링 -->
-                    </div>
+            <!-- Full Category Browse -->
+            <section class="cat-browse-section" id="cat-browse-section">
+                <div class="sec-title">
+                    <i class="fa-solid fa-grid-2 text-brand-primary"></i> 전체 카테고리
                 </div>
-
-                <!-- ===== 콘텐츠 그리드 뷰 (시리즈 내 콘텐츠) ===== -->
-                <div id="book-list-view" class="hidden">
-                    <div class="content-grid" id="content-grid">
-                        <!-- JS에서 동적으로 렌더링 -->
-                    </div>
+                <div class="cat-level-bar" id="cat-level-bar">
+                    <span class="text-xs text-gray-500 font-medium flex-shrink-0 mr-1">단계</span>
+                    <button class="cat-level-tab" data-level="lv1" onclick="switchLevel('lv1')">Lv.1</button>
+                    <button class="cat-level-tab active" data-level="lv2-4" onclick="switchLevel('lv2-4')">Lv.2~4</button>
+                    <button class="cat-level-tab" data-level="lv7" onclick="switchLevel('lv7')">Lv.7</button>
+                    <button class="cat-level-tab" data-level="lv7plus" onclick="switchLevel('lv7plus')">Lv.7 이상</button>
                 </div>
+                <div class="category-grid" id="category-grid"></div>
+            </section>
 
-                <!-- ===== Lv.7 / Lv.7+ placeholder ===== -->
-                <div id="empty-lv7" class="hidden">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📚</div>
-                        <h3 class="font-jua text-lg text-gray-500 mb-2">Lv.7 도서 준비 중</h3>
-                        <p class="text-sm text-gray-400">곧 업데이트될 예정이에요!</p>
-                    </div>
-                </div>
-                <div id="empty-lv7plus" class="hidden">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📚</div>
-                        <h3 class="font-jua text-lg text-gray-500 mb-2">Lv.7 이상 도서 준비 중</h3>
-                        <p class="text-sm text-gray-400">곧 업데이트될 예정이에요!</p>
-                    </div>
-                </div>
-
-                <!-- ===== 찜한 도서 ===== -->
-                <div id="empty-liked" class="hidden">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">💛</div>
-                        <h3 class="font-jua text-lg text-gray-500 mb-2">찜한 도서가 없어요</h3>
-                        <p class="text-sm text-gray-400">마음에 드는 책에 하트를 눌러보세요!</p>
-                    </div>
-                </div>
-
-                <!-- ===== 최근 본 도서 ===== -->
-                <div id="empty-recent" class="hidden">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🕐</div>
-                        <h3 class="font-jua text-lg text-gray-500 mb-2">최근 본 도서가 없어요</h3>
-                        <p class="text-sm text-gray-400">도서를 읽으면 여기에 표시돼요!</p>
-                    </div>
-                </div>
-
-            </div>
+            <div class="h-8"></div>
         </main>
+    </div>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay hidden" id="search-overlay">
+        <button class="search-close-btn" onclick="clearSearch()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="search-overlay-inner">
+            <div class="search-results-header" id="search-results-header"></div>
+            <div class="search-results-grid" id="search-results-grid"></div>
+        </div>
+    </div>
+
+    <!-- Series Detail Overlay -->
+    <div class="series-overlay hidden" id="series-overlay">
+        <div class="series-overlay-header">
+            <button class="series-back-btn" onclick="closeSeriesDetail()">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div>
+                <h3 class="font-noto text-lg text-gray-800" id="series-overlay-title"></h3>
+                <p class="text-xs text-gray-400" id="series-overlay-subtitle"></p>
+            </div>
+        </div>
+        <div class="series-tab-bar" id="series-tab-bar"></div>
+        <div class="series-content-grid" id="series-content-grid"></div>
     </div>
 
     <!-- Logout Modal Container -->
@@ -545,7 +1065,138 @@
     <script src="../js/common.js"></script>
     <script src="../js/sidebar.js"></script>
     <script>
-        // ===== 콘텐츠 타입 정의 =====
+        // ===================================================================
+        //  CINEMATIC HERO SLIDES DATA
+        // ===================================================================
+        const HERO_SLIDES = [
+            {
+                emoji: '🦊',
+                bg: 'linear-gradient(135deg, #FF6B35, #FF9F43, #FFC947)',
+                coverBg: 'linear-gradient(135deg, #FF9F43, #FF6B35)',
+                badge: { text: 'NEW', bg: 'rgba(239,68,68,0.9)' },
+                title: '어린 왕자',
+                quote: '"가장 중요한 것은 눈에 보이지 않아. 마음으로 봐야 하는 거야."',
+                meta: '생텍쥐페리 | 세계명작 그림책',
+            },
+            {
+                emoji: '🐋',
+                bg: 'linear-gradient(135deg, #0077B6, #00B4D8, #90E0EF)',
+                coverBg: 'linear-gradient(135deg, #00B4D8, #0077B6)',
+                badge: { text: 'HOT', bg: 'rgba(255,159,67,0.9)' },
+                title: '해저 2만리',
+                quote: '"바다는 모든 것의 시작이자 끝이다. 광대한 바다 아래 새로운 세계가 펼쳐진다."',
+                meta: '쥘 베른 | 과학 모험 시리즈',
+            },
+            {
+                emoji: '🧙',
+                bg: 'linear-gradient(135deg, #6C3483, #8E44AD, #BB8FCE)',
+                coverBg: 'linear-gradient(135deg, #8E44AD, #6C3483)',
+                badge: { text: 'BEST', bg: 'rgba(139,92,246,0.9)' },
+                title: '오즈의 마법사',
+                quote: '"용기란 무서운 게 없는 게 아니야. 무서워도 앞으로 나아가는 거야!"',
+                meta: '라이만 프랭크 바움 | 이야기 그림책',
+            },
+            {
+                emoji: '🌳',
+                bg: 'linear-gradient(135deg, #2D6A4F, #52B788, #95D5B2)',
+                coverBg: 'linear-gradient(135deg, #52B788, #2D6A4F)',
+                badge: { text: '추천', bg: 'rgba(16,185,129,0.9)' },
+                title: '비밀의 화원',
+                quote: '"정원에 들어가면, 세상의 모든 걱정이 사라져요. 마법 같은 일이 시작되지요."',
+                meta: '프랜시스 버넷 | 세계명작 그림책',
+            },
+            {
+                emoji: '🚀',
+                bg: 'linear-gradient(135deg, #1B1464, #3D5AF1, #6C8EEF)',
+                coverBg: 'linear-gradient(135deg, #3D5AF1, #1B1464)',
+                badge: { text: 'PICK', bg: 'rgba(59,130,246,0.9)' },
+                title: '우주 탐험대',
+                quote: '"별들 사이로 날아가며 우리는 깨달았어요. 우주보다 큰 건 상상력이라는 걸!"',
+                meta: '과학탐구 시리즈',
+            }
+        ];
+
+        // ===================================================================
+        //  SCENE DATA (for scene cards)
+        // ===================================================================
+        const SCENE_DATA = [
+            { title: '이솝우화', emoji: '🦁', bg: 'linear-gradient(135deg, #F9A825, #FF8F00)', quote: '"느려도 포기하지 않으면 결국 이길 수 있어."', series: '옛이야기 솔솔', type: 'book' },
+            { title: '피노키오', emoji: '🤥', bg: 'linear-gradient(135deg, #8D6E63, #D7CCC8)', quote: '"진짜 아이가 되려면 용기, 정직, 친절이 필요해."', series: '세계명작 그림책', type: 'book' },
+            { title: '잭과 콩나무', emoji: '🌱', bg: 'linear-gradient(135deg, #43A047, #A5D6A7)', quote: '"하늘 위에 거인의 성이 있다면, 올라가 볼 용기가 있니?"', series: '이야기 그림책', type: 'book' },
+            { title: '빨간 모자', emoji: '🐺', bg: 'linear-gradient(135deg, #E53935, #FFCDD2)', quote: '"숲 속에서 만나는 모든 것이 친구는 아니야."', series: '옛이야기 솔솔', type: 'book' },
+            { title: '인어공주', emoji: '🧜', bg: 'linear-gradient(135deg, #00BCD4, #B2EBF2)', quote: '"사랑을 위해 목소리를 포기할 수 있을까?"', series: '세계명작 그림책', type: 'book' },
+            { title: '피터 팬', emoji: '✨', bg: 'linear-gradient(135deg, #7E57C2, #D1C4E9)', quote: '"네버랜드에서는 영원히 자라지 않아도 돼!"', series: '이야기 그림책', type: 'book' },
+            { title: '백설공주', emoji: '🍎', bg: 'linear-gradient(135deg, #C62828, #EF9A9A)', quote: '"세상에서 가장 아름다운 건 착한 마음이에요."', series: '세계명작 그림책', type: 'book' },
+            { title: '헨젤과 그레텔', emoji: '🍬', bg: 'linear-gradient(135deg, #6D4C41, #BCAAA4)', quote: '"달콤한 유혹 뒤에 무엇이 숨어있을까?"', series: '옛이야기 솔솔', type: 'book' },
+            { title: '로빈 후드', emoji: '🏹', bg: 'linear-gradient(135deg, #2E7D32, #81C784)', quote: '"진짜 용기는 약한 사람을 도울 때 빛나는 거야."', series: '이야기 그림책', type: 'book' },
+            { title: '보물섬', emoji: '🏴‍☠️', bg: 'linear-gradient(135deg, #37474F, #90A4AE)', quote: '"모험은 용감한 자에게만 보물을 보여줘!"', series: '과학 모험 시리즈', type: 'book' },
+        ];
+
+        // ===================================================================
+        //  QUOTE DATA (for quote cards)
+        // ===================================================================
+        const QUOTE_DATA = [
+            { text: '상상력은 지식보다 더 중요해요. 지식에는 한계가 있지만 상상력은 세상 모든 것을 담을 수 있으니까요.', source: '위대해! 수과학', emoji: '🔬', bg: 'linear-gradient(145deg, #FFF8E1, #FFECB3)', color: '#F57F17' },
+            { text: '친구를 만드는 방법은 간단해. 먼저 웃어주는 거야!', source: '마음이 어때?', emoji: '💛', bg: 'linear-gradient(145deg, #FFF3E0, #FFE0B2)', color: '#E65100' },
+            { text: '씨앗 하나가 세상에서 가장 큰 나무가 될 수 있어요. 포기하지 않으면요!', source: '위대해! 자연', emoji: '🌳', bg: 'linear-gradient(145deg, #E8F5E9, #C8E6C9)', color: '#2E7D32' },
+            { text: '실수해도 괜찮아. 실수 속에 배움이 숨어있거든!', source: '스스로 생활 습관', emoji: '✅', bg: 'linear-gradient(145deg, #E3F2FD, #BBDEFB)', color: '#1565C0' },
+            { text: '"Why?" 라고 물을 수 있는 용기가 세상을 바꾼단다!', source: '궁금해! 지식백과', emoji: '📚', bg: 'linear-gradient(145deg, #F3E5F5, #E1BEE7)', color: '#7B1FA2' },
+            { text: '음악은 말없이도 마음을 전할 수 있는 마법이에요.', source: '랄랄라 동요', emoji: '🎵', bg: 'linear-gradient(145deg, #FCE4EC, #F8BBD0)', color: '#C2185B' },
+            { text: '세상 끝에 가면 뭐가 있을까? 궁금하면 함께 떠나보자!', source: '별별 장소와 직업', emoji: '🌍', bg: 'linear-gradient(145deg, #E0F7FA, #B2EBF2)', color: '#00838F' },
+            { text: '코딩은 마법 주문이야. 컴퓨터에게 내가 원하는 걸 말해주는 거지!', source: '요리조리 코딩', emoji: '💻', bg: 'linear-gradient(145deg, #EDE7F6, #D1C4E9)', color: '#4527A0' },
+        ];
+
+        // ===================================================================
+        //  WIDE PREVIEW DATA
+        // ===================================================================
+        const WIDE_DATA = [
+            { emoji: '🦁', bg: '#FFF8E1', series: '이솝우화 시리즈', title: '사자와 생쥐', desc: '작은 생쥐가 큰 사자를 도와준다고? 크기는 중요하지 않아요!', coverBg: 'linear-gradient(135deg, #F9A825, #FF8F00)' },
+            { emoji: '🐸', bg: '#E8F5E9', series: '자연탐구 시리즈', title: '개구리의 한살이', desc: '올챙이에서 개구리로! 신비한 변신의 비밀을 알아볼까요?', coverBg: 'linear-gradient(135deg, #43A047, #66BB6A)' },
+            { emoji: '🏛️', bg: '#E3F2FD', series: '역사 속으로', title: '고대 이집트 탐험', desc: '피라미드는 어떻게 만들었을까? 파라오의 비밀을 파헤쳐요!', coverBg: 'linear-gradient(135deg, #1565C0, #42A5F5)' },
+            { emoji: '🎨', bg: '#FCE4EC', series: '미술이 좋아!', title: '모네의 수련', desc: '물 위에 핀 꽃이 이렇게 아름다울 수 있다니! 인상파의 세계로!', coverBg: 'linear-gradient(135deg, #AD1457, #EC407A)' },
+            { emoji: '🌌', bg: '#EDE7F6', series: '과학탐구', title: '별자리 이야기', desc: '밤하늘에 숨겨진 신화와 과학! 별들이 들려주는 이야기.', coverBg: 'linear-gradient(135deg, #4527A0, #7E57C2)' },
+            { emoji: '🐻', bg: '#FFF3E0', series: '곰돌이 킨더', title: '곰돌이의 첫 모험', desc: '처음으로 혼자 숲에 나간 곰돌이! 어떤 친구들을 만날까?', coverBg: 'linear-gradient(135deg, #E65100, #FF9800)' },
+        ];
+
+        // ===================================================================
+        //  MODES
+        // ===================================================================
+        const MODES = [
+            {
+                id: 'scientist', label: '과학자 모드', emoji: '🔬',
+                bgGradient: 'linear-gradient(135deg, #E0F7FA 0%, #FEF3C7 50%, #E8F5E9 100%)',
+                accentColor: '#00897B', shadow: 'rgba(0,137,123,0.25)',
+                preferred: ['science', 'knowledge']
+            },
+            {
+                id: 'artist', label: '오늘은 예술가!', emoji: '🎨',
+                bgGradient: 'linear-gradient(135deg, #FFF3E0 0%, #FCE4EC 50%, #F3E5F5 100%)',
+                accentColor: '#E91E63', shadow: 'rgba(233,30,99,0.25)',
+                preferred: ['art', 'audio']
+            },
+            {
+                id: 'developer', label: 'IT 개발자', emoji: '💻',
+                bgGradient: 'linear-gradient(135deg, #E8EAF6 0%, #FEF3C7 50%, #E0F2F1 100%)',
+                accentColor: '#5C6BC0', shadow: 'rgba(92,107,192,0.25)',
+                preferred: ['science', 'english']
+            },
+            {
+                id: 'explorer', label: '세계 탐험가', emoji: '🌍',
+                bgGradient: 'linear-gradient(135deg, #FFF8E1 0%, #E8F5E9 50%, #E3F2FD 100%)',
+                accentColor: '#2E7D32', shadow: 'rgba(46,125,50,0.25)',
+                preferred: ['social', 'knowledge', 'english']
+            },
+            {
+                id: 'storyteller', label: '이야기꾼', emoji: '📖',
+                bgGradient: 'linear-gradient(135deg, #FEF3C7 0%, #FFE0B2 50%, #FFECB3 100%)',
+                accentColor: '#FF8F00', shadow: 'rgba(255,143,0,0.25)',
+                preferred: ['lang', 'plus']
+            }
+        ];
+
+        // ===================================================================
+        //  CONTENT DATA
+        // ===================================================================
         const contentTypes = {
             book:  { label: '도서', badge: 'badge-book', icon: 'fa-solid fa-book' },
             video: { label: '영상', badge: 'badge-video', icon: 'fa-solid fa-play' },
@@ -553,7 +1204,6 @@
             audio: { label: '음원', badge: 'badge-audio', icon: 'fa-solid fa-headphones' }
         };
 
-        // ===== 샘플 콘텐츠 데이터 생성 함수 =====
         function generateContents(seriesTitle, count) {
             const items = [];
             const thumbBgs = [
@@ -566,7 +1216,6 @@
                 '🌳','🏠','🚀','🎪','⛵','🦋','🌻','🍎','🎈','🌈',
                 '🐣','🦄','🐳','🎩','🌺'
             ];
-            // 콘텐츠 타입 패턴: 대부분 도서, 중간에 영상/앱 섞기
             const typePattern = [];
             for (let i = 0; i < count; i++) {
                 if (i % 8 === 5) typePattern.push('video');
@@ -574,7 +1223,6 @@
                 else if (i % 10 === 7) typePattern.push('audio');
                 else typePattern.push('book');
             }
-
             for (let i = 0; i < count; i++) {
                 const type = typePattern[i];
                 let title;
@@ -582,9 +1230,8 @@
                 else if (type === 'video') title = `${seriesTitle} 영상`;
                 else if (type === 'app') title = `${seriesTitle} 활동`;
                 else title = `${seriesTitle} 음원`;
-
                 items.push({
-                    id: `content-${i + 1}`,
+                    id: `c-${i + 1}`,
                     type: type,
                     title: title,
                     emoji: coverEmojis[i % coverEmojis.length],
@@ -594,274 +1241,121 @@
             return items;
         }
 
-        // ===== 카테고리 & 시리즈 데이터 =====
+        // ===================================================================
+        //  LIBRARY DATA
+        // ===================================================================
         const libraryData = {
             'lv1': [
-                {
-                    id: 'lang', title: '언어', desc: '말하기 · 듣기 · 읽기',
-                    icon: '🗣️', iconBg: 'bg-sky-100',
-                    series: [
-                        { id: 'talk-play', title: '옹알종알 말놀이', emoji: '🗣️', bg: 'bg-sky-100', meta: '전 20권' },
-                        { id: 'hello-book', title: '그림책 안녕?', emoji: '📖', bg: 'bg-cyan-100', meta: '전 15권' }
-                    ]
-                },
-                {
-                    id: 'social', title: '사회', desc: '성장 · 감정 · 관계',
-                    icon: '🌱', iconBg: 'bg-amber-100',
-                    series: [
-                        { id: 'growing-up', title: '나는 자라요!', emoji: '🌱', bg: 'bg-amber-100', meta: '전 18권' },
-                        { id: 'how-feel', title: '마음이 어때?', emoji: '💛', bg: 'bg-yellow-100', meta: '전 16권' }
-                    ]
-                },
-                {
-                    id: 'science', title: '수·과학', desc: '자연 · 수학 · 과학 탐구',
-                    icon: '🔬', iconBg: 'bg-emerald-100',
-                    series: [
-                        { id: 'great-nature', title: '위대해! 자연', emoji: '🌿', bg: 'bg-emerald-100', meta: '전 20권' },
-                        { id: 'great-science', title: '위대해! 수과학', emoji: '🔬', bg: 'bg-teal-100', meta: '전 20권' }
-                    ]
-                },
-                {
-                    id: 'art', title: '예술·문화', desc: '미술 · 음악 · 신체 활동',
-                    icon: '🎨', iconBg: 'bg-pink-100',
-                    series: [
-                        { id: 'art-play', title: '알록달록 예술놀이', emoji: '🎨', bg: 'bg-pink-100', meta: '전 12권' },
-                        { id: 'body-play', title: '신나는 몸놀이', emoji: '🤸', bg: 'bg-fuchsia-100', meta: '전 10권' }
-                    ]
-                },
-                {
-                    id: 'knowledge', title: '인지·지식', desc: '감각 · 사고력 · 지식',
-                    icon: '👀', iconBg: 'bg-violet-100',
-                    series: [
-                        { id: 'open-sense', title: '열려라! 감각', emoji: '👀', bg: 'bg-violet-100', meta: '전 14권' },
-                        { id: 'fun-today', title: '오늘도 즐거워!', emoji: '🎉', bg: 'bg-indigo-100', meta: '전 16권' }
-                    ]
-                },
-                {
-                    id: 'english', title: '영어', desc: '노래 · 영상 · 스토리북',
-                    icon: '🌍', iconBg: 'bg-red-100',
-                    series: [
-                        { id: 'songs', title: 'Songs', emoji: '🎵', bg: 'bg-red-100', meta: '전 30곡' },
-                        { id: 'animations', title: 'Animations', emoji: '🎬', bg: 'bg-orange-100', meta: '전 24편' },
-                        { id: 'storybooks', title: 'Storybooks', emoji: '📚', bg: 'bg-rose-100', meta: '전 20권' }
-                    ]
-                },
-                {
-                    id: 'audio', title: '음원', desc: '동요 · 음악 감상',
-                    icon: '🎶', iconBg: 'bg-lime-100',
-                    series: [
-                        { id: 'listen-songs', title: '들어 봐! 동요', emoji: '🎶', bg: 'bg-lime-100', meta: '전 40곡' }
-                    ]
-                },
-                {
-                    id: 'plus', title: '플러스', desc: '추가 콘텐츠 · 인터렉티브',
-                    icon: '🧸', iconBg: 'bg-orange-100',
-                    series: [
-                        { id: 'bear-baby', title: '곰돌이 베이비', emoji: '🧸', bg: 'bg-orange-100', meta: '전 12권' },
-                        { id: 'interactive-book', title: '인터렉티브북', emoji: '👆', bg: 'bg-yellow-100', meta: '전 10권' }
-                    ]
-                }
+                { id: 'lang', title: '언어', icon: '🗣️', series: [
+                    { id: 'talk-play', title: '옹알종알 말놀이', emoji: '🗣️', bg: 'bg-sky-100', meta: '전 20권' },
+                    { id: 'hello-book', title: '그림책 안녕?', emoji: '📖', bg: 'bg-cyan-100', meta: '전 15권' }
+                ]},
+                { id: 'social', title: '사회', icon: '🌱', series: [
+                    { id: 'growing-up', title: '나는 자라요!', emoji: '🌱', bg: 'bg-amber-100', meta: '전 18권' },
+                    { id: 'how-feel', title: '마음이 어때?', emoji: '💛', bg: 'bg-yellow-100', meta: '전 16권' }
+                ]},
+                { id: 'science', title: '수·과학', icon: '🔬', series: [
+                    { id: 'great-nature', title: '위대해! 자연', emoji: '🌿', bg: 'bg-emerald-100', meta: '전 20권' },
+                    { id: 'great-science', title: '위대해! 수과학', emoji: '🔬', bg: 'bg-teal-100', meta: '전 20권' }
+                ]},
+                { id: 'art', title: '예술·문화', icon: '🎨', series: [
+                    { id: 'art-play', title: '알록달록 예술놀이', emoji: '🎨', bg: 'bg-pink-100', meta: '전 12권' },
+                    { id: 'body-play', title: '신나는 몸놀이', emoji: '🤸', bg: 'bg-fuchsia-100', meta: '전 10권' }
+                ]},
+                { id: 'knowledge', title: '인지·지식', icon: '👀', series: [
+                    { id: 'open-sense', title: '열려라! 감각', emoji: '👀', bg: 'bg-violet-100', meta: '전 14권' },
+                    { id: 'fun-today', title: '오늘도 즐거워!', emoji: '🎉', bg: 'bg-indigo-100', meta: '전 16권' }
+                ]},
+                { id: 'english', title: '영어', icon: '🌍', series: [
+                    { id: 'songs', title: 'Songs', emoji: '🎵', bg: 'bg-red-100', meta: '전 30곡' },
+                    { id: 'animations', title: 'Animations', emoji: '🎬', bg: 'bg-orange-100', meta: '전 24편' },
+                    { id: 'storybooks', title: 'Storybooks', emoji: '📚', bg: 'bg-rose-100', meta: '전 20권' }
+                ]},
+                { id: 'audio', title: '음원', icon: '🎶', series: [
+                    { id: 'listen-songs', title: '들어 봐! 동요', emoji: '🎶', bg: 'bg-lime-100', meta: '전 40곡' }
+                ]},
+                { id: 'plus', title: '플러스', icon: '🧸', series: [
+                    { id: 'bear-baby', title: '곰돌이 베이비', emoji: '🧸', bg: 'bg-orange-100', meta: '전 12권' },
+                    { id: 'interactive-book', title: '인터렉티브북', emoji: '👆', bg: 'bg-yellow-100', meta: '전 10권' }
+                ]}
             ],
             'lv2-4': [
-                {
-                    id: 'lang', title: '언어', desc: '한글 · 한자 · 이야기',
-                    icon: '🗣️', iconBg: 'bg-sky-100',
-                    series: [
-                        { id: 'ganada', title: '가나다 한글', emoji: '🔤', bg: 'bg-sky-100', meta: '시리즈' },
-                        { id: 'hanja-play', title: '한자 놀이', emoji: '🀄', bg: 'bg-amber-100', meta: '시리즈' },
-                        { id: 'old-story', title: '옛이야기 솔솔', emoji: '📜', bg: 'bg-orange-100', meta: '시리즈' },
-                        { id: 'world-classic', title: '세계명작 그림책', emoji: '🌍', bg: 'bg-indigo-100', meta: '시리즈' },
-                        { id: 'story-picture', title: '이야기 그림책', emoji: '📖', bg: 'bg-cyan-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'social', title: '사회', desc: '직업 · 역사 · 인물 · 감정',
-                    icon: '🌱', iconBg: 'bg-amber-100',
-                    series: [
-                        { id: 'place-job', title: '별별 장소와 직업', emoji: '🏢', bg: 'bg-amber-100', meta: '시리즈' },
-                        { id: 'into-history', title: '역사 속으로', emoji: '🏛️', bg: 'bg-yellow-100', meta: '시리즈' },
-                        { id: 'great-people', title: '대단해! 인물', emoji: '👤', bg: 'bg-rose-100', meta: '시리즈' },
-                        { id: 'how-feel-2', title: '마음이 어때?', emoji: '💛', bg: 'bg-pink-100', meta: '시리즈' },
-                        { id: 'diverse-world', title: '다양한 세상', emoji: '🌏', bg: 'bg-violet-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'science', title: '수·과학', desc: '자연 · 과학 · 수학 · 코딩',
-                    icon: '🔬', iconBg: 'bg-emerald-100',
-                    series: [
-                        { id: 'great-nature-2', title: '위대해! 자연', emoji: '🌿', bg: 'bg-emerald-100', meta: '시리즈' },
-                        { id: 'amazing-science', title: '신기해! 과학', emoji: '🔬', bg: 'bg-teal-100', meta: '시리즈' },
-                        { id: '123-number', title: '1,2,3 숫자', emoji: '🔢', bg: 'bg-blue-100', meta: '시리즈' },
-                        { id: 'coding', title: '요리조리 코딩', emoji: '💻', bg: 'bg-purple-100', meta: '시리즈' },
-                        { id: 'facto-math', title: '창의사고력 수학 팩토', emoji: '🧮', bg: 'bg-indigo-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'art', title: '예술·문화', desc: '동요 · 미술 · 체육 · 안전 · 만들기',
-                    icon: '🎨', iconBg: 'bg-pink-100',
-                    series: [
-                        { id: 'lalala-song', title: '랄랄라 동요', emoji: '🎵', bg: 'bg-pink-100', meta: '시리즈' },
-                        { id: 'love-art', title: '미술이 좋아!', emoji: '🎨', bg: 'bg-fuchsia-100', meta: '시리즈' },
-                        { id: 'sports', title: '쭈욱 체육', emoji: '🤸', bg: 'bg-lime-100', meta: '시리즈' },
-                        { id: 'safety', title: '조심조심 안전', emoji: '⚠️', bg: 'bg-red-100', meta: '시리즈' },
-                        { id: 'make-things', title: '조물조물 만들기', emoji: '✂️', bg: 'bg-orange-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'knowledge', title: '인지·지식', desc: '지식백과 · 생활 습관',
-                    icon: '👀', iconBg: 'bg-violet-100',
-                    series: [
-                        { id: 'encyclopedia', title: '궁금해! 지식백과', emoji: '📚', bg: 'bg-violet-100', meta: '시리즈' },
-                        { id: 'self-habit', title: '스스로 생활 습관', emoji: '✅', bg: 'bg-green-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'english', title: '영어', desc: '노래 · 영상 · 스토리북 · 리더스 · 액티비티',
-                    icon: '🌍', iconBg: 'bg-red-100',
-                    series: [
-                        { id: 'eng-songs', title: 'Songs', emoji: '🎵', bg: 'bg-red-100', meta: '시리즈' },
-                        { id: 'eng-animations', title: 'Animations', emoji: '🎬', bg: 'bg-orange-100', meta: '시리즈' },
-                        { id: 'eng-storybooks', title: 'Storybooks', emoji: '📚', bg: 'bg-rose-100', meta: '시리즈' },
-                        { id: 'eng-readers', title: 'Readers', emoji: '📖', bg: 'bg-sky-100', meta: '시리즈' },
-                        { id: 'eng-activities', title: 'Activities', emoji: '✏️', bg: 'bg-yellow-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'audio', title: '음원', desc: '동요 · 동화',
-                    icon: '🎶', iconBg: 'bg-lime-100',
-                    series: [
-                        { id: 'listen-songs-2', title: '들어 봐! 동요', emoji: '🎶', bg: 'bg-lime-100', meta: '시리즈' },
-                        { id: 'listen-story', title: '들어 봐! 동화', emoji: '🎧', bg: 'bg-emerald-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'textbook', title: '교과', desc: '누리과정 단계별 학습',
-                    icon: '📘', iconBg: 'bg-blue-100',
-                    series: [
-                        { id: 'nuri-1', title: '누리 1단계', emoji: '📘', bg: 'bg-blue-100', meta: '시리즈' },
-                        { id: 'nuri-2', title: '누리 2단계', emoji: '📗', bg: 'bg-indigo-100', meta: '시리즈' },
-                        { id: 'nuri-3', title: '누리 3단계', emoji: '📙', bg: 'bg-violet-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'kinder', title: '킨더', desc: '안전 · 의사소통 · 사회 · 자연 · 예술 · 신체',
-                    icon: '🧒', iconBg: 'bg-amber-100',
-                    series: [
-                        { id: 'kinder-safety', title: '안전생활 습관', emoji: '🛡️', bg: 'bg-red-100', meta: '시리즈' },
-                        { id: 'kinder-comm', title: '의사소통', emoji: '💬', bg: 'bg-sky-100', meta: '시리즈' },
-                        { id: 'kinder-social', title: '사회관계', emoji: '🤝', bg: 'bg-amber-100', meta: '시리즈' },
-                        { id: 'kinder-nature', title: '자연탐구', emoji: '🔍', bg: 'bg-emerald-100', meta: '시리즈' },
-                        { id: 'kinder-art', title: '예술경험', emoji: '🎭', bg: 'bg-pink-100', meta: '시리즈' },
-                        { id: 'kinder-body', title: '신체운동건강', emoji: '🏃', bg: 'bg-lime-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'subscribe', title: '전집구독', desc: '구독형 전집 콘텐츠',
-                    icon: '📦', iconBg: 'bg-yellow-100',
-                    series: [
-                        { id: 'subscribe-book', title: '책다른 구독', emoji: '📦', bg: 'bg-yellow-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'plus', title: '플러스', desc: '추가 콘텐츠 · AR · 인터렉티브',
-                    icon: '🧸', iconBg: 'bg-orange-100',
-                    series: [
-                        { id: 'bear-kinder', title: '곰돌이 킨더', emoji: '🧸', bg: 'bg-orange-100', meta: '시리즈' },
-                        { id: 'bear-school', title: '곰돌이 스쿨', emoji: '🎒', bg: 'bg-amber-100', meta: '시리즈' },
-                        { id: 'creative-art', title: '창의아트깨치지', emoji: '🎨', bg: 'bg-pink-100', meta: '시리즈' },
-                        { id: 'science-explore', title: '과학탐구', emoji: '🧪', bg: 'bg-teal-100', meta: '시리즈' },
-                        { id: 'old-tales', title: '오롱도로롱 옛이야기', emoji: '🏮', bg: 'bg-yellow-100', meta: '시리즈' },
-                        { id: 'imagine-molang', title: '상상몰랑', emoji: '☁️', bg: 'bg-sky-100', meta: '시리즈' },
-                        { id: 'friend-maisy', title: '내 친구 메이지', emoji: '🐭', bg: 'bg-rose-100', meta: '시리즈' },
-                        { id: 'arpedia', title: 'ARpedia', emoji: '📱', bg: 'bg-indigo-100', meta: '시리즈' },
-                        { id: 'ar-science', title: 'AR Science', emoji: '🔭', bg: 'bg-cyan-100', meta: '시리즈' }
-                    ]
-                },
-                {
-                    id: 'app', title: '추천앱', desc: '학습 앱 다운로드',
-                    icon: '📲', iconBg: 'bg-green-100',
-                    series: [
-                        { id: 'app-download', title: '앱 다운로드', emoji: '📲', bg: 'bg-green-100', meta: '바로가기' }
-                    ]
-                }
+                { id: 'lang', title: '언어', icon: '🗣️', series: [
+                    { id: 'ganada', title: '가나다 한글', emoji: '🔤', bg: 'bg-sky-100', meta: '시리즈' },
+                    { id: 'hanja-play', title: '한자 놀이', emoji: '🀄', bg: 'bg-amber-100', meta: '시리즈' },
+                    { id: 'old-story', title: '옛이야기 솔솔', emoji: '📜', bg: 'bg-orange-100', meta: '시리즈' },
+                    { id: 'world-classic', title: '세계명작 그림책', emoji: '🌍', bg: 'bg-indigo-100', meta: '시리즈' },
+                    { id: 'story-picture', title: '이야기 그림책', emoji: '📖', bg: 'bg-cyan-100', meta: '시리즈' }
+                ]},
+                { id: 'social', title: '사회', icon: '🌱', series: [
+                    { id: 'place-job', title: '별별 장소와 직업', emoji: '🏢', bg: 'bg-amber-100', meta: '시리즈' },
+                    { id: 'into-history', title: '역사 속으로', emoji: '🏛️', bg: 'bg-yellow-100', meta: '시리즈' },
+                    { id: 'great-people', title: '대단해! 인물', emoji: '👤', bg: 'bg-rose-100', meta: '시리즈' },
+                    { id: 'how-feel-2', title: '마음이 어때?', emoji: '💛', bg: 'bg-pink-100', meta: '시리즈' },
+                    { id: 'diverse-world', title: '다양한 세상', emoji: '🌏', bg: 'bg-violet-100', meta: '시리즈' }
+                ]},
+                { id: 'science', title: '수·과학', icon: '🔬', series: [
+                    { id: 'great-nature-2', title: '위대해! 자연', emoji: '🌿', bg: 'bg-emerald-100', meta: '시리즈' },
+                    { id: 'amazing-science', title: '신기해! 과학', emoji: '🔬', bg: 'bg-teal-100', meta: '시리즈' },
+                    { id: '123-number', title: '1,2,3 숫자', emoji: '🔢', bg: 'bg-blue-100', meta: '시리즈' },
+                    { id: 'coding', title: '요리조리 코딩', emoji: '💻', bg: 'bg-purple-100', meta: '시리즈' },
+                    { id: 'facto-math', title: '창의사고력 수학 팩토', emoji: '🧮', bg: 'bg-indigo-100', meta: '시리즈' }
+                ]},
+                { id: 'art', title: '예술·문화', icon: '🎨', series: [
+                    { id: 'lalala-song', title: '랄랄라 동요', emoji: '🎵', bg: 'bg-pink-100', meta: '시리즈' },
+                    { id: 'love-art', title: '미술이 좋아!', emoji: '🎨', bg: 'bg-fuchsia-100', meta: '시리즈' },
+                    { id: 'sports', title: '쭈욱 체육', emoji: '🤸', bg: 'bg-lime-100', meta: '시리즈' },
+                    { id: 'safety', title: '조심조심 안전', emoji: '⚠️', bg: 'bg-red-100', meta: '시리즈' },
+                    { id: 'make-things', title: '조물조물 만들기', emoji: '✂️', bg: 'bg-orange-100', meta: '시리즈' }
+                ]},
+                { id: 'knowledge', title: '인지·지식', icon: '👀', series: [
+                    { id: 'encyclopedia', title: '궁금해! 지식백과', emoji: '📚', bg: 'bg-violet-100', meta: '시리즈' },
+                    { id: 'self-habit', title: '스스로 생활 습관', emoji: '✅', bg: 'bg-green-100', meta: '시리즈' }
+                ]},
+                { id: 'english', title: '영어', icon: '🌍', series: [
+                    { id: 'eng-songs', title: 'Songs', emoji: '🎵', bg: 'bg-red-100', meta: '시리즈' },
+                    { id: 'eng-animations', title: 'Animations', emoji: '🎬', bg: 'bg-orange-100', meta: '시리즈' },
+                    { id: 'eng-storybooks', title: 'Storybooks', emoji: '📚', bg: 'bg-rose-100', meta: '시리즈' },
+                    { id: 'eng-readers', title: 'Readers', emoji: '📖', bg: 'bg-sky-100', meta: '시리즈' },
+                    { id: 'eng-activities', title: 'Activities', emoji: '✏️', bg: 'bg-yellow-100', meta: '시리즈' }
+                ]},
+                { id: 'audio', title: '음원', icon: '🎶', series: [
+                    { id: 'listen-songs-2', title: '들어 봐! 동요', emoji: '🎶', bg: 'bg-lime-100', meta: '시리즈' },
+                    { id: 'listen-story', title: '들어 봐! 동화', emoji: '🎧', bg: 'bg-emerald-100', meta: '시리즈' }
+                ]},
+                { id: 'textbook', title: '교과', icon: '📘', series: [
+                    { id: 'nuri-1', title: '누리 1단계', emoji: '📘', bg: 'bg-blue-100', meta: '시리즈' },
+                    { id: 'nuri-2', title: '누리 2단계', emoji: '📗', bg: 'bg-indigo-100', meta: '시리즈' },
+                    { id: 'nuri-3', title: '누리 3단계', emoji: '📙', bg: 'bg-violet-100', meta: '시리즈' }
+                ]},
+                { id: 'kinder', title: '킨더', icon: '🧒', series: [
+                    { id: 'kinder-safety', title: '안전생활 습관', emoji: '🛡️', bg: 'bg-red-100', meta: '시리즈' },
+                    { id: 'kinder-comm', title: '의사소통', emoji: '💬', bg: 'bg-sky-100', meta: '시리즈' },
+                    { id: 'kinder-social', title: '사회관계', emoji: '🤝', bg: 'bg-amber-100', meta: '시리즈' },
+                    { id: 'kinder-nature', title: '자연탐구', emoji: '🔍', bg: 'bg-emerald-100', meta: '시리즈' },
+                    { id: 'kinder-art', title: '예술경험', emoji: '🎭', bg: 'bg-pink-100', meta: '시리즈' },
+                    { id: 'kinder-body', title: '신체운동건강', emoji: '🏃', bg: 'bg-lime-100', meta: '시리즈' }
+                ]},
+                { id: 'subscribe', title: '전집구독', icon: '📦', series: [
+                    { id: 'subscribe-book', title: '책다른 구독', emoji: '📦', bg: 'bg-yellow-100', meta: '시리즈' }
+                ]},
+                { id: 'plus', title: '플러스', icon: '🧸', series: [
+                    { id: 'bear-kinder', title: '곰돌이 킨더', emoji: '🧸', bg: 'bg-orange-100', meta: '시리즈' },
+                    { id: 'bear-school', title: '곰돌이 스쿨', emoji: '🎒', bg: 'bg-amber-100', meta: '시리즈' },
+                    { id: 'creative-art', title: '창의아트깨치지', emoji: '🎨', bg: 'bg-pink-100', meta: '시리즈' },
+                    { id: 'science-explore', title: '과학탐구', emoji: '🧪', bg: 'bg-teal-100', meta: '시리즈' },
+                    { id: 'old-tales', title: '오롱도로롱 옛이야기', emoji: '🏮', bg: 'bg-yellow-100', meta: '시리즈' },
+                    { id: 'imagine-molang', title: '상상몰랑', emoji: '☁️', bg: 'bg-sky-100', meta: '시리즈' },
+                    { id: 'friend-maisy', title: '내 친구 메이지', emoji: '🐭', bg: 'bg-rose-100', meta: '시리즈' },
+                    { id: 'arpedia', title: 'ARpedia', emoji: '📱', bg: 'bg-indigo-100', meta: '시리즈' },
+                    { id: 'ar-science', title: 'AR Science', emoji: '🔭', bg: 'bg-cyan-100', meta: '시리즈' }
+                ]},
+                { id: 'app', title: '추천앱', icon: '📲', series: [
+                    { id: 'app-download', title: '앱 다운로드', emoji: '📲', bg: 'bg-green-100', meta: '바로가기' }
+                ]}
             ]
         };
 
-        // ===== State =====
-        let currentLevel = 'lv2-4';      // 디폴트: Lv.2~4
-        let currentView = 'grid';         // 'grid' or 'detail'
-        let currentCategory = null;       // 현재 선택된 카테고리
-        let currentSeriesIndex = 0;       // 현재 선택된 시리즈 탭 인덱스
-
-        // ===== 헤더 모드 전환 =====
-        function setHeaderMode(mode, catTitle) {
-            const iconLibrary = document.getElementById('header-icon-library');
-            const backBtn = document.getElementById('header-back-btn');
-            const title = document.getElementById('header-title');
-            const subtitle = document.getElementById('header-subtitle');
-            const levelTabWrapper = document.getElementById('level-tab-wrapper');
-            const seriesTabWrapper = document.getElementById('series-tab-wrapper');
-
-            if (mode === 'detail') {
-                // 상세 모드: 뒤로가기 + 브레드크럼 + 시리즈 탭
-                iconLibrary.classList.add('hidden');
-                backBtn.classList.remove('hidden');
-                title.innerHTML = `<span class="text-gray-400">라이브러리</span> <span class="text-gray-300 mx-1">›</span> ${catTitle}`;
-                subtitle.textContent = '';
-                subtitle.classList.add('hidden');
-                levelTabWrapper.classList.add('hidden');
-                seriesTabWrapper.classList.remove('hidden');
-            } else {
-                // 목록 모드: 아이콘 + 타이틀 + 레벨 탭
-                iconLibrary.classList.remove('hidden');
-                backBtn.classList.add('hidden');
-                title.textContent = '라이브러리';
-                subtitle.textContent = '전체 도서를 단계별로 탐색해보세요';
-                subtitle.classList.remove('hidden');
-                levelTabWrapper.classList.remove('hidden');
-                seriesTabWrapper.classList.add('hidden');
-            }
-        }
-
-        // ===== Level Tab Switching =====
-        function switchLevel(level) {
-            document.querySelectorAll('.level-tab').forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.dataset.level === level) tab.classList.add('active');
-            });
-
-            currentLevel = level;
-            currentView = 'grid';
-            currentCategory = null;
-
-            // 헤더를 목록 모드로 복원
-            setHeaderMode('grid');
-
-            // 모든 뷰 숨기기
-            document.getElementById('category-grid-view').classList.add('hidden');
-            document.getElementById('book-list-view').classList.add('hidden');
-            document.getElementById('empty-lv7').classList.add('hidden');
-            document.getElementById('empty-lv7plus').classList.add('hidden');
-            document.getElementById('empty-liked').classList.add('hidden');
-            document.getElementById('empty-recent').classList.add('hidden');
-
-            if (level === 'lv7') {
-                document.getElementById('empty-lv7').classList.remove('hidden');
-            } else if (level === 'lv7plus') {
-                document.getElementById('empty-lv7plus').classList.remove('hidden');
-            } else if (level === 'liked') {
-                document.getElementById('empty-liked').classList.remove('hidden');
-            } else if (level === 'recent') {
-                document.getElementById('empty-recent').classList.remove('hidden');
-            } else {
-                document.getElementById('category-grid-view').classList.remove('hidden');
-                renderCategoryGrid();
-            }
-
-            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // ===== 카테고리별 CSS 클래스 & 태그라인 매핑 =====
         const catMeta = {
             'lang':      { css: 'cat-lang',      tagline: '말하기 대장이 되어보자!' },
             'social':    { css: 'cat-social',     tagline: '세상은 넓고 재밌어!' },
@@ -877,10 +1371,450 @@
             'app':       { css: 'cat-app',        tagline: '앱으로 더 신나게!' }
         };
 
-        // ===== 카테고리 그리드 렌더링 =====
+        // ===================================================================
+        //  STATE
+        // ===================================================================
+        let currentMode = null;
+        let currentLevel = 'lv2-4';
+        let searchQuery = '';
+        let currentCategory = null;
+        let currentSeriesIndex = 0;
+        let _searchTimer = null;
+        let heroSlideIndex = 0;
+        let heroInterval = null;
+
+        // ===================================================================
+        //  CINEMATIC HERO
+        // ===================================================================
+        function renderCinemaHero() {
+            const hero = document.getElementById('cinema-hero');
+            const dotsContainer = document.getElementById('cinema-dots');
+
+            // Build slides
+            let slidesHtml = HERO_SLIDES.map((slide, i) => `
+                <div class="cinema-slide ${i === 0 ? 'active' : ''}" data-slide="${i}">
+                    <div class="cinema-slide-bg" style="background: ${slide.bg};"></div>
+                    <div class="cinema-slide-gradient"></div>
+                    <div class="cinema-slide-content">
+                        <div class="cinema-book-cover" style="background: ${slide.coverBg};">
+                            ${slide.emoji}
+                        </div>
+                        <div class="cinema-text">
+                            <div class="cinema-badge" style="background: ${slide.badge.bg};">
+                                <i class="fa-solid fa-fire" style="font-size:10px;"></i> ${slide.badge.text}
+                            </div>
+                            <h2 class="cinema-title">${slide.title}</h2>
+                            <div class="cinema-quote">${slide.quote}</div>
+                            <div class="cinema-meta">${slide.meta}</div>
+                            <button class="cinema-cta" onclick="openBook('hero-${i}', '${slide.title.replace(/'/g,"\\'")}')">
+                                <i class="fa-solid fa-book-open"></i> 읽어보기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Insert before dots
+            const existingSlides = hero.querySelectorAll('.cinema-slide');
+            existingSlides.forEach(s => s.remove());
+            hero.insertAdjacentHTML('afterbegin', slidesHtml);
+
+            // Build dots
+            dotsContainer.innerHTML = HERO_SLIDES.map((_, i) =>
+                `<div class="cinema-dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>`
+            ).join('');
+
+            startHeroAutoSlide();
+        }
+
+        function goToSlide(index) {
+            heroSlideIndex = index;
+            document.querySelectorAll('.cinema-slide').forEach((s, i) => {
+                s.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.cinema-dot').forEach((d, i) => {
+                d.classList.toggle('active', i === index);
+            });
+            resetHeroInterval();
+        }
+
+        function nextSlide() {
+            goToSlide((heroSlideIndex + 1) % HERO_SLIDES.length);
+        }
+
+        function startHeroAutoSlide() {
+            heroInterval = setInterval(nextSlide, 5000);
+        }
+
+        function resetHeroInterval() {
+            clearInterval(heroInterval);
+            startHeroAutoSlide();
+        }
+
+        // ===================================================================
+        //  MODE SYSTEM
+        // ===================================================================
+        function renderModeSelector() {
+            const container = document.getElementById('mode-scroll');
+            container.innerHTML = MODES.map(m => `
+                <div class="mode-card ${currentMode?.id === m.id ? 'active' : ''}"
+                     style="--mode-accent: ${m.accentColor}; --mode-shadow: ${m.shadow};"
+                     onclick="selectMode('${m.id}')">
+                    <div class="mode-card-emoji">${m.emoji}</div>
+                    <div class="mode-card-label">${m.label}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectMode(modeId) {
+            const mode = MODES.find(m => m.id === modeId);
+            currentMode = (currentMode?.id === modeId) ? null : mode;
+            sessionStorage.setItem('libraryMode', currentMode?.id || '');
+            renderModeSelector();
+            renderAllRows();
+        }
+
+        // ===================================================================
+        //  DATA HELPERS
+        // ===================================================================
+        function flattenBooks(categories, perSeries) {
+            const all = [];
+            categories.forEach(cat => {
+                cat.series.forEach(series => {
+                    const contents = generateContents(series.title, perSeries || 6);
+                    contents.forEach(item => {
+                        all.push({
+                            ...item,
+                            seriesTitle: series.title,
+                            seriesId: series.id,
+                            categoryId: cat.id,
+                            categoryTitle: cat.title,
+                            favId: series.id + '-' + item.id
+                        });
+                    });
+                });
+            });
+            return all;
+        }
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function getRandomBooks(categories, count) {
+            return shuffle(flattenBooks(categories, 4)).slice(0, count);
+        }
+
+        function getModeBooks(categories, mode, count) {
+            const preferred = categories.filter(c => mode.preferred.includes(c.id));
+            const source = preferred.length > 0 ? preferred : categories;
+            return shuffle(flattenBooks(source, 5)).slice(0, count);
+        }
+
+        function getCatBooks(cat) {
+            const books = [];
+            cat.series.forEach(series => {
+                const contents = generateContents(series.title, 4);
+                contents.forEach(item => {
+                    books.push({
+                        ...item,
+                        seriesTitle: series.title,
+                        seriesId: series.id,
+                        categoryId: cat.id,
+                        favId: series.id + '-' + item.id
+                    });
+                });
+            });
+            return books;
+        }
+
+        // ===================================================================
+        //  RENDER ALL ROWS
+        // ===================================================================
+        function renderAllRows() {
+            const container = document.getElementById('nf-rows-container');
+            const categories = libraryData[currentLevel] || [];
+            let html = '';
+
+            // Row 1: Scene Gallery (명장면 갤러리)
+            html += buildSceneRow();
+
+            // Row 2: Quote Gallery (핵심 한 문장)
+            html += buildQuoteRow();
+
+            // Row 3: Wide Preview (미리보기)
+            html += buildWideRow();
+
+            // Row 4: 오늘의 추천
+            html += buildSmallRow('✨ 오늘의 추천', getRandomBooks(categories, 15), 'today');
+
+            // Row 5: Mode recommendation
+            if (currentMode) {
+                html += buildSmallRow(
+                    `${currentMode.emoji} ${currentMode.label} 추천`,
+                    getModeBooks(categories, currentMode, 15),
+                    'mode'
+                );
+            }
+
+            // Row 6: Popular
+            html += buildSmallRow('🔥 인기 도서', getRandomBooks(categories, 15), 'popular');
+
+            // Favorites
+            const favs = Favorites.getAll();
+            if (favs.length > 0) {
+                html += buildFavsRow(favs);
+            }
+
+            container.innerHTML = html;
+        }
+
+        // === Scene Row ===
+        function buildSceneRow() {
+            const scenes = shuffle([...SCENE_DATA]);
+            const cards = scenes.map(s => `
+                <div class="scene-card" onclick="openBook('scene-${s.title}', '${s.series.replace(/'/g,"\\'")}')">
+                    <div class="scene-card-bg" style="background: ${s.bg};">
+                        <span style="font-size:4rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));">${s.emoji}</span>
+                    </div>
+                    <div class="scene-card-badge" style="background: rgba(59,130,246,0.85);">
+                        <i class="fa-solid fa-book" style="font-size:8px; margin-right:3px;"></i> 도서
+                    </div>
+                    <div class="scene-card-overlay">
+                        <div class="scene-card-quote">"${s.quote.replace(/"/g, '')}"</div>
+                        <div class="scene-card-title">${s.title}</div>
+                        <div class="scene-card-meta">${s.series}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="nf-row" id="row-scenes">
+                    <div class="nf-row-header">
+                        <div class="nf-row-title">🎬 명장면 갤러리</div>
+                        <span class="nf-row-more">전체보기 ›</span>
+                    </div>
+                    <div class="nf-scroll hide-scrollbar">${cards}</div>
+                </div>
+            `;
+        }
+
+        // === Quote Row ===
+        function buildQuoteRow() {
+            const quotes = shuffle([...QUOTE_DATA]);
+            const cards = quotes.map(q => `
+                <div class="quote-card" style="background: ${q.bg};" onclick="openBook('quote-${q.source}', '${q.source.replace(/'/g,"\\'")}')">
+                    <div class="quote-card-text" style="color: ${q.color};">${q.text}</div>
+                    <div class="quote-card-source">
+                        <div class="quote-card-source-emoji" style="background: rgba(0,0,0,0.06);">${q.emoji}</div>
+                        <span>${q.source}</span>
+                    </div>
+                    <div class="quote-card-deco">${q.emoji}</div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="nf-row" id="row-quotes">
+                    <div class="nf-row-header">
+                        <div class="nf-row-title">💬 핵심 한 문장</div>
+                        <span class="nf-row-more">더보기 ›</span>
+                    </div>
+                    <div class="nf-scroll hide-scrollbar">${cards}</div>
+                </div>
+            `;
+        }
+
+        // === Wide Preview Row ===
+        function buildWideRow() {
+            const wides = shuffle([...WIDE_DATA]);
+            const cards = wides.map(w => `
+                <div class="wide-card" style="background: ${w.bg}; --wide-bg: ${w.bg.split(',')[0].replace('linear-gradient(145deg', '').trim()};" onclick="openBook('wide-${w.title}', '${w.series.replace(/'/g,"\\'")}')">
+                    <div class="wide-card-visual" style="background: ${w.coverBg};">
+                        <span style="font-size:3.5rem; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));">${w.emoji}</span>
+                    </div>
+                    <div class="wide-card-info">
+                        <div class="wide-card-series">${w.series}</div>
+                        <div class="wide-card-title">${w.title}</div>
+                        <div class="wide-card-desc">${w.desc}</div>
+                        <div class="wide-card-cta"><i class="fa-solid fa-arrow-right" style="font-size:10px;"></i> 읽어보기</div>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="nf-row" id="row-wide">
+                    <div class="nf-row-header">
+                        <div class="nf-row-title">📖 이번 주 미리보기</div>
+                        <span class="nf-row-more">전체보기 ›</span>
+                    </div>
+                    <div class="nf-scroll hide-scrollbar">${cards}</div>
+                </div>
+            `;
+        }
+
+        // === Small Card Row ===
+        function buildSmallRow(title, items, rowId, catId) {
+            const moreHtml = catId
+                ? `<span class="nf-row-more" onclick="openCategory('${catId}')">더보기 ›</span>`
+                : '';
+            return `
+                <div class="nf-row" id="row-${rowId}">
+                    <div class="nf-row-header">
+                        <div class="nf-row-title">${title}</div>
+                        ${moreHtml}
+                    </div>
+                    <div class="nf-grid">
+                        ${items.map(item => buildNfCard(item)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildFavsRow(favs) {
+            const cards = favs.map(b => `
+                <div class="nf-card" onclick="openBook('${b.id}','${(b.genre||'').replace(/'/g,"\\'")}')">
+                    <div class="nf-card-thumb bg-gradient-to-br ${b.bg || 'bg-gray-100'}">
+                        <span class="nf-card-thumb-emoji">📕</span>
+                        <div class="nf-card-heart active" onclick="event.stopPropagation(); toggleFavNf(this,'${b.id}','${(b.title||'').replace(/'/g,"\\'")}','${(b.genre||'').replace(/'/g,"\\'")}','${b.bg||''}')">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="nf-card-info">
+                        <div class="nf-card-title">${b.title}</div>
+                        <div class="nf-card-meta">${b.genre || ''}</div>
+                    </div>
+                </div>
+            `).join('');
+            return `
+                <div class="nf-row" id="row-favs">
+                    <div class="nf-row-header">
+                        <div class="nf-row-title">💛 찜한 도서</div>
+                    </div>
+                    <div class="nf-scroll hide-scrollbar">${cards}</div>
+                </div>
+            `;
+        }
+
+        function buildNfCard(item) {
+            const ct = contentTypes[item.type || 'book'];
+            const favId = item.favId || item.id;
+            const isFav = Favorites.isFavorite(favId);
+            const safeTitle = (item.title || '').replace(/'/g, "\\'");
+            const safeSeries = (item.seriesTitle || '').replace(/'/g, "\\'");
+            return `
+                <div class="nf-card" onclick="openBook('${item.id}','${safeSeries}')">
+                    <div class="nf-card-thumb ${item.bg}">
+                        <span class="nf-card-thumb-emoji">${item.emoji || ''}</span>
+                        <span class="nf-card-badge ${ct.badge}"><i class="${ct.icon}" style="font-size:8px;margin-right:2px"></i>${ct.label}</span>
+                        <div class="nf-card-heart ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavNf(this,'${favId}','${safeTitle}','${safeSeries}','${item.bg}')">
+                            <i class="${isFav ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}"></i>
+                        </div>
+                    </div>
+                    <div class="nf-card-info">
+                        <div class="nf-card-title">${item.title}</div>
+                        <div class="nf-card-meta">${item.seriesTitle || ''}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ===================================================================
+        //  SEARCH
+        // ===================================================================
+        function handleSearchInput(value) {
+            searchQuery = value.trim();
+            const clearBtn = document.getElementById('search-clear-btn');
+            if (searchQuery.length > 0) {
+                clearBtn.classList.remove('hidden');
+                if (_searchTimer) clearTimeout(_searchTimer);
+                _searchTimer = setTimeout(() => {
+                    showSearchOverlay();
+                    performSearch();
+                }, 200);
+            } else {
+                clearBtn.classList.add('hidden');
+                hideSearchOverlay();
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            searchQuery = '';
+            document.getElementById('search-clear-btn').classList.add('hidden');
+            hideSearchOverlay();
+        }
+
+        function showSearchOverlay() {
+            document.getElementById('search-overlay').classList.remove('hidden');
+        }
+        function hideSearchOverlay() {
+            document.getElementById('search-overlay').classList.add('hidden');
+        }
+
+        function performSearch() {
+            if (!searchQuery) return;
+            const categories = libraryData[currentLevel] || [];
+            const allBooks = flattenBooks(categories, 8);
+            const q = searchQuery.toLowerCase();
+
+            const results = allBooks.filter(b =>
+                b.title.toLowerCase().includes(q) ||
+                (b.seriesTitle || '').toLowerCase().includes(q) ||
+                (b.categoryTitle || '').toLowerCase().includes(q)
+            );
+
+            const headerEl = document.getElementById('search-results-header');
+            const gridEl = document.getElementById('search-results-grid');
+
+            headerEl.innerHTML = results.length > 0
+                ? `<span class="font-noto">"${searchQuery}"</span> 검색 결과 <b>${results.length}</b>건`
+                : `<span class="font-noto">"${searchQuery}"</span> 검색 결과가 없습니다`;
+
+            if (results.length === 0) {
+                gridEl.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">🔍</div>
+                        <h3 class="font-noto text-lg text-gray-500 mb-2">검색 결과가 없어요</h3>
+                        <p class="text-sm text-gray-400">다른 키워드로 검색해보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            gridEl.innerHTML = results.map(item => buildNfCard(item)).join('');
+        }
+
+        // ===================================================================
+        //  CATEGORY BROWSE
+        // ===================================================================
+        function switchLevel(level) {
+            document.querySelectorAll('.cat-level-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.level === level);
+            });
+            currentLevel = level;
+            renderCategoryGrid();
+            renderAllRows();
+        }
+
         function renderCategoryGrid() {
             const data = libraryData[currentLevel] || [];
             const grid = document.getElementById('category-grid');
+
+            if (data.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">📚</div>
+                        <h3 class="font-noto text-lg text-gray-500 mb-2">준비 중이에요</h3>
+                        <p class="text-sm text-gray-400">곧 업데이트될 예정이에요!</p>
+                    </div>
+                `;
+                return;
+            }
 
             grid.innerHTML = data.map(cat => {
                 const meta = catMeta[cat.id] || { css: 'cat-lang', tagline: '' };
@@ -893,14 +1827,11 @@
                     </div>
                 </div>`;
             }).join('');
-
-            // 애니메이션
-            const gridView = document.getElementById('category-grid-view');
-            gridView.classList.remove('view-fade-in', 'view-fade-back');
-            gridView.classList.add('view-fade-back');
         }
 
-        // ===== 카테고리 클릭 → 상세 페이지 (시리즈 탭 + 책 리스트) =====
+        // ===================================================================
+        //  SERIES DETAIL OVERLAY
+        // ===================================================================
         function openCategory(catId) {
             const data = libraryData[currentLevel] || [];
             const cat = data.find(c => c.id === catId);
@@ -908,111 +1839,107 @@
 
             currentCategory = cat;
             currentSeriesIndex = 0;
-            currentView = 'detail';
 
-            // 헤더를 상세 모드로 전환
-            setHeaderMode('detail', cat.title);
+            document.getElementById('series-overlay-title').textContent = cat.title;
+            document.getElementById('series-overlay-subtitle').textContent = (catMeta[cat.id] || {}).tagline || '';
 
-            // 시리즈 탭 렌더링
             renderSeriesTabs(cat);
+            renderSeriesBookList(cat.series[0]);
 
-            // 첫 번째 시리즈의 책 리스트 렌더링
-            renderBookList(cat.series[0]);
-
-            // 뷰 전환
-            document.getElementById('category-grid-view').classList.add('hidden');
-            const bookListView = document.getElementById('book-list-view');
-            bookListView.classList.remove('hidden');
-            bookListView.classList.remove('view-fade-in', 'view-fade-back');
-            bookListView.classList.add('view-fade-in');
-
-            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('series-overlay').classList.remove('hidden');
         }
 
-        // ===== 시리즈 탭 렌더링 =====
+        function closeSeriesDetail() {
+            document.getElementById('series-overlay').classList.add('hidden');
+            currentCategory = null;
+        }
+
         function renderSeriesTabs(cat) {
-            const tabBar = document.getElementById('series-tab-bar');
-            tabBar.innerHTML = cat.series.map((s, i) => `
-                <button class="series-tab ${i === 0 ? 'active' : ''}" data-series-index="${i}" onclick="switchSeriesTab(${i})">
+            const bar = document.getElementById('series-tab-bar');
+            bar.innerHTML = cat.series.map((s, i) => `
+                <button class="series-tab ${i === 0 ? 'active' : ''}" data-si="${i}" onclick="switchSeriesTab(${i})">
                     ${s.emoji} ${s.title}
                 </button>
             `).join('');
         }
 
-        // ===== 시리즈 탭 전환 =====
         function switchSeriesTab(index) {
             if (!currentCategory) return;
-
             currentSeriesIndex = index;
-
-            // 탭 active 상태 업데이트
             document.querySelectorAll('.series-tab').forEach((tab, i) => {
                 tab.classList.toggle('active', i === index);
             });
-
-            // 해당 시리즈의 책 리스트 렌더링
-            const series = currentCategory.series[index];
-            renderBookList(series);
-
-            // 스크롤 상단으로
-            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+            renderSeriesBookList(currentCategory.series[index]);
         }
 
-        // ===== 콘텐츠 그리드 렌더링 =====
-        function renderBookList(series) {
+        function renderSeriesBookList(series) {
             const contents = generateContents(series.title, 25);
-            const grid = document.getElementById('content-grid');
+            const grid = document.getElementById('series-content-grid');
 
             grid.innerHTML = contents.map(item => {
                 const ct = contentTypes[item.type];
+                const favId = series.id + '-' + item.id;
+                const isFav = Favorites.isFavorite(favId);
+                const heartCls = isFav ? 'fav-heart-sc active' : 'fav-heart-sc';
+                const heartIcon = isFav ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
                 return `
-                <div class="content-card" onclick="openBook('${item.id}', '${series.title}')">
-                    <div class="content-thumb ${item.bg}">
-                        <span class="content-thumb-emoji">${item.emoji}</span>
-                        <span class="content-type-badge ${ct.badge}"><i class="${ct.icon}" style="font-size:9px;margin-right:3px"></i>${ct.label}</span>
+                <div class="sc-card" onclick="openBook('${item.id}', '${series.title.replace(/'/g,"\\'")}')">
+                    <div class="sc-card-thumb ${item.bg}">
+                        <span style="color:rgba(0,0,0,0.2);font-size:0.72rem;font-weight:700;letter-spacing:0.15em;">BOOK</span>
+                        <span class="nf-card-badge ${ct.badge}"><i class="${ct.icon}" style="font-size:8px;margin-right:2px"></i>${ct.label}</span>
+                        <div class="${heartCls}" onclick="event.stopPropagation(); toggleFavSc(this, '${favId}', '${item.title.replace(/'/g,"\\'")}', '${series.title.replace(/'/g,"\\'")}', '${item.bg}')">
+                            <i class="${heartIcon}"></i>
+                        </div>
                     </div>
-                    <div class="content-info">
-                        <div class="content-title">${item.title}</div>
-                        <div class="content-meta">${series.title}</div>
+                    <div class="sc-card-info">
+                        <div class="sc-card-title">${item.title}</div>
+                        <div class="sc-card-meta">${series.title}</div>
                     </div>
                 </div>`;
             }).join('');
-
-            // 애니메이션
-            const bookView = document.getElementById('book-list-view');
-            bookView.classList.remove('view-fade-in');
-            void bookView.offsetWidth;
-            bookView.classList.add('view-fade-in');
         }
 
-        // ===== 뒤로가기 → 카테고리 그리드 =====
-        function backToCategories() {
-            currentCategory = null;
-            currentView = 'grid';
-
-            // 헤더를 목록 모드로 복원
-            setHeaderMode('grid');
-
-            // 뷰 전환
-            document.getElementById('book-list-view').classList.add('hidden');
-            const gridView = document.getElementById('category-grid-view');
-            gridView.classList.remove('hidden');
-            gridView.classList.remove('view-fade-in', 'view-fade-back');
-            gridView.classList.add('view-fade-back');
-
-            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+        // ===================================================================
+        //  FAVORITES
+        // ===================================================================
+        function toggleFavNf(el, id, title, genre, bg) {
+            const added = Favorites.toggle({ id, title, genre, bg });
+            if (added) {
+                el.classList.add('active');
+                el.querySelector('i').className = 'fa-solid fa-heart';
+            } else {
+                el.classList.remove('active');
+                el.querySelector('i').className = 'fa-regular fa-heart';
+            }
         }
 
-        // ===== 책 클릭 =====
+        function toggleFavSc(el, id, title, genre, bg) {
+            toggleFavNf(el, id, title, genre, bg);
+        }
+
+        // ===================================================================
+        //  BOOK OPEN
+        // ===================================================================
         function openBook(bookId, seriesTitle) {
-            // 추후 book-viewer 연동
             console.log(`도서 열기: ${seriesTitle} - ${bookId}`);
         }
 
-        // ===== Init =====
+        // ===================================================================
+        //  INIT
+        // ===================================================================
         document.addEventListener('DOMContentLoaded', () => {
             loadSidebar('book-library');
             loadLogoutModal();
+
+            // Restore mode
+            const savedMode = sessionStorage.getItem('libraryMode');
+            if (savedMode) {
+                currentMode = MODES.find(m => m.id === savedMode) || null;
+            }
+
+            renderCinemaHero();
+            renderModeSelector();
+            renderAllRows();
             renderCategoryGrid();
         });
     </script>

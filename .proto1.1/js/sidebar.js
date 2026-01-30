@@ -1,4 +1,4 @@
-/* ============================================
+﻿/* ============================================
    북클럽 3.0 - 사이드바 JavaScript
    ============================================ */
 
@@ -104,7 +104,7 @@ function displayUserInfo() {
 
         const nameElements = document.querySelectorAll('[data-user-name]');
         nameElements.forEach(el => {
-            el.textContent = userInfo.name || '지훈';
+            el.textContent = userInfo.name || '우희';
         });
     }
 }
@@ -258,62 +258,62 @@ function loadInlineSidebar(container, currentPage) {
     container.innerHTML = `
         <aside class="sidebar" id="main-sidebar">
             <!-- 로고 (드롭다운 트리거) -->
-            <div class="px-6 pt-10 pb-4 relative z-20">
+            <div class="px-3 pt-3 pb-3 relative z-20">
                 <button onclick="toggleAppMenu()" class="flex items-center gap-2 group" id="logo-btn">
-                    <h1 class="font-jua text-2xl text-brand-primary tracking-tight">
-                        웅진북클럽 <span class="text-gray-400 text-base" id="logo-krs-label">KRS</span>
+                    <h1 class="font-noto text-[19px] font-bold text-brand-primary tracking-tight">
+                        웅진북클럽 <span class="text-gray-400 text-[11px] font-bold" id="logo-krs-label">KRS</span>
                     </h1>
                     <i class="fa-solid fa-chevron-down text-gray-400 text-sm transition-transform duration-300" id="logo-arrow"></i>
                 </button>
             </div>
 
             <!-- 앱 선택 메뉴 (드롭다운 - 오버레이) -->
-            <div id="app-menu" class="hidden absolute left-0 right-0 top-[72px] bottom-[60px] z-10 px-4 py-2 bg-white/95 backdrop-blur-sm overflow-y-auto">
-                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-2 space-y-1">
-                    <button onclick="selectApp('bookclub-krs')" class="app-item active w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all bg-white shadow-sm">
-                        <div class="w-10 h-10 bg-gradient-to-br from-brand-primary to-brand-dark rounded-xl flex items-center justify-center text-white text-lg shadow-md">📖</div>
-                        <div class="text-left flex-1">
-                            <p class="font-jua text-sm text-gray-800">웅진북클럽 KRS</p>
+            <div id="app-menu" class="hidden absolute left-0 right-0 top-[62px] bottom-[50px] z-10 px-2 py-2 bg-white/95 backdrop-blur-sm overflow-y-auto">
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-1.5 space-y-0.5">
+                    <button onclick="selectApp('bookclub-krs')" class="app-item active w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all bg-white shadow-sm">
+                        <div class="w-9 h-9 bg-gradient-to-br from-brand-primary to-brand-dark rounded-xl flex items-center justify-center text-white text-base shadow-md">📖</div>
+                        <div class="text-left flex-1 min-w-0">
+                            <p class="font-noto text-sm text-gray-800 truncate">웅진북클럽 KRS</p>
                             <p class="text-[10px] text-gray-400">AI 독서 프로그램</p>
                         </div>
                         <i class="fa-solid fa-check text-brand-primary text-sm" id="check-bookclub-krs"></i>
                     </button>
-                    <button onclick="selectApp('bookclub')" class="app-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-white">
-                        <div class="w-10 h-10 bg-gradient-to-br from-brand-primary to-orange-500 rounded-xl flex items-center justify-center text-white text-lg shadow-md">📚</div>
-                        <div class="text-left flex-1">
-                            <p class="font-jua text-sm text-gray-800">웅진북클럽</p>
+                    <button onclick="selectApp('bookclub')" class="app-item w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all hover:bg-white">
+                        <div class="w-9 h-9 bg-gradient-to-br from-brand-primary to-orange-500 rounded-xl flex items-center justify-center text-white text-base shadow-md">📚</div>
+                        <div class="text-left flex-1 min-w-0">
+                            <p class="font-noto text-sm text-gray-800 truncate">웅진북클럽</p>
                             <p class="text-[10px] text-gray-400">독서 · 학습</p>
                         </div>
                         <i class="fa-solid fa-check text-brand-primary text-sm hidden" id="check-bookclub"></i>
                     </button>
-                    <button onclick="selectApp('smart-thinkbig')" class="app-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-white">
-                        <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center text-white text-lg shadow-md">🧠</div>
-                        <div class="text-left flex-1">
-                            <p class="font-jua text-sm text-gray-800">스마트씽크빅</p>
+                    <button onclick="selectApp('smart-thinkbig')" class="app-item w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all hover:bg-white">
+                        <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center text-white text-base shadow-md">🧠</div>
+                        <div class="text-left flex-1 min-w-0">
+                            <p class="font-noto text-sm text-gray-800 truncate">스마트씽크빅</p>
                             <p class="text-[10px] text-gray-400">사고력 · 창의력</p>
                         </div>
                         <i class="fa-solid fa-check text-brand-primary text-sm hidden" id="check-smart-thinkbig"></i>
                     </button>
-                    <button onclick="selectApp('smartall')" class="app-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-white">
-                        <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center text-white text-lg shadow-md">🎓</div>
-                        <div class="text-left flex-1">
-                            <p class="font-jua text-sm text-gray-800">스마트올</p>
+                    <button onclick="selectApp('smartall')" class="app-item w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all hover:bg-white">
+                        <div class="w-9 h-9 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center text-white text-base shadow-md">🎓</div>
+                        <div class="text-left flex-1 min-w-0">
+                            <p class="font-noto text-sm text-gray-800 truncate">스마트올</p>
                             <p class="text-[10px] text-gray-400">전과목 학습</p>
                         </div>
                         <i class="fa-solid fa-check text-brand-primary text-sm hidden" id="check-smartall"></i>
                     </button>
-                    <button onclick="selectApp('superpot')" class="app-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-white">
-                        <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center text-white text-lg shadow-md">🎮</div>
-                        <div class="text-left flex-1">
-                            <p class="font-jua text-sm text-gray-800">슈퍼팟</p>
+                    <button onclick="selectApp('superpot')" class="app-item w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all hover:bg-white">
+                        <div class="w-9 h-9 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center text-white text-base shadow-md">🎮</div>
+                        <div class="text-left flex-1 min-w-0">
+                            <p class="font-noto text-sm text-gray-800 truncate">슈퍼팟</p>
                             <p class="text-[10px] text-gray-400">게임 · 활동</p>
                         </div>
                         <i class="fa-solid fa-check text-brand-primary text-sm hidden" id="check-superpot"></i>
                     </button>
-                    <button onclick="selectApp('lingocity')" class="app-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-white">
-                        <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-teal-500 rounded-xl flex items-center justify-center text-white text-lg shadow-md">🌍</div>
-                        <div class="text-left flex-1">
-                            <p class="font-jua text-sm text-gray-800">링고시티</p>
+                    <button onclick="selectApp('lingocity')" class="app-item w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all hover:bg-white">
+                        <div class="w-9 h-9 bg-gradient-to-br from-green-400 to-teal-500 rounded-xl flex items-center justify-center text-white text-base shadow-md">🌍</div>
+                        <div class="text-left flex-1 min-w-0">
+                            <p class="font-noto text-sm text-gray-800 truncate">링고시티</p>
                             <p class="text-[10px] text-gray-400">영어 학습</p>
                         </div>
                         <i class="fa-solid fa-check text-brand-primary text-sm hidden" id="check-lingocity"></i>
@@ -322,64 +322,57 @@ function loadInlineSidebar(container, currentPage) {
             </div>
 
             <!-- 프로필 카드 -->
-            <div id="profile-section" class="mx-6 mb-4 p-4 bg-gradient-to-br from-brand-bg to-yellow-200 rounded-2xl flex items-center gap-3 shadow-sm transition-all duration-300">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-300 to-brand-primary flex items-center justify-center text-2xl border-2 border-white shadow-md">🐿️</div>
+            <div id="profile-section" class="mx-3 mb-4 p-3 bg-gradient-to-br from-brand-bg to-yellow-200 rounded-2xl flex items-center gap-3 shadow-sm transition-all duration-300">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-300 to-brand-primary flex items-center justify-center text-2xl border-2 border-white shadow-md">🔥</div>
                 <div>
-                    <p class="font-jua text-lg text-gray-800" data-user-name>지훈</p>
+                    <p class="font-noto text-[13px] text-gray-800" data-user-name>우희</p>
                     <p class="text-xs text-gray-500">독서 탐험가</p>
                 </div>
             </div>
 
             <!-- 네비게이션 -->
-            <nav id="nav-section" class="flex-1 px-4 space-y-1 transition-all duration-300">
-                <a href="home.html" data-page="home" id="nav-home-link" class="nav-link flex items-center gap-4 px-6 py-4 rounded-2xl transition-all text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+            <nav id="nav-section" class="flex-1 px-2 space-y-1 transition-all duration-300">
+                <a href="home.html" data-page="home" id="nav-home-link" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-all text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-house text-xl w-6 text-center"></i>
-                    <span class="font-jua text-lg">홈</span>
+                    <span class="font-noto text-lg">홈</span>
                 </a>
-                <a href="library.html" data-page="library" data-krs-only class="nav-link flex items-center gap-4 px-6 py-4 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="library.html" data-page="library" data-krs-only class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-book-open text-xl w-6 text-center"></i>
-                    <span class="font-jua text-lg">KRS 리딩트리</span>
+                    <span class="font-noto text-lg">KRS 리딩트리</span>
                 </a>
-                <a href="book-library.html" data-page="book-library" class="nav-link flex items-center gap-4 px-6 py-4 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="book-library.html" data-page="book-library" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-layer-group text-xl w-6 text-center"></i>
-                    <span class="font-jua text-lg">라이브러리</span>
+                    <span class="font-noto text-lg">라이브러리</span>
                 </a>
-                <a href="report.html" data-page="report" class="nav-link flex items-center gap-4 px-6 py-4 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="report.html" data-page="report" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-chart-pie text-xl w-6 text-center"></i>
-                    <span class="font-jua text-lg">리포트</span>
+                    <span class="font-noto text-lg">리포트</span>
                 </a>
-                <a href="mypage.html" data-page="mypage" class="nav-link flex items-center gap-4 px-6 py-4 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="mypage.html" data-page="mypage" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-user text-xl w-6 text-center"></i>
-                    <span class="font-jua text-lg">마이페이지</span>
+                    <span class="font-noto text-lg">마이페이지</span>
                 </a>
-                <a href="starshop.html" data-page="starshop" class="nav-link flex items-center gap-4 px-6 py-4 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="starshop.html" data-page="starshop" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-star text-xl w-6 text-center"></i>
-                    <span class="font-jua text-lg">스타샵</span>
+                    <span class="font-noto text-lg">스타샵</span>
                 </a>
 
                 <!-- KRS 전용: AI 버디 -->
                 <div data-krs-only>
-                    <div class="pt-4 pb-2 px-2">
-                        <p class="text-xs font-medium text-gray-400 tracking-wide">AI 버디</p>
-                    </div>
-                    <a href="ai-buddy.html" data-page="ai-buddy" class="w-full flex items-center gap-3 px-5 py-3 rounded-2xl transition-all hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 group" style="text-decoration:none;">
+                    <div class="pt-4 pb-2 px-2"></div>
+                    <a href="ai-buddy.html" data-page="ai-buddy" class="w-full flex items-center gap-3 px-3 py-3 rounded-2xl transition-all hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 group" style="text-decoration:none;">
                         <div class="relative w-10 h-10 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-xl shadow-md">
                             🐿️
                             <div class="absolute -top-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
                         </div>
-                        <div class="flex-1 text-left">
-                            <p class="font-jua text-sm text-gray-700">다람이</p>
-                            <div class="relative mt-0.5">
-                                <div class="bg-gray-100 rounded-lg px-2.5 py-1">
-                                    <p style="font-size:10px;" class="text-gray-400 truncate">안녕, 나랑 같이 이야기하자!</p>
-                                </div>
-                            </div>
+                        <div class="flex-1 text-left min-w-0">
+                            <p class="font-noto text-sm text-gray-700">AI 버디</p>
                         </div>
                     </a>
                 </div>
             </nav>
-            <div class="p-6 relative z-20 bg-white">
-                <div class="flex items-center justify-between text-gray-400 mb-2 px-2">
+            <div class="p-4 relative z-20 bg-white">
+                <div class="flex items-center justify-between text-gray-400 mb-2 px-1">
                     <button class="hover:text-brand-primary text-sm font-medium">
                         <i class="fa-solid fa-gear mr-2"></i>설정
                     </button>
@@ -411,7 +404,7 @@ function loadInlineLogoutModal(container) {
         <div id="logout-modal" class="hidden fixed inset-0 z-[10000] items-center justify-center">
             <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="hideLogoutModal()"></div>
             <div class="relative bg-white rounded-3xl p-8 shadow-2xl max-w-sm w-full mx-4">
-                <h3 class="font-jua text-xl text-center text-gray-800 mb-4">로그아웃 하시겠어요?</h3>
+                <h3 class="font-noto text-xl text-center text-gray-800 mb-4">로그아웃 하시겠어요?</h3>
                 <div class="flex gap-3">
                     <button onclick="hideLogoutModal()" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200">취소</button>
                     <button onclick="performLogout()" class="flex-1 py-3 rounded-xl bg-brand-primary text-white font-bold hover:bg-orange-600">확인</button>

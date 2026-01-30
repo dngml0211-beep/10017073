@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -30,7 +30,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="../css/responsive.css">
 
     <style>
-        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
         /* === KRS Trial Banner === */
         .krs-banner {
@@ -238,14 +238,14 @@
         <div id="sidebar-container"></div>
 
         <!-- Main Content -->
-        <main class="flex-1 h-full overflow-y-auto px-6 py-8 md:px-12">
+        <main class="flex-1 h-full overflow-y-auto px-6 pt-4 pb-8 md:px-12">
           <div class="max-w-[1400px] mx-auto">
 
             <!-- ===== Header ===== -->
             <header class="flex items-center justify-between mb-6">
                 <div>
-                    <h2 class="font-jua text-2xl md:text-3xl text-gray-800">
-                        <span data-user-name>지훈</span>님, 안녕! 👋
+                    <h2 class="font-noto text-2xl md:text-3xl text-gray-800">
+                        <span data-user-name>우희</span>님, 안녕! 👋
                     </h2>
                     <p class="text-gray-500 mt-1">오늘도 즐거운 독서를 시작해볼까요?</p>
                 </div>
@@ -266,7 +266,7 @@
                                 <span class="bg-white/20 backdrop-blur-sm text-xs font-bold px-3 py-1 rounded-full">AI 독서 프로그램</span>
                                 <span class="bg-yellow-400/30 text-xs font-bold px-3 py-1 rounded-full">1달 무료!</span>
                             </div>
-                            <h3 class="font-jua text-2xl md:text-3xl mb-2">KRS 무료체험 신청</h3>
+                            <h3 class="font-noto text-2xl md:text-3xl mb-2">KRS 무료체험 신청</h3>
                             <p class="text-sm md:text-base opacity-90 leading-relaxed">
                                 맞춤형 커리큘럼 + AI 독서 도구를 무료로 체험해보세요!<br>
                                 <span class="opacity-75 text-xs">KRS 리딩트리 / 질문렌즈 / 영상 리텔링 / 독서토론</span>
@@ -287,7 +287,7 @@
                 <div class="section-header">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">📖</span>
-                        <h3 class="font-jua text-xl text-gray-800">이번 주 추천 책</h3>
+                        <h3 class="font-noto text-xl text-gray-800">이번 주 추천 책</h3>
                     </div>
                     <span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-bold flex items-center gap-1">
                         <i class="fa-solid fa-star text-amber-500"></i> 이번 주 책을 읽으면 별 ★+10
@@ -313,7 +313,7 @@
                 <div class="section-header">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">🎬</span>
-                        <h3 class="font-jua text-xl text-gray-800">새로 나온 영상</h3>
+                        <h3 class="font-noto text-xl text-gray-800">새로 나온 영상</h3>
                     </div>
                     <button class="text-sm text-brand-primary font-bold hover:underline">더보기 →</button>
                 </div>
@@ -327,7 +327,7 @@
                 <div class="section-header">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">📚</span>
-                        <h3 class="font-jua text-xl text-gray-800">새로 나온 책</h3>
+                        <h3 class="font-noto text-xl text-gray-800">새로 나온 책</h3>
                     </div>
                     <button class="text-sm text-brand-primary font-bold hover:underline">더보기 →</button>
                 </div>
@@ -341,7 +341,7 @@
                 <div class="section-header">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">🔥</span>
-                        <h3 class="font-jua text-xl text-gray-800">독후 활동이 활발한 도서</h3>
+                        <h3 class="font-noto text-xl text-gray-800">독후 활동이 활발한 도서</h3>
                     </div>
                     <button class="text-sm text-brand-primary font-bold hover:underline">더보기 →</button>
                 </div>
@@ -355,7 +355,7 @@
                 <div class="section-header">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">👀</span>
-                        <h3 class="font-jua text-xl text-gray-800">친구들이 이 영상을 보고 있어</h3>
+                        <h3 class="font-noto text-xl text-gray-800">친구들이 이 영상을 보고 있어</h3>
                     </div>
                     <button class="text-sm text-brand-primary font-bold hover:underline">더보기 →</button>
                 </div>
@@ -465,7 +465,7 @@
             modal.innerHTML = `
                 <div class="home2-modal">
                     <div class="text-6xl mb-4">🎁</div>
-                    <h3 class="font-jua text-xl text-gray-800 mb-2">무료체험 신청</h3>
+                    <h3 class="font-noto text-xl text-gray-800 mb-2">무료체험 신청</h3>
                     <p class="text-sm text-gray-500 mb-6 leading-relaxed">
                         KRS 1달 무료체험을<br>신청하시겠습니까?
                     </p>
@@ -488,7 +488,7 @@
             if (modal) {
                 modal.querySelector('.home2-modal').innerHTML = `
                     <div class="text-6xl mb-4">🎉</div>
-                    <h3 class="font-jua text-xl text-gray-800 mb-2">신청 완료!</h3>
+                    <h3 class="font-noto text-xl text-gray-800 mb-2">신청 완료!</h3>
                     <p class="text-sm text-gray-500 mb-6 leading-relaxed">
                         신청이 완료되었습니다!<br>
                         <span class="text-brand-primary font-bold">KRS 홈 화면</span>으로 이동합니다.

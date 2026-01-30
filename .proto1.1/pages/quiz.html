@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -34,13 +34,13 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
         body {
             background: #f7f7f7;
@@ -221,7 +221,7 @@
     <!-- 하단 체크 버튼 -->
     <footer class="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-100 p-4">
         <div class="max-w-2xl mx-auto">
-            <button id="check-btn" onclick="checkAnswer()" disabled class="btn-3d btn-3d-green w-full py-4 text-white font-jua text-xl rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none disabled:bg-gray-300">
+            <button id="check-btn" onclick="checkAnswer()" disabled class="btn-3d btn-3d-green w-full py-4 text-white font-noto text-xl rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none disabled:bg-gray-300">
                 확인하기
             </button>
         </div>
@@ -234,7 +234,7 @@
                 <span class="text-4xl">🎉</span>
             </div>
             <div>
-                <p class="font-jua text-2xl">정답이에요!</p>
+                <p class="font-noto text-2xl">정답이에요!</p>
                 <p class="text-white/80">잘했어요!</p>
             </div>
         </div>
@@ -247,7 +247,7 @@
                 <span class="text-4xl">😢</span>
             </div>
             <div>
-                <p class="font-jua text-2xl">아쉬워요!</p>
+                <p class="font-noto text-2xl">아쉬워요!</p>
                 <p class="text-white/80" id="correct-answer-hint">다시 한번 생각해봐요</p>
             </div>
         </div>
@@ -261,7 +261,7 @@
                 <span class="text-7xl">🏆</span>
             </div>
 
-            <h2 class="font-jua text-4xl text-white mb-2">퀴즈 완료!</h2>
+            <h2 class="font-noto text-4xl text-white mb-2">퀴즈 완료!</h2>
             <p class="text-white/90 text-xl mb-8">모든 문제를 풀었어요!</p>
 
             <!-- 결과 카드 -->
@@ -269,12 +269,12 @@
                 <div class="flex items-center justify-around mb-4">
                     <div class="text-center">
                         <p class="text-gray-400 text-sm">정답률</p>
-                        <p id="result-accuracy" class="font-jua text-3xl text-duo-green">100%</p>
+                        <p id="result-accuracy" class="font-noto text-3xl text-duo-green">100%</p>
                     </div>
                     <div class="w-px h-12 bg-gray-200"></div>
                     <div class="text-center">
                         <p class="text-gray-400 text-sm">획득 별</p>
-                        <p id="result-stars" class="font-jua text-3xl text-duo-orange">+30⭐</p>
+                        <p id="result-stars" class="font-noto text-3xl text-duo-orange">+30⭐</p>
                     </div>
                 </div>
 
@@ -284,13 +284,13 @@
                     <div class="flex items-center gap-3">
                         <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center text-2xl text-white shadow-md">🎮</div>
                         <div class="text-left">
-                            <p class="font-jua text-lg text-gray-800">어휘 챌린지</p>
+                            <p class="font-noto text-lg text-gray-800">어휘 챌린지</p>
                             <p class="text-xs text-gray-500">재미있는 단어 게임!</p>
                         </div>
                     </div>
                 </div>
 
-                <button onclick="goToVocabChallenge()" class="btn-3d btn-3d-green w-full py-4 text-white font-jua text-xl rounded-2xl">
+                <button onclick="goToVocabChallenge()" class="btn-3d btn-3d-green w-full py-4 text-white font-noto text-xl rounded-2xl">
                     어휘 챌린지 시작!
                 </button>
             </div>
@@ -400,7 +400,7 @@
                     <!-- 문제 -->
                     <div class="bg-white rounded-3xl p-6 mb-8 shadow-lg border-2 border-gray-100">
                         <p class="text-center text-gray-400 text-sm mb-2">OX 퀴즈</p>
-                        <p class="font-jua text-2xl text-center text-gray-800 leading-relaxed">${question.question}</p>
+                        <p class="font-noto text-2xl text-center text-gray-800 leading-relaxed">${question.question}</p>
                     </div>
 
                     <!-- OX 버튼 -->
@@ -432,7 +432,7 @@
                     <!-- 문제 -->
                     <div class="bg-white rounded-3xl p-6 mb-8 shadow-lg border-2 border-gray-100">
                         <p class="text-center text-gray-400 text-sm mb-2">객관식 퀴즈</p>
-                        <p class="font-jua text-2xl text-center text-gray-800 leading-relaxed">${question.question}</p>
+                        <p class="font-noto text-2xl text-center text-gray-800 leading-relaxed">${question.question}</p>
                     </div>
 
                     <!-- 선택지 -->

@@ -1,4 +1,4 @@
-/* ============================================
+﻿/* ============================================
    북클럽 3.0 - 공통 스타일
    ============================================ */
 
@@ -31,12 +31,18 @@
 }
 
 /* === Typography === */
-.font-jua { font-family: 'Jua', sans-serif; }
+.font-noto { font-family: 'Noto Sans KR', sans-serif; }
 .font-sans { font-family: 'Noto Sans KR', sans-serif; }
 .font-serif { font-family: 'Nanum Myeongjo', serif; }
 .font-hand { font-family: 'Nanum Pen Script', cursive; }
 .font-roboto { font-family: 'Roboto', sans-serif; }
 .font-tech { font-family: 'Orbitron', sans-serif; }
+
+/* === Reset === */
+html, body {
+    margin: 0;
+    padding: 0;
+}
 
 /* === Utilities === */
 .hide-scrollbar::-webkit-scrollbar { display: none; }

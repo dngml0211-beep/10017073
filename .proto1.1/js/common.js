@@ -17,7 +17,7 @@ const AppState = {
     // 사용자 정보
     getUserInfo: () => {
         const info = sessionStorage.getItem('userInfo');
-        return info ? JSON.parse(info) : { name: '지훈', birth: '2015-03-15' };
+        return info ? JSON.parse(info) : { name: '우희', birth: '2015-03-15' };
     },
     setUserInfo: (info) => sessionStorage.setItem('userInfo', JSON.stringify(info)),
 
@@ -229,7 +229,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+/**
+ * 찜하기 (즐겨찾기) 관리 — sessionStorage 기반
+ */
+const Favorites = {
+    _key: 'favoriteBooks',
+
+    getAll: () => {
+        return JSON.parse(sessionStorage.getItem(Favorites._key) || '[]');
+    },
+
+    isFavorite: (bookId) => {
+        return Favorites.getAll().some(b => b.id === bookId);
+    },
+
+    toggle: (book) => {
+        // book = { id, title, genre, bg }
+        let list = Favorites.getAll();
+        const idx = list.findIndex(b => b.id === book.id);
+        if (idx >= 0) {
+            list.splice(idx, 1);
+        } else {
+            list.push(book);
+        }
+        sessionStorage.setItem(Favorites._key, JSON.stringify(list));
+        return idx < 0; // true = 추가됨, false = 제거됨
+    }
+};
+
 // 전역으로 내보내기
+window.Favorites = Favorites;
 window.AppState = AppState;
 window.navigateTo = navigateTo;
 window.goBack = goBack;

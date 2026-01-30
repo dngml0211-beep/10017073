@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -25,7 +25,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="../css/common.css">
 
     <style>
-        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
         .taste-card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -110,7 +110,7 @@
                 <div class="absolute -top-2 -right-2 text-yellow-400 sparkle">✨</div>
                 <div class="absolute -bottom-1 -left-2 text-yellow-400 sparkle" style="animation-delay: 0.5s;">✨</div>
             </div>
-            <h2 class="font-jua text-2xl text-gray-800 mb-2" id="question-text">
+            <h2 class="font-noto text-2xl text-gray-800 mb-2" id="question-text">
                 어떤 주인공이 나오는 이야기가 좋아?
             </h2>
             <p class="text-gray-500" id="question-hint">마음에 드는 것을 골라주세요!</p>
@@ -126,7 +126,7 @@
                 <div class="w-16 h-16 bg-gradient-to-br from-amber-200 to-orange-300 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3 group-hover:scale-110 transition-transform shadow-md">
                     🐕
                 </div>
-                <p class="font-jua text-lg text-gray-800">동물</p>
+                <p class="font-noto text-lg text-gray-800">동물</p>
                 <p class="text-xs text-gray-400">귀여운 동물 친구들</p>
             </button>
 
@@ -138,7 +138,7 @@
                 <div class="w-16 h-16 bg-gradient-to-br from-blue-200 to-indigo-300 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3 group-hover:scale-110 transition-transform shadow-md">
                     👦
                 </div>
-                <p class="font-jua text-lg text-gray-800">사람</p>
+                <p class="font-noto text-lg text-gray-800">사람</p>
                 <p class="text-xs text-gray-400">나와 비슷한 친구들</p>
             </button>
 
@@ -150,7 +150,7 @@
                 <div class="w-16 h-16 bg-gradient-to-br from-green-200 to-emerald-300 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3 group-hover:scale-110 transition-transform shadow-md">
                     🌳
                 </div>
-                <p class="font-jua text-lg text-gray-800">자연</p>
+                <p class="font-noto text-lg text-gray-800">자연</p>
                 <p class="text-xs text-gray-400">숲, 바다, 하늘 이야기</p>
             </button>
 
@@ -162,7 +162,7 @@
                 <div class="w-16 h-16 bg-gradient-to-br from-pink-200 to-rose-300 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3 group-hover:scale-110 transition-transform shadow-md">
                     👸
                 </div>
-                <p class="font-jua text-lg text-gray-800">공주님</p>
+                <p class="font-noto text-lg text-gray-800">공주님</p>
                 <p class="text-xs text-gray-400">왕자와 공주 이야기</p>
             </button>
 
@@ -174,7 +174,7 @@
                 <div class="w-16 h-16 bg-gradient-to-br from-purple-200 to-violet-300 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3 group-hover:scale-110 transition-transform shadow-md">
                     🧙
                 </div>
-                <p class="font-jua text-lg text-gray-800">마법</p>
+                <p class="font-noto text-lg text-gray-800">마법</p>
                 <p class="text-xs text-gray-400">신비로운 마법 세계</p>
             </button>
 
@@ -186,7 +186,7 @@
                 <div class="w-16 h-16 bg-gradient-to-br from-red-200 to-orange-300 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3 group-hover:scale-110 transition-transform shadow-md">
                     🗺️
                 </div>
-                <p class="font-jua text-lg text-gray-800">모험</p>
+                <p class="font-noto text-lg text-gray-800">모험</p>
                 <p class="text-xs text-gray-400">신나는 탐험 이야기</p>
             </button>
         </div>
@@ -200,7 +200,7 @@
                 <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center text-4xl mx-auto mb-4">
                     😢
                 </div>
-                <h3 class="font-jua text-2xl text-gray-800 mb-2">진단을 그만할까요?</h3>
+                <h3 class="font-noto text-2xl text-gray-800 mb-2">진단을 그만할까요?</h3>
                 <p class="text-gray-500 mb-6">지금까지의 진행이 저장되지 않아요.</p>
                 <div class="flex gap-3">
                     <button onclick="hideExitModal()" class="flex-1 py-3 px-4 bg-gray-100 text-gray-600 rounded-xl font-bold hover:bg-gray-200 transition-colors">
@@ -325,7 +325,7 @@
                     <div class="w-16 h-16 bg-gradient-to-br ${card.gradient} rounded-2xl flex items-center justify-center text-4xl mx-auto mb-3 group-hover:scale-110 transition-transform shadow-md">
                         ${card.icon}
                     </div>
-                    <p class="font-jua text-lg text-gray-800">${card.label}</p>
+                    <p class="font-noto text-lg text-gray-800">${card.label}</p>
                     <p class="text-xs text-gray-400">${card.desc}</p>
                 `;
                 container.appendChild(btn);

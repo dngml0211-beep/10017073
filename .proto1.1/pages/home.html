@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -30,7 +30,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="../css/responsive.css">
 
     <style>
-        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
         /* === Week Header === */
         .week-nav-btn { transition: all 0.2s ease; }
@@ -64,9 +64,10 @@
         .step-segment:last-child { border-right: none; }
         .step-segment .seg-icon { margin-right: 4px; font-size: 13px; }
         .step-segment .seg-lock { font-size: 8px; margin-left: 3px; opacity: 0.6; }
-        .step-segment.active { color: #fff; }
-        .step-segment.completed { color: #fff; }
+        .step-segment.active { color: #b8a080; }
+        .step-segment.completed { color: #b8a080; }
         .step-segment.locked { color: #c0b49a; cursor: default; }
+        .step-segment.gauge-covered { color: #fff; }
 
         /* Gauge fill behind segments */
         .step-gauge {
@@ -87,43 +88,57 @@
             box-shadow: 0 4px 24px rgba(80,60,30,0.12), 0 2px 0 #ede6d8;
             border: 1px solid #e8e0d4;
             transition: all 0.3s ease;
+            width: 70%;
+            margin: 0 auto;
         }
         .book-spread:hover {
             box-shadow: 0 8px 32px rgba(80,60,30,0.16), 0 2px 0 #ede6d8;
         }
 
-        /* A면: 표지 — 최소 220px 이상이면 가로 배치, 아니면 자동 스택 */
+        /* A면: 표지 — 5:5 비율 */
         .spread-cover {
-            flex: 1 1 220px; min-height: 200px; max-width: 42%;
+            flex: 1 1 50%; min-height: 200px; max-width: 50%;
             position: relative; background: #2c1810; overflow: hidden;
             border-radius: 1.25rem 0 0 1.25rem;
         }
         .spread-cover img {
             width: 100%; height: 100%; object-fit: cover; display: block;
         }
-        /* 책 등 (spine) 그림자 */
+        /* 책 등 (spine) 그림자 — 오른쪽 */
         .spread-cover::after {
             content: ''; position: absolute; top: 0; right: 0;
-            width: 20px; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.15));
+            width: 28px; height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.08) 40%, rgba(0,0,0,0.22) 100%);
             pointer-events: none;
         }
 
-        /* B면: 내용 */
+        /* B면: 내용 — 5:5 비율 */
         .spread-content {
-            flex: 1 1 280px;
+            flex: 1 1 50%;
             background: #FDFBF7;
             padding: clamp(1rem, 3vw, 1.75rem);
             display: flex; flex-direction: column; justify-content: space-between;
             position: relative; min-width: 0;
             border-radius: 0 1.25rem 1.25rem 0;
+            cursor: pointer;
         }
-        /* 종이 질감 느낌 */
+        /* 종이 질감 — 책 등 왼쪽 그림자 */
         .spread-content::before {
             content: ''; position: absolute; top: 0; left: 0;
-            width: 16px; height: 100%;
-            background: linear-gradient(90deg, rgba(0,0,0,0.06), transparent);
+            width: 24px; height: 100%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.04) 40%, transparent 100%);
             pointer-events: none; z-index: 1;
+        }
+
+        /* 페이지 넘김 애니메이션 — 설명 영역(B면)만 넘김 */
+        @keyframes pageTurnRight {
+            0% { transform: perspective(1200px) rotateY(0deg); opacity: 1; }
+            60% { opacity: 0.6; }
+            100% { transform: perspective(1200px) rotateY(-85deg); opacity: 0; }
+        }
+        .page-turning .spread-content {
+            animation: pageTurnRight 0.55s ease-in forwards;
+            transform-origin: left center;
         }
 
         /*
@@ -167,15 +182,15 @@
 
         /* 태블릿: B면 콘텐츠 유동 축소 */
         @media (min-width: 721px) and (max-width: 1100px) {
-            .spread-cover { max-width: 36%; min-height: 200px; }
-            .spread-content { flex-basis: 320px; }
+            .spread-cover { max-width: 50%; min-height: 200px; }
+            .spread-content { flex-basis: 50%; }
             /* B면 내부 마진·갭 축소 */
             .spread-content .book-info-top { gap: clamp(4px, 1vw, 12px); }
             .spread-content .book-info-top .tag-row { margin-bottom: clamp(4px, 1vw, 12px); }
             .spread-content .book-info-top .book-title { margin-bottom: 2px; }
             .spread-content .book-info-top .book-desc { margin-bottom: clamp(6px, 1.2vw, 16px); }
             .spread-content .book-excerpt { margin-bottom: clamp(8px, 1.5vw, 20px); }
-            .book-excerpt { -webkit-line-clamp: 2; line-clamp: 2; font-size: clamp(0.75rem, 1.5vw, 0.88rem); line-height: 1.7; }
+            .book-excerpt { -webkit-line-clamp: 2; line-clamp: 2; font-size: clamp(0.85rem, 1.8vw, 1rem); line-height: 1.7; }
             .book-tag { font-size: 10px; padding: 3px 7px; }
             .cta-btn { padding: clamp(8px, 1.5vw, 12px); font-size: clamp(11px, 1.8vw, 14px); }
             .pg-indicator { font-size: 12px; }
@@ -192,8 +207,8 @@
 
         /* 본문 인용 스타일 */
         .book-excerpt {
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: clamp(0.8rem, 1.8vw, 0.92rem);
+            font-family: 'Gowun Batang', 'Noto Sans KR', serif;
+            font-size: clamp(0.95rem, 2.2vw, 1.1rem);
             line-height: 1.85; color: #5c4a32;
             position: relative;
             padding-left: clamp(0.8rem, 2vw, 1.2rem);
@@ -310,7 +325,7 @@
             background: rgba(29, 209, 161, 0.13);
             border: 2.5px solid rgba(29, 209, 161, 0.5);
             color: #1dd1a1;
-            font-family: 'Jua', sans-serif;
+            font-family: 'Noto Sans KR', sans-serif;
             font-size: 14px;
             padding: 6px 14px;
             border-radius: 12px;
@@ -335,6 +350,19 @@
         .level-badge { font-size: 10px; padding: 2px 8px; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
+
+        /* 찜하기 하트 */
+        .fav-heart-sm {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: rgba(255,255,255,0.85);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: transform 0.2s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+        .fav-heart-sm:hover { transform: scale(1.15); }
+        .fav-heart-sm i { font-size: 13px; color: #d1d5db; transition: color 0.2s; }
+        .fav-heart-sm.active i { color: #ef4444; }
     </style>
 </head>
 <body class="bg-brand-bg font-sans text-gray-800 h-screen overflow-hidden">
@@ -352,12 +380,12 @@
 
         <!-- Main Content -->
         <main class="flex-1 h-full overflow-y-auto px-6 py-8 md:px-12">
-          <div class="max-w-[1400px] mx-auto">
+          <div class="max-w-[1400px]">
             <!-- Header -->
             <header class="flex items-center justify-between mb-6">
                 <div>
-                    <h2 class="font-jua text-2xl md:text-3xl text-gray-800">
-                        <span data-user-name>지훈</span>님, 안녕! 👋
+                    <h2 class="font-noto text-[19px] md:text-[25px] text-gray-800">
+                        <span data-user-name>우희</span>님, 안녕! 👋
                     </h2>
                     <p class="text-gray-500 mt-1">오늘도 즐거운 독서 탐험을 시작해볼까요?</p>
                 </div>
@@ -366,8 +394,11 @@
                         <input type="text" placeholder="책 제목, 작가 검색..." class="w-64 h-12 bg-white/80 border border-gray-200 rounded-2xl px-5 pr-12 outline-none focus:border-brand-primary focus:bg-white transition-all text-sm">
                         <i class="fa-solid fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                     </div>
-                    <button onclick="window.location.href='diagnosis.html'" class="w-12 h-12 bg-gradient-to-br from-brand-primary to-orange-500 rounded-2xl border-2 border-orange-300 flex items-center justify-center text-white hover:shadow-lg hover:scale-105 transition-all shadow-md" title="진단 테스트">
-                        <i class="fa-solid fa-compass text-lg"></i>
+                    <button onclick="openTool('diagnosis')" class="flex flex-col items-center group" title="진단 테스트">
+                        <div class="w-12 h-12 bg-gradient-to-br from-brand-primary to-orange-500 rounded-2xl border-2 border-orange-300 flex items-center justify-center text-white hover:shadow-lg group-hover:scale-105 transition-all shadow-md">
+                            <i class="fa-solid fa-compass text-lg"></i>
+                        </div>
+                        <span class="text-[9px] text-gray-400/70 mt-0.5 tracking-tight">진단테스트</span>
                     </button>
                 </div>
             </header>
@@ -382,7 +413,7 @@
                             <button onclick="prevWeek()" class="week-nav-btn w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-brand-primary border border-gray-200 transition-all">
                                 <i class="fa-solid fa-chevron-left text-xs"></i>
                             </button>
-                            <span id="week-label" class="font-jua text-lg text-gray-800 mx-1">1월 1주차</span>
+                            <span id="week-label" class="font-noto text-lg text-gray-800 mx-1">1월 1주차</span>
                             <button onclick="nextWeek()" class="week-nav-btn w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-brand-primary border border-gray-200 transition-all">
                                 <i class="fa-solid fa-chevron-right text-xs"></i>
                             </button>
@@ -413,7 +444,7 @@
                     </div>
 
                     <!-- Row 3: Card Carousel -->
-                    <div class="px-6 pb-5" id="carousel-wrapper">
+                    <div class="px-6 pb-5 bg-white" id="carousel-wrapper">
                         <div id="story-active" class="story-carousel">
 
                                 <!-- PAGE 1: 도서 읽기 (양면 펼침) -->
@@ -424,7 +455,7 @@
                                             <img id="book-cover-img" src="../img/book1.jpg" alt="책 표지">
                                         </div>
                                         <!-- B면: 내용 -->
-                                        <div class="spread-content">
+                                        <div class="spread-content" onclick="openBookViewer()"
                                             <!-- 상단: 책 정보 -->
                                             <div class="book-info-top" id="book-info-top" onclick="openBookViewer()" style="cursor:pointer;">
                                                 <!-- Labels -->
@@ -436,7 +467,7 @@
                                                 </div>
 
                                                 <!-- Title & Desc -->
-                                                <h3 id="main-book-title" class="font-jua text-gray-900 book-title" style="font-size:clamp(1rem,2.5vw,1.25rem); margin-bottom:2px;">오즈의 마법사</h3>
+                                                <h3 id="main-book-title" class="font-noto text-gray-900 book-title" style="font-size:clamp(1rem,2.5vw,1.25rem); margin-bottom:2px;">오즈의 마법사</h3>
                                                 <p id="main-book-desc" class="text-xs text-gray-400 book-desc" style="margin-bottom:clamp(8px,1.5vw,16px);">도로시와 함께하는 신비한 모험 이야기</p>
 
                                                 <!-- 본문 인용 -->
@@ -474,14 +505,14 @@
                                     <div class="locked-card-main" id="quiz-card">
                                         <div class="lock-veil" id="quiz-lock">
                                             <div class="lock-badge"><i class="fa-solid fa-lock"></i></div>
-                                            <span class="font-jua text-base text-gray-500">책을 먼저 읽어주세요</span>
+                                            <span class="font-noto text-base text-gray-500">책을 먼저 읽어주세요</span>
                                             <span class="text-xs text-gray-400">독서 완료 후 퀴즈가 열려요</span>
                                         </div>
                                         <div class="p-7 flex flex-col items-center justify-center text-center" style="min-height:320px;">
                                             <div class="w-24 h-24 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center mb-4">
                                                 <span style="font-size:2.8rem;">❓</span>
                                             </div>
-                                            <h4 class="font-jua text-2xl text-gray-800 mb-2">독후퀴즈</h4>
+                                            <h4 class="font-noto text-2xl text-gray-800 mb-2">독후퀴즈</h4>
                                             <p class="text-sm text-gray-500 mb-4">책 내용을 얼마나 기억하고 있을까?</p>
                                             <div class="flex items-center gap-3 mb-5">
                                                 <span class="book-tag bg-amber-50 text-amber-600">📝 5문제</span>
@@ -504,14 +535,14 @@
                                     <div class="locked-card-main" id="retelling-card">
                                         <div class="lock-veil" id="retelling-lock">
                                             <div class="lock-badge"><i class="fa-solid fa-lock"></i></div>
-                                            <span class="font-jua text-base text-gray-500">퀴즈를 먼저 풀어주세요</span>
+                                            <span class="font-noto text-base text-gray-500">퀴즈를 먼저 풀어주세요</span>
                                             <span class="text-xs text-gray-400">퀴즈 완료 후 열려요</span>
                                         </div>
                                         <div class="p-7 flex flex-col items-center justify-center text-center" style="min-height:320px;">
                                             <div class="w-24 h-24 rounded-full bg-gradient-to-br from-pink-50 to-pink-100 flex items-center justify-center mb-4">
                                                 <span style="font-size:2.8rem;">🎬</span>
                                             </div>
-                                            <h4 class="font-jua text-2xl text-gray-800 mb-2">AI 리텔링</h4>
+                                            <h4 class="font-noto text-2xl text-gray-800 mb-2">AI 리텔링</h4>
                                             <p class="text-sm text-gray-500 mb-4">이야기를 나만의 방식으로 다시 들려줘!</p>
                                             <div class="flex items-center gap-3 mb-5">
                                                 <span class="book-tag bg-pink-50 text-pink-600">🎙️ 음성녹음</span>
@@ -534,14 +565,14 @@
                                     <div class="locked-card-main" id="vocab-card">
                                         <div class="lock-veil" id="vocab-lock">
                                             <div class="lock-badge"><i class="fa-solid fa-lock"></i></div>
-                                            <span class="font-jua text-base text-gray-500">이전 단계를 완료해주세요</span>
+                                            <span class="font-noto text-base text-gray-500">이전 단계를 완료해주세요</span>
                                             <span class="text-xs text-gray-400">순서대로 진행해야 열려요</span>
                                         </div>
                                         <div class="p-7 flex flex-col items-center justify-center text-center" style="min-height:320px;">
                                             <div class="w-24 h-24 rounded-full bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center mb-4">
                                                 <span style="font-size:2.8rem;">🎮</span>
                                             </div>
-                                            <h4 class="font-jua text-2xl text-gray-800 mb-2">어휘 챌린지</h4>
+                                            <h4 class="font-noto text-2xl text-gray-800 mb-2">어휘 챌린지</h4>
                                             <p class="text-sm text-gray-500 mb-4">재미있는 게임으로 새 단어를 정복하자!</p>
                                             <div class="flex items-center gap-3 mb-5">
                                                 <span class="book-tag bg-green-50 text-green-600">🏆 10단어</span>
@@ -570,7 +601,7 @@
                                     <div class="confetti-p" style="width:8px;height:8px;background:#80deea;left:85%;top:12%;animation-delay:0.2s;"></div>
                                     <div style="position:relative; z-index:2;">
                                         <div style="font-size:4rem; margin-bottom:0.5rem;">🏆</div>
-                                        <h3 class="font-jua text-2xl">학습 완료!</h3>
+                                        <h3 class="font-noto text-2xl">학습 완료!</h3>
                                     </div>
                                 </div>
                                 <div class="completion-bottom">
@@ -594,7 +625,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">✨</span>
-                        <h3 class="font-jua text-xl text-gray-800">추천 도서</h3>
+                        <h3 class="font-noto text-xl text-gray-800">추천 도서</h3>
                         <span class="text-xs bg-brand-primary/10 text-brand-primary px-2 py-0.5 rounded-full">맞춤 추천</span>
                     </div>
                     <button class="text-sm text-brand-primary font-medium hover:underline">더보기 →</button>
@@ -605,10 +636,15 @@
                     <div class="book-card bg-white rounded-2xl p-4 shadow-soft border border-gray-100 flex gap-4 cursor-pointer hover:shadow-lg transition-all">
                         <div class="w-20 h-28 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl shadow-md flex-shrink-0 overflow-hidden relative flex items-center justify-center">
                             <img src="../images/thumbnails/book_02.png" alt="추천도서" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none';">
-                            <span class="text-white/80 text-3xl">🌳</span>
+                            <span class="text-white/60 text-sm font-bold tracking-widest">BOOK</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-gray-800 mb-1 truncate">숲속 친구들</h4>
+                            <div class="flex items-start justify-between">
+                                <h4 class="font-bold text-gray-800 mb-1 truncate">숲속 친구들</h4>
+                                <div class="fav-heart-sm" onclick="event.stopPropagation(); toggleFavHome(this, 'rec-1', '숲속 친구들', '자연/동물', 'from-emerald-400 to-teal-500')">
+                                    <i class="fa-regular fa-heart"></i>
+                                </div>
+                            </div>
                             <p class="text-xs text-gray-500 mb-2 line-clamp-2">동물 친구들의 우정 이야기</p>
                             <div class="flex items-center gap-2">
                                 <span class="level-badge bg-emerald-100 text-emerald-600 rounded-full font-bold">K1-1</span>
@@ -621,10 +657,15 @@
                     <div class="book-card bg-white rounded-2xl p-4 shadow-soft border border-gray-100 flex gap-4 cursor-pointer hover:shadow-lg transition-all">
                         <div class="w-20 h-28 bg-gradient-to-br from-violet-400 to-purple-500 rounded-xl shadow-md flex-shrink-0 overflow-hidden relative flex items-center justify-center">
                             <img src="../images/thumbnails/book_03.png" alt="추천도서" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none';">
-                            <span class="text-white/80 text-3xl">🚀</span>
+                            <span class="text-white/60 text-sm font-bold tracking-widest">BOOK</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-gray-800 mb-1 truncate">우주 탐험대</h4>
+                            <div class="flex items-start justify-between">
+                                <h4 class="font-bold text-gray-800 mb-1 truncate">우주 탐험대</h4>
+                                <div class="fav-heart-sm" onclick="event.stopPropagation(); toggleFavHome(this, 'rec-2', '우주 탐험대', '과학/모험', 'from-violet-400 to-purple-500')">
+                                    <i class="fa-regular fa-heart"></i>
+                                </div>
+                            </div>
                             <p class="text-xs text-gray-500 mb-2 line-clamp-2">신비로운 우주 여행 모험</p>
                             <div class="flex items-center gap-2">
                                 <span class="level-badge bg-violet-100 text-violet-600 rounded-full font-bold">K2-1</span>
@@ -637,10 +678,15 @@
                     <div class="book-card bg-white rounded-2xl p-4 shadow-soft border border-gray-100 flex gap-4 cursor-pointer hover:shadow-lg transition-all">
                         <div class="w-20 h-28 bg-gradient-to-br from-rose-400 to-pink-500 rounded-xl shadow-md flex-shrink-0 overflow-hidden relative flex items-center justify-center">
                             <img src="../images/thumbnails/book_04.png" alt="추천도서" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none';">
-                            <span class="text-white/80 text-3xl">👸</span>
+                            <span class="text-white/60 text-sm font-bold tracking-widest">BOOK</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-gray-800 mb-1 truncate">공주와 용</h4>
+                            <div class="flex items-start justify-between">
+                                <h4 class="font-bold text-gray-800 mb-1 truncate">공주와 용</h4>
+                                <div class="fav-heart-sm" onclick="event.stopPropagation(); toggleFavHome(this, 'rec-3', '공주와 용', '판타지', 'from-rose-400 to-pink-500')">
+                                    <i class="fa-regular fa-heart"></i>
+                                </div>
+                            </div>
                             <p class="text-xs text-gray-500 mb-2 line-clamp-2">용감한 공주의 이야기</p>
                             <div class="flex items-center gap-2">
                                 <span class="level-badge bg-rose-100 text-rose-600 rounded-full font-bold">K1-1</span>
@@ -656,7 +702,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">📚</span>
-                        <h3 class="font-jua text-xl text-gray-800">교과서 짝꿍</h3>
+                        <h3 class="font-noto text-xl text-gray-800">교과서 짝꿍</h3>
                         <span class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">국어 3-1 연계</span>
                     </div>
                     <button class="text-sm text-brand-primary font-medium hover:underline">더보기 →</button>
@@ -667,12 +713,17 @@
                     <div class="book-card bg-white rounded-2xl p-4 shadow-soft border border-blue-100 flex gap-4 cursor-pointer hover:shadow-lg hover:border-blue-200 transition-all">
                         <div class="w-20 h-28 bg-gradient-to-br from-sky-400 to-blue-500 rounded-xl shadow-md flex-shrink-0 overflow-hidden relative flex items-center justify-center">
                             <img src="../images/thumbnails/book_05.png" alt="교과서짝꿍" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none';">
-                            <span class="text-white/80 text-3xl">🐸</span>
+                            <span class="text-white/60 text-sm font-bold tracking-widest">BOOK</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[10px] bg-blue-500 text-white px-1.5 py-0.5 rounded">1단원</span>
-                                <span class="text-[10px] text-blue-500 font-medium">독후퀴즈 연계</span>
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] bg-blue-500 text-white px-1.5 py-0.5 rounded">1단원</span>
+                                    <span class="text-[10px] text-blue-500 font-medium">독후퀴즈 연계</span>
+                                </div>
+                                <div class="fav-heart-sm" onclick="event.stopPropagation(); toggleFavHome(this, 'txt-1', '개구리와 두꺼비', '우정', 'from-sky-400 to-blue-500')">
+                                    <i class="fa-regular fa-heart"></i>
+                                </div>
                             </div>
                             <h4 class="font-bold text-gray-800 mb-1 truncate">개구리와 두꺼비</h4>
                             <p class="text-xs text-gray-500 mb-2">친구 사이의 우정 이야기</p>
@@ -686,12 +737,17 @@
                     <div class="book-card bg-white rounded-2xl p-4 shadow-soft border border-green-100 flex gap-4 cursor-pointer hover:shadow-lg hover:border-green-200 transition-all">
                         <div class="w-20 h-28 bg-gradient-to-br from-lime-400 to-green-500 rounded-xl shadow-md flex-shrink-0 overflow-hidden relative flex items-center justify-center">
                             <img src="../images/thumbnails/book_06.png" alt="교과서짝꿍" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none';">
-                            <span class="text-white/80 text-3xl">🌳</span>
+                            <span class="text-white/60 text-sm font-bold tracking-widest">BOOK</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded">2단원</span>
-                                <span class="text-[10px] text-green-500 font-medium">독후퀴즈 연계</span>
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] bg-green-500 text-white px-1.5 py-0.5 rounded">2단원</span>
+                                    <span class="text-[10px] text-green-500 font-medium">독후퀴즈 연계</span>
+                                </div>
+                                <div class="fav-heart-sm" onclick="event.stopPropagation(); toggleFavHome(this, 'txt-2', '나무를 심은 사람', '자연', 'from-lime-400 to-green-500')">
+                                    <i class="fa-regular fa-heart"></i>
+                                </div>
                             </div>
                             <h4 class="font-bold text-gray-800 mb-1 truncate">나무를 심은 사람</h4>
                             <p class="text-xs text-gray-500 mb-2">자연을 사랑하는 마음</p>
@@ -705,12 +761,17 @@
                     <div class="book-card bg-white rounded-2xl p-4 shadow-soft border border-amber-100 flex gap-4 cursor-pointer hover:shadow-lg hover:border-amber-200 transition-all">
                         <div class="w-20 h-28 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl shadow-md flex-shrink-0 overflow-hidden relative flex items-center justify-center">
                             <img src="../images/thumbnails/book_07.png" alt="교과서짝꿍" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none';">
-                            <span class="text-white/80 text-3xl">⭐</span>
+                            <span class="text-white/60 text-sm font-bold tracking-widest">BOOK</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[10px] bg-amber-500 text-white px-1.5 py-0.5 rounded">3단원</span>
-                                <span class="text-[10px] text-amber-500 font-medium">독후퀴즈 연계</span>
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] bg-amber-500 text-white px-1.5 py-0.5 rounded">3단원</span>
+                                    <span class="text-[10px] text-amber-500 font-medium">독후퀴즈 연계</span>
+                                </div>
+                                <div class="fav-heart-sm" onclick="event.stopPropagation(); toggleFavHome(this, 'txt-3', '별을 헤아리며', '동화', 'from-amber-400 to-orange-500')">
+                                    <i class="fa-regular fa-heart"></i>
+                                </div>
                             </div>
                             <h4 class="font-bold text-gray-800 mb-1 truncate">별을 헤아리며</h4>
                             <p class="text-xs text-gray-500 mb-2">꿈과 희망의 이야기</p>
@@ -724,12 +785,17 @@
                     <div class="book-card bg-white rounded-2xl p-4 shadow-soft border border-pink-100 flex gap-4 cursor-pointer hover:shadow-lg hover:border-pink-200 transition-all">
                         <div class="w-20 h-28 bg-gradient-to-br from-pink-400 to-rose-500 rounded-xl shadow-md flex-shrink-0 overflow-hidden relative flex items-center justify-center">
                             <img src="../images/thumbnails/book_08.png" alt="교과서짝꿍" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none';">
-                            <span class="text-white/80 text-3xl">💝</span>
+                            <span class="text-white/60 text-sm font-bold tracking-widest">BOOK</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[10px] bg-pink-500 text-white px-1.5 py-0.5 rounded">4단원</span>
-                                <span class="text-[10px] text-pink-500 font-medium">독후퀴즈 연계</span>
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] bg-pink-500 text-white px-1.5 py-0.5 rounded">4단원</span>
+                                    <span class="text-[10px] text-pink-500 font-medium">독후퀴즈 연계</span>
+                                </div>
+                                <div class="fav-heart-sm" onclick="event.stopPropagation(); toggleFavHome(this, 'txt-4', '사랑의 선물', '가족', 'from-pink-400 to-rose-500')">
+                                    <i class="fa-regular fa-heart"></i>
+                                </div>
                             </div>
                             <h4 class="font-bold text-gray-800 mb-1 truncate">사랑의 선물</h4>
                             <p class="text-xs text-gray-500 mb-2">가족 사랑 이야기</p>
@@ -853,7 +919,15 @@
             saveWeekBookData(bookPayload, currentWeek);
             // book-viewer는 기존 'currentBook' 키를 읽으므로 호환용으로도 저장
             sessionStorage.setItem('currentBook', JSON.stringify(bookPayload));
-            window.location.href = 'book-viewer.html';
+
+            // 페이지 넘김 애니메이션 후 이동
+            const bookCard = document.getElementById('book-card');
+            if (bookCard) {
+                bookCard.classList.add('page-turning');
+                setTimeout(() => { window.location.href = 'book-viewer.html'; }, 650);
+            } else {
+                window.location.href = 'book-viewer.html';
+            }
         }
 
         // ===== 다시 읽기 =====
@@ -969,7 +1043,32 @@
             // 전체 완료 시 녹색
             const allDone = vocabDone && quizDone && bookDone && (!data.hasRetelling || retellDone);
             gauge.classList.toggle('full-complete', allDone);
+
+            // 게이지 위치 기반 텍스트 색상 업데이트
+            updateSegmentColors();
         }
+
+        function updateSegmentColors() {
+            const bar = document.getElementById('step-progress-bar');
+            const gauge = document.getElementById('step-gauge');
+            if (!bar || !gauge) return;
+            const barRect = bar.getBoundingClientRect();
+            const gaugeRight = barRect.left + (bar.offsetWidth * parseFloat(gauge.style.width || '0') / 100);
+
+            bar.querySelectorAll('.step-segment').forEach(seg => {
+                if (seg.classList.contains('hidden')) return;
+                const segRect = seg.getBoundingClientRect();
+                // 세그먼트 중앙이 게이지 안에 있으면 흰색
+                const segCenter = segRect.left + segRect.width / 2;
+                seg.classList.toggle('gauge-covered', segCenter <= gaugeRight);
+            });
+        }
+
+        // 게이지 트랜지션 완료 후 세그먼트 색상 재계산
+        document.addEventListener('DOMContentLoaded', () => {
+            const gauge = document.getElementById('step-gauge');
+            if (gauge) gauge.addEventListener('transitionend', updateSegmentColors);
+        });
 
         // ===== Learning Progress =====
         function updateLearningProgress() {
@@ -1171,6 +1270,29 @@
             else { alert('이번 달 모든 학습을 완료했어요! 다음 달 커리큘럼을 기대해주세요!'); selectWeek(1); }
         }
 
+        // ===== 찜하기 토글 (홈) =====
+        function toggleFavHome(el, id, title, genre, bg) {
+            const added = Favorites.toggle({ id, title, genre, bg });
+            if (added) {
+                el.classList.add('active');
+                el.querySelector('i').className = 'fa-solid fa-heart';
+            } else {
+                el.classList.remove('active');
+                el.querySelector('i').className = 'fa-regular fa-heart';
+            }
+        }
+
+        function initFavHearts() {
+            document.querySelectorAll('.fav-heart-sm').forEach(el => {
+                const onclick = el.getAttribute('onclick') || '';
+                const match = onclick.match(/toggleFavHome\(this,\s*'([^']+)'/);
+                if (match && Favorites.isFavorite(match[1])) {
+                    el.classList.add('active');
+                    el.querySelector('i').className = 'fa-solid fa-heart';
+                }
+            });
+        }
+
         // ===== Init =====
         document.addEventListener('DOMContentLoaded', () => {
             // 최초 진입 시 공유 키 정리 (stale completed 상태 방지)
@@ -1182,6 +1304,7 @@
             loadSidebar('home');
             loadLogoutModal();
             selectWeek(1);
+            initFavHearts();
         });
 
         // ===== Touch Swipe =====
