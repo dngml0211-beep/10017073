@@ -4,41 +4,6 @@
 
 /* === 태블릿 세로 (768px ~ 899px) === */
 @media (min-width: 768px) and (max-width: 899px) {
-    /* Sidebar */
-    .sidebar {
-        width: 220px;
-    }
-
-    .sidebar-header {
-        padding: 1.5rem 1rem 0.75rem;
-    }
-
-    .sidebar-logo {
-        font-size: 1.5rem;
-    }
-
-    .sidebar-profile {
-        margin: 0 1rem 0.75rem;
-        padding: 0.75rem;
-    }
-
-    .sidebar-avatar {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
-
-    .sidebar-nav {
-        padding: 0 1rem;
-    }
-
-    .nav-link {
-        padding: 0.75rem 1rem;
-        gap: 0.75rem;
-    }
-
-    .nav-link span {
-        font-size: 1rem;
-    }
 
     /* Main Content */
     .main-content {
@@ -79,22 +44,6 @@
 
 /* === 태블릿 가로 (900px ~ 1024px) === */
 @media (min-width: 900px) and (max-width: 1024px) {
-    /* Sidebar */
-    .sidebar {
-        width: 260px;
-    }
-
-    .sidebar-header {
-        padding: 2rem 1.25rem 0.75rem;
-    }
-
-    .sidebar-profile {
-        margin: 0 1.25rem 1rem;
-    }
-
-    .sidebar-nav {
-        padding: 0 1.25rem;
-    }
 
     /* Main Content */
     .main-content {
@@ -218,6 +167,13 @@
 @media (max-width: 768px) {
     .show-mobile {
         display: block;
+    }
+}
+
+/* === 모바일 하단 네비 콘텐츠 여백 === */
+@media (max-width: 768px) {
+    main {
+        padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
     }
 }
 

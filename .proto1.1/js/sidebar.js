@@ -35,6 +35,12 @@ async function loadSidebar(currentPage) {
         applyAppNavVisibility(savedApp);
         restoreAppCheckIcons(savedApp);
 
+        // 모바일 하단 네비게이션 렌더링
+        renderBottomNav(currentPage);
+
+        // AI 버디 플로팅 버튼 렌더링
+        renderFloatingBuddy(currentPage);
+
     } catch (error) {
         console.error('Error loading sidebar:', error);
         // 폴백: 인라인 사이드바 사용
@@ -213,16 +219,21 @@ function applyAppNavVisibility(appId) {
     const krsOnlyItems = document.querySelectorAll('[data-krs-only]');
     const homeLink = document.getElementById('nav-home-link');
 
+    // 하단 네비 홈 링크도 함께 처리
+    const bottomNavHome = document.querySelector('#bottom-nav .bottom-nav-item');
+
     if (appId === 'bookclub') {
         // KRS 전용 항목 숨기기
         krsOnlyItems.forEach(el => { el.style.display = 'none'; });
         // 홈 링크를 home2.html로 변경
         if (homeLink) { homeLink.href = 'home2.html'; }
+        if (bottomNavHome) { bottomNavHome.href = 'home2.html'; }
     } else {
         // 모든 항목 표시 (KRS 모드)
         krsOnlyItems.forEach(el => { el.style.display = ''; });
         // 홈 링크를 home.html로 변경
         if (homeLink) { homeLink.href = 'home.html'; }
+        if (bottomNavHome) { bottomNavHome.href = 'home.html'; }
     }
 }
 
@@ -394,6 +405,11 @@ function loadInlineSidebar(container, currentPage) {
     applyAppNavVisibility(savedApp);
     restoreAppCheckIcons(savedApp);
 
+    // 모바일 하단 네비게이션 렌더링
+    renderBottomNav(currentPage);
+
+    // AI 버디 플로팅 버튼 렌더링
+    renderFloatingBuddy(currentPage);
 }
 
 /**
@@ -414,6 +430,74 @@ function loadInlineLogoutModal(container) {
     `;
 }
 
+/**
+ * 모바일 하단 네비게이션 바 렌더링
+ * @param {string} currentPage - 현재 페이지 이름
+ */
+function renderBottomNav(currentPage) {
+    // 중복 생성 방지
+    if (document.getElementById('bottom-nav')) return;
+
+    const savedApp = sessionStorage.getItem('selectedApp') || 'bookclub-krs';
+    const isKRS = (savedApp === 'bookclub-krs');
+    const homeHref = isKRS ? 'home.html' : 'home2.html';
+
+    const navItems = [
+        { id: 'home', href: homeHref, icon: 'fa-solid fa-house', label: '홈' },
+        { id: 'library', href: 'library.html', icon: 'fa-solid fa-book-open', label: '리딩트리', krsOnly: true },
+        { id: 'book-library', href: 'book-library.html', icon: 'fa-solid fa-layer-group', label: '라이브러리' },
+        { id: 'report', href: 'report.html', icon: 'fa-solid fa-chart-pie', label: '리포트', krsOnly: true },
+        { id: 'mypage', href: 'mypage.html', icon: 'fa-solid fa-user', label: '마이페이지' },
+    ];
+
+    const nav = document.createElement('nav');
+    nav.id = 'bottom-nav';
+    nav.className = 'bottom-nav';
+
+    let inner = '<div class="bottom-nav-inner">';
+    navItems.forEach(item => {
+        const krsAttr = item.krsOnly ? ' data-krs-only' : '';
+        const hiddenStyle = (item.krsOnly && !isKRS) ? ' style="display:none"' : '';
+        const isActive = (item.id === currentPage) || (item.id === 'home' && currentPage === 'home2');
+        const activeClass = isActive ? ' active' : '';
+
+        const iconEl = '<i class="' + item.icon + '"></i>';
+
+        inner += '<a href="' + item.href + '" class="bottom-nav-item' + activeClass + '"' + krsAttr + hiddenStyle + '>'
+            + iconEl + '<span>' + item.label + '</span></a>';
+    });
+    inner += '</div>';
+    nav.innerHTML = inner;
+
+    document.body.appendChild(nav);
+}
+
+/**
+ * AI 버디 플로팅 버튼 렌더링 (모바일 우측 하단)
+ * @param {string} currentPage - 현재 페이지 이름
+ */
+function renderFloatingBuddy(currentPage) {
+    // 중복 생성 방지
+    if (document.getElementById('floating-buddy')) return;
+    // AI 버디 페이지에서는 표시하지 않음
+    if (currentPage === 'ai-buddy') return;
+
+    const savedApp = sessionStorage.getItem('selectedApp') || 'bookclub-krs';
+    const isKRS = (savedApp === 'bookclub-krs');
+
+    const btn = document.createElement('a');
+    btn.id = 'floating-buddy';
+    btn.href = 'ai-buddy.html';
+    btn.className = 'floating-buddy';
+    btn.setAttribute('data-krs-only', '');
+    if (!isKRS) btn.style.display = 'none';
+
+    btn.innerHTML = '<span class="floating-buddy-emoji">🐿️</span>'
+        + '<span class="floating-buddy-pulse"></span>';
+
+    document.body.appendChild(btn);
+}
+
 // 전역으로 내보내기
 window.loadSidebar = loadSidebar;
 window.loadLogoutModal = loadLogoutModal;
@@ -424,3 +508,5 @@ window.toggleAppMenu = toggleAppMenu;
 window.selectApp = selectApp;
 window.applyAppNavVisibility = applyAppNavVisibility;
 window.restoreAppCheckIcons = restoreAppCheckIcons;
+window.renderBottomNav = renderBottomNav;
+window.renderFloatingBuddy = renderFloatingBuddy;

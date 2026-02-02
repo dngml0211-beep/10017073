@@ -275,6 +275,88 @@
         .chat-send-btn:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(124, 58, 237, 0.4); }
         .chat-send-btn:active { transform: scale(0.95); }
 
+        /* 마이크 버튼 */
+        .chat-mic-btn {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            flex-shrink: 0;
+        }
+        .chat-mic-btn:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4); }
+        .chat-mic-btn:active { transform: scale(0.95); }
+
+        /* === 인라인 음성 녹음 상태 === */
+        .chat-footer.recording {
+            background: linear-gradient(135deg, #fef2f2, #fff1f2);
+            border-top-color: #fecaca;
+        }
+        .chat-mic-btn.recording {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+            animation: recordPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes recordPulse {
+            0%, 100% { box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 4px 18px rgba(239, 68, 68, 0.7), 0 0 0 6px rgba(239, 68, 68, 0.12); }
+        }
+
+        /* 인라인 파형 (입력창 자리에 표시) */
+        .inline-waveform {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 44px;
+            padding: 0 18px;
+            background: #fef2f2;
+            border: 1.5px solid #fecaca;
+            border-radius: 24px;
+        }
+        .inline-waveform .wave-bar {
+            width: 3px;
+            height: 6px;
+            background: linear-gradient(180deg, #ef4444, #dc2626);
+            border-radius: 3px;
+            animation: waveAnim 0.8s ease-in-out infinite alternate;
+        }
+        .inline-waveform .wave-bar:nth-child(1) { animation-delay: 0s; }
+        .inline-waveform .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+        .inline-waveform .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+        .inline-waveform .wave-bar:nth-child(4) { animation-delay: 0.15s; }
+        .inline-waveform .wave-bar:nth-child(5) { animation-delay: 0.25s; }
+        .inline-waveform .wave-bar:nth-child(6) { animation-delay: 0.05s; }
+        .inline-waveform .wave-bar:nth-child(7) { animation-delay: 0.3s; }
+        .inline-waveform .wave-bar:nth-child(8) { animation-delay: 0.12s; }
+        .inline-waveform .wave-bar:nth-child(9) { animation-delay: 0.22s; }
+        @keyframes waveAnim {
+            0% { height: 6px; }
+            100% { height: 28px; }
+        }
+
+        /* 녹음 상태 텍스트 */
+        .inline-voice-status {
+            flex: 1;
+            padding: 10px 18px;
+            background: #f9f7ff;
+            border: 1.5px solid #ede9fe;
+            border-radius: 24px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 0.85rem;
+            color: #7c3aed;
+            font-weight: 500;
+            text-align: center;
+        }
+
         /* 뒤로가기 버튼 */
         .chat-back-btn {
             width: 36px; height: 36px;
@@ -337,10 +419,13 @@
                     <!-- JS로 렌더링 -->
                 </div>
 
-                <!-- 하단 입력 바 (장식용) -->
-                <div class="chat-footer">
+                <!-- 하단 입력 바 -->
+                <div class="chat-footer" id="chat-footer">
                     <div class="chat-max-w" style="display:flex; align-items:center; gap:12px;">
-                        <div class="chat-input-fake">버디에게 말해보세요...</div>
+                        <div class="chat-input-fake" id="chat-input-area">버디에게 말해보세요...</div>
+                        <button class="chat-mic-btn" id="mic-btn" onclick="toggleVoiceRecord()" title="음성으로 말하기">
+                            <i class="fa-solid fa-microphone" id="mic-icon"></i>
+                        </button>
                         <button class="chat-send-btn">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
@@ -534,6 +619,101 @@
                     window.location.href = tool.id + '.html';
                 }
             }, 1000);
+        }, 1000);
+    }
+
+    // === 인라인 음성 대화 기능 ===
+    let isRecording = false;
+    let voiceTimer = null;
+
+    // 버디 음성 응답 시나리오
+    const voiceResponses = [
+        { user: '이 책 재미있어?', buddy: '응! 이 책 정말 재미있어. 특히 주인공이 모험을 떠나는 부분이 너무 신나!' },
+        { user: '주인공은 어떤 사람이야?', buddy: '주인공은 용감하고 호기심이 많은 친구야. 어려운 상황에서도 포기하지 않는 멋진 캐릭터지!' },
+        { user: '이 책에서 뭘 배울 수 있어?', buddy: '우정의 소중함과 도전하는 용기를 배울 수 있어. 친구를 돕는 장면이 정말 감동적이야.' },
+    ];
+    let voiceResponseIndex = 0;
+
+    function toggleVoiceRecord() {
+        if (isRecording) {
+            stopRecording();
+            processVoice();
+        } else {
+            startRecording();
+        }
+    }
+
+    function startRecording() {
+        isRecording = true;
+        const footer = document.getElementById('chat-footer');
+        const micBtn = document.getElementById('mic-btn');
+        const micIcon = document.getElementById('mic-icon');
+        const inputArea = document.getElementById('chat-input-area');
+
+        // 푸터 녹음 상태로 전환
+        footer.classList.add('recording');
+        micBtn.classList.add('recording');
+        micIcon.className = 'fa-solid fa-stop';
+
+        // 입력창을 파형으로 교체
+        inputArea.outerHTML = `<div class="inline-waveform" id="chat-input-area">
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        </div>`;
+
+        // 4초 후 자동 멈춤 (프로토타입)
+        voiceTimer = setTimeout(() => {
+            if (isRecording) {
+                stopRecording();
+                processVoice();
+            }
+        }, 4000);
+    }
+
+    function stopRecording() {
+        isRecording = false;
+        if (voiceTimer) { clearTimeout(voiceTimer); voiceTimer = null; }
+
+        const footer = document.getElementById('chat-footer');
+        const micBtn = document.getElementById('mic-btn');
+        const micIcon = document.getElementById('mic-icon');
+
+        footer.classList.remove('recording');
+        micBtn.classList.remove('recording');
+        micIcon.className = 'fa-solid fa-microphone';
+    }
+
+    function restoreInputArea() {
+        const inputArea = document.getElementById('chat-input-area');
+        if (inputArea && !inputArea.classList.contains('chat-input-fake')) {
+            inputArea.outerHTML = '<div class="chat-input-fake" id="chat-input-area">버디에게 말해보세요...</div>';
+        }
+    }
+
+    function processVoice() {
+        const response = voiceResponses[voiceResponseIndex % voiceResponses.length];
+        voiceResponseIndex++;
+
+        // STEP 1: 입력창에 인식 결과 표시
+        const inputArea = document.getElementById('chat-input-area');
+        inputArea.outerHTML = `<div class="inline-voice-status" id="chat-input-area"><i class="fa-solid fa-microphone" style="margin-right:6px; font-size:0.75rem;"></i>${response.user}</div>`;
+
+        // 채팅에 사용자 메시지 추가
+        addUserMsg(response.user + ' <span style="font-size:0.7rem; opacity:0.7; margin-left:4px;"><i class="fa-solid fa-microphone"></i> 음성</span>');
+
+        // STEP 2: 버디 응답 (1.5초 후)
+        setTimeout(() => {
+            // 타이핑 표시
+            showTyping();
+
+            setTimeout(() => {
+                removeTyping();
+                addBuddyMsg(response.buddy);
+
+                // 입력창 원래 상태로 복원
+                restoreInputArea();
+            }, 1200);
         }, 1000);
     }
 

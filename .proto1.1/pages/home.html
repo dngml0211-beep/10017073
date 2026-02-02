@@ -88,7 +88,8 @@
             box-shadow: 0 4px 24px rgba(80,60,30,0.12), 0 2px 0 #ede6d8;
             border: 1px solid #e8e0d4;
             transition: all 0.3s ease;
-            width: 70%;
+            width: 90%;
+            max-width: 700px;
             margin: 0 auto;
         }
         .book-spread:hover {
@@ -141,15 +142,28 @@
             transform-origin: left center;
         }
 
+        /* 태블릿: 최대폭 해제 */
+        @media (max-width: 1024px) {
+            .book-spread { width: 100%; max-width: none; }
+        }
+
         /*
          * 반응형: flex-wrap이 자동으로 스택을 처리하지만,
          * 세로 스택 시 A면의 max-width 해제 + 고정 높이 부여
          */
         @media (max-width: 720px) {
+            .book-spread {
+                width: 100%;
+                flex-direction: column;
+            }
             .spread-cover {
+                flex: none;
                 max-width: 100%; min-height: 0;
-                height: clamp(150px, 30vw, 220px);
+                height: clamp(180px, 45vw, 260px);
                 border-radius: 1.25rem 1.25rem 0 0;
+            }
+            .spread-cover img {
+                width: 100%; height: 100%; object-fit: cover;
             }
             .spread-cover::after {
                 top: auto; right: auto; bottom: 0; left: 0;
@@ -157,6 +171,7 @@
                 background: linear-gradient(180deg, transparent, rgba(0,0,0,0.12));
             }
             .spread-content {
+                flex: none;
                 border-radius: 0 0 1.25rem 1.25rem;
                 min-height: auto;
             }
@@ -166,9 +181,8 @@
             }
         }
 
-        /* 모바일: 상단 햄버거 버튼 공간 확보 + 축소 */
+        /* 모바일: 축소 */
         @media (max-width: 768px) {
-            main.flex-1 { padding-top: 4rem; }
             .book-excerpt { -webkit-line-clamp: 3; line-clamp: 3; }
         }
 
@@ -405,7 +419,7 @@
 
             <!-- Weekly Curriculum Section -->
             <section id="curriculum-section" class="mb-8">
-                <div class="bg-white rounded-[1.5rem] shadow-lg border border-gray-100">
+                <div class="bg-white rounded-[1.5rem] shadow-lg border border-orange-100 overflow-hidden">
 
                     <!-- Row 1: Week Header -->
                     <div class="flex items-center justify-between px-6 pt-5 pb-3">
@@ -444,7 +458,7 @@
                     </div>
 
                     <!-- Row 3: Card Carousel -->
-                    <div class="px-6 pb-5 bg-white" id="carousel-wrapper">
+                    <div class="px-6 py-5 bg-[#FFF8F0]" id="carousel-wrapper">
                         <div id="story-active" class="story-carousel">
 
                                 <!-- PAGE 1: 도서 읽기 (양면 펼침) -->
