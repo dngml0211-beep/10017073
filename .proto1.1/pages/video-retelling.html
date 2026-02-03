@@ -160,5 +160,21 @@
 
     <!-- Scripts -->
     <script src="../js/common.js"></script>
+    <script>
+        function goBack() {
+            // AI 버디에서 온 경우 버디로 돌아가기
+            const chatState = sessionStorage.getItem('aiBuddyChatState');
+            if (chatState) {
+                window.location.href = 'ai-buddy.html';
+                return;
+            }
+
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'home.html';
+            }
+        }
+    </script>
 </body>
 </html>

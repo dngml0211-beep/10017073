@@ -1005,7 +1005,7 @@
             <!-- Mode Selector -->
             <section class="mode-section" id="mode-section">
                 <div class="mode-section-title">
-                    <i class="fa-solid fa-masks-theater text-brand-primary"></i> 오늘은 어떤 모드?
+                    <i class="fa-solid fa-masks-theater text-brand-primary"></i> 어떤 주제로 모아볼까요?
                 </div>
                 <div class="mode-scroll" id="mode-scroll"></div>
             </section>
@@ -1175,22 +1175,31 @@
                 preferred: ['art', 'audio']
             },
             {
-                id: 'developer', label: 'IT 개발자', emoji: '💻',
-                bgGradient: 'linear-gradient(135deg, #E8EAF6 0%, #FEF3C7 50%, #E0F2F1 100%)',
-                accentColor: '#5C6BC0', shadow: 'rgba(92,107,192,0.25)',
-                preferred: ['science', 'english']
-            },
-            {
-                id: 'explorer', label: '세계 탐험가', emoji: '🌍',
-                bgGradient: 'linear-gradient(135deg, #FFF8E1 0%, #E8F5E9 50%, #E3F2FD 100%)',
-                accentColor: '#2E7D32', shadow: 'rgba(46,125,50,0.25)',
-                preferred: ['social', 'knowledge', 'english']
-            },
-            {
                 id: 'storyteller', label: '이야기꾼', emoji: '📖',
                 bgGradient: 'linear-gradient(135deg, #FEF3C7 0%, #FFE0B2 50%, #FFECB3 100%)',
                 accentColor: '#FF8F00', shadow: 'rgba(255,143,0,0.25)',
                 preferred: ['lang', 'plus']
+            },
+            {
+                id: 'favorites', label: '찜한 도서', emoji: '💛',
+                bgGradient: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 50%, #FEF9C3 100%)',
+                accentColor: '#D97706', shadow: 'rgba(217,119,6,0.25)',
+                preferred: [],
+                isSpecial: true
+            },
+            {
+                id: 'recent', label: '최근 본 도서', emoji: '🕐',
+                bgGradient: 'linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 50%, #EDE9FE 100%)',
+                accentColor: '#7C3AED', shadow: 'rgba(124,58,237,0.25)',
+                preferred: [],
+                isSpecial: true
+            },
+            {
+                id: 'all-category', label: '전체 카테고리', emoji: '📂',
+                bgGradient: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 50%, #E0F2F1 100%)',
+                accentColor: '#2E7D32', shadow: 'rgba(46,125,50,0.25)',
+                preferred: [],
+                isSpecial: true
             }
         ];
 
@@ -1472,6 +1481,7 @@
             sessionStorage.setItem('libraryMode', currentMode?.id || '');
             renderModeSelector();
             renderAllRows();
+
         }
 
         // ===================================================================
@@ -1541,6 +1551,31 @@
             const categories = libraryData[currentLevel] || [];
             let html = '';
 
+            // 찜한도서 모드: 찜 목록을 최상단에 배치
+            if (currentMode?.id === 'favorites') {
+                const favs = Favorites.getAll();
+                if (favs.length > 0) {
+                    html += buildFavsRow(favs);
+                } else {
+                    html += `
+                        <div class="nf-row" id="row-favs">
+                            <div class="nf-row-header">
+                                <div class="nf-row-title">💛 찜한 도서</div>
+                            </div>
+                            <div style="text-align:center; padding:32px 16px; color:#9ca3af; font-size:0.9rem;">
+                                <div style="font-size:2.5rem; margin-bottom:8px;">💛</div>
+                                아직 찜한 도서가 없어요.<br>마음에 드는 도서의 하트를 눌러보세요!
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            // 최근 본 도서 모드: 최근 본 목록 최상단
+            if (currentMode?.id === 'recent') {
+                html += buildRecentRow();
+            }
+
             // Row 1: Scene Gallery (명장면 갤러리)
             html += buildSceneRow();
 
@@ -1553,8 +1588,8 @@
             // Row 4: 오늘의 추천
             html += buildSmallRow('✨ 오늘의 추천', getRandomBooks(categories, 15), 'today');
 
-            // Row 5: Mode recommendation
-            if (currentMode) {
+            // Row 5: Mode recommendation (특수 모드 제외)
+            if (currentMode && !currentMode.isSpecial) {
                 html += buildSmallRow(
                     `${currentMode.emoji} ${currentMode.label} 추천`,
                     getModeBooks(categories, currentMode, 15),
@@ -1565,13 +1600,67 @@
             // Row 6: Popular
             html += buildSmallRow('🔥 인기 도서', getRandomBooks(categories, 15), 'popular');
 
-            // Favorites
-            const favs = Favorites.getAll();
-            if (favs.length > 0) {
-                html += buildFavsRow(favs);
+            // Favorites (찜한도서 모드가 아닐 때만 하단에 표시)
+            if (currentMode?.id !== 'favorites') {
+                const favs = Favorites.getAll();
+                if (favs.length > 0) {
+                    html += buildFavsRow(favs);
+                }
             }
 
             container.innerHTML = html;
+
+            // 전체 카테고리 모드: 카테고리 섹션을 콘텐츠 최상단으로 이동
+            const catSection = document.getElementById('cat-browse-section');
+            const nfContainer = document.getElementById('nf-rows-container');
+            if (currentMode?.id === 'all-category') {
+                nfContainer.parentNode.insertBefore(catSection, nfContainer);
+                catSection.style.marginTop = '0';
+            } else {
+                // 원래 위치로 복원 (nf-rows-container 뒤)
+                const spacer = document.querySelector('.h-8');
+                if (spacer && catSection.nextElementSibling !== spacer) {
+                    spacer.parentNode.insertBefore(catSection, spacer);
+                }
+                catSection.style.marginTop = '';
+            }
+        }
+
+        // === 최근 본 도서 Row ===
+        function buildRecentRow() {
+            const recent = JSON.parse(sessionStorage.getItem('recentBooks') || '[]');
+            if (recent.length === 0) {
+                return `
+                    <div class="nf-row" id="row-recent">
+                        <div class="nf-row-header">
+                            <div class="nf-row-title">🕐 최근 본 도서</div>
+                        </div>
+                        <div style="text-align:center; padding:32px 16px; color:#9ca3af; font-size:0.9rem;">
+                            <div style="font-size:2.5rem; margin-bottom:8px;">🕐</div>
+                            아직 본 도서가 없어요.<br>도서를 클릭하면 여기에 기록돼요!
+                        </div>
+                    </div>
+                `;
+            }
+            const cards = recent.map(b => `
+                <div class="nf-card" onclick="openBook('${b.id}','${(b.genre||'').replace(/'/g,"\\'")}')">
+                    <div class="nf-card-thumb ${b.bg || 'bg-gradient-to-br from-gray-100 to-gray-200'}">
+                        <span class="nf-card-thumb-emoji">📕</span>
+                    </div>
+                    <div class="nf-card-info">
+                        <div class="nf-card-title">${b.title}</div>
+                        <div class="nf-card-meta">${b.genre || ''}</div>
+                    </div>
+                </div>
+            `).join('');
+            return `
+                <div class="nf-row" id="row-recent">
+                    <div class="nf-row-header">
+                        <div class="nf-row-title">🕐 최근 본 도서</div>
+                    </div>
+                    <div class="nf-scroll hide-scrollbar">${cards}</div>
+                </div>
+            `;
         }
 
         // === Scene Row ===
@@ -1921,6 +2010,13 @@
         //  BOOK OPEN
         // ===================================================================
         function openBook(bookId, seriesTitle) {
+            // 최근 본 도서에 기록
+            let recent = JSON.parse(sessionStorage.getItem('recentBooks') || '[]');
+            recent = recent.filter(b => b.id !== bookId); // 중복 제거
+            recent.unshift({ id: bookId, title: bookId.replace(/-/g, ' ').replace(/scene |quote /g, ''), genre: seriesTitle, bg: '' });
+            if (recent.length > 20) recent = recent.slice(0, 20);
+            sessionStorage.setItem('recentBooks', JSON.stringify(recent));
+
             console.log(`도서 열기: ${seriesTitle} - ${bookId}`);
         }
 

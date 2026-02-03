@@ -349,15 +349,11 @@ function loadInlineSidebar(container, currentPage) {
                 </a>
                 <a href="library.html" data-page="library" data-krs-only class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-book-open text-xl w-6 text-center"></i>
-                    <span class="font-noto text-lg">KRS 리딩트리</span>
+                    <span class="font-noto text-lg">KRS 도서관</span>
                 </a>
                 <a href="book-library.html" data-page="book-library" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-layer-group text-xl w-6 text-center"></i>
                     <span class="font-noto text-lg">라이브러리</span>
-                </a>
-                <a href="report.html" data-page="report" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
-                    <i class="fa-solid fa-chart-pie text-xl w-6 text-center"></i>
-                    <span class="font-noto text-lg">리포트</span>
                 </a>
                 <a href="mypage.html" data-page="mypage" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-user text-xl w-6 text-center"></i>
@@ -444,9 +440,8 @@ function renderBottomNav(currentPage) {
 
     const navItems = [
         { id: 'home', href: homeHref, icon: 'fa-solid fa-house', label: '홈' },
-        { id: 'library', href: 'library.html', icon: 'fa-solid fa-book-open', label: '리딩트리', krsOnly: true },
+        { id: 'library', href: 'library.html', icon: 'fa-solid fa-book-open', label: '도서관', krsOnly: true },
         { id: 'book-library', href: 'book-library.html', icon: 'fa-solid fa-layer-group', label: '라이브러리' },
-        { id: 'report', href: 'report.html', icon: 'fa-solid fa-chart-pie', label: '리포트', krsOnly: true },
         { id: 'mypage', href: 'mypage.html', icon: 'fa-solid fa-user', label: '마이페이지' },
     ];
 

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -40,910 +40,1906 @@
     <style>
         .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
-        /* 출석 스트릭 스타일 (듀오링고) */
-        @keyframes flame-dance {
-            0%, 100% { transform: scale(1) rotate(-2deg); }
-            25% { transform: scale(1.05) rotate(2deg); }
-            50% { transform: scale(1.1) rotate(-1deg); }
-            75% { transform: scale(1.05) rotate(1deg); }
-        }
-        .flame-icon {
-            animation: flame-dance 1.5s ease-in-out infinite;
-            display: inline-block;
-        }
-        .flame-icon.grey {
-            filter: grayscale(100%);
-            opacity: 0.4;
-            animation: none;
-        }
-
-        .streak-day {
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .streak-day:hover {
-            transform: scale(1.15);
-        }
-        .streak-day.done {
-            background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
-            color: white;
-        }
-        .streak-day.done::after {
-            content: '🔥';
-            position: absolute;
-            top: -6px;
-            right: -4px;
-            font-size: 10px;
-        }
-        .streak-day.today {
-            border: 3px solid #f97316;
-            background: #fff7ed;
-            color: #f97316;
-            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
-        }
-        .streak-day.missed {
+        /* === 탭 메뉴 스타일 === */
+        .mypage-tabs {
+            display: flex;
+            gap: 4px;
             background: #f3f4f6;
-            color: #d1d5db;
+            padding: 4px;
+            border-radius: 16px;
+            margin-bottom: 24px;
         }
-        .streak-day.future {
-            background: #f9fafb;
-            color: #d1d5db;
-            border: 2px dashed #e5e7eb;
+        .mypage-tab {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mypage-tab:hover {
+            color: #374151;
+            background: rgba(255,255,255,0.5);
+        }
+        .mypage-tab.active {
+            background: white;
+            color: #FF9F43;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
-        @keyframes streak-pop {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); opacity: 1; }
+        /* === 3열 그리드 === */
+        .my-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            align-items: start;
         }
-        .streak-milestone {
-            animation: streak-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        @media (max-width: 1200px) {
+            .my-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .my-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        /* 스티커 캘린더 스타일 */
-        .stamp-day.done {
-            background: linear-gradient(135deg, #FFF7ED, #FFEDD5);
-            border: 1px solid #FED7AA;
-        }
-        .stamp-day.miss {
-            background: #f9fafb;
-            color: #d1d5db;
+        /* === 카드 스타일 === */
+        .my-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
             border: 1px solid #f3f4f6;
         }
-        .stamp-day.today-stamp {
-            background: linear-gradient(135deg, #FFF7ED, #FEF3C7);
-            border: 2px solid #FB923C;
-            box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.15);
-            animation: stamp-pulse 2s ease-in-out infinite;
+        .my-card-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        @keyframes stamp-pulse {
-            0%, 100% { box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.15); }
-            50% { box-shadow: 0 0 0 5px rgba(251, 146, 60, 0.08); }
+
+        /* === 프로필 섹션 === */
+        .profile-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF9F43, #F368E0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(255,159,67,0.3);
         }
-        .stamp-day.future-stamp {
-            background: #fafafa;
-            color: #d1d5db;
-            border: 1.5px dashed #e5e7eb;
+        .profile-photo:hover {
+            transform: scale(1.05);
+        }
+        .profile-photo-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 28px;
+            height: 28px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #d97706;
+        }
+
+        .taste-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #7c3aed;
+        }
+
+        .setting-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .setting-btn:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .star-count {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, #fef9c3, #fef08a);
+            border-radius: 16px;
+            border: 1px solid #fde047;
+        }
+        .star-count-num {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ca8a04;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .star-count-label {
+            font-size: 12px;
+            color: #a16207;
             font-weight: 500;
         }
 
-        /* 배지 스타일 */
-        .badge-card {
-            transition: all 0.3s ease;
-        }
-        .badge-card:hover {
-            transform: scale(1.05);
-        }
-        .badge-card.locked {
-            filter: grayscale(100%);
-            opacity: 0.35;
-        }
-        .badge-card.locked:hover {
-            filter: grayscale(60%);
-            opacity: 0.5;
-        }
-
-        /* 작품 카드 */
-        .artwork-card {
-            transition: all 0.3s ease;
-        }
-        .artwork-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-        }
-
-        /* 게임 버튼 */
-        .game-btn {
-            transition: all 0.3s ease;
-        }
-        .game-btn:hover {
-            transform: translateY(-3px);
-        }
-
-        /* 애니메이션 */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-        }
-        .float-animation {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
-        }
-        .sparkle {
-            animation: sparkle 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-ring {
-            0% { transform: scale(0.9); opacity: 1; }
-            100% { transform: scale(1.3); opacity: 0; }
-        }
-        .pulse-ring::before {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: inherit;
-            border: 2px solid currentColor;
-            animation: pulse-ring 1.5s ease-out infinite;
-        }
-
-        /* 프로그레스 바 채우기 애니메이션 */
-        .progress-fill {
-            transition: width 1s ease-out;
-        }
-
-        /* 100권 도전 - 듀오링고 스타일 Learning Path */
-        .path-node {
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .path-node:hover {
-            transform: scale(1.15);
-        }
-        .path-node.completed {
+        .starshop-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            background: linear-gradient(135deg, #FF9F43, #f59e0b);
+            border-radius: 12px;
             color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(255,159,67,0.3);
         }
-        .path-node.completed:hover {
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-        }
-        .path-node.current {
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-        .path-node.next:hover {
-            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.5);
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 0 12px rgba(251, 146, 60, 0);
-            }
+        .starshop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255,159,67,0.4);
         }
 
-        @keyframes bounce-current {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+        /* === 출석 달력 === */
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
         }
-        .bounce-current {
-            animation: bounce-current 1.5s ease-in-out infinite;
+        .calendar-month {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+        .calendar-nav button {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            color: #6b7280;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .calendar-nav button:hover {
+            background: #f9fafb;
         }
 
-        /* 갤러리 그리드 - 반응형 */
-        .gallery-grid {
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        .calendar-weekday {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #9ca3af;
+            padding: 4px;
+        }
+        .calendar-weekday.sun { color: #ef4444; }
+        .calendar-weekday.sat { color: #3b82f6; }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #374151;
+            position: relative;
+            background: #fafafa;
+            border: 1px solid #f3f4f6;
+        }
+        .calendar-day.empty {
+            background: transparent;
+            border: none;
+        }
+        .calendar-day.stamped {
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border-color: #fed7aa;
+        }
+        .calendar-day.stamped .stamp-icon {
+            position: absolute;
+            font-size: 18px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .calendar-day.stamped .day-num {
+            opacity: 0.4;
+            font-size: 10px;
+        }
+        .calendar-day.today {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245,158,11,0.15);
+        }
+        .calendar-day.future {
+            background: #f9fafb;
+            color: #d1d5db;
+            border: 1px dashed #e5e7eb;
+        }
+
+        .attendance-stats {
             display: flex;
             gap: 12px;
-            overflow: hidden;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #f3f4f6;
         }
-        .gallery-item {
-            flex: 0 0 calc((100% - 48px) / 5); /* 기본 5개 */
-            min-width: 200px;
-            max-width: 260px;
+        .attendance-stat {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 12px;
         }
-        .gallery-more {
-            flex: 0 0 100px;
-            min-height: 220px;
+        .attendance-stat-num {
+            font-size: 20px;
+            font-weight: 800;
+            color: #f97316;
+        }
+        .attendance-stat-label {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
         }
 
-        /* 섬 노드 스타일 */
-        .island-node.completed .w-12,
-        .island-node.completed .w-14 {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        /* === 독서로 키재기 === */
+        .height-meter {
+            position: relative;
+            height: 320px;
+            background: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 50%, #ffffff 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 20px;
         }
-        .island-node.current .w-14 {
-            box-shadow: 0 6px 20px rgba(255, 159, 67, 0.4);
+        .height-figure {
+            position: relative;
+            width: 120px;
+            height: 260px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .height-figure-img {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .height-figure-silhouette {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(180deg, #e5e7eb 0%, #d1d5db 100%);
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            filter: grayscale(100%) opacity(0.3);
+        }
+        .height-figure-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80%;
+            background: linear-gradient(180deg, #fef3c7 0%, #fde68a 50%, #fbbf24 100%);
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 20px;
+            font-size: 60px;
+            overflow: hidden;
+        }
+        .height-figure-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+        }
+
+        .height-label {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: white;
+            padding: 8px 14px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .height-label-title {
+            font-size: 11px;
+            color: #6b7280;
+        }
+        .height-label-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .height-progress {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(245,158,11,0.3);
+        }
+
+        .height-books {
+            text-align: center;
+            margin-top: 16px;
+        }
+        .height-books-count {
+            font-size: 28px;
+            font-weight: 800;
+            color: #f59e0b;
+        }
+        .height-books-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .height-next {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: #f0f9ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .height-next-icon {
+            font-size: 24px;
+        }
+        .height-next-text {
+            font-size: 12px;
+            color: #0369a1;
+        }
+        .height-next-name {
+            font-weight: 700;
+        }
+
+        /* === 리포트 탭 스타일 === */
+        .report-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .report-toggle-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 14px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .report-toggle-btn:hover {
+            border-color: #FF9F43;
+            color: #FF9F43;
+        }
+        .report-toggle-btn.active {
+            border-color: #FF9F43;
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            color: #FF9F43;
+        }
+        .report-period {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 14px;
+            background: #f9fafb;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .report-period strong {
+            color: #1f2937;
+        }
+        .report-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .report-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .report-card-title i {
+            font-size: 18px;
+        }
+        .report-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .report-stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .report-stat-item {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+        }
+        .report-stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 12px;
+        }
+        .report-stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1f2937;
+        }
+        .report-stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        .report-stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .report-stat-change.up {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .report-bar-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .report-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .report-bar-label {
+            width: 80px;
+            font-size: 13px;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+        .report-bar-track {
+            flex: 1;
+            height: 28px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .report-bar-fill {
+            height: 100%;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+        .report-highlight-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .report-highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: #fafafa;
+            border-radius: 14px;
+        }
+        .report-highlight-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .report-highlight-info {
+            flex: 1;
+        }
+        .report-highlight-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .report-highlight-desc {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 3px;
+        }
+        .report-highlight-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .report-badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .report-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+        .report-badge-icon {
+            font-size: 20px;
+        }
+        .report-badge-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        /* 월간 리포트 - 독서력 & 레벨 */
+        .report-power-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .report-power-grid { grid-template-columns: 1fr; }
+        }
+        .report-power-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .report-power-gauge {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            flex-shrink: 0;
+        }
+        .report-power-gauge svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        .report-power-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .report-power-score {
+            font-size: 28px;
+            font-weight: 800;
+            color: #f97316;
+        }
+        .report-power-unit {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+        .report-power-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        .report-power-rank {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 10px;
+            background: #fef3c7;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #d97706;
+        }
+        .report-power-info p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+        .report-level-card {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: white;
+        }
+        .report-level-badge {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .report-level-num {
+            font-size: 28px;
+            font-weight: 800;
+        }
+        .report-level-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+        .report-level-info {
+            flex: 1;
+        }
+        .report-level-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            opacity: 0.95;
+        }
+        .report-level-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .report-level-fill {
+            height: 100%;
+            background: white;
+            border-radius: 4px;
+        }
+        .report-level-text {
+            font-size: 12px;
+            opacity: 0.85;
+        }
+        /* 능력 분석 */
+        .report-ability-chart {
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+        .report-ability-chart svg {
+            max-width: 260px;
+            width: 100%;
+        }
+        .report-ability-summary {
+            text-align: center;
+            margin-top: 16px;
+            padding: 14px;
+            background: #f0fdf4;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #166534;
+            font-weight: 500;
+        }
+        /* AI 코칭 */
+        .report-ai-card {
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .report-ai-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .report-ai-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF9F43, #fb923c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        .report-ai-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #9a3412;
+        }
+        .report-ai-message {
+            font-size: 14px;
+            color: #78350f;
+            line-height: 1.7;
+        }
+        .report-ai-message b {
+            color: #c2410c;
+        }
+
+        /* === 내 책장 탭 스타일 === */
+        .bookshelf-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .bookshelf-tab {
+            padding: 10px 16px;
+            border-radius: 20px;
+            border: none;
+            background: #f3f4f6;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .bookshelf-tab:hover {
+            background: #e5e7eb;
+        }
+        .bookshelf-tab.active {
+            background: linear-gradient(135deg, #FF9F43, #f59e0b);
+            color: white;
+        }
+        .bookshelf-tab .count {
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.1);
+            font-size: 11px;
+        }
+        .bookshelf-tab.active .count {
+            background: rgba(255,255,255,0.3);
+        }
+        .bookshelf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 16px;
+        }
+        @media (max-width: 768px) {
+            .bookshelf-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+        }
+        .bookshelf-book {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .bookshelf-book:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .bookshelf-book-cover {
+            aspect-ratio: 3/4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+        .bookshelf-book-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(0,0,0,0.1);
+        }
+        .bookshelf-book-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        .bookshelf-book-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            background: rgba(0,0,0,0.6);
+            color: white;
+        }
+        .bookshelf-book-info {
+            padding: 12px;
+        }
+        .bookshelf-book-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1f2937;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .bookshelf-book-series {
+            font-size: 10px;
+            color: #9ca3af;
+            margin-top: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .bookshelf-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 48px 24px;
+            color: #9ca3af;
+        }
+        .bookshelf-empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .bookshelf-empty-text {
+            font-size: 14px;
+        }
+        .bookshelf-go-library {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #FF9F43, #f59e0b);
+            border-radius: 12px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* === 갤러리 탭 스타일 === */
+        .gallery-subtabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .gallery-subtab {
+            flex: 1;
+            padding: 12px 8px;
+            border: none;
+            background: transparent;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #9ca3af;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .gallery-subtab:hover { color: #6b7280; }
+        .gallery-subtab.active {
+            color: #FF9F43;
+            border-bottom-color: #FF9F43;
+        }
+        .gallery-subtab i { margin-right: 4px; }
+
+        .gallery-filters {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .gallery-filter {
+            flex-shrink: 0;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1.5px solid #e5e7eb;
+            background: white;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .gallery-filter:hover { border-color: #d1d5db; background: #f9fafb; }
+        .gallery-filter.active {
+            background: #FF9F43;
+            color: white;
+            border-color: #FF9F43;
+        }
+
+        .gallery-sort {
+            background: none;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            cursor: pointer;
+        }
+        .gallery-sort.active { color: #FF9F43; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+        }
+        @media (min-width: 768px) {
+            .gallery-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        }
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .gallery-item-bg {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+        .gallery-item-type {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            font-size: 9px;
+            font-weight: 700;
+        }
+        .gallery-item-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+        .gallery-item-likes {
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .gallery-item-title {
+            color: white;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .gallery-feed {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        @media (min-width: 640px) {
+            .gallery-feed { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+            .gallery-feed { grid-template-columns: repeat(3, 1fr); }
+        }
+        .feed-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .feed-card.highlight { border: 2px solid #ffedd5; }
+        .feed-card-header {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .feed-card-header.highlight-bg { background: #fffbf5; }
+        .feed-card-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .feed-card-visual {
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+        .feed-card-body { padding: 12px 16px; }
+        .feed-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .feed-card-action {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .feed-card-action.liked { color: #f43f5e; }
+        .feed-card-action:not(.liked) { color: #9ca3af; }
+
+        .follow-btn {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .follow-btn.following {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        .follow-btn:not(.following) {
+            background: linear-gradient(135deg, #FF9F43, #f59e0b);
+            color: white;
+        }
+
+        .friend-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .friend-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        /* === 프로필 변경 모달 === */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.5);
+        }
+        .profile-modal.show {
+            display: flex;
+        }
+        .profile-modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            max-width: 360px;
+            width: 90%;
+            text-align: center;
+        }
+        .profile-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+        .profile-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .profile-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .profile-option:hover {
+            transform: scale(1.1);
+        }
+        .profile-option.selected {
+            border-color: #FF9F43;
+            box-shadow: 0 0 0 3px rgba(255,159,67,0.2);
+        }
+        .profile-modal-close {
+            padding: 12px 24px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            border: none;
+            margin-right: 8px;
+        }
+        .profile-modal-save {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #FF9F43, #f59e0b);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            border: none;
         }
     </style>
 </head>
-<body class="bg-brand-bg font-sans text-gray-800 h-screen overflow-hidden">
+<body class="bg-gray-50 font-sans text-gray-800 h-screen overflow-hidden">
+    <!-- 모바일 햄버거 버튼 -->
+    <button class="sidebar-toggle" id="sidebar-toggle-btn" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars text-gray-600 text-lg"></i>
+    </button>
+
+    <!-- 사이드바 오버레이 -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
     <div class="flex w-full h-full">
         <!-- Sidebar Container -->
         <div id="sidebar-container"></div>
 
         <!-- Main Content -->
-        <main class="flex-1 h-full overflow-y-auto px-4 md:px-8 py-6">
-          <div class="max-w-[1400px]">
-            <!-- 프로필 헤더 -->
-            <div class="flex items-center gap-4 mb-6">
-                <div class="relative">
-                    <div class="w-16 h-16 bg-gradient-to-br from-brand-primary to-brand-dark rounded-2xl flex items-center justify-center text-3xl shadow-lg">
-                        😎
-                    </div>
-                    <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-brand-green rounded-full flex items-center justify-center text-white text-[10px] font-bold border-2 border-white">
-                        Lv.8
+        <main class="flex-1 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
+            <div class="max-w-6xl mx-auto px-6 py-6">
+                <!-- 페이지 헤더 -->
+                <div class="mb-6">
+                    <h1 class="font-noto text-2xl font-bold text-gray-800">마이페이지</h1>
+                </div>
+
+                <!-- 탭 메뉴 -->
+                <div class="mypage-tabs">
+                    <button class="mypage-tab active" data-tab="my">MY</button>
+                    <button class="mypage-tab" data-tab="report">리포트</button>
+                    <button class="mypage-tab" data-tab="bookshelf">내 책장</button>
+                    <button class="mypage-tab" data-tab="gallery">갤러리</button>
+                    <a href="https://lean-scan-49700045.figma.site/" target="_blank" rel="noopener noreferrer" class="mypage-tab">올도전</a>
+                    <a href="https://bet-tutu-99186634.figma.site" target="_blank" rel="noopener noreferrer" class="mypage-tab">명예의전당</a>
+                </div>
+
+                <!-- MY 탭 콘텐츠 -->
+                <div id="tab-my" class="tab-content">
+                    <div class="my-grid">
+                        <!-- 1. 내 현황 -->
+                        <div class="my-card">
+                            <h3 class="my-card-title"><i class="fa-solid fa-user text-brand-primary"></i> 내 현황</h3>
+
+                            <!-- 프로필 -->
+                            <div class="flex items-center gap-4 mb-5">
+                                <div class="profile-photo" onclick="openProfileModal()">
+                                    <span id="profile-emoji">😎</span>
+                                    <div class="profile-photo-edit">
+                                        <i class="fa-solid fa-camera"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="font-noto text-lg font-bold text-gray-800">우희</p>
+                                    <p class="text-sm text-gray-500">3학년 2반</p>
+                                </div>
+                            </div>
+
+                            <!-- 독서레벨 & 점수 -->
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="level-badge">
+                                    <i class="fa-solid fa-trophy"></i>
+                                    <span>Lv.5</span>
+                                </div>
+                                <div class="text-sm">
+                                    <span class="text-gray-500">독서점수</span>
+                                    <span class="font-bold text-brand-primary ml-1">898점</span>
+                                </div>
+                            </div>
+
+                            <!-- 독서 취향 -->
+                            <div class="mb-5">
+                                <p class="text-xs text-gray-500 mb-2">나의 독서 취향</p>
+                                <div class="taste-badge">
+                                    <span>📚</span>
+                                    <span>만화가 좋아!</span>
+                                </div>
+                            </div>
+
+                            <!-- 진도 설정 버튼들 -->
+                            <div class="space-y-2 mb-5">
+                                <button class="setting-btn">
+                                    <i class="fa-solid fa-sliders text-blue-500"></i>
+                                    <span>북클럽 진도 설정</span>
+                                    <i class="fa-solid fa-chevron-right ml-auto text-gray-400"></i>
+                                </button>
+                                <button class="setting-btn">
+                                    <i class="fa-solid fa-sliders text-purple-500"></i>
+                                    <span>KRS 진도 설정</span>
+                                    <i class="fa-solid fa-chevron-right ml-auto text-gray-400"></i>
+                                </button>
+                            </div>
+
+                            <!-- 별 개수 -->
+                            <div class="star-count mb-4">
+                                <span style="font-size:28px;">⭐</span>
+                                <div>
+                                    <div class="star-count-num">5,788</div>
+                                    <div class="star-count-label">내가 모은 별</div>
+                                </div>
+                            </div>
+
+                            <!-- 스타샵 바로가기 -->
+                            <a href="starshop.html" class="starshop-btn">
+                                <i class="fa-solid fa-store"></i>
+                                <span>스타샵 바로가기</span>
+                            </a>
+                        </div>
+
+                        <!-- 2. 출석 달력 -->
+                        <div class="my-card">
+                            <h3 class="my-card-title"><i class="fa-solid fa-calendar-check text-green-500"></i> 출석</h3>
+
+                            <!-- 달력 헤더 -->
+                            <div class="calendar-header">
+                                <span class="calendar-month">2026년 2월</span>
+                                <div class="calendar-nav">
+                                    <button><i class="fa-solid fa-chevron-left"></i></button>
+                                    <button><i class="fa-solid fa-chevron-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- 요일 -->
+                            <div class="calendar-weekdays">
+                                <div class="calendar-weekday sun">일</div>
+                                <div class="calendar-weekday">월</div>
+                                <div class="calendar-weekday">화</div>
+                                <div class="calendar-weekday">수</div>
+                                <div class="calendar-weekday">목</div>
+                                <div class="calendar-weekday">금</div>
+                                <div class="calendar-weekday sat">토</div>
+                            </div>
+
+                            <!-- 날짜 -->
+                            <div class="calendar-days" id="calendar-grid">
+                                <!-- JS로 렌더링 -->
+                            </div>
+
+                            <!-- 출석 통계 -->
+                            <div class="attendance-stats">
+                                <div class="attendance-stat">
+                                    <div class="attendance-stat-num">23</div>
+                                    <div class="attendance-stat-label">이번 달 출석</div>
+                                </div>
+                                <div class="attendance-stat">
+                                    <div class="attendance-stat-num" style="color:#10b981;">7</div>
+                                    <div class="attendance-stat-label">연속 출석</div>
+                                </div>
+                                <div class="attendance-stat">
+                                    <div class="attendance-stat-num" style="color:#8b5cf6;">156</div>
+                                    <div class="attendance-stat-label">총 출석</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. 독서로 키재기 -->
+                        <div class="my-card">
+                            <h3 class="my-card-title"><i class="fa-solid fa-ruler-vertical text-amber-500"></i> 독서로 키재기</h3>
+
+                            <!-- 키 측정 시각화 -->
+                            <div class="height-meter">
+                                <div class="height-label">
+                                    <div class="height-label-title">현재 목표</div>
+                                    <div class="height-label-name">세종대왕</div>
+                                </div>
+                                <div class="height-progress">80%</div>
+
+                                <div class="height-figure">
+                                    <div class="height-figure-img">
+                                        <div class="height-figure-silhouette">👑</div>
+                                        <div class="height-figure-fill">👑</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 읽은 책 수 -->
+                            <div class="height-books">
+                                <div class="height-books-count">1,000권</div>
+                                <div class="height-books-label">여태까지 읽은 도서!</div>
+                            </div>
+
+                            <!-- 다음 목표 -->
+                            <div class="height-next">
+                                <span class="height-next-icon">🗼</span>
+                                <div class="height-next-text">
+                                    다음 목표: <span class="height-next-name">에펠탑</span> (250권 더!)
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <h2 class="font-noto text-xl text-gray-800">우희의 독서공간</h2>
-                    <p class="text-sm text-gray-500">3학년 2반 · 북클럽 회원</p>
+
+                <!-- 리포트 탭 콘텐츠 -->
+                <div id="tab-report" class="tab-content hidden">
+                    <!-- 주간/월간 토글 -->
+                    <div class="report-toggle">
+                        <button class="report-toggle-btn active" data-report="weekly" onclick="switchReportType('weekly')">주간 리포트</button>
+                        <button class="report-toggle-btn" data-report="monthly" onclick="switchReportType('monthly')">월간 리포트</button>
+                    </div>
+
+                    <!-- ===== 주간 리포트 ===== -->
+                    <div id="report-weekly" class="report-content">
+                        <div class="report-period">
+                            <strong>2026년 1월 4주차</strong> · 1월 27일 ~ 2월 2일
+                        </div>
+
+                        <!-- 핵심 지표 -->
+                        <div class="report-stats-grid">
+                            <div class="report-stat-item">
+                                <div class="report-stat-icon" style="background: #fef3c7;">📚</div>
+                                <div class="report-stat-value">12권</div>
+                                <div class="report-stat-label">읽은 도서</div>
+                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> 3권</div>
+                            </div>
+                            <div class="report-stat-item">
+                                <div class="report-stat-icon" style="background: #dbeafe;">⏱️</div>
+                                <div class="report-stat-value">4.5h</div>
+                                <div class="report-stat-label">독서 시간</div>
+                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> 45분</div>
+                            </div>
+                            <div class="report-stat-item">
+                                <div class="report-stat-icon" style="background: #dcfce7;">✅</div>
+                                <div class="report-stat-value">31개</div>
+                                <div class="report-stat-label">완료 활동</div>
+                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> 8개</div>
+                            </div>
+                            <div class="report-stat-item">
+                                <div class="report-stat-icon" style="background: #fce7f3;">⭐</div>
+                                <div class="report-stat-value">248</div>
+                                <div class="report-stat-label">획득한 별</div>
+                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> 58개</div>
+                            </div>
+                        </div>
+
+                        <!-- 활동별 참여 현황 -->
+                        <div class="report-card">
+                            <h3 class="report-card-title">
+                                <i class="fa-solid fa-chart-bar" style="color: #3b82f6;"></i>
+                                활동별 참여
+                            </h3>
+                            <div class="report-bar-list">
+                                <div class="report-bar-item">
+                                    <div class="report-bar-label">질문렌즈</div>
+                                    <div class="report-bar-track">
+                                        <div class="report-bar-fill" style="width: 85%; background: linear-gradient(90deg, #f97316, #fb923c);">6회</div>
+                                    </div>
+                                </div>
+                                <div class="report-bar-item">
+                                    <div class="report-bar-label">영상리텔링</div>
+                                    <div class="report-bar-track">
+                                        <div class="report-bar-fill" style="width: 70%; background: linear-gradient(90deg, #8b5cf6, #a78bfa);">5회</div>
+                                    </div>
+                                </div>
+                                <div class="report-bar-item">
+                                    <div class="report-bar-label">독서토론</div>
+                                    <div class="report-bar-track">
+                                        <div class="report-bar-fill" style="width: 55%; background: linear-gradient(90deg, #10b981, #34d399);">4회</div>
+                                    </div>
+                                </div>
+                                <div class="report-bar-item">
+                                    <div class="report-bar-label">어휘챌린지</div>
+                                    <div class="report-bar-track">
+                                        <div class="report-bar-fill" style="width: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa);">8회</div>
+                                    </div>
+                                </div>
+                                <div class="report-bar-item">
+                                    <div class="report-bar-label">독후퀴즈</div>
+                                    <div class="report-bar-track">
+                                        <div class="report-bar-fill" style="width: 100%; background: linear-gradient(90deg, #ec4899, #f472b6);">8회</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 이번 주 하이라이트 -->
+                        <div class="report-card">
+                            <h3 class="report-card-title">
+                                <i class="fa-solid fa-star" style="color: #f59e0b;"></i>
+                                이번 주 하이라이트
+                            </h3>
+                            <div class="report-highlight-list">
+                                <div class="report-highlight-item">
+                                    <div class="report-highlight-icon" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">🏆</div>
+                                    <div class="report-highlight-info">
+                                        <div class="report-highlight-title">어휘왕 달성!</div>
+                                        <div class="report-highlight-desc">어휘챌린지 8회 연속 완료</div>
+                                    </div>
+                                    <div class="report-highlight-badge" style="background: #fef3c7; color: #d97706;">+50⭐</div>
+                                </div>
+                                <div class="report-highlight-item">
+                                    <div class="report-highlight-icon" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe);">📖</div>
+                                    <div class="report-highlight-info">
+                                        <div class="report-highlight-title">다독가 뱃지 획득</div>
+                                        <div class="report-highlight-desc">이번 주 12권 독서 완료</div>
+                                    </div>
+                                    <div class="report-highlight-badge" style="background: #dbeafe; color: #2563eb;">New!</div>
+                                </div>
+                                <div class="report-highlight-item">
+                                    <div class="report-highlight-icon" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0);">💬</div>
+                                    <div class="report-highlight-info">
+                                        <div class="report-highlight-title">토론 베스트 의견</div>
+                                        <div class="report-highlight-desc">"오즈의 마법사" 토론에서 선정</div>
+                                    </div>
+                                    <div class="report-highlight-badge" style="background: #dcfce7; color: #16a34a;">+30⭐</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 획득 뱃지 -->
+                        <div class="report-card">
+                            <h3 class="report-card-title">
+                                <i class="fa-solid fa-medal" style="color: #8b5cf6;"></i>
+                                획득 뱃지
+                            </h3>
+                            <div class="report-badge-list">
+                                <div class="report-badge"><span class="report-badge-icon">📚</span><span class="report-badge-text">다독가</span></div>
+                                <div class="report-badge"><span class="report-badge-icon">🔥</span><span class="report-badge-text">7일 연속출석</span></div>
+                                <div class="report-badge"><span class="report-badge-icon">💡</span><span class="report-badge-text">질문마스터</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== 월간 리포트 ===== -->
+                    <div id="report-monthly" class="report-content hidden">
+                        <div class="report-period">
+                            <strong>2026년 1월</strong> · 월간 종합 리포트
+                        </div>
+
+                        <!-- 독서력 & 레벨 -->
+                        <div class="report-power-grid">
+                            <!-- 독서 전투력 -->
+                            <div class="report-power-card">
+                                <div class="report-power-gauge">
+                                    <svg viewBox="0 0 100 100" width="120" height="120">
+                                        <circle cx="50" cy="50" r="42" fill="none" stroke="#fed7aa" stroke-width="10"/>
+                                        <circle cx="50" cy="50" r="42" fill="none" stroke="url(#powerGradient)" stroke-width="10"
+                                                stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="56"/>
+                                        <defs>
+                                            <linearGradient id="powerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <stop offset="0%" stop-color="#f97316"/>
+                                                <stop offset="100%" stop-color="#fbbf24"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                    <div class="report-power-center">
+                                        <span class="report-power-score">898</span>
+                                        <span class="report-power-unit">점</span>
+                                    </div>
+                                </div>
+                                <div class="report-power-info">
+                                    <h4>독서 전투력</h4>
+                                    <span class="report-power-rank">🏆 상위 12%</span>
+                                    <p style="font-size:12px; color:#6b7280; margin-top:8px;">지난달 대비 +124점</p>
+                                </div>
+                            </div>
+                            <!-- 레벨 정보 -->
+                            <div class="report-level-card">
+                                <div class="report-level-badge">
+                                    <span class="report-level-num">5</span>
+                                    <span class="report-level-label">Level</span>
+                                </div>
+                                <div class="report-level-info">
+                                    <h4>Lv.5 → Lv.6 진행 중</h4>
+                                    <div class="report-level-bar">
+                                        <div class="report-level-fill" style="width: 78%;"></div>
+                                    </div>
+                                    <span class="report-level-text">레벨업까지 약 2주 남음</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 핵심 지표 -->
+                        <div class="report-stats-grid">
+                            <div class="report-stat-item">
+                                <div class="report-stat-icon" style="background: #fef3c7;">📚</div>
+                                <div class="report-stat-value">45권</div>
+                                <div class="report-stat-label">읽은 도서</div>
+                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> +12</div>
+                            </div>
+                            <div class="report-stat-item">
+                                <div class="report-stat-icon" style="background: #dbeafe;">⏱️</div>
+                                <div class="report-stat-value">18.4h</div>
+                                <div class="report-stat-label">독서 시간</div>
+                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> +3h</div>
+                            </div>
+                            <div class="report-stat-item">
+                                <div class="report-stat-icon" style="background: #dcfce7;">📈</div>
+                                <div class="report-stat-value">92%</div>
+                                <div class="report-stat-label">퀴즈 정답률</div>
+                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> +5%</div>
+                            </div>
+                            <div class="report-stat-item">
+                                <div class="report-stat-icon" style="background: #fce7f3;">⭐</div>
+                                <div class="report-stat-value">1,024</div>
+                                <div class="report-stat-label">획득한 별</div>
+                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> +256</div>
+                            </div>
+                        </div>
+
+                        <!-- 능력 분석 -->
+                        <div class="report-card">
+                            <h3 class="report-card-title">
+                                <i class="fa-solid fa-brain" style="color: #8b5cf6;"></i>
+                                독서 능력 분석
+                            </h3>
+                            <div class="report-ability-chart">
+                                <svg viewBox="-30 -10 260 220" width="280" height="220">
+                                    <polygon points="100,20 175,60 175,140 100,180 25,140 25,60" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                                    <polygon points="100,50 150,75 150,125 100,150 50,125 50,75" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                                    <polygon points="100,80 125,90 125,110 100,120 75,110 75,90" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                                    <polygon points="100,35 160,70 145,130 100,155 55,130 40,70" fill="rgba(139, 92, 246, 0.15)" stroke="#8b5cf6" stroke-width="2"/>
+                                    <text x="100" y="10" text-anchor="middle" style="font-size:11px; font-weight:600; fill:#374151;">이해력</text>
+                                    <text x="185" y="60" text-anchor="start" style="font-size:11px; font-weight:600; fill:#374151;">추론</text>
+                                    <text x="185" y="150" text-anchor="start" style="font-size:11px; font-weight:600; fill:#374151;">어휘</text>
+                                    <text x="100" y="200" text-anchor="middle" style="font-size:11px; font-weight:600; fill:#374151;">표현</text>
+                                    <text x="15" y="150" text-anchor="end" style="font-size:11px; font-weight:600; fill:#374151;">창의</text>
+                                    <text x="15" y="60" text-anchor="end" style="font-size:11px; font-weight:600; fill:#374151;">기억</text>
+                                </svg>
+                            </div>
+                            <div class="report-ability-summary">
+                                ✨ <b>이해력</b>과 <b>추론 능력</b>이 뛰어나요! 창의력을 더 키워보세요.
+                            </div>
+                        </div>
+
+                        <!-- 주차별 독서량 -->
+                        <div class="report-card">
+                            <h3 class="report-card-title">
+                                <i class="fa-solid fa-chart-line" style="color: #3b82f6;"></i>
+                                주차별 독서량
+                            </h3>
+                            <div class="report-bar-list">
+                                <div class="report-bar-item">
+                                    <div class="report-bar-label">1주차</div>
+                                    <div class="report-bar-track">
+                                        <div class="report-bar-fill" style="width: 75%; background: linear-gradient(90deg, #FF9F43, #fbbf24);">9권</div>
+                                    </div>
+                                </div>
+                                <div class="report-bar-item">
+                                    <div class="report-bar-label">2주차</div>
+                                    <div class="report-bar-track">
+                                        <div class="report-bar-fill" style="width: 100%; background: linear-gradient(90deg, #FF9F43, #fbbf24);">12권</div>
+                                    </div>
+                                </div>
+                                <div class="report-bar-item">
+                                    <div class="report-bar-label">3주차</div>
+                                    <div class="report-bar-track">
+                                        <div class="report-bar-fill" style="width: 100%; background: linear-gradient(90deg, #FF9F43, #fbbf24);">12권</div>
+                                    </div>
+                                </div>
+                                <div class="report-bar-item">
+                                    <div class="report-bar-label">4주차</div>
+                                    <div class="report-bar-track">
+                                        <div class="report-bar-fill" style="width: 100%; background: linear-gradient(90deg, #FF9F43, #fbbf24);">12권</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI 버디 코칭 -->
+                        <div class="report-ai-card">
+                            <div class="report-ai-header">
+                                <div class="report-ai-avatar">🐿️</div>
+                                <div class="report-ai-name">AI 버디의 한마디</div>
+                            </div>
+                            <p class="report-ai-message">
+                                <b>와우!</b> 이번 달 독서량이 정말 많이 늘었어요!
+                                특히 <b>과학 분야</b>에 관심이 많네요.
+                                다음 달엔 <b>역사책</b>도 도전해볼까요? 🚀
+                            </p>
+                        </div>
+
+                        <!-- 월간 성취 & 뱃지 -->
+                        <div class="report-card" style="margin-top: 20px;">
+                            <h3 class="report-card-title">
+                                <i class="fa-solid fa-trophy" style="color: #f59e0b;"></i>
+                                1월 성취
+                            </h3>
+                            <div class="report-highlight-list">
+                                <div class="report-highlight-item">
+                                    <div class="report-highlight-icon" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">🎯</div>
+                                    <div class="report-highlight-info">
+                                        <div class="report-highlight-title">월간 목표 달성!</div>
+                                        <div class="report-highlight-desc">목표 30권 중 45권 완료 (150%)</div>
+                                    </div>
+                                    <div class="report-highlight-badge" style="background: #fef3c7; color: #d97706;">🏆</div>
+                                </div>
+                                <div class="report-highlight-item">
+                                    <div class="report-highlight-icon" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe);">🔥</div>
+                                    <div class="report-highlight-info">
+                                        <div class="report-highlight-title">23일 출석</div>
+                                        <div class="report-highlight-desc">출석률 74%</div>
+                                    </div>
+                                    <div class="report-highlight-badge" style="background: #dbeafe; color: #2563eb;">Good!</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="report-card">
+                            <h3 class="report-card-title">
+                                <i class="fa-solid fa-medal" style="color: #8b5cf6;"></i>
+                                1월 획득 뱃지
+                            </h3>
+                            <div class="report-badge-list">
+                                <div class="report-badge"><span class="report-badge-icon">📚</span><span class="report-badge-text">다독가</span></div>
+                                <div class="report-badge"><span class="report-badge-icon">🎯</span><span class="report-badge-text">목표달성왕</span></div>
+                                <div class="report-badge"><span class="report-badge-icon">💡</span><span class="report-badge-text">질문마스터</span></div>
+                                <div class="report-badge"><span class="report-badge-icon">🔥</span><span class="report-badge-text">연속출석7일</span></div>
+                                <div class="report-badge"><span class="report-badge-icon">⭐</span><span class="report-badge-text">1000스타</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 내 책장 탭 콘텐츠 -->
+                <div id="tab-bookshelf" class="tab-content hidden">
+                    <!-- 카테고리 탭 -->
+                    <div class="bookshelf-tabs">
+                        <button class="bookshelf-tab active" data-shelf="reading" onclick="switchBookshelfTab('reading')">
+                            📖 읽는 중 <span class="count" id="count-reading">3</span>
+                        </button>
+                        <button class="bookshelf-tab" data-shelf="completed" onclick="switchBookshelfTab('completed')">
+                            ✅ 다 읽은 책 <span class="count" id="count-completed">45</span>
+                        </button>
+                        <button class="bookshelf-tab" data-shelf="favorites" onclick="switchBookshelfTab('favorites')">
+                            💛 찜한 도서 <span class="count" id="count-favorites">0</span>
+                        </button>
+                        <button class="bookshelf-tab" data-shelf="recent" onclick="switchBookshelfTab('recent')">
+                            🕐 최근 본 도서 <span class="count" id="count-recent">0</span>
+                        </button>
+                        <button class="bookshelf-tab" data-shelf="offline" onclick="switchBookshelfTab('offline')">
+                            📚 우리 아이 책장 <span class="count" id="count-offline">12</span>
+                        </button>
+                    </div>
+
+                    <!-- 책장 콘텐츠 -->
+                    <div id="bookshelf-content">
+                        <!-- JS로 렌더링 -->
+                    </div>
+                </div>
+                <div id="tab-gallery" class="tab-content hidden">
+                    <!-- 갤러리 서브탭 -->
+                    <div class="gallery-subtabs">
+                        <button class="gallery-subtab active" data-gtab="my" onclick="switchGalleryTab('my')">
+                            <i class="fa-solid fa-palette"></i> 내 작품
+                        </button>
+                        <button class="gallery-subtab" data-gtab="friends" onclick="switchGalleryTab('friends')">
+                            <i class="fa-solid fa-users"></i> 친구 작품
+                        </button>
+                        <button class="gallery-subtab" data-gtab="following" onclick="switchGalleryTab('following')">
+                            <i class="fa-solid fa-heart"></i> 관심친구
+                        </button>
+                    </div>
+
+                    <!-- 내 작품 탭 -->
+                    <div id="gtab-my" class="gallery-content">
+                        <!-- 필터 칩 -->
+                        <div class="gallery-filters">
+                            <button class="gallery-filter active" data-filter="all" onclick="filterGallery('all')">전체</button>
+                            <button class="gallery-filter" data-filter="review" onclick="filterGallery('review')">✏️ 감상문</button>
+                            <button class="gallery-filter" data-filter="audiobook" onclick="filterGallery('audiobook')">🎤 오디오북</button>
+                            <button class="gallery-filter" data-filter="video" onclick="filterGallery('video')">🎬 동영상</button>
+                            <button class="gallery-filter" data-filter="diary" onclick="filterGallery('diary')">📖 일기</button>
+                        </div>
+                        <!-- 정렬 -->
+                        <div class="flex items-center justify-between mb-3">
+                            <p class="text-xs text-gray-400">총 <strong class="text-gray-600">24</strong>개 작품</p>
+                            <div class="flex items-center gap-2 text-xs">
+                                <button class="gallery-sort active" data-sort="recent">최신순</button>
+                                <span class="text-gray-300">|</span>
+                                <button class="gallery-sort" data-sort="likes">좋아요순</button>
+                            </div>
+                        </div>
+                        <!-- 그리드 -->
+                        <div class="gallery-grid" id="my-gallery-grid">
+                            <!-- JS로 렌더링 -->
+                        </div>
+                    </div>
+
+                    <!-- 친구 작품 탭 -->
+                    <div id="gtab-friends" class="gallery-content hidden">
+                        <div class="text-xs text-gray-400 mb-3"><strong class="text-gray-600">관심친구 작품</strong>이 먼저 보여요</div>
+                        <div class="gallery-feed" id="friends-gallery-feed">
+                            <!-- JS로 렌더링 -->
+                        </div>
+                    </div>
+
+                    <!-- 관심친구 탭 -->
+                    <div id="gtab-following" class="gallery-content hidden">
+                        <!-- 내가 관심+한 친구 -->
+                        <div class="mb-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-sm font-bold text-gray-700">
+                                    <i class="fa-solid fa-heart text-rose-400 mr-1"></i> 내가 관심+한 친구
+                                </h4>
+                                <span class="text-xs bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full font-bold">3명</span>
+                            </div>
+                            <div class="space-y-2" id="following-list">
+                                <!-- JS로 렌더링 -->
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-100 my-4"></div>
+                        <!-- 나를 관심+한 친구 -->
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-sm font-bold text-gray-700">
+                                    <i class="fa-solid fa-star text-amber-400 mr-1"></i> 나를 관심+한 친구
+                                </h4>
+                                <span class="text-xs bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full font-bold">5명</span>
+                            </div>
+                            <div class="space-y-2" id="followers-list">
+                                <!-- JS로 렌더링 -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Row 1: 출석 + 100권 도전 (2열) -->
-            <section class="mb-6">
-                <div class="grid grid-cols-2 gap-5 items-stretch">
-                    <!-- 1. 출석 스트릭 (듀오링고 스타일) -->
-                    <div class="bg-white rounded-2xl shadow-soft overflow-hidden flex flex-col">
-                        <!-- 스트릭 헤더 (불꽃 카운터) - 100권 헤더와 동일 높이 -->
-                        <div class="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 p-4 relative overflow-hidden">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <span class="flame-icon text-xl">🔥</span>
-                                    <h3 class="font-noto text-base text-white">5일 연속 출석</h3>
-                                </div>
-                                <span class="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full font-bold backdrop-blur-sm">최장 12일</span>
-                            </div>
-                            <div class="mt-2 flex items-center gap-3">
-                                <div class="flex-1 h-2 bg-white/30 rounded-full overflow-hidden">
-                                    <div class="h-full bg-white rounded-full transition-all" style="width: 71%"></div>
-                                </div>
-                                <span class="text-white font-bold text-sm">5/7일</span>
-                            </div>
-                        </div>
-
-                        <div class="p-4 flex-1 flex flex-col">
-                            <!-- 이번 주 진행 (월~일, 7개 원형) -->
-                            <div class="mb-4">
-                                <p class="text-xs text-gray-400 font-medium mb-3 text-center">이번 주 (1/27 ~ 2/2)</p>
-                                <div class="flex items-center justify-between gap-1">
-                                    <!-- 월 (출석) -->
-                                    <div class="flex flex-col items-center gap-1">
-                                        <div class="streak-day done w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold relative cursor-pointer">
-                                            27
-                                        </div>
-                                        <span class="text-[9px] text-gray-400">월</span>
-                                    </div>
-                                    <!-- 화 (오늘) -->
-                                    <div class="flex flex-col items-center gap-1">
-                                        <div class="streak-day today w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold relative cursor-pointer">
-                                            28
-                                        </div>
-                                        <span class="text-[9px] text-orange-500 font-bold">오늘</span>
-                                    </div>
-                                    <!-- 수 (미래) -->
-                                    <div class="flex flex-col items-center gap-1">
-                                        <div class="streak-day future w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold cursor-default">
-                                            29
-                                        </div>
-                                        <span class="text-[9px] text-gray-300">수</span>
-                                    </div>
-                                    <!-- 목 (미래) -->
-                                    <div class="flex flex-col items-center gap-1">
-                                        <div class="streak-day future w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold cursor-default">
-                                            30
-                                        </div>
-                                        <span class="text-[9px] text-gray-300">목</span>
-                                    </div>
-                                    <!-- 금 (미래) -->
-                                    <div class="flex flex-col items-center gap-1">
-                                        <div class="streak-day future w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold cursor-default">
-                                            31
-                                        </div>
-                                        <span class="text-[9px] text-gray-300">금</span>
-                                    </div>
-                                    <!-- 토 (미래) -->
-                                    <div class="flex flex-col items-center gap-1">
-                                        <div class="streak-day future w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold cursor-default">
-                                            1
-                                        </div>
-                                        <span class="text-[9px] text-gray-300">토</span>
-                                    </div>
-                                    <!-- 일 (미래) -->
-                                    <div class="flex flex-col items-center gap-1">
-                                        <div class="streak-day future w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold cursor-default">
-                                            2
-                                        </div>
-                                        <span class="text-[9px] text-gray-300">일</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 1월 스티커 캘린더 -->
-                            <div class="mb-3">
-                                <div class="flex items-center justify-between mb-2">
-                                    <p class="text-xs text-gray-400 font-medium">1월 출석 스티커</p>
-                                    <p class="text-[10px] text-orange-500 font-bold">18 / 28일</p>
-                                </div>
-                                <!-- 요일 헤더 -->
-                                <div class="grid grid-cols-7 gap-[3px] mb-1">
-                                    <div class="text-center text-[8px] text-gray-300 font-medium">월</div>
-                                    <div class="text-center text-[8px] text-gray-300 font-medium">화</div>
-                                    <div class="text-center text-[8px] text-gray-300 font-medium">수</div>
-                                    <div class="text-center text-[8px] text-gray-300 font-medium">목</div>
-                                    <div class="text-center text-[8px] text-gray-300 font-medium">금</div>
-                                    <div class="text-center text-[8px] text-blue-300 font-medium">토</div>
-                                    <div class="text-center text-[8px] text-red-300 font-medium">일</div>
-                                </div>
-                                <!-- 1주차 (1일=수요일) -->
-                                <div class="grid grid-cols-7 gap-[3px] mb-[3px]">
-                                    <div class="w-full aspect-square"></div>
-                                    <div class="w-full aspect-square"></div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="1일">⭐</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="2일">⭐</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="3일">⭐</div>
-                                    <div class="stamp-day miss w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="4일">·</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="5일">⭐</div>
-                                </div>
-                                <!-- 2주차 -->
-                                <div class="grid grid-cols-7 gap-[3px] mb-[3px]">
-                                    <div class="stamp-day miss w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="6일">·</div>
-                                    <div class="stamp-day miss w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="7일">·</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="8일">⭐</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="9일">⭐</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="10일">⭐</div>
-                                    <div class="stamp-day miss w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="11일">·</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="12일">⭐</div>
-                                </div>
-                                <!-- 3주차 -->
-                                <div class="grid grid-cols-7 gap-[3px] mb-[3px]">
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="13일">⭐</div>
-                                    <div class="stamp-day miss w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="14일">·</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="15일">⭐</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="16일">⭐</div>
-                                    <div class="stamp-day miss w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="17일">·</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="18일">🔥</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="19일">🔥</div>
-                                </div>
-                                <!-- 4주차 -->
-                                <div class="grid grid-cols-7 gap-[3px] mb-[3px]">
-                                    <div class="stamp-day miss w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="20일">·</div>
-                                    <div class="stamp-day miss w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="21일">·</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="22일">⭐</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="23일">🔥</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="24일">🔥</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="25일">🔥</div>
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="26일">🔥</div>
-                                </div>
-                                <!-- 5주차 -->
-                                <div class="grid grid-cols-7 gap-[3px]">
-                                    <div class="stamp-day done w-full aspect-square rounded-lg flex items-center justify-center text-[13px]" title="27일">🔥</div>
-                                    <div class="stamp-day today-stamp w-full aspect-square rounded-lg flex items-center justify-center text-[14px]" title="28일 오늘">📖</div>
-                                    <div class="stamp-day future-stamp w-full aspect-square rounded-lg flex items-center justify-center text-[9px]" title="29일">29</div>
-                                    <div class="stamp-day future-stamp w-full aspect-square rounded-lg flex items-center justify-center text-[9px]" title="30일">30</div>
-                                    <div class="stamp-day future-stamp w-full aspect-square rounded-lg flex items-center justify-center text-[9px]" title="31일">31</div>
-                                </div>
-                                <!-- 범례 -->
-                                <div class="flex items-center justify-center gap-3 mt-2">
-                                    <div class="flex items-center gap-1">
-                                        <span class="text-[12px]">⭐</span>
-                                        <span class="text-[9px] text-gray-400">출석</span>
-                                    </div>
-                                    <div class="flex items-center gap-1">
-                                        <span class="text-[12px]">🔥</span>
-                                        <span class="text-[9px] text-gray-400">연속!</span>
-                                    </div>
-                                    <div class="flex items-center gap-1">
-                                        <span class="text-[9px]">·</span>
-                                        <span class="text-[9px] text-gray-400">쉬는날</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 통계 & 마일스톤 -->
-                            <div class="grid grid-cols-3 gap-2 pt-3 border-t border-gray-100">
-                                <div class="text-center bg-orange-50 rounded-xl py-2">
-                                    <p class="font-noto text-lg text-orange-500">18<span class="text-xs text-gray-400">일</span></p>
-                                    <p class="text-[9px] text-gray-500">이번 달</p>
-                                </div>
-                                <div class="text-center bg-red-50 rounded-xl py-2">
-                                    <p class="font-noto text-lg text-red-500">5<span class="text-xs text-gray-400">일</span></p>
-                                    <p class="text-[9px] text-gray-500">현재 연속</p>
-                                </div>
-                                <div class="text-center bg-purple-50 rounded-xl py-2">
-                                    <p class="font-noto text-lg text-purple-500">7일<span class="text-xs text-gray-400"> 🎯</span></p>
-                                    <p class="text-[9px] text-gray-500">다음 목표</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 2. 도전! 100권 읽기 (듀오링고 스타일 Learning Path) -->
-                    <div class="challenge-card bg-white rounded-2xl shadow-soft overflow-hidden flex flex-col">
-                        <!-- 헤더 -->
-                        <div class="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 p-4">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xl">📚</span>
-                                    <h3 class="font-noto text-base text-white">도전! 100권 읽기</h3>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full font-bold backdrop-blur-sm">🥇 1위</span>
-                                </div>
-                            </div>
-                            <div class="mt-2 flex items-center gap-3">
-                                <div class="flex-1 h-2 bg-white/30 rounded-full overflow-hidden">
-                                    <div class="h-full bg-white rounded-full transition-all" style="width: 23%"></div>
-                                </div>
-                                <span class="text-white font-bold text-sm">23/100</span>
-                            </div>
-                        </div>
-
-                        <!-- S자형 세로 경로 -->
-                        <div class="p-4 pb-4 bg-gradient-to-b from-slate-50 to-white flex-1 flex flex-col">
-                            <div class="relative flex-1" style="min-height: 340px;">
-                                <!-- SVG S자 경로선 -->
-                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 340" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- 미완료 구간 점선 (전체) -->
-                                    <path d="M100,18 C100,36 40,46 40,68 C40,90 160,100 160,122 C160,144 100,154 100,176 C100,198 40,208 40,230 C40,252 160,262 160,284 C160,306 100,316 100,330" stroke="#e5e7eb" stroke-width="3" stroke-dasharray="6,4" fill="none"/>
-                                    <!-- 완료 구간 실선 (시작~20권) -->
-                                    <path d="M100,18 C100,36 40,46 40,68 C40,90 160,100 160,122" stroke="url(#pathGrad)" stroke-width="3" stroke-linecap="round" fill="none"/>
-                                    <defs>
-                                        <linearGradient id="pathGrad" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="0%" stop-color="#34d399"/>
-                                            <stop offset="100%" stop-color="#2dd4bf"/>
-                                        </linearGradient>
-                                    </defs>
-                                </svg>
-
-                                <!-- 노드들 (absolute 배치, S자형) -->
-
-                                <!-- 시작 (완료) - 상단 중앙 -->
-                                <div class="absolute flex items-center gap-2" style="top: 2%; left: 50%; transform: translateX(-50%);">
-                                    <div class="path-node completed w-10 h-10 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full flex items-center justify-center text-base shadow-md border-2 border-white cursor-pointer">✓</div>
-                                    <span class="text-[10px] text-emerald-600 font-bold whitespace-nowrap">시작!</span>
-                                </div>
-
-                                <!-- 10권 (완료) - 좌측 -->
-                                <div class="absolute flex items-center gap-2" style="top: 16%; left: 14%;">
-                                    <div class="path-node completed w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center shadow-md border-2 border-white cursor-pointer">
-                                        <span class="text-white text-xs font-bold">10</span>
-                                    </div>
-                                    <span class="text-[10px] text-emerald-500 font-medium whitespace-nowrap">달성!</span>
-                                </div>
-
-                                <!-- 20권 (완료) - 우측 -->
-                                <div class="absolute flex items-center gap-2" style="top: 31%; right: 14%;">
-                                    <span class="text-[10px] text-emerald-500 font-medium whitespace-nowrap">달성!</span>
-                                    <div class="path-node completed w-10 h-10 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full flex items-center justify-center shadow-md border-2 border-white cursor-pointer">
-                                        <span class="text-white text-xs font-bold">20</span>
-                                    </div>
-                                </div>
-
-                                <!-- 현재 위치 (23권) - 중앙 강조 -->
-                                <div class="absolute" style="top: 46%; left: 50%; transform: translateX(-50%);">
-                                    <div class="flex items-center gap-2">
-                                        <div class="bg-gradient-to-r from-orange-500 to-pink-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-lg shadow-lg whitespace-nowrap">여기!</div>
-                                        <div class="path-node current w-14 h-14 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full flex items-center justify-center shadow-xl border-4 border-white ring-4 ring-orange-200 cursor-pointer">
-                                            <span class="text-2xl bounce-current">🐿️</span>
-                                        </div>
-                                        <div class="flex flex-col whitespace-nowrap">
-                                            <span class="text-sm font-noto text-orange-500">23권</span>
-                                            <span class="text-[9px] text-gray-400">77권 남음</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 30권 (다음 목표) - 좌측 -->
-                                <div class="absolute flex items-center gap-2" style="top: 63%; left: 14%;">
-                                    <div class="path-node next w-10 h-10 bg-gradient-to-br from-amber-200 to-orange-200 rounded-full flex items-center justify-center shadow-md border-2 border-amber-300 border-dashed cursor-pointer hover:scale-110 transition-transform">
-                                        <span class="text-amber-600 text-xs font-bold">30</span>
-                                    </div>
-                                    <span class="text-[10px] text-amber-500 font-medium whitespace-nowrap">7권 더!</span>
-                                </div>
-
-                                <!-- 50권 (잠김) - 우측 -->
-                                <div class="absolute flex items-center gap-2" style="top: 78%; right: 14%;">
-                                    <span class="text-[10px] text-gray-400 whitespace-nowrap">27권 더</span>
-                                    <div class="path-node locked w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center shadow-sm border-2 border-gray-200 cursor-not-allowed opacity-60">
-                                        <span class="text-gray-400 text-xs font-bold">50</span>
-                                    </div>
-                                </div>
-
-                                <!-- 100권 (최종 목표) - 하단 중앙 -->
-                                <div class="absolute flex flex-col items-center" style="bottom: 0; left: 50%; transform: translateX(-50%);">
-                                    <div class="path-node goal w-12 h-12 bg-gradient-to-br from-amber-100 to-yellow-100 rounded-full flex items-center justify-center shadow-md border-2 border-amber-300 cursor-pointer opacity-50 hover:opacity-80 transition-opacity">
-                                        <span class="text-2xl">🏆</span>
-                                    </div>
-                                    <span class="text-[10px] text-gray-400 font-bold mt-0.5">100권</span>
-                                </div>
-                            </div>
-
-                            <!-- 하단 통계 (출석 통계와 동일 스타일) -->
-                            <div class="grid grid-cols-3 gap-2 pt-3 border-t border-gray-100">
-                                <div class="text-center bg-emerald-50 rounded-xl py-2">
-                                    <p class="font-noto text-lg text-emerald-500">1,023<span class="text-xs text-gray-400">권</span></p>
-                                    <p class="text-[9px] text-gray-500">올해 누적</p>
-                                </div>
-                                <div class="text-center bg-teal-50 rounded-xl py-2">
-                                    <p class="font-noto text-lg text-teal-500">5<span class="text-xs text-gray-400">권</span></p>
-                                    <p class="text-[9px] text-gray-500">이번 달</p>
-                                </div>
-                                <div class="text-center bg-cyan-50 rounded-xl py-2">
-                                    <p class="font-noto text-lg text-cyan-500">30권<span class="text-xs text-gray-400"> 🎯</span></p>
-                                    <p class="text-[9px] text-gray-500">다음 목표</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Row 2: 내가 모은 배지 (전체 너비) -->
-            <section class="mb-6">
-                <div class="bg-white rounded-2xl p-5 shadow-soft">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xl">🏅</span>
-                            <h3 class="font-noto text-base text-gray-800">내가 모은 배지</h3>
-                        </div>
-                        <span class="text-xs bg-purple-100 text-purple-600 px-2.5 py-1 rounded-full font-bold">4 / 20개</span>
-                    </div>
-
-                    <!-- 배지 그리드 (1:1 비율, 넉넉한 크기) -->
-                    <div class="grid grid-cols-7 gap-4">
-                        <!-- Row 1: 획득한 배지들 + 잠긴 배지 -->
-                        <div class="badge-card bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="첫 완독">
-                            <span class="text-3xl mb-1.5">⭐</span>
-                            <span class="text-[10px] text-white font-medium">첫 완독</span>
-                        </div>
-                        <div class="badge-card bg-gradient-to-br from-blue-300 to-blue-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="10권 달성">
-                            <span class="text-3xl mb-1.5">📚</span>
-                            <span class="text-[10px] text-white font-medium">10권</span>
-                        </div>
-                        <div class="badge-card bg-gradient-to-br from-purple-300 to-purple-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="퀴즈왕">
-                            <span class="text-3xl mb-1.5">🎯</span>
-                            <span class="text-[10px] text-white font-medium">퀴즈왕</span>
-                        </div>
-                        <div class="badge-card bg-gradient-to-br from-orange-300 to-red-400 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer hover:scale-105 transition-transform" title="연속7일">
-                            <span class="text-3xl mb-1.5">🔥</span>
-                            <span class="text-[10px] text-white font-medium">연속7일</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-amber-300 to-amber-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="20권 달성">
-                            <span class="text-3xl mb-1.5">🏆</span>
-                            <span class="text-[10px] text-white/70 font-medium">20권</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-cyan-300 to-cyan-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="어휘왕">
-                            <span class="text-3xl mb-1.5">💎</span>
-                            <span class="text-[10px] text-white/70 font-medium">어휘왕</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-pink-300 to-pink-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="영상감독">
-                            <span class="text-3xl mb-1.5">🎬</span>
-                            <span class="text-[10px] text-white/70 font-medium">영상감독</span>
-                        </div>
-
-                        <!-- Row 2 -->
-                        <div class="badge-card locked bg-gradient-to-br from-green-300 to-emerald-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="작가의길">
-                            <span class="text-3xl mb-1.5">✏️</span>
-                            <span class="text-[10px] text-white/70 font-medium">작가</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-indigo-300 to-indigo-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="성실왕">
-                            <span class="text-3xl mb-1.5">🌟</span>
-                            <span class="text-[10px] text-white/70 font-medium">성실왕</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-rose-300 to-rose-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="독서킹">
-                            <span class="text-3xl mb-1.5">👑</span>
-                            <span class="text-[10px] text-white/70 font-medium">독서킹</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-teal-300 to-teal-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="연기왕">
-                            <span class="text-3xl mb-1.5">🎭</span>
-                            <span class="text-[10px] text-white/70 font-medium">연기왕</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-lime-300 to-lime-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="무지개">
-                            <span class="text-3xl mb-1.5">🌈</span>
-                            <span class="text-[10px] text-white/70 font-medium">무지개</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-sky-300 to-sky-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="30권 달성">
-                            <span class="text-3xl mb-1.5">🚀</span>
-                            <span class="text-[10px] text-white/70 font-medium">30권</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-violet-300 to-violet-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="50권 달성">
-                            <span class="text-3xl mb-1.5">🎖️</span>
-                            <span class="text-[10px] text-white/70 font-medium">50권</span>
-                        </div>
-
-                        <!-- Row 3 -->
-                        <div class="badge-card locked bg-gradient-to-br from-fuchsia-300 to-fuchsia-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="연속14일">
-                            <span class="text-3xl mb-1.5">💪</span>
-                            <span class="text-[10px] text-white/70 font-medium">연속14일</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-emerald-300 to-emerald-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="어휘마스터">
-                            <span class="text-3xl mb-1.5">📖</span>
-                            <span class="text-[10px] text-white/70 font-medium">어휘마스터</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-red-300 to-red-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="열정">
-                            <span class="text-3xl mb-1.5">❤️</span>
-                            <span class="text-[10px] text-white/70 font-medium">열정</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-amber-400 to-yellow-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="탐험가">
-                            <span class="text-3xl mb-1.5">🧭</span>
-                            <span class="text-[10px] text-white/70 font-medium">탐험가</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="과학왕">
-                            <span class="text-3xl mb-1.5">🔬</span>
-                            <span class="text-[10px] text-white/70 font-medium">과학왕</span>
-                        </div>
-                        <div class="badge-card locked bg-gradient-to-br from-amber-300 to-yellow-400 rounded-2xl aspect-square flex flex-col items-center justify-center shadow-sm cursor-pointer" title="100권 달성">
-                            <span class="text-3xl mb-1.5">✨</span>
-                            <span class="text-[10px] text-white/70 font-medium">100권</span>
-                        </div>
-                    </div>
-
-                    <!-- 다음 배지 안내 -->
-                    <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-                        <span class="text-xs text-gray-500">다음 배지까지</span>
-                        <span class="text-xs font-bold text-purple-600">🏆 20권 배지 - 3권 더 읽어요!</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Row 3: 나의 작품 갤러리 (반응형) -->
-            <section class="mb-6">
-                <div class="bg-white rounded-2xl p-5 shadow-soft">
-                    <div class="flex items-center justify-between mb-5">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xl">🎨</span>
-                            <h3 class="font-noto text-base text-gray-800">나의 작품 갤러리</h3>
-                            <span class="text-xs bg-pink-100 text-pink-600 px-2.5 py-1 rounded-full">총 24개 작품</span>
-                        </div>
-                        <a href="gallery.html" class="text-xs text-brand-primary font-bold hover:underline">전체보기 →</a>
-                    </div>
-
-                    <!-- 작품 카드들 (반응형 그리드) -->
-                    <div class="gallery-grid flex gap-3" id="gallery-container">
-                        <!-- 작품 1 -->
-                        <div class="artwork-card gallery-item bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl overflow-hidden border border-pink-100 cursor-pointer" onclick="openArtwork(1)">
-                            <div class="h-36 bg-gradient-to-br from-pink-200 to-rose-300 flex items-center justify-center relative">
-                                <span class="text-4xl">🎬</span>
-                                <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-pink-600 font-bold">영상리텔링</div>
-                            </div>
-                            <div class="p-2.5">
-                                <p class="font-medium text-xs text-gray-800 truncate mb-1">마법사의 물약 리텔링</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-1 text-[10px] text-rose-500">
-                                        <i class="fa-solid fa-heart"></i>
-                                        <span class="font-bold">24</span>
-                                    </div>
-                                    <span class="text-[10px] text-gray-400">1월 25일</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 작품 2 -->
-                        <div class="artwork-card gallery-item bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl overflow-hidden border border-green-100 cursor-pointer" onclick="openArtwork(2)">
-                            <div class="h-36 bg-gradient-to-br from-green-200 to-emerald-300 flex items-center justify-center relative">
-                                <span class="text-4xl">✏️</span>
-                                <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-green-600 font-bold">감상문</div>
-                            </div>
-                            <div class="p-2.5">
-                                <p class="font-medium text-xs text-gray-800 truncate mb-1">숲속 친구들 독후감</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-1 text-[10px] text-rose-500">
-                                        <i class="fa-solid fa-heart"></i>
-                                        <span class="font-bold">18</span>
-                                    </div>
-                                    <span class="text-[10px] text-gray-400">1월 22일</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 작품 3 -->
-                        <div class="artwork-card gallery-item bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl overflow-hidden border border-blue-100 cursor-pointer" onclick="openArtwork(3)">
-                            <div class="h-36 bg-gradient-to-br from-blue-200 to-indigo-300 flex items-center justify-center relative">
-                                <span class="text-4xl">🎤</span>
-                                <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-blue-600 font-bold">녹음</div>
-                            </div>
-                            <div class="p-2.5">
-                                <p class="font-medium text-xs text-gray-800 truncate mb-1">우주 탐험대 낭독</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-1 text-[10px] text-rose-500">
-                                        <i class="fa-solid fa-heart"></i>
-                                        <span class="font-bold">31</span>
-                                    </div>
-                                    <span class="text-[10px] text-gray-400">1월 18일</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 작품 4 -->
-                        <div class="artwork-card gallery-item bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl overflow-hidden border border-purple-100 cursor-pointer" onclick="openArtwork(4)">
-                            <div class="h-36 bg-gradient-to-br from-purple-200 to-violet-300 flex items-center justify-center relative">
-                                <span class="text-4xl">📖</span>
-                                <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-purple-600 font-bold">독서일기</div>
-                            </div>
-                            <div class="p-2.5">
-                                <p class="font-medium text-xs text-gray-800 truncate mb-1">공주와 용 일기</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-1 text-[10px] text-rose-500">
-                                        <i class="fa-solid fa-heart"></i>
-                                        <span class="font-bold">12</span>
-                                    </div>
-                                    <span class="text-[10px] text-gray-400">1월 15일</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 작품 5 (동적으로 표시/숨김) -->
-                        <div class="artwork-card gallery-item bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl overflow-hidden border border-amber-100 cursor-pointer" onclick="openArtwork(5)">
-                            <div class="h-36 bg-gradient-to-br from-amber-200 to-orange-300 flex items-center justify-center relative">
-                                <span class="text-4xl">🎨</span>
-                                <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-amber-600 font-bold">그림일기</div>
-                            </div>
-                            <div class="p-2.5">
-                                <p class="font-medium text-xs text-gray-800 truncate mb-1">바다 속 친구들</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-1 text-[10px] text-rose-500">
-                                        <i class="fa-solid fa-heart"></i>
-                                        <span class="font-bold">9</span>
-                                    </div>
-                                    <span class="text-[10px] text-gray-400">1월 12일</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 작품 6 (동적으로 표시/숨김) -->
-                        <div class="artwork-card gallery-item bg-gradient-to-br from-cyan-50 to-teal-50 rounded-2xl overflow-hidden border border-cyan-100 cursor-pointer" onclick="openArtwork(6)">
-                            <div class="h-36 bg-gradient-to-br from-cyan-200 to-teal-300 flex items-center justify-center relative">
-                                <span class="text-4xl">🎭</span>
-                                <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-cyan-600 font-bold">역할극</div>
-                            </div>
-                            <div class="p-2.5">
-                                <p class="font-medium text-xs text-gray-800 truncate mb-1">하늘을 나는 코끼리</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-1 text-[10px] text-rose-500">
-                                        <i class="fa-solid fa-heart"></i>
-                                        <span class="font-bold">15</span>
-                                    </div>
-                                    <span class="text-[10px] text-gray-400">1월 8일</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 작품 7 (동적으로 표시/숨김) -->
-                        <div class="artwork-card gallery-item bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl overflow-hidden border border-rose-100 cursor-pointer" onclick="openArtwork(7)">
-                            <div class="h-36 bg-gradient-to-br from-rose-200 to-pink-300 flex items-center justify-center relative">
-                                <span class="text-4xl">📝</span>
-                                <div class="absolute top-2 left-2 bg-white/90 text-[9px] px-1.5 py-0.5 rounded-full text-rose-600 font-bold">편지</div>
-                            </div>
-                            <div class="p-2.5">
-                                <p class="font-medium text-xs text-gray-800 truncate mb-1">공룡에게 보내는 편지</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-1 text-[10px] text-rose-500">
-                                        <i class="fa-solid fa-heart"></i>
-                                        <span class="font-bold">22</span>
-                                    </div>
-                                    <span class="text-[10px] text-gray-400">1월 5일</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 더보기 카드 -->
-                        <div class="gallery-more flex-shrink-0 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl flex items-center justify-center cursor-pointer hover:from-gray-100 hover:to-gray-150 transition-colors border-2 border-dashed border-gray-200" onclick="openGallery()">
-                            <div class="text-center px-4">
-                                <p class="text-2xl text-gray-400 font-bold mb-1" id="more-count">+17</p>
-                                <p class="text-[10px] text-gray-500">더보기</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Row 4: 투표 + 대결 (컴팩트) -->
-            <section class="mb-6">
-                <div class="grid grid-cols-2 gap-4">
-                    <!-- 우리끼리 투표 -->
-                    <button onclick="openVote()" class="game-btn bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl p-4 text-left relative overflow-hidden">
-                        <div class="absolute -right-3 -bottom-3 text-5xl opacity-15">🗳️</div>
-                        <div class="relative z-10 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-xl">🗳️</div>
-                            <div>
-                                <p class="font-noto text-base text-white">우리끼리 투표</p>
-                                <p class="text-[10px] text-white/70">새 투표 2개</p>
-                            </div>
-                        </div>
-                        <div class="absolute top-2 right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-[10px] font-bold">2</div>
-                    </button>
-
-                    <!-- 프렌즈 대결 -->
-                    <button onclick="openBattle()" class="game-btn bg-gradient-to-br from-red-400 to-pink-500 rounded-xl p-4 text-left relative overflow-hidden">
-                        <div class="absolute -right-3 -bottom-3 text-5xl opacity-15">⚔️</div>
-                        <div class="relative z-10 flex items-center gap-3">
-                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-xl">⚔️</div>
-                            <div>
-                                <p class="font-noto text-base text-white">프렌즈 대결</p>
-                                <p class="text-[10px] text-white/70">도전장 1개</p>
-                            </div>
-                        </div>
-                        <div class="absolute top-2 right-2 w-5 h-5 bg-yellow-400 rounded-full flex items-center justify-center text-gray-800 text-[10px] font-bold">1</div>
-                    </button>
-                </div>
-            </section>
-          </div>
         </main>
     </div>
 
-    <!-- 배지 전체보기 모달 -->
-    <div id="badge-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeBadgeModal()"></div>
-        <div class="relative bg-white rounded-3xl w-full max-w-md max-h-[80vh] overflow-hidden">
-            <div class="p-5 border-b border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl">🏅</span>
-                        <h3 class="font-noto text-lg">배지 컬렉션</h3>
-                        <span class="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full">4/12</span>
-                    </div>
-                    <button onclick="closeBadgeModal()" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-                        <i class="fa-solid fa-xmark text-gray-500"></i>
-                    </button>
-                </div>
+    <!-- 프로필 변경 모달 -->
+    <div class="profile-modal" id="profile-modal">
+        <div class="profile-modal-content">
+            <h3 class="profile-modal-title">프로필 사진 변경</h3>
+            <div class="profile-options">
+                <div class="profile-option selected" data-emoji="😎">😎</div>
+                <div class="profile-option" data-emoji="🦊">🦊</div>
+                <div class="profile-option" data-emoji="🐱">🐱</div>
+                <div class="profile-option" data-emoji="🐶">🐶</div>
+                <div class="profile-option" data-emoji="🐰">🐰</div>
+                <div class="profile-option" data-emoji="🐻">🐻</div>
+                <div class="profile-option" data-emoji="🦁">🦁</div>
+                <div class="profile-option" data-emoji="🐸">🐸</div>
+                <div class="profile-option" data-emoji="🐼">🐼</div>
+                <div class="profile-option" data-emoji="🐨">🐨</div>
+                <div class="profile-option" data-emoji="🐯">🐯</div>
+                <div class="profile-option" data-emoji="🦄">🦄</div>
             </div>
-            <div class="p-5 overflow-y-auto max-h-[60vh]">
-                <p class="text-xs text-gray-500 mb-3">획득한 배지</p>
-                <div class="grid grid-cols-4 gap-3 mb-5">
-                    <div class="text-center">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-2xl flex items-center justify-center text-2xl shadow-md">⭐</div>
-                        <p class="text-[10px] text-gray-600 mt-1">첫 완독</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-blue-300 to-blue-500 rounded-2xl flex items-center justify-center text-2xl shadow-md">📚</div>
-                        <p class="text-[10px] text-gray-600 mt-1">10권 달성</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-purple-300 to-purple-500 rounded-2xl flex items-center justify-center text-2xl shadow-md">🎯</div>
-                        <p class="text-[10px] text-gray-600 mt-1">퀴즈왕</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-orange-300 to-red-400 rounded-2xl flex items-center justify-center text-2xl shadow-md">🔥</div>
-                        <p class="text-[10px] text-gray-600 mt-1">연속7일</p>
-                    </div>
-                </div>
-                <p class="text-xs text-gray-500 mb-3">아직 못 모은 배지</p>
-                <div class="grid grid-cols-4 gap-3">
-                    <div class="text-center opacity-40">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-amber-300 to-amber-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">🏆</div>
-                        <p class="text-[10px] text-gray-400 mt-1">20권 달성</p>
-                    </div>
-                    <div class="text-center opacity-40">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-cyan-300 to-cyan-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">💎</div>
-                        <p class="text-[10px] text-gray-400 mt-1">어휘왕</p>
-                    </div>
-                    <div class="text-center opacity-40">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-pink-300 to-pink-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">🎬</div>
-                        <p class="text-[10px] text-gray-400 mt-1">영상감독</p>
-                    </div>
-                    <div class="text-center opacity-40">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-green-300 to-emerald-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">✏️</div>
-                        <p class="text-[10px] text-gray-400 mt-1">작가의길</p>
-                    </div>
-                    <div class="text-center opacity-40">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-indigo-300 to-indigo-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">🌟</div>
-                        <p class="text-[10px] text-gray-400 mt-1">성실왕</p>
-                    </div>
-                    <div class="text-center opacity-40">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-rose-300 to-rose-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">👑</div>
-                        <p class="text-[10px] text-gray-400 mt-1">독서킹</p>
-                    </div>
-                    <div class="text-center opacity-40">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-teal-300 to-teal-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">🎭</div>
-                        <p class="text-[10px] text-gray-400 mt-1">연기왕</p>
-                    </div>
-                    <div class="text-center opacity-40">
-                        <div class="w-14 h-14 mx-auto bg-gradient-to-br from-lime-300 to-lime-500 rounded-2xl flex items-center justify-center text-2xl shadow-md grayscale">🌈</div>
-                        <p class="text-[10px] text-gray-400 mt-1">무지개</p>
-                    </div>
-                </div>
+            <div>
+                <button class="profile-modal-close" onclick="closeProfileModal()">취소</button>
+                <button class="profile-modal-save" onclick="saveProfile()">저장</button>
             </div>
         </div>
     </div>
@@ -954,70 +1950,435 @@
     <!-- Scripts -->
     <script src="../js/common.js"></script>
     <script src="../js/sidebar.js"></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSidebar('mypage');
-            loadLogoutModal();
+        // === 탭 전환 ===
+        const tabs = document.querySelectorAll('.mypage-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 외부 링크(<a> 태그)는 기본 동작 사용
+                if (tab.tagName === 'A') return;
+
+                // 활성 탭 변경
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // 콘텐츠 전환
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                document.getElementById('tab-' + tab.dataset.tab).classList.remove('hidden');
+            });
         });
 
-        function openVote() {
-            alert('우리끼리 투표 앱이 실행됩니다!');
+        // === 프로필 모달 ===
+        let selectedEmoji = '😎';
+
+        function openProfileModal() {
+            document.getElementById('profile-modal').classList.add('show');
         }
 
-        function openBattle() {
-            alert('프렌즈 대결 앱이 실행됩니다!');
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.remove('show');
         }
 
-        function openGallery() {
-            window.location.href = 'gallery.html';
+        // 프로필 옵션 선택
+        document.querySelectorAll('.profile-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.profile-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                selectedEmoji = opt.dataset.emoji;
+            });
+        });
+
+        function saveProfile() {
+            document.getElementById('profile-emoji').textContent = selectedEmoji;
+            closeProfileModal();
         }
 
-        function openBadgeModal() {
-            document.getElementById('badge-modal').classList.remove('hidden');
+        // 모달 바깥 클릭 시 닫기
+        document.getElementById('profile-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'profile-modal') {
+                closeProfileModal();
+            }
+        });
+
+        // === 출석 달력 렌더링 ===
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const year = 2026;
+            const month = 2; // 2월
+
+            // 2026년 2월 1일은 일요일
+            const firstDay = new Date(year, month - 1, 1).getDay();
+            const daysInMonth = new Date(year, month, 0).getDate();
+            const today = 4; // 오늘이 4일
+
+            // 출석한 날 (예시)
+            const stampedDays = [1, 2, 3]; // 1, 2, 3일 출석
+
+            let html = '';
+
+            // 빈 칸 (월 시작 전)
+            for (let i = 0; i < firstDay; i++) {
+                html += '<div class="calendar-day empty"></div>';
+            }
+
+            // 날짜
+            for (let d = 1; d <= daysInMonth; d++) {
+                let classes = 'calendar-day';
+                let content = `<span class="day-num">${d}</span>`;
+
+                if (stampedDays.includes(d)) {
+                    classes += ' stamped';
+                    content = `<span class="stamp-icon">🔥</span><span class="day-num">${d}</span>`;
+                } else if (d === today) {
+                    classes += ' today';
+                } else if (d > today) {
+                    classes += ' future';
+                }
+
+                html += `<div class="${classes}">${content}</div>`;
+            }
+
+            grid.innerHTML = html;
         }
 
-        function closeBadgeModal() {
-            document.getElementById('badge-modal').classList.add('hidden');
+        // === 리포트 탭 전환 ===
+        function switchReportType(type) {
+            // 버튼 활성화 상태 변경
+            document.querySelectorAll('.report-toggle-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.report === type);
+            });
+            // 콘텐츠 전환
+            document.querySelectorAll('.report-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById('report-' + type).classList.remove('hidden');
         }
 
-        function openArtwork(id) {
+        // === 내 책장 탭 전환 ===
+        let currentBookshelfTab = 'reading';
+
+        function switchBookshelfTab(tab) {
+            currentBookshelfTab = tab;
+            // 버튼 활성화 상태 변경
+            document.querySelectorAll('.bookshelf-tab').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.shelf === tab);
+            });
+            renderBookshelf();
+        }
+
+        // 책장 데이터 (읽는 중, 다 읽은 책은 샘플 데이터)
+        const readingBooks = [
+            { id: 'book1', title: '오즈의 마법사', genre: '세계명작', bg: 'bg-gradient-to-br from-emerald-100 to-teal-200', emoji: '🧙', progress: 65 },
+            { id: 'book2', title: '이상한 나라의 앨리스', genre: '세계명작', bg: 'bg-gradient-to-br from-purple-100 to-pink-200', emoji: '🐰', progress: 30 },
+            { id: 'book3', title: '피터팬', genre: '세계명작', bg: 'bg-gradient-to-br from-blue-100 to-cyan-200', emoji: '🧚', progress: 80 }
+        ];
+
+        const completedBooks = [
+            { id: 'book4', title: '백설공주', genre: '세계명작', bg: 'bg-gradient-to-br from-red-100 to-rose-200', emoji: '🍎' },
+            { id: 'book5', title: '신데렐라', genre: '세계명작', bg: 'bg-gradient-to-br from-blue-100 to-indigo-200', emoji: '👠' },
+            { id: 'book6', title: '인어공주', genre: '세계명작', bg: 'bg-gradient-to-br from-teal-100 to-cyan-200', emoji: '🧜' },
+            { id: 'book7', title: '흥부와 놀부', genre: '전래동화', bg: 'bg-gradient-to-br from-amber-100 to-yellow-200', emoji: '🐦' },
+            { id: 'book8', title: '콩쥐 팥쥐', genre: '전래동화', bg: 'bg-gradient-to-br from-pink-100 to-rose-200', emoji: '🥿' },
+            { id: 'book9', title: '해와 달이 된 오누이', genre: '전래동화', bg: 'bg-gradient-to-br from-orange-100 to-red-200', emoji: '🌙' }
+        ];
+
+        // 우리 아이 책장 (오프라인 도서)
+        const offlineBooks = [
+            { id: 'off1', title: '그리스 로마 신화 1', genre: '오프라인', bg: 'bg-gradient-to-br from-amber-100 to-orange-200', emoji: '⚡' },
+            { id: 'off2', title: '그리스 로마 신화 2', genre: '오프라인', bg: 'bg-gradient-to-br from-amber-100 to-orange-200', emoji: '🔱' },
+            { id: 'off3', title: '마법천자문 1', genre: '오프라인', bg: 'bg-gradient-to-br from-red-100 to-pink-200', emoji: '🐉' },
+            { id: 'off4', title: '마법천자문 2', genre: '오프라인', bg: 'bg-gradient-to-br from-red-100 to-pink-200', emoji: '🔥' },
+            { id: 'off5', title: '설민석의 한국사 대모험 1', genre: '오프라인', bg: 'bg-gradient-to-br from-blue-100 to-indigo-200', emoji: '🏯' },
+            { id: 'off6', title: '설민석의 한국사 대모험 2', genre: '오프라인', bg: 'bg-gradient-to-br from-blue-100 to-indigo-200', emoji: '⚔️' },
+            { id: 'off7', title: '흔한남매 1', genre: '오프라인', bg: 'bg-gradient-to-br from-yellow-100 to-lime-200', emoji: '😂' },
+            { id: 'off8', title: '흔한남매 2', genre: '오프라인', bg: 'bg-gradient-to-br from-yellow-100 to-lime-200', emoji: '🤣' },
+            { id: 'off9', title: '쿠키런 킹덤 1', genre: '오프라인', bg: 'bg-gradient-to-br from-purple-100 to-violet-200', emoji: '🍪' },
+            { id: 'off10', title: '쿠키런 킹덤 2', genre: '오프라인', bg: 'bg-gradient-to-br from-purple-100 to-violet-200', emoji: '👑' },
+            { id: 'off11', title: '코믹 메이플스토리 1', genre: '오프라인', bg: 'bg-gradient-to-br from-green-100 to-emerald-200', emoji: '🍁' },
+            { id: 'off12', title: '코믹 메이플스토리 2', genre: '오프라인', bg: 'bg-gradient-to-br from-green-100 to-emerald-200', emoji: '🎮' }
+        ];
+
+        function renderBookshelf() {
+            const container = document.getElementById('bookshelf-content');
+            let books = [];
+            let emptyMsg = '';
+            let emptyIcon = '';
+
+            switch (currentBookshelfTab) {
+                case 'reading':
+                    books = readingBooks;
+                    emptyIcon = '📖';
+                    emptyMsg = '현재 읽고 있는 책이 없어요.<br>라이브러리에서 책을 골라보세요!';
+                    break;
+                case 'completed':
+                    books = completedBooks;
+                    emptyIcon = '✅';
+                    emptyMsg = '아직 다 읽은 책이 없어요.<br>첫 번째 책을 완독해보세요!';
+                    break;
+                case 'favorites':
+                    // sessionStorage에서 찜한 도서 가져오기 (book-library.html과 동기화)
+                    books = JSON.parse(sessionStorage.getItem('favoriteBooks') || '[]');
+                    emptyIcon = '💛';
+                    emptyMsg = '찜한 도서가 없어요.<br>라이브러리에서 마음에 드는 도서를 찜해보세요!';
+                    break;
+                case 'recent':
+                    // sessionStorage에서 최근 본 도서 가져오기 (book-library.html과 동기화)
+                    books = JSON.parse(sessionStorage.getItem('recentBooks') || '[]');
+                    emptyIcon = '🕐';
+                    emptyMsg = '최근 본 도서가 없어요.<br>라이브러리에서 책을 둘러보세요!';
+                    break;
+                case 'offline':
+                    books = offlineBooks;
+                    emptyIcon = '📚';
+                    emptyMsg = '등록된 오프라인 도서가 없어요.';
+                    break;
+            }
+
+            // 카운트 업데이트
+            document.getElementById('count-favorites').textContent = JSON.parse(sessionStorage.getItem('favoriteBooks') || '[]').length;
+            document.getElementById('count-recent').textContent = JSON.parse(sessionStorage.getItem('recentBooks') || '[]').length;
+
+            if (books.length === 0) {
+                container.innerHTML = `
+                    <div class="bookshelf-grid">
+                        <div class="bookshelf-empty">
+                            <div class="bookshelf-empty-icon">${emptyIcon}</div>
+                            <div class="bookshelf-empty-text">${emptyMsg}</div>
+                            <a href="book-library.html" class="bookshelf-go-library">
+                                <i class="fa-solid fa-layer-group"></i> 라이브러리 가기
+                            </a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const bookCards = books.map(book => {
+                const progressBar = book.progress ? `
+                    <div class="bookshelf-book-progress">
+                        <div class="bookshelf-book-progress-fill" style="width: ${book.progress}%;"></div>
+                    </div>
+                ` : '';
+
+                const badge = book.progress ? `<div class="bookshelf-book-badge">${book.progress}%</div>` : '';
+
+                // bg 클래스 또는 기본 색상 처리
+                const bgClass = book.bg || 'bg-gradient-to-br from-gray-100 to-gray-200';
+                const emoji = book.emoji || '📕';
+
+                return `
+                    <div class="bookshelf-book" onclick="openBookFromShelf('${book.id}', '${(book.genre || '').replace(/'/g, "\\'")}')">
+                        <div class="bookshelf-book-cover ${bgClass}">
+                            ${emoji}
+                            ${progressBar}
+                            ${badge}
+                        </div>
+                        <div class="bookshelf-book-info">
+                            <div class="bookshelf-book-title">${book.title}</div>
+                            <div class="bookshelf-book-series">${book.genre || ''}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = `<div class="bookshelf-grid">${bookCards}</div>`;
+        }
+
+        function openBookFromShelf(bookId, genre) {
+            // book-viewer로 이동하거나 책 상세 페이지로 이동
+            console.log('책 열기:', bookId, genre);
+            // 필요시 window.location.href = 'book-viewer.html?id=' + bookId;
+        }
+
+        // === 갤러리 데이터 ===
+        const myWorks = [
+            { id: 1, type: 'video', title: '마법사의 물약 리텔링', likes: 24, date: '20260125', bg: 'bg-gradient-to-br from-pink-200 to-rose-300', emoji: '🎬', typeLabel: '동영상', typeColor: 'text-pink-600' },
+            { id: 2, type: 'review', title: '숲속 친구들 독후감', likes: 18, date: '20260122', bg: 'bg-gradient-to-br from-green-200 to-emerald-300', emoji: '✏️', typeLabel: '감상문', typeColor: 'text-green-600' },
+            { id: 3, type: 'audiobook', title: '우주 탐험대 낭독', likes: 31, date: '20260118', bg: 'bg-gradient-to-br from-blue-200 to-indigo-300', emoji: '🎤', typeLabel: '오디오북', typeColor: 'text-blue-600' },
+            { id: 4, type: 'diary', title: '공주와 용 일기', likes: 12, date: '20260115', bg: 'bg-gradient-to-br from-purple-200 to-violet-300', emoji: '📖', typeLabel: '일기', typeColor: 'text-purple-600' },
+            { id: 5, type: 'video', title: '하늘을 나는 코끼리', likes: 15, date: '20260108', bg: 'bg-gradient-to-br from-cyan-200 to-teal-300', emoji: '🎬', typeLabel: '동영상', typeColor: 'text-cyan-600' },
+            { id: 6, type: 'review', title: '공룡에게 보내는 편지', likes: 22, date: '20260105', bg: 'bg-gradient-to-br from-rose-200 to-pink-300', emoji: '✏️', typeLabel: '감상문', typeColor: 'text-rose-600' },
+            { id: 7, type: 'audiobook', title: '겨울왕국 낭독', likes: 27, date: '20251228', bg: 'bg-gradient-to-br from-indigo-200 to-blue-300', emoji: '🎤', typeLabel: '오디오북', typeColor: 'text-indigo-600' },
+            { id: 8, type: 'diary', title: '크리스마스 일기', likes: 14, date: '20251225', bg: 'bg-gradient-to-br from-violet-200 to-purple-300', emoji: '📖', typeLabel: '일기', typeColor: 'text-violet-600' },
+            { id: 9, type: 'video', title: '바다 속 친구들', likes: 9, date: '20251220', bg: 'bg-gradient-to-br from-amber-200 to-orange-300', emoji: '🎬', typeLabel: '동영상', typeColor: 'text-amber-600' }
+        ];
+
+        const friendsWorks = [
+            { id: 1, name: '수아', avatar: '🦊', avatarBg: 'from-pink-400 to-rose-500', class: '3학년 2반', time: '1시간 전', type: 'video', typeLabel: '동영상', title: '마법의 숲 이야기 리텔링', desc: '《마법의 숲》을 읽고 만든 영상이에요!', likes: 42, comments: 5, liked: true, following: true, bg: 'bg-gradient-to-br from-pink-200 to-rose-300', emoji: '🎬' },
+            { id: 2, name: '민준', avatar: '🐻', avatarBg: 'from-blue-400 to-indigo-500', class: '3학년 1반', time: '3시간 전', type: 'review', typeLabel: '감상문', title: '아기 공룡 두리 독후감', desc: '공룡이 친구를 찾는 이야기가 재미있었어요', likes: 35, comments: 3, liked: false, following: false, bg: 'bg-gradient-to-br from-green-200 to-emerald-300', emoji: '✏️' },
+            { id: 3, name: '서연', avatar: '🐰', avatarBg: 'from-purple-400 to-violet-500', class: '3학년 2반', time: '5시간 전', type: 'audiobook', typeLabel: '오디오북', title: '별나라 친구들 낭독', desc: '목소리 연기도 했어요! 들어보세요~', likes: 28, comments: 7, liked: false, following: false, bg: 'bg-gradient-to-br from-blue-200 to-indigo-300', emoji: '🎤' },
+            { id: 4, name: '하윤', avatar: '🐱', avatarBg: 'from-amber-400 to-orange-500', class: '3학년 3반', time: '어제', type: 'photo', typeLabel: '사진', title: '우리 강아지와 책 읽기', desc: '강아지도 같이 읽었어요 🐶', likes: 56, comments: 12, liked: true, following: true, bg: 'bg-gradient-to-br from-amber-200 to-orange-300', emoji: '📷' }
+        ];
+
+        const followingFriends = [
+            { name: '수아', avatar: '🦊', avatarBg: 'from-pink-400 to-rose-500', class: '3학년 2반', works: 32, lastActive: '1월 25일', tags: ['동영상 12', '감상문 8'] },
+            { name: '하윤', avatar: '🐱', avatarBg: 'from-amber-400 to-orange-500', class: '3학년 3반', works: 28, lastActive: '어제', tags: ['사진 15', '오디오북 6'] },
+            { name: '도윤', avatar: '🐸', avatarBg: 'from-emerald-400 to-green-500', class: '3학년 2반', works: 19, lastActive: '1월 20일', tags: ['감상문 10', '학습 5'] }
+        ];
+
+        const followerFriends = [
+            { name: '수아', avatar: '🦊', avatarBg: 'from-pink-400 to-rose-500', class: '3학년 2반', works: 32, following: true },
+            { name: '민준', avatar: '🐻', avatarBg: 'from-blue-400 to-indigo-500', class: '3학년 1반', works: 15, following: false },
+            { name: '서연', avatar: '🐰', avatarBg: 'from-purple-400 to-violet-500', class: '3학년 2반', works: 21, following: false },
+            { name: '시우', avatar: '🐢', avatarBg: 'from-cyan-400 to-teal-500', class: '3학년 1반', works: 8, following: false },
+            { name: '하윤', avatar: '🐱', avatarBg: 'from-amber-400 to-orange-500', class: '3학년 3반', works: 28, following: true }
+        ];
+
+        let galleryFilter = 'all';
+        let gallerySort = 'recent';
+
+        // === 갤러리 탭 전환 ===
+        function switchGalleryTab(tab) {
+            document.querySelectorAll('.gallery-subtab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.gallery-subtab[data-gtab="${tab}"]`).classList.add('active');
+            document.querySelectorAll('.gallery-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('gtab-' + tab).classList.remove('hidden');
+
+            if (tab === 'my') renderMyGallery();
+            if (tab === 'friends') renderFriendsGallery();
+            if (tab === 'following') renderFollowingTab();
+        }
+
+        // === 필터 ===
+        function filterGallery(filter) {
+            galleryFilter = filter;
+            document.querySelectorAll('.gallery-filter').forEach(f => f.classList.remove('active'));
+            document.querySelector(`.gallery-filter[data-filter="${filter}"]`).classList.add('active');
+            renderMyGallery();
+        }
+
+        // === 내 작품 그리드 렌더링 ===
+        function renderMyGallery() {
+            const grid = document.getElementById('my-gallery-grid');
+            let works = [...myWorks];
+            if (galleryFilter !== 'all') {
+                works = works.filter(w => w.type === galleryFilter);
+            }
+            if (gallerySort === 'likes') {
+                works.sort((a, b) => b.likes - a.likes);
+            } else {
+                works.sort((a, b) => parseInt(b.date) - parseInt(a.date));
+            }
+
+            grid.innerHTML = works.map(w => `
+                <div class="gallery-item" data-type="${w.type}" onclick="openWork(${w.id})">
+                    <div class="gallery-item-bg ${w.bg}">${w.emoji}</div>
+                    <div class="gallery-item-type ${w.typeColor}">${w.typeLabel}</div>
+                    <div class="gallery-item-overlay">
+                        <div class="gallery-item-likes"><i class="fa-solid fa-heart"></i> ${w.likes}</div>
+                        <div class="gallery-item-title">${w.title}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // === 친구 작품 피드 렌더링 ===
+        function renderFriendsGallery() {
+            const feed = document.getElementById('friends-gallery-feed');
+            feed.innerHTML = friendsWorks.map(w => {
+                const highlightClass = w.following ? 'highlight' : '';
+                const headerBgClass = w.following ? 'highlight-bg' : '';
+                const followBtnClass = w.following ? 'following' : '';
+                const followBtnText = w.following ? '<i class="fa-solid fa-check"></i> 관심친구' : '<i class="fa-solid fa-plus"></i> 관심+';
+                const likedClass = w.liked ? 'liked' : '';
+                const heartIcon = w.liked ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+
+                return `
+                <div class="feed-card ${highlightClass}">
+                    <div class="feed-card-header ${headerBgClass}">
+                        <div class="flex items-center gap-2">
+                            <div class="feed-card-avatar bg-gradient-to-br ${w.avatarBg}">${w.avatar}</div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-800">${w.name}</p>
+                                <p class="text-[10px] text-gray-400">${w.class} · ${w.time}</p>
+                            </div>
+                        </div>
+                        <button class="follow-btn ${followBtnClass}" onclick="toggleFollowBtn(this)">${followBtnText}</button>
+                    </div>
+                    <div class="feed-card-visual ${w.bg}">${w.emoji}</div>
+                    <div class="feed-card-body">
+                        <div class="feed-card-actions">
+                            <button class="feed-card-action ${likedClass}"><i class="${heartIcon}"></i> ${w.likes}</button>
+                            <button class="feed-card-action"><i class="fa-regular fa-comment"></i> ${w.comments}</button>
+                            <span class="ml-auto text-[9px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-bold">${w.typeLabel}</span>
+                        </div>
+                        <p class="text-sm font-medium text-gray-800">${w.title}</p>
+                        <p class="text-xs text-gray-400 mt-0.5">${w.desc}</p>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // === 관심친구 탭 렌더링 ===
+        function renderFollowingTab() {
+            // 내가 관심+한 친구
+            const followingList = document.getElementById('following-list');
+            followingList.innerHTML = followingFriends.map(f => `
+                <div class="friend-card">
+                    <div class="flex items-center gap-3">
+                        <div class="friend-avatar bg-gradient-to-br ${f.avatarBg}">${f.avatar}</div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-800">${f.name}</p>
+                            <p class="text-[10px] text-gray-400">${f.class} · 작품 ${f.works}개</p>
+                            <div class="flex gap-1 mt-1">
+                                ${f.tags.map(t => `<span class="text-[9px] bg-gray-50 text-gray-500 px-1.5 py-0.5 rounded">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button class="follow-btn following" onclick="toggleFollowBtn(this)"><i class="fa-solid fa-check"></i> 관심친구</button>
+                        <p class="text-[9px] text-gray-300 mt-1">${f.lastActive} 활동</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // 나를 관심+한 친구
+            const followersList = document.getElementById('followers-list');
+            followersList.innerHTML = followerFriends.map(f => {
+                const btnClass = f.following ? 'following' : '';
+                const btnText = f.following ? '<i class="fa-solid fa-check"></i> 관심친구' : '<i class="fa-solid fa-plus"></i> 관심+';
+                return `
+                <div class="friend-card">
+                    <div class="flex items-center gap-3">
+                        <div class="friend-avatar bg-gradient-to-br ${f.avatarBg}">${f.avatar}</div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-800">${f.name}</p>
+                            <p class="text-[10px] text-gray-400">${f.class} · 작품 ${f.works}개</p>
+                        </div>
+                    </div>
+                    <button class="follow-btn ${btnClass}" onclick="toggleFollowBtn(this)">${btnText}</button>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // === 팔로우 토글 ===
+        function toggleFollowBtn(btn) {
+            if (btn.classList.contains('following')) {
+                btn.classList.remove('following');
+                btn.innerHTML = '<i class="fa-solid fa-plus"></i> 관심+';
+            } else {
+                btn.classList.add('following');
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> 관심친구';
+            }
+        }
+
+        function openWork(id) {
             alert('작품 상세보기: ' + id);
         }
 
-        // 갤러리 반응형 처리
-        const TOTAL_WORKS = 24;
-        const CARD_WIDTH = 212; // 카드 너비 + 간격
-        const MORE_WIDTH = 112; // 더보기 카드 너비 + 간격
-
-        function updateGalleryLayout() {
-            const container = document.getElementById('gallery-container');
-            if (!container) return;
-
-            const containerWidth = container.offsetWidth;
-            // 더보기 카드를 제외한 공간에서 보여줄 수 있는 카드 수 계산
-            const availableWidth = containerWidth - MORE_WIDTH;
-            const visibleCount = Math.max(3, Math.min(7, Math.floor(availableWidth / CARD_WIDTH)));
-
-            const galleryItems = container.querySelectorAll('.gallery-item');
-            const moreCountEl = document.getElementById('more-count');
-
-            // 각 카드 표시/숨김 처리
-            galleryItems.forEach((item, index) => {
-                if (index < visibleCount) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-
-            // 더보기 카운트 업데이트
-            const remaining = TOTAL_WORKS - visibleCount;
-            moreCountEl.textContent = '+' + remaining;
-        }
-
-        // 초기 실행 및 리사이즈 이벤트
-        window.addEventListener('load', updateGalleryLayout);
-        window.addEventListener('resize', updateGalleryLayout);
+        // === Init ===
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSidebar('mypage');
+            loadLogoutModal();
+            renderCalendar();
+            renderBookshelf(); // 초기 책장 렌더링
+            renderMyGallery(); // 갤러리 초기화
+            renderFriendsGallery();
+            renderFollowingTab();
+        });
     </script>
 </body>
 </html>

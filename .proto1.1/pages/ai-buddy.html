@@ -459,6 +459,7 @@
     ];
 
     let selectedBook = null;
+    let completedTools = []; // 완료한 도구 목록
     const chatBody = document.getElementById('chat-body');
 
     // === 유틸 ===
@@ -612,6 +613,9 @@
 
             // 페이지 이동
             setTimeout(() => {
+                // 대화 상태 저장 (도구에서 돌아올 때 복원용)
+                saveChatState(tool.id);
+
                 sessionStorage.setItem('aiBuddyBook', JSON.stringify(selectedBook));
                 if (typeof openTool === 'function') {
                     openTool(tool.id);
@@ -620,6 +624,94 @@
                 }
             }, 1000);
         }, 1000);
+    }
+
+    // === 대화 상태 저장 ===
+    function saveChatState(toolId) {
+        const state = {
+            selectedBook: selectedBook,
+            completedTools: [...completedTools, toolId],
+            chatHistory: chatBody.innerHTML,
+            lastTool: toolId
+        };
+        sessionStorage.setItem('aiBuddyChatState', JSON.stringify(state));
+    }
+
+    // === 도구에서 복귀 후 대화 이어가기 ===
+    function resumeChat(state) {
+        // 상태 복원
+        selectedBook = state.selectedBook;
+        completedTools = state.completedTools || [];
+
+        // 기존 대화 복원
+        chatBody.innerHTML = state.chatHistory;
+
+        // 마지막 도구 이름 찾기
+        const lastTool = buddyTools.find(t => t.id === state.lastTool);
+        const toolName = lastTool ? lastTool.title : '활동';
+
+        // 복귀 메시지 추가
+        setTimeout(() => {
+            addBuddyMsg(`<b>${toolName}</b> 정말 잘했어! 👏🎉`);
+
+            setTimeout(() => {
+                addBuddyMsg(`다른 활동도 해볼까?<br>아니면 다른 책으로 이야기할 수도 있어!`);
+
+                // 활동 선택지 표시
+                setTimeout(() => showResumeChoices(), 400);
+            }, 800);
+        }, 500);
+
+        // 저장된 상태 제거 (사용 완료)
+        sessionStorage.removeItem('aiBuddyChatState');
+    }
+
+    // === 복귀 후 선택지 표시 ===
+    function showResumeChoices() {
+        const area = document.createElement('div');
+        area.className = 'choices-area';
+
+        // 도구 선택지 (완료한 것도 다시 선택 가능)
+        buddyTools.forEach(tool => {
+            const isCompleted = completedTools.includes(tool.id);
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerHTML = `
+                <div class="choice-icon" style="background:${tool.bg}; color:${tool.color};">
+                    <i class="fa-solid ${tool.icon}" style="font-size:1.2rem;"></i>
+                </div>
+                <div style="flex:1;">
+                    <p class="choice-label">${tool.title} ${isCompleted ? '<span style="color:#10b981; font-size:0.75rem;">✓ 완료</span>' : ''}</p>
+                    <p class="choice-desc">${tool.desc}</p>
+                </div>
+            `;
+            btn.onclick = () => onSelectTool(tool);
+            area.appendChild(btn);
+        });
+
+        // 다른 책 선택하기
+        const otherBtn = document.createElement('button');
+        otherBtn.className = 'choice-btn';
+        otherBtn.innerHTML = `
+            <div class="choice-icon" style="background:#fef3c7; color:#f59e0b;">
+                <i class="fa-solid fa-book" style="font-size:1.2rem;"></i>
+            </div>
+            <div>
+                <p class="choice-label">다른 책으로 이야기하기</p>
+                <p class="choice-desc">새로운 책을 골라볼까?</p>
+            </div>
+        `;
+        otherBtn.onclick = () => {
+            // 상태 초기화 후 처음부터 시작
+            completedTools = [];
+            selectedBook = null;
+            sessionStorage.removeItem('aiBuddyChatState');
+            startChat();
+        };
+        area.appendChild(otherBtn);
+
+        chatBody.appendChild(area);
+        scrollToBottom();
     }
 
     // === 인라인 음성 대화 기능 ===
@@ -721,7 +813,19 @@
     document.addEventListener('DOMContentLoaded', () => {
         loadSidebar('ai-buddy');
         loadLogoutModal();
-        startChat();
+
+        // 도구에서 복귀한 경우 대화 이어가기
+        const savedState = sessionStorage.getItem('aiBuddyChatState');
+        if (savedState) {
+            try {
+                const state = JSON.parse(savedState);
+                resumeChat(state);
+            } catch (e) {
+                startChat();
+            }
+        } else {
+            startChat();
+        }
     });
     </script>
 </body>

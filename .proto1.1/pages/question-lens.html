@@ -684,6 +684,13 @@
 
             // AI 버디에서 책을 이미 선택하고 온 경우 → 책 선택 스킵
             const buddyBookRaw = sessionStorage.getItem('aiBuddyBook');
+            const chatStateRaw = sessionStorage.getItem('aiBuddyChatState');
+
+            // aiBuddyChatState가 있으면 AI 버디에서 온 것으로 간주
+            if (chatStateRaw) {
+                cameFromBuddy = true;
+            }
+
             if (buddyBookRaw) {
                 try {
                     const buddyBook = JSON.parse(buddyBookRaw);

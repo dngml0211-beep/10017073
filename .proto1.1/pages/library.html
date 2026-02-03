@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>북클럽 3.0 - KRS 리딩트리</title>
+    <title>북클럽 3.0 - KRS 도서관</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -462,6 +462,102 @@
             font-size: 11px;
         }
 
+        /* === Extra Books Section (추천 + 교과연계) === */
+        .extra-books-section {
+            padding: 0 16px 14px;
+            border-top: 1px dashed #e8e0d4;
+            margin-top: 2px;
+        }
+        .extra-books-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #9ca3af;
+            margin: 10px 0 8px;
+            letter-spacing: 0.02em;
+        }
+        .extra-books-label i {
+            font-size: 9px;
+            color: #c4b8a8;
+        }
+        .extra-books-grid {
+            display: flex;
+            gap: 8px;
+        }
+        .extra-book-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            background: #fafaf8;
+            border: 1px solid #f0ebe3;
+            border-radius: 10px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .extra-book-item:hover {
+            background: #fff8f0;
+            border-color: #ffe0b2;
+        }
+        .extra-book-thumb {
+            width: 32px;
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .extra-book-thumb.recommend {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 1px solid #fcd34d;
+        }
+        .extra-book-thumb.curriculum {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 1px solid #93c5fd;
+        }
+        .extra-book-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .extra-book-type {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            margin-bottom: 1px;
+        }
+        .extra-book-type.recommend {
+            color: #d97706;
+        }
+        .extra-book-type.curriculum {
+            color: #2563eb;
+        }
+        .extra-book-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #374151;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .extra-book-author {
+            font-size: 9px;
+            color: #9ca3af;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 잠긴 상태일 때 부가 도서 흐리게 */
+        .week-card .extra-books-section.locked {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
         /* === Reading Step Board (ㄹ Path - Light Theme) === */
         .board-wrapper {
             background: linear-gradient(180deg, #FEF9F0 0%, #FFF6EA 50%, #FFF2E0 100%);
@@ -831,7 +927,7 @@
                     <div class="tab-switcher" id="view-switcher">
                         <button class="tab-pill active" id="tab-btn-tree" onclick="switchTab('tree')">
                             <span class="tab-emoji">🌳</span>
-                            <span>리딩트리</span>
+                            <span>도서관</span>
                         </button>
                         <button class="tab-pill" id="tab-btn-map" onclick="switchTab('map')">
                             <span class="tab-emoji">👣</span>
@@ -841,7 +937,7 @@
                 </div>
             </div>
 
-            <!-- ======== TAB 1: KRS 리딩트리 (Month Cards) ======== -->
+            <!-- ======== TAB 1: KRS 도서관 (Month Cards) ======== -->
             <div class="tab-content active" id="tab-tree">
                 <div class="px-5 md:px-8 pt-6 pb-8" id="month-container">
                     <!-- JS renders month sections -->
@@ -871,20 +967,32 @@
                 { week: 1, level: 'K2-1', title: '오즈의 마법사', desc: '회오리바람에 날려간 도로시의 신비로운 모험 이야기', author: 'L. 프랭크 바움 원작', img: '../img/book1.jpg', type: 'core', status: 'completed', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ], extraBooks: [
+                    { type: 'recommend', title: '이상한 나라의 앨리스', author: '루이스 캐럴' },
+                    { type: 'curriculum', title: '바람의 언덕', author: '국어 2-1 수록', subject: '국어' }
                 ]},
                 { week: 2, level: 'K2-1', title: '약속은 즐거워', desc: '약속과 규칙의 소중함을 배우는 생활 동화', author: '박은경 글', img: '../img/book2.jpg', type: 'managed', status: 'completed', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: true },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ], extraBooks: [
+                    { type: 'recommend', title: '친구 사이 좋은 말', author: '김영진' },
+                    { type: 'curriculum', title: '사이좋은 우리', author: '통합 2-1 수록', subject: '통합' }
                 ]},
                 { week: 3, level: 'K2-1', title: '오즈의 마법사', desc: '회오리바람에 날려간 도로시의 신비로운 모험 이야기', author: 'L. 프랭크 바움 원작', img: '../img/book1.jpg', type: 'core', status: 'completed', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ], extraBooks: [
+                    { type: 'recommend', title: '피터팬', author: '제임스 배리' },
+                    { type: 'curriculum', title: '용기를 내요', author: '도덕 2-1 수록', subject: '도덕' }
                 ]},
                 { week: 4, level: 'K2-1', title: '약속은 즐거워', desc: '약속과 규칙의 소중함을 배우는 생활 동화', author: '박은경 글', img: '../img/book2.jpg', type: 'managed', status: 'completed', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: true },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ], extraBooks: [
+                    { type: 'recommend', title: '행복한 왕자', author: '오스카 와일드' },
+                    { type: 'curriculum', title: '봄이 오면', author: '국어 2-1 수록', subject: '국어' }
                 ]}
             ]
         },
@@ -894,20 +1002,32 @@
                 { week: 1, level: 'K2-1', title: '숭숭이와 나', desc: '특별한 친구와 함께 자라는 우정 이야기', author: '지윤경 글', img: '../img/book3.jpg', type: 'core', status: 'completed', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ], extraBooks: [
+                    { type: 'recommend', title: '강아지 똥', author: '권정생' },
+                    { type: 'curriculum', title: '동물 친구들', author: '통합 2-1 수록', subject: '통합' }
                 ]},
                 { week: 2, level: 'K2-1', title: '빨간머리 앤', desc: '상상력 넘치는 소녀 앤의 초록 지붕 집 이야기', author: '몽고메리 원작', img: '../img/book4.jpg', type: 'managed', status: 'completed', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: true },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ], extraBooks: [
+                    { type: 'recommend', title: '비밀의 화원', author: '프랜시스 버넷' },
+                    { type: 'curriculum', title: '상상의 나래', author: '국어 2-1 수록', subject: '국어' }
                 ]},
                 { week: 3, level: 'K2-1', title: '숭숭이와 나', desc: '특별한 친구와 함께 자라는 우정 이야기', author: '지윤경 글', img: '../img/book3.jpg', type: 'core', status: 'completed', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ], extraBooks: [
+                    { type: 'recommend', title: '까막눈 삼디기', author: '이금이' },
+                    { type: 'curriculum', title: '생명의 소중함', author: '도덕 2-1 수록', subject: '도덕' }
                 ]},
                 { week: 4, level: 'K2-2', title: '나무를 심은 사람', desc: '한 사람의 끈기가 숲을 만든 감동 실화', author: '장 지오노 원작', img: '', type: 'managed', status: 'completed', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: true },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: true },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: true }
+                ], extraBooks: [
+                    { type: 'recommend', title: '나무는 좋다', author: '재니스 메이 우드리' },
+                    { type: 'curriculum', title: '환경과 생태', author: '통합 2-2 수록', subject: '통합' }
                 ]}
             ]
         },
@@ -917,20 +1037,32 @@
                 { week: 1, level: 'K2-2', title: '오즈의 마법사', desc: '회오리바람에 날려간 도로시의 신비로운 모험 이야기', author: 'L. 프랭크 바움 원작', img: '../img/book1.jpg', type: 'core', status: 'in-progress', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '마법의 시간여행', author: '메리 폽 어스본' },
+                    { type: 'curriculum', title: '꿈을 향해', author: '국어 2-2 수록', subject: '국어' }
                 ]},
                 { week: 2, level: 'K2-2', title: '약속은 즐거워', desc: '약속과 규칙의 소중함을 배우는 생활 동화', author: '박은경 글', img: '../img/book2.jpg', type: 'managed', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '괜찮아 괜찮아', author: '최숙희' },
+                    { type: 'curriculum', title: '바른 생활', author: '도덕 2-2 수록', subject: '도덕' }
                 ]},
                 { week: 3, level: 'K2-2', title: '숭숭이와 나', desc: '특별한 친구와 함께 자라는 우정 이야기', author: '지윤경 글', img: '../img/book3.jpg', type: 'core', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '내 친구 개', author: '안토니 브라운' },
+                    { type: 'curriculum', title: '함께 살아요', author: '통합 2-2 수록', subject: '통합' }
                 ]},
                 { week: 4, level: 'K2-2', title: '빨간머리 앤', desc: '상상력 넘치는 소녀 앤의 초록 지붕 집 이야기', author: '몽고메리 원작', img: '../img/book4.jpg', type: 'managed', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '키다리 아저씨', author: '진 웹스터' },
+                    { type: 'curriculum', title: '인물의 삶', author: '국어 2-2 수록', subject: '국어' }
                 ]}
             ]
         },
@@ -940,20 +1072,32 @@
                 { week: 1, level: 'K2-2', title: '꿈꾸는 로봇', desc: '로봇과 아이의 특별한 우정 이야기', author: '이지현 글', img: '', type: 'core', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '로봇 친구 찾기', author: '김영진' },
+                    { type: 'curriculum', title: '과학과 생활', author: '과학 2-2 수록', subject: '과학' }
                 ]},
                 { week: 2, level: 'K2-2', title: '작은 영웅', desc: '평범한 아이가 용기를 내어 영웅이 되는 이야기', author: '김태영 글', img: '', type: 'managed', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '용기 있는 아이', author: '박현주' },
+                    { type: 'curriculum', title: '나의 꿈', author: '도덕 2-2 수록', subject: '도덕' }
                 ]},
                 { week: 3, level: 'K2-2', title: '신비한 동굴', desc: '동굴 속에서 발견한 놀라운 비밀 모험', author: '박소연 글', img: '', type: 'core', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '동굴 탐험대', author: '최민서' },
+                    { type: 'curriculum', title: '땅속의 세계', author: '과학 2-2 수록', subject: '과학' }
                 ]},
                 { week: 4, level: 'K2-2', title: '구름 위의 세상', desc: '구름 위에서 펼쳐지는 환상적인 하늘 여행', author: '최은영 글', img: '', type: 'managed', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '날씨의 비밀', author: '정하늘' },
+                    { type: 'curriculum', title: '하늘과 날씨', author: '과학 2-2 수록', subject: '과학' }
                 ]}
             ]
         },
@@ -963,20 +1107,32 @@
                 { week: 1, level: 'K3-1', title: '미래의 발명가', desc: '작은 발명으로 세상을 바꾸는 꿈 이야기', author: '한지은 글', img: '', type: 'core', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '에디슨 이야기', author: '과학위인전' },
+                    { type: 'curriculum', title: '발명과 발견', author: '과학 3-1 수록', subject: '과학' }
                 ]},
                 { week: 2, level: 'K3-1', title: '바다의 비밀', desc: '깊은 바다 속 숨겨진 보물과 생물의 세계', author: '아놀드 로벨', img: '', type: 'managed', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '해양 탐험대', author: '이수민' },
+                    { type: 'curriculum', title: '바다와 생물', author: '과학 3-1 수록', subject: '과학' }
                 ]},
                 { week: 3, level: 'K3-1', title: '별빛 마을', author: '오 헨리', desc: '따뜻한 마음이 모인 작은 마을의 이야기', img: '', type: 'core', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '작은 마을 큰 꿈', author: '김서현' },
+                    { type: 'curriculum', title: '우리 마을', author: '사회 3-1 수록', subject: '사회' }
                 ]},
                 { week: 4, level: 'K3-1', title: '하늘을 나는 꿈', desc: '하늘을 동경하는 아이의 아름다운 꿈 이야기', author: '윤동주', img: '', type: 'managed', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '라이트 형제', author: '세계위인전' },
+                    { type: 'curriculum', title: '꿈과 희망', author: '국어 3-1 수록', subject: '국어' }
                 ]}
             ]
         },
@@ -986,20 +1142,32 @@
                 { week: 1, level: 'K3-1', title: '시간 여행자', desc: '과거와 미래를 오가는 신비로운 시간 모험', author: '마르쿠스 피스터', img: '', type: 'core', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '타임머신', author: 'H.G. 웰스' },
+                    { type: 'curriculum', title: '역사 속 인물', author: '사회 3-1 수록', subject: '사회' }
                 ]},
                 { week: 2, level: 'K3-1', title: '마법의 정원', desc: '비밀 정원에서 피어나는 자연과 희망의 이야기', author: '장 지오노', img: '', type: 'managed', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '비밀의 화원', author: '버넷' },
+                    { type: 'curriculum', title: '식물의 성장', author: '과학 3-1 수록', subject: '과학' }
                 ]},
                 { week: 3, level: 'K3-1', title: '공룡 대탐험', desc: '공룡 시대로 떠나는 짜릿한 탐험 이야기', author: '한지은 글', img: '', type: 'core', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '공룡백과', author: '공룡박사' },
+                    { type: 'curriculum', title: '지구의 역사', author: '과학 3-1 수록', subject: '과학' }
                 ]},
                 { week: 4, level: 'K3-1', title: '우주 탐험대', desc: '신비로운 우주를 누비는 어린이 탐험대 이야기', author: '이수정 글', img: '', type: 'managed', status: 'locked', activities: [
                     { name: '독후퀴즈', icon: 'fa-solid fa-pen-fancy', done: false },
                     { name: 'AI 리텔링', icon: 'fa-solid fa-microphone', done: false },
                     { name: '어휘챌린지', icon: 'fa-solid fa-puzzle-piece', done: false }
+                ], extraBooks: [
+                    { type: 'recommend', title: '우주의 신비', author: '칼 세이건' },
+                    { type: 'curriculum', title: '태양계와 별', author: '과학 3-1 수록', subject: '과학' }
                 ]}
             ]
         }
@@ -1134,6 +1302,34 @@
             return `<span class="activity-badge ${doneClass}"><i class="${a.icon}"></i>${a.name}${doneIcon}</span>`;
         }).join('');
 
+        // Extra Books (추천 + 교과연계)
+        let extraBooksHtml = '';
+        if (w.extraBooks && w.extraBooks.length > 0) {
+            const lockedClass = w.status === 'locked' ? ' locked' : '';
+            const booksHtml = w.extraBooks.map(b => {
+                const typeClass = b.type === 'recommend' ? 'recommend' : 'curriculum';
+                const typeLabel = b.type === 'recommend' ? '추천도서' : '교과연계';
+                const emoji = b.type === 'recommend' ? '⭐' : '📘';
+                return `
+                <div class="extra-book-item">
+                    <div class="extra-book-thumb ${typeClass}">${emoji}</div>
+                    <div class="extra-book-info">
+                        <div class="extra-book-type ${typeClass}">${typeLabel}</div>
+                        <div class="extra-book-title">${b.title}</div>
+                        <div class="extra-book-author">${b.author}</div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            extraBooksHtml = `
+            <div class="extra-books-section${lockedClass}">
+                <div class="extra-books-label"><i class="fa-solid fa-book-bookmark"></i>함께 읽으면 좋은 책</div>
+                <div class="extra-books-grid">
+                    ${booksHtml}
+                </div>
+            </div>`;
+        }
+
         const cardClass = w.status === 'in-progress' ? 'week-card in-progress' : 'week-card';
 
         return `
@@ -1161,6 +1357,7 @@
                     ${activitiesHtml}
                 </div>
             </div>
+            ${extraBooksHtml}
         </div>`;
     }
 
