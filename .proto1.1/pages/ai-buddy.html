@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>북클럽 3.0 - AI 버디</title>
+    <title>북클럽 3.0 - AI 독서 도구함</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -41,344 +41,342 @@
     <style>
         .font-noto { font-family: 'Noto Sans KR', sans-serif; }
 
-        /* === 채팅 레이아웃 === */
-        .chat-wrapper {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            background: linear-gradient(180deg, #f5f0ff 0%, #faf8ff 40%, #ffffff 100%);
+        /* === 페이지 헤더 === */
+        .page-header {
+            background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+            padding: 24px;
+            color: white;
             position: relative;
             overflow: hidden;
         }
-
-        /* 배경 장식 */
-        .chat-wrapper::before {
+        .page-header::before {
             content: '';
             position: absolute;
-            top: -60px; right: -60px;
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
+            top: -40px; right: -40px;
+            width: 120px; height: 120px;
+            background: rgba(255,255,255,0.1);
             border-radius: 50%;
-            pointer-events: none;
         }
-        .chat-wrapper::after {
-            content: '';
-            position: absolute;
-            bottom: 80px; left: -40px;
-            width: 150px; height: 150px;
-            background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%);
+        .page-header-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .page-header-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 6px;
+        }
+        .ttotto-avatar {
+            width: 56px; height: 56px;
             border-radius: 50%;
-            pointer-events: none;
+            background: white;
+            padding: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .ttotto-avatar img {
+            width: 100%; height: 100%;
+            object-fit: contain;
         }
 
-        /* 헤더 */
-        .chat-header {
-            background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+        /* === 도구 메뉴 탭 === */
+        .tool-tabs {
+            display: flex;
+            gap: 8px;
             padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            color: white;
-            position: relative;
-            z-index: 10;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            overflow-x: auto;
         }
-        .chat-header-avatar {
-            width: 52px; height: 52px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            border: 2.5px solid rgba(255,255,255,0.4);
-            position: relative;
+        .tool-tab {
             flex-shrink: 0;
-        }
-        .chat-header-avatar .online-dot {
-            position: absolute;
-            bottom: 1px; right: 1px;
-            width: 12px; height: 12px;
-            background: #4ade80;
-            border-radius: 50%;
-            border: 2.5px solid #7c3aed;
-        }
-
-        /* 채팅 본문 */
-        .chat-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* 버디 메시지 (좌측) */
-        .buddy-row {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-            animation: msgSlideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        @keyframes msgSlideUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .buddy-avatar {
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #7c3aed, #a78bfa);
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-            box-shadow: 0 3px 10px rgba(124, 58, 237, 0.25);
-        }
-        .buddy-bubble {
-            background: white;
-            border-radius: 4px 20px 20px 20px;
-            padding: 16px 20px;
-            max-width: 75%;
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 1rem;
-            color: #374151;
-            line-height: 1.6;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            border: 1px solid rgba(139, 92, 246, 0.08);
-        }
-
-        /* 사용자 메시지 (우측) */
-        .user-row {
-            display: flex;
-            justify-content: flex-end;
-            animation: msgSlideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .user-bubble {
-            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
-            border-radius: 20px 4px 20px 20px;
-            padding: 14px 20px;
-            max-width: 70%;
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 0.95rem;
-            color: white;
-            line-height: 1.5;
-            box-shadow: 0 3px 12px rgba(124, 58, 237, 0.3);
-        }
-
-        /* 선택지 영역 */
-        .choices-area {
-            padding: 8px 0 8px 50px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            animation: msgSlideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .choice-btn {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 18px;
-            background: white;
-            border: 2px solid #ede9fe;
+            gap: 8px;
+            padding: 12px 20px;
             border-radius: 20px;
+            background: white;
+            border: 2px solid #e5e7eb;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.2s;
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 0.95rem;
-            color: #4b5563;
-            text-align: left;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
         }
-        .choice-btn:hover {
+        .tool-tab:hover {
             border-color: #8b5cf6;
-            background: #f5f3ff;
-            transform: translateX(6px);
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.15);
+            color: #8b5cf6;
         }
-        .choice-btn:active { transform: scale(0.97); }
-        .choice-icon {
-            width: 44px; height: 44px;
+        .tool-tab.active {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-color: #8b5cf6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        .tool-tab i {
+            font-size: 16px;
+        }
+        .tool-tab .tab-count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        .tool-tab.active .tab-count {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* === 활동 기록 영역 === */
+        .activity-container {
+            padding: 24px;
+            background: #f9fafb;
+            min-height: calc(100vh - 200px);
+        }
+        .activity-section-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* === 활동 카드 === */
+        .activity-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .activity-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        .activity-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+        .activity-icon {
+            width: 48px; height: 48px;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
+            font-size: 22px;
             flex-shrink: 0;
         }
-        .choice-label { font-weight: 600; }
-        .choice-desc {
-            font-size: 0.75rem;
+        .activity-icon.question { background: #ede9fe; color: #8b5cf6; }
+        .activity-icon.video { background: #fce7f3; color: #ec4899; }
+        .activity-icon.debate { background: #dbeafe; color: #3b82f6; }
+
+        .activity-meta {
+            flex: 1;
+            min-width: 0;
+        }
+        .activity-book {
+            font-size: 12px;
             color: #9ca3af;
-            font-family: 'Noto Sans KR', sans-serif;
-            font-weight: 400;
-            margin-top: 2px;
-        }
-
-        /* 타이핑 인디케이터 */
-        .typing-indicator {
+            margin-bottom: 4px;
             display: flex;
-            gap: 5px;
-            padding: 16px 20px;
+            align-items: center;
+            gap: 6px;
         }
-        .typing-indicator span {
-            width: 9px; height: 9px;
-            border-radius: 50%;
-            background: #c4b5fd;
-            animation: typeBounce 1.2s infinite;
+        .activity-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
         }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.15s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.3s; }
-        @keyframes typeBounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-8px); opacity: 1; }
+        .activity-date {
+            font-size: 12px;
+            color: #9ca3af;
         }
-
-        /* 하단 입력 바 (장식용) */
-        .chat-footer {
-            padding: 14px 20px;
-            background: white;
-            border-top: 1px solid #f3f0ff;
+        .activity-preview {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+        .activity-preview.video-preview {
             display: flex;
             align-items: center;
             gap: 12px;
-            position: relative;
-            z-index: 10;
         }
-        .chat-input-fake {
-            flex: 1;
-            padding: 12px 18px;
-            background: #f9f7ff;
-            border: 1.5px solid #ede9fe;
-            border-radius: 24px;
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 0.9rem;
-            color: #a3a3a3;
-        }
-        .chat-send-btn {
-            width: 44px; height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
-            border: none;
-            color: white;
-            font-size: 1.1rem;
-            cursor: pointer;
+        .video-thumb {
+            width: 80px; height: 60px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ec4899, #f472b6);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .chat-send-btn:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(124, 58, 237, 0.4); }
-        .chat-send-btn:active { transform: scale(0.95); }
-
-        /* 마이크 버튼 */
-        .chat-mic-btn {
-            width: 44px; height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border: none;
             color: white;
-            font-size: 1.1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 20px;
             flex-shrink: 0;
         }
-        .chat-mic-btn:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4); }
-        .chat-mic-btn:active { transform: scale(0.95); }
 
-        /* === 인라인 음성 녹음 상태 === */
-        .chat-footer.recording {
-            background: linear-gradient(135deg, #fef2f2, #fff1f2);
-            border-top-color: #fecaca;
-        }
-        .chat-mic-btn.recording {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-            animation: recordPulse 1.5s ease-in-out infinite;
-        }
-        @keyframes recordPulse {
-            0%, 100% { box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
-            50% { box-shadow: 0 4px 18px rgba(239, 68, 68, 0.7), 0 0 0 6px rgba(239, 68, 68, 0.12); }
-        }
-
-        /* 인라인 파형 (입력창 자리에 표시) */
-        .inline-waveform {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            height: 44px;
-            padding: 0 18px;
-            background: #fef2f2;
-            border: 1.5px solid #fecaca;
-            border-radius: 24px;
-        }
-        .inline-waveform .wave-bar {
-            width: 3px;
-            height: 6px;
-            background: linear-gradient(180deg, #ef4444, #dc2626);
-            border-radius: 3px;
-            animation: waveAnim 0.8s ease-in-out infinite alternate;
-        }
-        .inline-waveform .wave-bar:nth-child(1) { animation-delay: 0s; }
-        .inline-waveform .wave-bar:nth-child(2) { animation-delay: 0.1s; }
-        .inline-waveform .wave-bar:nth-child(3) { animation-delay: 0.2s; }
-        .inline-waveform .wave-bar:nth-child(4) { animation-delay: 0.15s; }
-        .inline-waveform .wave-bar:nth-child(5) { animation-delay: 0.25s; }
-        .inline-waveform .wave-bar:nth-child(6) { animation-delay: 0.05s; }
-        .inline-waveform .wave-bar:nth-child(7) { animation-delay: 0.3s; }
-        .inline-waveform .wave-bar:nth-child(8) { animation-delay: 0.12s; }
-        .inline-waveform .wave-bar:nth-child(9) { animation-delay: 0.22s; }
-        @keyframes waveAnim {
-            0% { height: 6px; }
-            100% { height: 28px; }
-        }
-
-        /* 녹음 상태 텍스트 */
-        .inline-voice-status {
-            flex: 1;
-            padding: 10px 18px;
-            background: #f9f7ff;
-            border: 1.5px solid #ede9fe;
-            border-radius: 24px;
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 0.85rem;
-            color: #7c3aed;
-            font-weight: 500;
+        /* === 빈 상태 === */
+        .empty-state {
             text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .empty-state-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+        .empty-state-desc {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .empty-state-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .empty-state-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
         }
 
-        /* 뒤로가기 버튼 */
-        .chat-back-btn {
-            width: 36px; height: 36px;
+        /* === 새 활동 시작 버튼 === */
+        .new-activity-fab {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.15);
-            border: none;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
             color: white;
-            font-size: 1rem;
+            font-size: 24px;
+            border: none;
             cursor: pointer;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            z-index: 100;
+        }
+        .new-activity-fab:hover {
+            transform: scale(1.1);
+        }
+
+        /* === 새 활동 시작 모달 === */
+        .new-activity-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 0;
+        }
+        .new-activity-modal-content {
+            background: white;
+            border-radius: 24px 24px 0 0;
+            padding: 24px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUpModal 0.3s ease;
+        }
+        @keyframes slideUpModal {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: #d1d5db;
+            border-radius: 2px;
+            margin: 0 auto 20px;
+        }
+        .modal-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #374151;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .modal-desc {
+            font-size: 14px;
+            color: #9ca3af;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .tool-option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 16px;
+            border: 2px solid #f0f0f0;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tool-option:hover {
+            border-color: #8b5cf6;
+            background: #f5f3ff;
+        }
+        .tool-option-icon {
+            width: 52px; height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
             flex-shrink: 0;
         }
-        .chat-back-btn:hover { background: rgba(255,255,255,0.3); }
-
-        /* max-width 제한 */
-        .chat-max-w {
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
+        .tool-option-info {
+            flex: 1;
+        }
+        .tool-option-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+        .tool-option-desc {
+            font-size: 13px;
+            color: #9ca3af;
         }
     </style>
 </head>
@@ -395,45 +393,101 @@
         <!-- Sidebar Container -->
         <div id="sidebar-container"></div>
 
-        <!-- Main Content: 전체화면 채팅 -->
-        <main class="flex-1 h-full overflow-hidden">
-            <div class="chat-wrapper">
-
-                <!-- 채팅 헤더 -->
-                <div class="chat-header">
-                    <button class="chat-back-btn" onclick="goBack()">
-                        <i class="fa-solid fa-arrow-left"></i>
-                    </button>
-                    <div class="chat-header-avatar">
-                        🐿️
-                        <div class="online-dot"></div>
+        <!-- Main Content -->
+        <main class="flex-1 h-full overflow-y-auto">
+            <!-- 페이지 헤더 -->
+            <div class="page-header">
+                <div class="flex items-center gap-16px">
+                    <div class="ttotto-avatar">
+                        <img src="../img/EHEH.png" alt="또또" onerror="this.parentElement.innerHTML='🐿️'">
                     </div>
-                    <div>
-                        <p class="font-noto text-lg">버디</p>
-                        <p style="font-size:0.75rem; opacity:0.8;">AI 독서 버디</p>
-                    </div>
-                </div>
-
-                <!-- 채팅 본문 -->
-                <div class="chat-body" id="chat-body">
-                    <!-- JS로 렌더링 -->
-                </div>
-
-                <!-- 하단 입력 바 -->
-                <div class="chat-footer" id="chat-footer">
-                    <div class="chat-max-w" style="display:flex; align-items:center; gap:12px;">
-                        <div class="chat-input-fake" id="chat-input-area">버디에게 말해보세요...</div>
-                        <button class="chat-mic-btn" id="mic-btn" onclick="toggleVoiceRecord()" title="음성으로 말하기">
-                            <i class="fa-solid fa-microphone" id="mic-icon"></i>
-                        </button>
-                        <button class="chat-send-btn">
-                            <i class="fa-solid fa-paper-plane"></i>
-                        </button>
+                    <div style="margin-left:12px;">
+                        <div class="page-header-title">
+                            AI 독서 도구함
+                        </div>
+                        <div class="page-header-desc">
+                            또또와 함께한 독서 활동을 모아봐요
+                        </div>
                     </div>
                 </div>
-
             </div>
+
+            <!-- 도구 메뉴 탭 -->
+            <div class="tool-tabs" id="tool-tabs">
+                <button class="tool-tab active" data-tool="all" onclick="filterActivities('all')">
+                    <i class="fa-solid fa-layer-group"></i>
+                    전체
+                    <span class="tab-count" id="count-all">12</span>
+                </button>
+                <button class="tool-tab" data-tool="question" onclick="filterActivities('question')">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    질문렌즈
+                    <span class="tab-count" id="count-question">5</span>
+                </button>
+                <button class="tool-tab" data-tool="video" onclick="filterActivities('video')">
+                    <i class="fa-solid fa-video"></i>
+                    영상리텔링
+                    <span class="tab-count" id="count-video">4</span>
+                </button>
+                <button class="tool-tab" data-tool="debate" onclick="filterActivities('debate')">
+                    <i class="fa-solid fa-comments"></i>
+                    독서토론
+                    <span class="tab-count" id="count-debate">3</span>
+                </button>
+            </div>
+
+            <!-- 활동 기록 영역 -->
+            <div class="activity-container" id="activity-container">
+                <!-- JS로 렌더링 -->
+            </div>
+
+            <!-- 새 활동 시작 FAB -->
+            <button class="new-activity-fab" onclick="showNewActivityModal()">
+                <i class="fa-solid fa-plus"></i>
+            </button>
         </main>
+    </div>
+
+    <!-- 새 활동 시작 모달 -->
+    <div id="new-activity-modal" class="new-activity-modal hidden" onclick="closeNewActivityModal(event)">
+        <div class="new-activity-modal-content" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div>
+            <div class="modal-title">새 활동 시작하기</div>
+            <div class="modal-desc">어떤 독서 도구를 사용할까요?</div>
+
+            <div class="tool-option" onclick="startNewActivity('question')">
+                <div class="tool-option-icon" style="background:#ede9fe; color:#8b5cf6;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="tool-option-info">
+                    <div class="tool-option-title">질문렌즈</div>
+                    <div class="tool-option-desc">책 속에서 궁금한 걸 찾아보자!</div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-gray-300"></i>
+            </div>
+
+            <div class="tool-option" onclick="startNewActivity('video')">
+                <div class="tool-option-icon" style="background:#fce7f3; color:#ec4899;">
+                    <i class="fa-solid fa-video"></i>
+                </div>
+                <div class="tool-option-info">
+                    <div class="tool-option-title">영상 리텔링</div>
+                    <div class="tool-option-desc">이야기를 영상으로 다시 말해보자!</div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-gray-300"></i>
+            </div>
+
+            <div class="tool-option" onclick="startNewActivity('debate')">
+                <div class="tool-option-icon" style="background:#dbeafe; color:#3b82f6;">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+                <div class="tool-option-info">
+                    <div class="tool-option-title">독서토론</div>
+                    <div class="tool-option-desc">책에 대해 토론해보자!</div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-gray-300"></i>
+            </div>
+        </div>
     </div>
 
     <!-- Logout Modal Container -->
@@ -444,388 +498,261 @@
     <script src="../js/sidebar.js"></script>
 
     <script>
-    // === 데이터 ===
-    const buddyBooks = [
-        { id: 'book1', title: '오즈의 마법사', emoji: '🌪️', color: '#10b981' },
-        { id: 'book2', title: '약속은 즐거워', emoji: '🤝', color: '#f59e0b' },
-        { id: 'book3', title: '숭숭이와 나', emoji: '🐾', color: '#ec4899' },
-        { id: 'book4', title: '빨간머리 앤', emoji: '👧', color: '#ef4444' }
+    // === 활동 데이터 (샘플) ===
+    const activityData = [
+        {
+            id: 1, type: 'question', book: '오즈의 마법사', bookEmoji: '🌪️',
+            title: '도로시는 왜 에메랄드 성으로 갔을까?',
+            preview: '도로시가 집에 가려면 오즈의 마법사를 만나야 한대요. 그래서 노란 벽돌길을 따라 에메랄드 성으로 갔어요!',
+            date: '2024-01-15 14:30'
+        },
+        {
+            id: 2, type: 'video', book: '오즈의 마법사', bookEmoji: '🌪️',
+            title: '도로시의 모험 이야기',
+            preview: '1분 32초',
+            thumbnailText: '▶',
+            date: '2024-01-15 15:00'
+        },
+        {
+            id: 3, type: 'debate', book: '오즈의 마법사', bookEmoji: '🌪️',
+            title: '허수아비에게 정말 뇌가 없었을까?',
+            preview: '허수아비는 뇌가 없다고 했지만, 항상 똑똑한 생각을 했어요. 마음이 중요한 것 같아요!',
+            date: '2024-01-14 16:20'
+        },
+        {
+            id: 4, type: 'question', book: '약속은 즐거워', bookEmoji: '🤝',
+            title: '약속을 지키면 왜 좋을까?',
+            preview: '친구랑 약속을 지키면 믿음이 생기고, 다음에도 같이 놀 수 있어요!',
+            date: '2024-01-13 10:15'
+        },
+        {
+            id: 5, type: 'video', book: '약속은 즐거워', bookEmoji: '🤝',
+            title: '나의 약속 이야기',
+            preview: '2분 15초',
+            thumbnailText: '▶',
+            date: '2024-01-13 11:00'
+        },
+        {
+            id: 6, type: 'question', book: '숭숭이와 나', bookEmoji: '🐾',
+            title: '숭숭이는 어떤 친구일까?',
+            preview: '숭숭이는 나만 알아보는 특별한 친구예요. 항상 내 옆에 있어줘요.',
+            date: '2024-01-12 09:30'
+        },
+        {
+            id: 7, type: 'debate', book: '숭숭이와 나', bookEmoji: '🐾',
+            title: '상상 친구가 있어도 될까?',
+            preview: '상상 친구가 있으면 외롭지 않고, 마음이 편해져요. 하지만 진짜 친구도 중요해요!',
+            date: '2024-01-11 14:45'
+        },
+        {
+            id: 8, type: 'video', book: '빨간머리 앤', bookEmoji: '👧',
+            title: '앤과 다이애나의 우정',
+            preview: '3분 05초',
+            thumbnailText: '▶',
+            date: '2024-01-10 16:00'
+        },
+        {
+            id: 9, type: 'question', book: '빨간머리 앤', bookEmoji: '👧',
+            title: '앤은 왜 상상을 좋아할까?',
+            preview: '앤은 혼자 있을 때가 많았는데, 상상하면 외롭지 않았대요. 상상은 마음의 친구 같아요!',
+            date: '2024-01-10 15:20'
+        },
+        {
+            id: 10, type: 'debate', book: '빨간머리 앤', bookEmoji: '👧',
+            title: '실수해도 괜찮을까?',
+            preview: '앤은 실수를 많이 했지만, 그때마다 배우고 더 좋은 사람이 됐어요!',
+            date: '2024-01-09 11:30'
+        },
+        {
+            id: 11, type: 'question', book: '오즈의 마법사', bookEmoji: '🌪️',
+            title: '양철 나무꾼의 소원은?',
+            preview: '양철 나무꾼은 심장을 원했어요. 사랑을 느끼고 싶었대요!',
+            date: '2024-01-08 14:00'
+        },
+        {
+            id: 12, type: 'video', book: '약속은 즐거워', bookEmoji: '🤝',
+            title: '친구와 지킨 약속',
+            preview: '1분 48초',
+            thumbnailText: '▶',
+            date: '2024-01-07 10:30'
+        }
     ];
 
-    const buddyTools = [
-        { id: 'question-lens', title: '질문렌즈', icon: 'fa-magnifying-glass', color: '#8b5cf6', bg: '#ede9fe', desc: '책 속에서 궁금한 걸 찾아보자!' },
-        { id: 'video-retelling', title: '영상 리텔링', icon: 'fa-video', color: '#ec4899', bg: '#fce7f3', desc: '이야기를 영상으로 다시 말해보자!' },
-        { id: 'debate', title: '독서토론', icon: 'fa-comments', color: '#3b82f6', bg: '#dbeafe', desc: '책에 대해 토론해보자!' }
-    ];
+    let currentFilter = 'all';
 
-    let selectedBook = null;
-    let completedTools = []; // 완료한 도구 목록
-    const chatBody = document.getElementById('chat-body');
+    // === 활동 목록 렌더링 ===
+    function renderActivities() {
+        const container = document.getElementById('activity-container');
+        const filtered = currentFilter === 'all'
+            ? activityData
+            : activityData.filter(a => a.type === currentFilter);
 
-    // === 유틸 ===
-    function scrollToBottom() {
-        setTimeout(() => { chatBody.scrollTop = chatBody.scrollHeight; }, 50);
-    }
+        // 카운트 업데이트
+        document.getElementById('count-all').textContent = activityData.length;
+        document.getElementById('count-question').textContent = activityData.filter(a => a.type === 'question').length;
+        document.getElementById('count-video').textContent = activityData.filter(a => a.type === 'video').length;
+        document.getElementById('count-debate').textContent = activityData.filter(a => a.type === 'debate').length;
 
-    function addBuddyMsg(html) {
-        const row = document.createElement('div');
-        row.className = 'buddy-row';
-        row.innerHTML = `
-            <div class="buddy-avatar">🐿️</div>
-            <div class="buddy-bubble">${html}</div>
-        `;
-        chatBody.appendChild(row);
-        scrollToBottom();
-    }
+        if (filtered.length === 0) {
+            container.innerHTML = renderEmptyState();
+            return;
+        }
 
-    function addUserMsg(text) {
-        const row = document.createElement('div');
-        row.className = 'user-row';
-        row.innerHTML = `<div class="user-bubble">${text}</div>`;
-        chatBody.appendChild(row);
-        scrollToBottom();
-    }
+        // 날짜별 그룹핑
+        const grouped = groupByDate(filtered);
+        let html = '';
 
-    function showTyping() {
-        const row = document.createElement('div');
-        row.className = 'buddy-row';
-        row.id = 'typing-row';
-        row.innerHTML = `
-            <div class="buddy-avatar">🐿️</div>
-            <div class="buddy-bubble">
-                <div class="typing-indicator"><span></span><span></span><span></span></div>
-            </div>
-        `;
-        chatBody.appendChild(row);
-        scrollToBottom();
-    }
-
-    function removeTyping() {
-        const t = document.getElementById('typing-row');
-        if (t) t.remove();
-    }
-
-    // === STEP 1: 인사 + 책 선택 ===
-    function startChat() {
-        chatBody.innerHTML = '';
-
-        // 인사 메시지
-        addBuddyMsg('안녕! 나는 <b>버디</b>야 🐿️<br>오늘은 어떤 책으로 이야기할까?');
-
-        // 책 선택지
-        setTimeout(() => {
-            const area = document.createElement('div');
-            area.className = 'choices-area';
-
-            buddyBooks.forEach(book => {
-                const btn = document.createElement('button');
-                btn.className = 'choice-btn';
-                btn.innerHTML = `
-                    <div class="choice-icon" style="background:${book.color}12; color:${book.color};">
-                        <span style="font-size:1.5rem;">${book.emoji}</span>
-                    </div>
-                    <span class="choice-label">${book.title}</span>
-                `;
-                btn.onclick = () => onSelectBook(book);
-                area.appendChild(btn);
+        for (const [dateLabel, activities] of Object.entries(grouped)) {
+            html += `<div class="activity-section-title"><i class="fa-regular fa-calendar"></i> ${dateLabel}</div>`;
+            activities.forEach(activity => {
+                html += renderActivityCard(activity);
             });
+        }
 
-            // 다른 책 찾기
-            const otherBtn = document.createElement('button');
-            otherBtn.className = 'choice-btn';
-            otherBtn.style.opacity = '0.6';
-            otherBtn.innerHTML = `
-                <div class="choice-icon" style="background:#f3f4f6; color:#9ca3af;">
-                    <i class="fa-solid fa-search" style="font-size:1.2rem;"></i>
-                </div>
-                <span class="choice-label" style="color:#9ca3af;">다른 책 찾기</span>
-            `;
-            otherBtn.onclick = () => {
-                window.location.href = 'book-library.html';
-            };
-            area.appendChild(otherBtn);
-
-            chatBody.appendChild(area);
-            scrollToBottom();
-        }, 500);
+        container.innerHTML = html;
     }
 
-    // === STEP 2: 책 선택 → 활동 선택 ===
-    function onSelectBook(book) {
-        selectedBook = book;
+    function groupByDate(activities) {
+        const groups = {};
+        const today = new Date().toDateString();
+        const yesterday = new Date(Date.now() - 86400000).toDateString();
 
-        // 선택지 제거
-        const oldArea = chatBody.querySelector('.choices-area');
-        if (oldArea) oldArea.remove();
+        activities.forEach(a => {
+            const actDate = new Date(a.date).toDateString();
+            let label;
+            if (actDate === today) label = '오늘';
+            else if (actDate === yesterday) label = '어제';
+            else label = formatDate(a.date);
 
-        // 사용자 응답
-        addUserMsg(`${book.emoji} ${book.title}`);
-
-        // 타이핑
-        setTimeout(() => showTyping(), 300);
-
-        setTimeout(() => {
-            removeTyping();
-            addBuddyMsg(`<b>${book.title}</b> 좋아! 🎉<br>어떤 활동을 해볼까?`);
-
-            // 활동 선택지
-            setTimeout(() => {
-                const area = document.createElement('div');
-                area.className = 'choices-area';
-
-                buddyTools.forEach(tool => {
-                    const btn = document.createElement('button');
-                    btn.className = 'choice-btn';
-                    btn.innerHTML = `
-                        <div class="choice-icon" style="background:${tool.bg}; color:${tool.color};">
-                            <i class="fa-solid ${tool.icon}" style="font-size:1.2rem;"></i>
-                        </div>
-                        <div>
-                            <p class="choice-label">${tool.title}</p>
-                            <p class="choice-desc">${tool.desc}</p>
-                        </div>
-                    `;
-                    btn.onclick = () => onSelectTool(tool);
-                    area.appendChild(btn);
-                });
-
-                chatBody.appendChild(area);
-                scrollToBottom();
-            }, 400);
-        }, 1200);
-    }
-
-    // === STEP 3: 활동 선택 → 페이지 이동 ===
-    function onSelectTool(tool) {
-        // 선택지 제거
-        const oldArea = chatBody.querySelector('.choices-area');
-        if (oldArea) oldArea.remove();
-
-        // 사용자 응답
-        addUserMsg(tool.title);
-
-        // 타이핑
-        setTimeout(() => showTyping(), 300);
-
-        setTimeout(() => {
-            removeTyping();
-            addBuddyMsg(`좋아! <b>${tool.title}</b> 시작할게! 🚀<br>재밌게 해보자~`);
-
-            // 페이지 이동
-            setTimeout(() => {
-                // 대화 상태 저장 (도구에서 돌아올 때 복원용)
-                saveChatState(tool.id);
-
-                sessionStorage.setItem('aiBuddyBook', JSON.stringify(selectedBook));
-                if (typeof openTool === 'function') {
-                    openTool(tool.id);
-                } else {
-                    window.location.href = tool.id + '.html';
-                }
-            }, 1000);
-        }, 1000);
-    }
-
-    // === 대화 상태 저장 ===
-    function saveChatState(toolId) {
-        const state = {
-            selectedBook: selectedBook,
-            completedTools: [...completedTools, toolId],
-            chatHistory: chatBody.innerHTML,
-            lastTool: toolId
-        };
-        sessionStorage.setItem('aiBuddyChatState', JSON.stringify(state));
-    }
-
-    // === 도구에서 복귀 후 대화 이어가기 ===
-    function resumeChat(state) {
-        // 상태 복원
-        selectedBook = state.selectedBook;
-        completedTools = state.completedTools || [];
-
-        // 기존 대화 복원
-        chatBody.innerHTML = state.chatHistory;
-
-        // 마지막 도구 이름 찾기
-        const lastTool = buddyTools.find(t => t.id === state.lastTool);
-        const toolName = lastTool ? lastTool.title : '활동';
-
-        // 복귀 메시지 추가
-        setTimeout(() => {
-            addBuddyMsg(`<b>${toolName}</b> 정말 잘했어! 👏🎉`);
-
-            setTimeout(() => {
-                addBuddyMsg(`다른 활동도 해볼까?<br>아니면 다른 책으로 이야기할 수도 있어!`);
-
-                // 활동 선택지 표시
-                setTimeout(() => showResumeChoices(), 400);
-            }, 800);
-        }, 500);
-
-        // 저장된 상태 제거 (사용 완료)
-        sessionStorage.removeItem('aiBuddyChatState');
-    }
-
-    // === 복귀 후 선택지 표시 ===
-    function showResumeChoices() {
-        const area = document.createElement('div');
-        area.className = 'choices-area';
-
-        // 도구 선택지 (완료한 것도 다시 선택 가능)
-        buddyTools.forEach(tool => {
-            const isCompleted = completedTools.includes(tool.id);
-            const btn = document.createElement('button');
-            btn.className = 'choice-btn';
-            btn.innerHTML = `
-                <div class="choice-icon" style="background:${tool.bg}; color:${tool.color};">
-                    <i class="fa-solid ${tool.icon}" style="font-size:1.2rem;"></i>
-                </div>
-                <div style="flex:1;">
-                    <p class="choice-label">${tool.title} ${isCompleted ? '<span style="color:#10b981; font-size:0.75rem;">✓ 완료</span>' : ''}</p>
-                    <p class="choice-desc">${tool.desc}</p>
-                </div>
-            `;
-            btn.onclick = () => onSelectTool(tool);
-            area.appendChild(btn);
+            if (!groups[label]) groups[label] = [];
+            groups[label].push(a);
         });
 
-        // 다른 책 선택하기
-        const otherBtn = document.createElement('button');
-        otherBtn.className = 'choice-btn';
-        otherBtn.innerHTML = `
-            <div class="choice-icon" style="background:#fef3c7; color:#f59e0b;">
-                <i class="fa-solid fa-book" style="font-size:1.2rem;"></i>
-            </div>
-            <div>
-                <p class="choice-label">다른 책으로 이야기하기</p>
-                <p class="choice-desc">새로운 책을 골라볼까?</p>
+        return groups;
+    }
+
+    function formatDate(dateStr) {
+        const d = new Date(dateStr);
+        return `${d.getMonth() + 1}월 ${d.getDate()}일`;
+    }
+
+    function renderActivityCard(activity) {
+        const iconClass = activity.type === 'question' ? 'question' :
+                          activity.type === 'video' ? 'video' : 'debate';
+        const icon = activity.type === 'question' ? 'fa-magnifying-glass' :
+                     activity.type === 'video' ? 'fa-video' : 'fa-comments';
+
+        let previewHtml = '';
+        if (activity.type === 'video') {
+            previewHtml = `
+                <div class="activity-preview video-preview">
+                    <div class="video-thumb">${activity.thumbnailText}</div>
+                    <div>
+                        <div style="font-weight:600; color:#374151; margin-bottom:4px;">영상 리텔링</div>
+                        <div>재생 시간: ${activity.preview}</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            previewHtml = `<div class="activity-preview">"${activity.preview}"</div>`;
+        }
+
+        const time = activity.date.split(' ')[1];
+
+        return `
+            <div class="activity-card" onclick="viewActivity(${activity.id})">
+                <div class="activity-card-header">
+                    <div class="activity-icon ${iconClass}">
+                        <i class="fa-solid ${icon}"></i>
+                    </div>
+                    <div class="activity-meta">
+                        <div class="activity-book">
+                            <span>${activity.bookEmoji}</span>
+                            <span>${activity.book}</span>
+                        </div>
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-date">${time}</div>
+                    </div>
+                </div>
+                ${previewHtml}
             </div>
         `;
-        otherBtn.onclick = () => {
-            // 상태 초기화 후 처음부터 시작
-            completedTools = [];
-            selectedBook = null;
-            sessionStorage.removeItem('aiBuddyChatState');
-            startChat();
-        };
-        area.appendChild(otherBtn);
-
-        chatBody.appendChild(area);
-        scrollToBottom();
     }
 
-    // === 인라인 음성 대화 기능 ===
-    let isRecording = false;
-    let voiceTimer = null;
+    function renderEmptyState() {
+        const toolName = currentFilter === 'all' ? '활동' :
+                         currentFilter === 'question' ? '질문렌즈' :
+                         currentFilter === 'video' ? '영상 리텔링' : '독서토론';
+        return `
+            <div class="empty-state">
+                <div class="empty-state-icon">📚</div>
+                <div class="empty-state-title">${toolName} 기록이 없어요</div>
+                <div class="empty-state-desc">또또와 함께 새로운 활동을 시작해보세요!</div>
+                <button class="empty-state-btn" onclick="showNewActivityModal()">
+                    <i class="fa-solid fa-plus"></i>
+                    새 활동 시작하기
+                </button>
+            </div>
+        `;
+    }
 
-    // 버디 음성 응답 시나리오
-    const voiceResponses = [
-        { user: '이 책 재미있어?', buddy: '응! 이 책 정말 재미있어. 특히 주인공이 모험을 떠나는 부분이 너무 신나!' },
-        { user: '주인공은 어떤 사람이야?', buddy: '주인공은 용감하고 호기심이 많은 친구야. 어려운 상황에서도 포기하지 않는 멋진 캐릭터지!' },
-        { user: '이 책에서 뭘 배울 수 있어?', buddy: '우정의 소중함과 도전하는 용기를 배울 수 있어. 친구를 돕는 장면이 정말 감동적이야.' },
-    ];
-    let voiceResponseIndex = 0;
+    // === 필터 전환 ===
+    function filterActivities(filter) {
+        currentFilter = filter;
 
-    function toggleVoiceRecord() {
-        if (isRecording) {
-            stopRecording();
-            processVoice();
+        // 탭 상태 업데이트
+        document.querySelectorAll('.tool-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.tool === filter);
+        });
+
+        renderActivities();
+    }
+
+    // === 모달 관리 ===
+    function showNewActivityModal() {
+        document.getElementById('new-activity-modal').classList.remove('hidden');
+    }
+
+    function closeNewActivityModal(event) {
+        if (event && event.target === document.getElementById('new-activity-modal')) {
+            document.getElementById('new-activity-modal').classList.add('hidden');
+        } else if (!event) {
+            document.getElementById('new-activity-modal').classList.add('hidden');
+        }
+    }
+
+    // === 새 활동 시작 ===
+    function startNewActivity(tool) {
+        closeNewActivityModal();
+
+        if (tool === 'question') {
+            window.location.href = 'question-lens.html';
+        } else if (tool === 'video') {
+            window.location.href = 'video-retelling.html';
+        } else if (tool === 'debate') {
+            window.location.href = 'debate.html';
+        }
+    }
+
+    // === 활동 상세 보기 ===
+    function viewActivity(id) {
+        const activity = activityData.find(a => a.id === id);
+        if (!activity) return;
+
+        if (activity.type === 'video') {
+            window.location.href = 'video-retelling.html';
+        } else if (activity.type === 'question') {
+            window.location.href = 'question-lens.html';
         } else {
-            startRecording();
+            window.location.href = 'debate.html';
         }
-    }
-
-    function startRecording() {
-        isRecording = true;
-        const footer = document.getElementById('chat-footer');
-        const micBtn = document.getElementById('mic-btn');
-        const micIcon = document.getElementById('mic-icon');
-        const inputArea = document.getElementById('chat-input-area');
-
-        // 푸터 녹음 상태로 전환
-        footer.classList.add('recording');
-        micBtn.classList.add('recording');
-        micIcon.className = 'fa-solid fa-stop';
-
-        // 입력창을 파형으로 교체
-        inputArea.outerHTML = `<div class="inline-waveform" id="chat-input-area">
-            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-        </div>`;
-
-        // 4초 후 자동 멈춤 (프로토타입)
-        voiceTimer = setTimeout(() => {
-            if (isRecording) {
-                stopRecording();
-                processVoice();
-            }
-        }, 4000);
-    }
-
-    function stopRecording() {
-        isRecording = false;
-        if (voiceTimer) { clearTimeout(voiceTimer); voiceTimer = null; }
-
-        const footer = document.getElementById('chat-footer');
-        const micBtn = document.getElementById('mic-btn');
-        const micIcon = document.getElementById('mic-icon');
-
-        footer.classList.remove('recording');
-        micBtn.classList.remove('recording');
-        micIcon.className = 'fa-solid fa-microphone';
-    }
-
-    function restoreInputArea() {
-        const inputArea = document.getElementById('chat-input-area');
-        if (inputArea && !inputArea.classList.contains('chat-input-fake')) {
-            inputArea.outerHTML = '<div class="chat-input-fake" id="chat-input-area">버디에게 말해보세요...</div>';
-        }
-    }
-
-    function processVoice() {
-        const response = voiceResponses[voiceResponseIndex % voiceResponses.length];
-        voiceResponseIndex++;
-
-        // STEP 1: 입력창에 인식 결과 표시
-        const inputArea = document.getElementById('chat-input-area');
-        inputArea.outerHTML = `<div class="inline-voice-status" id="chat-input-area"><i class="fa-solid fa-microphone" style="margin-right:6px; font-size:0.75rem;"></i>${response.user}</div>`;
-
-        // 채팅에 사용자 메시지 추가
-        addUserMsg(response.user + ' <span style="font-size:0.7rem; opacity:0.7; margin-left:4px;"><i class="fa-solid fa-microphone"></i> 음성</span>');
-
-        // STEP 2: 버디 응답 (1.5초 후)
-        setTimeout(() => {
-            // 타이핑 표시
-            showTyping();
-
-            setTimeout(() => {
-                removeTyping();
-                addBuddyMsg(response.buddy);
-
-                // 입력창 원래 상태로 복원
-                restoreInputArea();
-            }, 1200);
-        }, 1000);
     }
 
     // === Init ===
     document.addEventListener('DOMContentLoaded', () => {
         loadSidebar('ai-buddy');
         loadLogoutModal();
-
-        // 도구에서 복귀한 경우 대화 이어가기
-        const savedState = sessionStorage.getItem('aiBuddyChatState');
-        if (savedState) {
-            try {
-                const state = JSON.parse(savedState);
-                resumeChat(state);
-            } catch (e) {
-                startChat();
-            }
-        } else {
-            startChat();
-        }
+        renderActivities();
     });
     </script>
 </body>

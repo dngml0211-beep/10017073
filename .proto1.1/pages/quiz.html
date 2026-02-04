@@ -192,7 +192,7 @@
 </head>
 <body class="font-sans text-gray-800 min-h-screen overflow-x-hidden">
     <!-- 상단 헤더 -->
-    <header class="sticky top-0 z-50 bg-white border-b-2 border-gray-100 px-6 py-4">
+    <header class="sticky top-0 z-50 bg-white border-b-2 border-gray-100 px-6 py-3">
         <div class="max-w-2xl mx-auto flex items-center gap-4">
             <!-- 닫기 버튼 -->
             <button onclick="exitQuiz()" class="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-600">
@@ -486,6 +486,9 @@
                 loseHeart();
             }
 
+            // 문항 완료 후 프로그래스바 업데이트
+            updateProgressAfterAnswer();
+
             // 버튼 텍스트 변경
             const checkBtn = document.getElementById('check-btn');
             checkBtn.textContent = '다음';
@@ -555,7 +558,16 @@
         }
 
         function updateProgress() {
-            const progress = (currentQuestionIndex / currentQuiz.length) * 100;
+            // 완료된 문항 수 기준으로 프로그래스바 채우기
+            const completedCount = currentQuestionIndex;
+            const progress = (completedCount / currentQuiz.length) * 100;
+            document.getElementById('quiz-progress').style.width = progress + '%';
+        }
+
+        // 문항 완료 후 프로그래스바 업데이트
+        function updateProgressAfterAnswer() {
+            const completedCount = currentQuestionIndex + 1; // 현재 문항까지 완료
+            const progress = (completedCount / currentQuiz.length) * 100;
             document.getElementById('quiz-progress').style.width = progress + '%';
         }
 
@@ -568,11 +580,28 @@
 
             document.getElementById('quiz-complete').classList.remove('hidden');
 
-            // 학습 진행 상태 저장
-            const progressData = JSON.parse(sessionStorage.getItem('learningProgress') || '{}');
+            // 학습 진행 상태 저장 (주차별+책타입별 키 사용)
+            const bookData = JSON.parse(sessionStorage.getItem('currentBook') || '{}');
+            const week = bookData.week || 1;
+            const bookType = bookData.bookType || 'core';
+            const progressKey = 'learningProgress_w' + week + '_' + bookType;
+
+            const progressData = JSON.parse(sessionStorage.getItem(progressKey) || '{}');
             progressData.quizCompleted = true;
             progressData.quizScore = accuracy;
-            sessionStorage.setItem('learningProgress', JSON.stringify(progressData));
+            sessionStorage.setItem(progressKey, JSON.stringify(progressData));
+
+            // 교과서 짝꿍책 퀴즈 완료 시 별상자 트리거 플래그 설정
+            if (bookType === 'textbook') {
+                sessionStorage.setItem('textbookQuizJustCompleted', 'true');
+                sessionStorage.setItem('textbookQuizCompletedWeek', week.toString());
+            }
+
+            // 기존 호환용 키에도 저장
+            const legacyProgress = JSON.parse(sessionStorage.getItem('learningProgress') || '{}');
+            legacyProgress.quizCompleted = true;
+            legacyProgress.quizScore = accuracy;
+            sessionStorage.setItem('learningProgress', JSON.stringify(legacyProgress));
         }
 
         function goToVocabChallenge() {
@@ -584,9 +613,8 @@
         }
 
         function exitQuiz() {
-            if (confirm('퀴즈를 그만둘까요? 진행 상황이 저장되지 않아요.')) {
-                window.location.href = 'home.html';
-            }
+            // 바로 홈 화면으로 이동
+            window.location.href = 'home.html';
         }
     </script>
 </body>
