@@ -691,6 +691,47 @@
                 cameFromBuddy = true;
             }
 
+            // 나의 기록에서 진입한 경우 → 이전 대화 내용 표시
+            const recordRaw = sessionStorage.getItem('questionLensRecord');
+            if (recordRaw) {
+                try {
+                    const record = JSON.parse(recordRaw);
+                    const defaultConversations = booksData['magic-potion'].conversations;
+                    selectedBook = {
+                        title: record.book,
+                        emoji: record.bookEmoji,
+                        conversations: defaultConversations
+                    };
+                    conversationData = selectedBook.conversations;
+
+                    // 헤더에 책 정보 표시
+                    document.getElementById('header-book-title').textContent = selectedBook.title;
+                    document.getElementById('header-book-info').classList.remove('hidden');
+                    document.getElementById('header-book-info').classList.add('flex');
+                    document.getElementById('header-placeholder').classList.add('hidden');
+
+                    // 책 선택 화면 스킵 → 채팅 영역 바로 표시
+                    document.getElementById('book-selection-screen').classList.add('hidden');
+                    document.getElementById('chat-container').classList.remove('hidden');
+
+                    // 이전 대화 내용 렌더링 (타이핑 애니메이션 없이 즉시 표시)
+                    actuallyAddBuddyMessage(`${record.bookEmoji} '${record.book}' 이야기 재미있었어?`);
+                    actuallyAddBuddyMessage("나랑 같이 이야기해볼래? 뭐가 궁금한지 골라봐!");
+                    addUserMessage(record.title);
+                    actuallyAddBuddyMessage(record.preview);
+                    actuallyAddBuddyMessage("또 궁금한 거 있으면 언제든 물어봐! 다른 질문도 해볼까?");
+
+                    // 질문카드 3개 표시 (누구일까?, 무엇일까?, 왜그랬을까?)
+                    showCardSelection();
+
+                    cameFromBuddy = true;
+                    sessionStorage.removeItem('questionLensRecord');
+                } catch (e) {
+                    // 파싱 실패 시 기본 화면
+                }
+                return; // 나의 기록 진입이면 아래 buddyBook 로직 스킵
+            }
+
             if (buddyBookRaw) {
                 try {
                     const buddyBook = JSON.parse(buddyBookRaw);

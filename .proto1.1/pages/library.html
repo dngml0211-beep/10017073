@@ -32,97 +32,110 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
 
-        /* === Header - 브랜드 컬러 적용 === */
+        /* === Header - Epic! Inspired Clean Design === */
         .library-header {
-            background: linear-gradient(180deg, #FEF3C7 0%, #FFF8E8 100%);
-            border-bottom: 2px solid #FFE4B8;
+            background: white;
+            border-bottom: none;
+            box-shadow: 0 1px 12px rgba(0,0,0,0.06);
         }
         .header-title-section {
-            padding: 20px 0 12px;
+            padding: 22px 0 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
         .header-title {
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: #92400E;
+            font-size: 24px;
+            font-weight: 900;
+            color: #1a1a2e;
             display: flex;
             align-items: center;
             gap: 10px;
+            letter-spacing: -0.5px;
         }
-        .header-title i { color: #FF9F43; font-size: 18px; }
+        .header-title i { color: #FF9F43; font-size: 22px; }
 
-        /* === Level Badge === */
+        /* === Level Badge - Accent Pill === */
         .current-level-badge {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            color: #FF9F43;
-            font-weight: 700;
+            background: linear-gradient(135deg, #FFF7ED, #FFEDD5);
+            padding: 8px 18px;
+            border-radius: 24px;
+            color: #EA580C;
+            font-weight: 800;
             font-size: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border: 1px solid #FFE4B8;
+            border: 1.5px solid #FDBA74;
+            box-shadow: 0 2px 8px rgba(234,88,12,0.1);
         }
-        .current-level-badge i { font-size: 12px; }
+        .current-level-badge i { font-size: 13px; color: #F97316; }
 
-        /* === Level Tabs (PreK1 ~ K10) === */
+        /* === Level Tabs - Ink Bar Style (Epic! Inspired) === */
         .level-tabs-section {
-            padding: 12px 0;
-            background: rgba(255,255,255,0.5);
+            padding: 0;
+            background: transparent;
             margin: 0 -20px;
-            padding: 12px 20px;
+            padding: 0 20px;
+            border-top: 1px solid #f0f0f0;
         }
         .level-tabs-wrapper {
             display: flex;
-            gap: 6px;
+            gap: 0;
             overflow-x: auto;
-            padding: 4px 0;
+            padding: 0;
         }
         .level-tab {
             flex-shrink: 0;
-            padding: 8px 14px;
-            border-radius: 20px;
-            background: white;
-            border: 2px solid #FFE4B8;
+            padding: 14px 18px;
+            border-radius: 0;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            color: #B45309;
+            color: #9ca3af;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
             position: relative;
+            opacity: 0.6;
         }
-        .level-tab:hover { background: #FFF8F0; border-color: #FF9F43; color: #FF9F43; }
+        .level-tab:hover {
+            color: #6b7280;
+            background: transparent;
+            opacity: 0.8;
+        }
         .level-tab.active {
-            background: linear-gradient(135deg, #FF9F43, #f97316);
-            color: white;
-            box-shadow: 0 2px 8px rgba(255, 159, 67, 0.3);
+            color: #EA580C;
+            border-bottom-color: #EA580C;
+            background: transparent;
+            font-weight: 800;
+            opacity: 1;
         }
         .level-tab.adjacent {
-            background: white;
-            border-color: #FFD4A0;
-            color: #FF9F43;
+            color: #6b7280;
+            opacity: 0.7;
+            background: transparent;
+            border-bottom-color: transparent;
         }
         .level-tab.locked {
-            background: #f0f0f0;
-            color: #c0c0c0;
+            color: #d1d5db;
+            opacity: 0.35;
             cursor: not-allowed;
+            background: transparent;
         }
         .level-tab.locked::after {
             content: '🔒';
-            font-size: 10px;
-            margin-left: 4px;
+            font-size: 9px;
+            margin-left: 3px;
         }
         .level-tab.completed::before {
             content: '✓';
             font-size: 10px;
-            margin-right: 4px;
+            margin-right: 3px;
             color: #10b981;
         }
 
@@ -132,13 +145,13 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #f0ebe3;
+            padding-bottom: 0;
+            border-bottom: none;
         }
         .section-title {
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 17px;
+            font-weight: 800;
             color: #1f2937;
             display: flex;
             align-items: center;
@@ -146,124 +159,141 @@
         }
         .section-title i { color: #FF9F43; }
         .section-count {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             color: #6b7280;
+            background: linear-gradient(135deg, #FFF7ED, #FFEDD5);
+            padding: 7px 16px;
+            border-radius: 24px;
+            border: 1.5px solid #FDBA74;
+            box-shadow: 0 2px 8px rgba(234,88,12,0.08);
+            display: inline-flex;
         }
-        .section-count span { color: #FF9F43; font-weight: 700; }
+        .section-count span { color: #EA580C; font-weight: 800; }
 
         /* === Week Progress Bar === */
         .week-progress {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            padding: 12px 16px;
-            background: #faf9f7;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding: 10px 16px;
+            background: #f9fafb;
             border-radius: 12px;
-            border: 1px solid #f0ebe3;
+            border: none;
         }
         .week-progress-label {
             font-size: 13px;
-            font-weight: 600;
-            color: #6b7280;
+            font-weight: 700;
+            color: #374151;
+            white-space: nowrap;
         }
         .week-progress-bar {
             flex: 1;
             height: 8px;
             background: #e5e7eb;
-            border-radius: 4px;
+            border-radius: 99px;
             overflow: hidden;
         }
         .week-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #10b981, #34d399);
-            border-radius: 4px;
+            background: linear-gradient(90deg, #58CC02, #89E219);
+            border-radius: 99px;
             transition: width 0.5s ease;
         }
         .week-progress-text {
             font-size: 13px;
-            font-weight: 700;
-            color: #10b981;
+            font-weight: 800;
+            color: #58CC02;
         }
 
         /* === Week Range Tabs === */
         .week-tabs {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 20px;
         }
         @media (max-width: 768px) {
-            .week-tabs { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .week-tabs { grid-template-columns: repeat(3, 1fr); gap: 6px; }
         }
         .week-tab {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 14px 12px;
+            gap: 4px;
+            padding: 12px 10px;
             border-radius: 14px;
-            background: white;
-            border: 2px solid #e8e0d4;
+            background: #f9fafb;
+            border: 2px solid transparent;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .week-tab:hover { border-color: #FFD4A0; background: #FFF8F0; }
+        .week-tab:hover { background: #e5e7eb; }
         .week-tab.active {
-            background: linear-gradient(135deg, #FF9F43, #f97316);
-            border-color: #FF9F43;
-            box-shadow: 0 4px 12px rgba(255, 159, 67, 0.3);
+            background: #FFF7ED;
+            border-color: #FB923C;
         }
         .week-tab.completed {
-            background: #f0fdf4;
+            background: #F0FDF4;
             border-color: #86efac;
         }
         .week-tab.has-current {
-            background: linear-gradient(135deg, #FFF8F0, #FFE8CC);
-            border: 2px solid #FF9F43;
-            box-shadow: 0 2px 8px rgba(255, 159, 67, 0.2);
+            background: #FFF7ED;
+            border: 2px solid #FDBA74;
         }
         .week-tab.locked {
-            background: #f5f5f5;
-            border-color: #e0e0e0;
-            opacity: 0.6;
+            background: #f9fafb;
+            border-color: transparent;
+            opacity: 0.7;
             cursor: not-allowed;
+            pointer-events: none;
+        }
+        .week-tab.locked:hover {
+            background: #f9fafb;
+        }
+        .week-tab-lock {
+            font-size: 10px;
+            margin-left: 2px;
+            opacity: 0.6;
         }
         .week-num {
             font-size: 13px;
             font-weight: 700;
             color: #374151;
         }
-        .week-tab.active .week-num { color: white; }
-        .week-tab.completed .week-num { color: #10b981; }
-        .week-tab.has-current .week-num { color: #FF9F43; }
-        .week-tab.locked .week-num { color: #9ca3af; }
-        .week-progress-mini {
-            font-size: 11px;
-            font-weight: 600;
-            color: #9ca3af;
+        .week-tab.active .week-num { color: #EA580C; }
+        .week-tab.completed .week-num { color: #16a34a; }
+        .week-tab.has-current .week-num { color: #EA580C; }
+        .week-tab.locked .week-num { color: #7b8290; }
+        /* 진행중 스피너 */
+        .week-tab-spinner {
+            width: 14px;
+            height: 14px;
+            border: 2.5px solid #FDBA74;
+            border-top-color: #EA580C;
+            border-radius: 50%;
+            animation: weekSpin 0.8s linear infinite;
         }
-        .week-tab.active .week-progress-mini { color: rgba(255,255,255,0.8); }
-        .week-tab.completed .week-progress-mini { color: #10b981; }
-        .week-tab.has-current .week-progress-mini { color: #FF9F43; }
+        @keyframes weekSpin {
+            to { transform: rotate(360deg); }
+        }
 
         /* === Book Card Grid === */
         .book-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 16px;
         }
-        @media (max-width: 1024px) { .book-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 768px) { .book-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .book-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
 
         /* === Book Card === */
         .book-card {
             background: white;
             border-radius: 16px;
             overflow: hidden;
-            border: 1px solid #f0ebe3;
+            border: 1px solid #e5e7eb;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             transition: all 0.25s;
         }
@@ -390,7 +420,7 @@
             padding: 10px;
             border-radius: 10px;
             background: #f5f3f0;
-            border: 1.5px solid #e8e0d4;
+            border: 1.5px solid #e5e7eb;
             font-size: 13px;
             font-weight: 600;
             color: #6b7280;
@@ -418,14 +448,15 @@
         .recommended-section {
             margin-top: 40px;
             padding-top: 24px;
-            border-top: 2px solid #f0ebe3;
+            border-top: 1px solid #e5e7eb;
         }
 
         /* === Responsive === */
         @media (max-width: 768px) {
-            .header-title { font-size: 18px; }
-            .section-title { font-size: 16px; }
-            .level-tab { padding: 6px 12px; font-size: 12px; }
+            .header-title { font-size: 20px; }
+            .section-title { font-size: 15px; }
+            .level-tab { padding: 12px 14px; font-size: 13px; }
+            .current-level-badge { padding: 6px 14px; font-size: 13px; }
         }
     </style>
 </head>
@@ -656,22 +687,29 @@
             const hasInProgress = rangeBooks.some(b => b.status === 'in-progress');
             const allCompleted = completedCount === 4;
 
+            // 1~4주차(index 0)만 활성, 나머지는 잠금
+            const isLocked = index > 0;
+
             let classes = 'week-tab';
-            if (index === currentWeekRange) {
+            if (isLocked) {
+                classes += ' locked';
+            } else if (index === currentWeekRange) {
                 classes += ' active';
             } else if (allCompleted) {
                 classes += ' completed';
             } else if (hasInProgress) {
                 classes += ' has-current';
             }
-            // 모든 주차 탭 클릭 가능 (locked 제거)
 
-            const progressText = allCompleted ? '완료' : `${completedCount}/4`;
+            const lockIcon = isLocked ? '<span class="week-tab-lock">🔒</span>' : '';
+            const clickHandler = isLocked ? '' : `onclick="selectWeekRange(${index})"`;
+            const showSpinner = !isLocked && !allCompleted && (hasInProgress || index === currentWeekRange);
+            const spinnerHtml = showSpinner ? '<div class="week-tab-spinner"></div>' : '';
 
             html += `
-            <div class="${classes}" data-range="${index}" onclick="selectWeekRange(${index})">
-                <span class="week-num">${range.label}</span>
-                <span class="week-progress-mini">${progressText}</span>
+            <div class="${classes}" data-range="${index}" ${clickHandler}>
+                <span class="week-num">${range.label}${lockIcon}</span>
+                ${spinnerHtml}
             </div>`;
 
             // Auto-select range with in-progress book
@@ -694,7 +732,8 @@
     }
 
     function selectWeekRange(index) {
-        // 모든 주차 탭 선택 가능 (커리큘럼 도서는 잠금 상태 유지)
+        // 1~4주차(index 0)만 선택 가능
+        if (index > 0) return;
         currentWeekRange = index;
         renderWeekTabs();
         renderCurriculumBooks();

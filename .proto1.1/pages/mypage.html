@@ -78,17 +78,15 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
-        /* === 3열 그리드 === */
+        /* === 2열 그리드 === */
         .my-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
             align-items: start;
         }
-        @media (max-width: 1200px) {
-            .my-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+        .my-grid .my-card-full {
+            grid-column: 1 / -1;
         }
         @media (max-width: 768px) {
             .my-grid {
@@ -358,119 +356,112 @@
             margin-top: 2px;
         }
 
-        /* === 독서로 키재기 === */
+        /* === 독서로 키재기 (가로형) === */
+        .height-layout {
+            display: flex;
+            align-items: stretch;
+            gap: 24px;
+        }
         .height-meter {
             position: relative;
-            height: 320px;
-            background: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 50%, #ffffff 100%);
+            width: 200px;
+            min-width: 200px;
+            height: 240px;
+            background: linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 100%);
             border-radius: 16px;
             overflow: hidden;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            padding: 20px;
+            padding: 16px;
+            flex-shrink: 0;
         }
         .height-figure {
             position: relative;
-            width: 120px;
-            height: 260px;
+            width: 160px;
+            height: 180px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            z-index: 2;
         }
-        .height-figure-img {
-            width: 100%;
-            height: 100%;
+        .height-figure img {
+            width: 150px;
+            height: auto;
+            object-fit: contain;
             position: relative;
+            top: -20px;
         }
-        .height-figure-silhouette {
+        .height-progress-badge {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: linear-gradient(180deg, #e5e7eb 0%, #d1d5db 100%);
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            filter: grayscale(100%) opacity(0.3);
-        }
-        .height-figure-fill {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 80%;
-            background: linear-gradient(180deg, #fef3c7 0%, #fde68a 50%, #fbbf24 100%);
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 20px;
-            font-size: 60px;
-            overflow: hidden;
-        }
-        .height-figure-fill::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-        }
-
-        .height-label {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background: white;
-            padding: 8px 14px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .height-label-title {
-            font-size: 11px;
-            color: #6b7280;
-        }
-        .height-label-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1f2937;
-        }
-
-        .height-progress {
-            position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 12px;
+            right: 12px;
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             color: white;
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: 700;
-            box-shadow: 0 4px 12px rgba(245,158,11,0.3);
+            box-shadow: 0 3px 10px rgba(245,158,11,0.3);
         }
 
-        .height-books {
-            text-align: center;
-            margin-top: 16px;
+        .height-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 14px;
+            min-width: 0;
         }
-        .height-books-count {
-            font-size: 28px;
+        .height-target {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .height-target-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .height-target-name {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1f2937;
+        }
+        .height-progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .height-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            border-radius: 8px;
+            transition: width 0.5s ease;
+        }
+        .height-stats {
+            display: flex;
+            gap: 12px;
+        }
+        .height-stat-item {
+            flex: 1;
+            padding: 12px 14px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #f3f4f6;
+        }
+        .height-stat-num {
+            font-size: 22px;
             font-weight: 800;
             color: #f59e0b;
         }
-        .height-books-label {
-            font-size: 13px;
+        .height-stat-label {
+            font-size: 11px;
             color: #6b7280;
-            margin-top: 4px;
+            margin-top: 2px;
         }
-
         .height-next {
-            margin-top: 12px;
             padding: 12px 16px;
             background: #f0f9ff;
             border-radius: 12px;
@@ -487,6 +478,18 @@
         }
         .height-next-name {
             font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .height-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+            .height-meter {
+                width: 100%;
+                min-width: unset;
+                height: 220px;
+            }
         }
 
         /* === 리포트 탭 스타일 === */
@@ -916,12 +919,12 @@
         }
         .bookshelf-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 16px;
         }
         @media (max-width: 768px) {
             .bookshelf-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
             }
         }
@@ -929,58 +932,88 @@
             background: white;
             border-radius: 16px;
             overflow: hidden;
-            border: 1px solid #f3f4f6;
+            border: 1px solid #f0ebe3;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s;
         }
         .bookshelf-book:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
         .bookshelf-book-cover {
+            position: relative;
+            width: 100%;
             aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #f5f0e8, #ebe5db);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 48px;
-            position: relative;
+            overflow: hidden;
         }
         .bookshelf-book-progress {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: rgba(0,0,0,0.1);
+            height: 6px;
+            background: rgba(0,0,0,0.08);
         }
         .bookshelf-book-progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 0 3px 3px 0;
         }
-        .bookshelf-book-badge {
+        .bookshelf-book-topbar {
             position: absolute;
             top: 8px;
             right: 8px;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 700;
-            background: rgba(0,0,0,0.6);
-            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
+        .bookshelf-book-badge {
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(16,185,129,0.9);
+            color: white;
+            backdrop-filter: blur(4px);
+        }
+        .bookshelf-fav-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #d1d5db;
+            transition: all 0.2s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .bookshelf-fav-btn:hover { color: #f87171; transform: scale(1.15); }
+        .bookshelf-fav-btn.active { color: #ef4444; }
         .bookshelf-book-info {
             padding: 12px;
         }
         .bookshelf-book-title {
-            font-size: 12px;
-            font-weight: 600;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
             color: #1f2937;
+            line-height: 1.3;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
         .bookshelf-book-series {
-            font-size: 10px;
+            font-size: 11px;
             color: #9ca3af;
             margin-top: 4px;
             overflow: hidden;
@@ -1040,6 +1073,743 @@
             border-bottom-color: #FF9F43;
         }
         .gallery-subtab i { margin-right: 4px; }
+
+        /* === 올도전 서브탭 === */
+        .challenge-subtabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .challenge-subtab {
+            flex: 1;
+            padding: 12px 8px;
+            border: none;
+            background: transparent;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #9ca3af;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .challenge-subtab:hover { color: #6b7280; }
+        .challenge-subtab.active {
+            color: #FF9F43;
+            border-bottom-color: #FF9F43;
+        }
+        .challenge-subtab i { margin-right: 4px; }
+
+        /* === 팀 도전 스타일 === */
+        .tc-group {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: stretch;
+        }
+        .tc-mission-card {
+            background: linear-gradient(135deg, #1a1a3e 0%, #2d1b69 100%);
+            border-radius: 20px;
+            padding: 28px 24px;
+            text-align: center;
+            color: white;
+            flex: 0 0 240px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .tc-team-right {
+            flex: 1;
+            min-width: 0;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+        }
+        .tc-mission-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .tc-mission-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+        .tc-mission-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+        .tc-mission-reward {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF9F43, #FF6B35);
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* 팀 섹션 (미사용, tc-team-right로 이전) */
+        .tc-team-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .tc-team-header-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+        .tc-team-header-title strong {
+            color: #7C3AED;
+            font-weight: 800;
+        }
+        .tc-team-dday {
+            background: #FEF3C7;
+            color: #D97706;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        /* 대표 팀원 카드 */
+        .tc-featured-card {
+            background: linear-gradient(135deg, #8B5CF6, #A855F7, #C084FC);
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .tc-rank-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF9F43, #F59E0B);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .tc-featured-avatar {
+            width: 64px;
+            height: 64px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 10px;
+            border: 3px solid rgba(255,255,255,0.4);
+        }
+        .tc-featured-name {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+        .tc-featured-info {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        .tc-featured-quote {
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.5;
+            margin-bottom: 14px;
+            font-style: italic;
+        }
+        .tc-featured-result { margin-bottom: 6px; }
+        .tc-result-success {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 4px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .tc-featured-reward {
+            font-size: 14px;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+
+        /* 팀원 리스트 */
+        .tc-members-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .tc-member-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 14px;
+        }
+        .tc-member-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        .tc-member-avatar {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: 2px solid #e5e7eb;
+            flex-shrink: 0;
+        }
+        .tc-member-name {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+        .tc-member-info {
+            font-size: 10px;
+            color: #9ca3af;
+        }
+        .tc-member-desc {
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .tc-member-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .tc-status-progress {
+            font-size: 11px;
+            color: #3B82F6;
+            font-weight: 600;
+        }
+        .tc-status-fail {
+            font-size: 11px;
+            color: #EF4444;
+            font-weight: 600;
+        }
+        .tc-status-ready {
+            font-size: 11px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+        .tc-progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            min-width: 40px;
+        }
+        .tc-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3B82F6, #60A5FA);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        .tc-progress-text {
+            font-size: 11px;
+            color: #3B82F6;
+            font-weight: 700;
+        }
+        .tc-help-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #10B981, #34D399);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+        .tc-rank-badge-sm {
+            position: absolute;
+            top: -8px;
+            right: -4px;
+            background: linear-gradient(135deg, #FF9F43, #F59E0B);
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* 나도 한마디 */
+        .tc-comment-section {
+            background: linear-gradient(135deg, #4C1D95, #6D28D9, #7C3AED);
+            border-radius: 20px;
+            padding: 24px 16px 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .tc-comment-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .tc-marquee-wrap {
+            overflow: hidden;
+            padding-bottom: 8px;
+        }
+        .tc-marquee-track {
+            display: flex;
+            gap: 12px;
+            width: max-content;
+            animation: tcMarquee 60s linear infinite;
+        }
+        .tc-marquee-wrap:hover .tc-marquee-track {
+            animation-play-state: paused;
+        }
+        @keyframes tcMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .tc-comment-card {
+            flex-shrink: 0;
+            width: 160px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 14px;
+            padding: 14px;
+        }
+        /* 둥둥 떠다니는 모션 3종 */
+        .tc-float-1 {
+            animation: tcFloat1 3.2s ease-in-out infinite;
+        }
+        .tc-float-2 {
+            animation: tcFloat2 4.0s ease-in-out infinite;
+        }
+        .tc-float-3 {
+            animation: tcFloat3 3.6s ease-in-out infinite;
+        }
+        @keyframes tcFloat1 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes tcFloat2 {
+            0%, 100% { transform: translateY(0); }
+            35% { transform: translateY(-6px); }
+            70% { transform: translateY(3px); }
+        }
+        @keyframes tcFloat3 {
+            0%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            75% { transform: translateY(2px); }
+        }
+        .tc-comment-name {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 1px;
+        }
+        .tc-comment-info {
+            font-size: 10px;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+        .tc-comment-text {
+            font-size: 13px;
+            color: #4B5563;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .tc-comment-team {
+            display: inline-block;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .tc-write-btn {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #F59E0B, #FF9F43);
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(245,158,11,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 다음 주 미션 고르기 */
+        .tc-next-section {
+            margin-bottom: 20px;
+        }
+        .tc-next-header {
+            margin-bottom: 14px;
+        }
+        .tc-next-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+        .tc-next-notice {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+        .tc-next-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .tc-next-card {
+            background: white;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 18px 14px;
+            text-align: center;
+        }
+        .tc-next-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .tc-next-card-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            min-height: 36px;
+        }
+        .tc-next-ai {
+            display: inline-block;
+            background: #EDE9FE;
+            color: #7C3AED;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .tc-next-meta {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+        .tc-next-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            color: white;
+            border: none;
+            padding: 9px 0;
+            border-radius: 12px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tc-next-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .tc-next-btn.selected {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        /* 랜덤 미션 */
+        .tc-next-random {
+            border-color: #F59E0B;
+            border-width: 2px;
+            background: #FFFBEB;
+        }
+        .tc-random-title {
+            color: #D97706 !important;
+            font-size: 16px !important;
+            font-weight: 900 !important;
+        }
+        .tc-next-random-desc {
+            font-size: 12px;
+            color: #92400E;
+            margin-bottom: 12px;
+        }
+        .tc-next-btn-random {
+            background: linear-gradient(135deg, #F59E0B, #D97706) !important;
+        }
+
+        @media (max-width: 768px) {
+            .tc-group { flex-direction: column; }
+            .tc-mission-card { flex: none; }
+            .tc-members-grid { grid-template-columns: 1fr; }
+            .tc-next-grid { grid-template-columns: 1fr 1fr; }
+            .tc-comment-card { width: 140px; }
+        }
+
+        /* ===== 명예의전당 스타일 ===== */
+        .fame-section {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border: 1px solid #f0f0f0;
+        }
+        .fame-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .fame-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            color: #1a1a2e;
+        }
+        .fame-section-title i {
+            color: #F59E0B;
+            font-size: 18px;
+        }
+        .fame-help-btn {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #d1d5db;
+            background: transparent;
+            color: #9ca3af;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fame-year-select {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 14px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 20px;
+            background: white;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #374151;
+            cursor: pointer;
+        }
+        .fame-year-select i { font-size: 10px; color: #9ca3af; }
+
+        /* 상장 카드 슬라이더 */
+        .fame-scroll-wrap {
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .fame-scroll-wrap::-webkit-scrollbar { display: none; }
+        .fame-scroll-track {
+            display: flex;
+            gap: 14px;
+        }
+
+        /* 상장 카드 */
+        .fame-award-card {
+            flex-shrink: 0;
+            width: 130px;
+            background: white;
+            border: 1.5px solid #f0f0f0;
+            border-radius: 16px;
+            padding: 14px 10px 12px;
+            text-align: center;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .fame-award-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        .fame-month-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 800;
+            color: white;
+        }
+        .fame-month-badge.green { background: #10B981; }
+        .fame-month-badge.yellow { background: #F59E0B; }
+        .fame-month-badge.red { background: #EF4444; }
+        .fame-month-badge.blue { background: #3B82F6; }
+        .fame-month-badge.purple { background: #8B5CF6; }
+        .fame-trophy {
+            width: 70px;
+            height: 70px;
+            margin: 8px auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+        .fame-trophy .sparkle {
+            position: absolute;
+            font-size: 14px;
+            animation: fameTwinkle 1.5s ease-in-out infinite;
+        }
+        .fame-trophy .sparkle:nth-child(2) { top: -2px; right: 2px; animation-delay: 0.5s; }
+        .fame-trophy .sparkle:nth-child(3) { top: 8px; left: 0; animation-delay: 1s; }
+        @keyframes fameTwinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        .fame-star-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .fame-star-badge.gold { background: #FEF3C7; color: #D97706; }
+        .fame-star-badge.green { background: #D1FAE5; color: #059669; }
+        .fame-star-badge.blue { background: #DBEAFE; color: #2563EB; }
+        .fame-star-badge.red { background: #FEE2E2; color: #DC2626; }
+        .fame-star-badge.purple { background: #EDE9FE; color: #7C3AED; }
+        .fame-award-name {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+        }
+        /* 빈 카드 (아직 안받은 달) */
+        .fame-award-card.empty {
+            border-style: dashed;
+            border-color: #e5e7eb;
+            background: #fafafa;
+        }
+        .fame-award-card.empty .fame-trophy {
+            opacity: 0.25;
+            filter: grayscale(1);
+        }
+
+        /* 나의 배지 그리드 */
+        .fame-badge-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+        }
+        .fame-badge-card {
+            background: white;
+            border: 1.5px solid #f0f0f0;
+            border-radius: 16px;
+            padding: 18px 10px 14px;
+            text-align: center;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .fame-badge-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .fame-badge-card.highlight-pink {
+            background: linear-gradient(135deg, #FFF1F2, #FFE4E6);
+            border-color: #FECDD3;
+        }
+        .fame-badge-card.highlight-green {
+            background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+            border-color: #BBF7D0;
+        }
+        .fame-badge-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .fame-badge-name {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+        .fame-badge-name i { font-size: 9px; }
+        .fame-badge-reward {
+            font-size: 11px;
+            font-weight: 700;
+            color: #F59E0B;
+        }
+        .fame-badge-card.locked {
+            background: #f9fafb;
+            border-style: dashed;
+            border-color: #e5e7eb;
+        }
+        .fame-badge-card.locked .fame-badge-icon {
+            font-size: 28px;
+            opacity: 0.3;
+        }
+        .fame-badge-card.locked .fame-badge-name,
+        .fame-badge-card.locked .fame-badge-reward {
+            color: #d1d5db;
+        }
+        .fame-team-link {
+            padding: 8px 18px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            border: none;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .fame-team-link:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        @media (max-width: 768px) {
+            .fame-badge-grid { grid-template-columns: repeat(3, 1fr); }
+            .fame-award-card { width: 110px; }
+        }
 
         .gallery-filters {
             display: flex;
@@ -1320,8 +2090,8 @@
         <div id="sidebar-container"></div>
 
         <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
-            <div class="max-w-6xl mx-auto px-6 py-6">
+        <main class="flex-1 h-full overflow-y-auto px-6 py-8 md:px-12 bg-gradient-to-b from-gray-50 to-white">
+            <div class="max-w-[1400px]">
                 <!-- 페이지 헤더 -->
                 <div class="mb-6">
                     <h1 class="font-noto text-2xl font-bold text-gray-800">마이페이지</h1>
@@ -1333,8 +2103,8 @@
                     <button class="mypage-tab" data-tab="report">리포트</button>
                     <button class="mypage-tab" data-tab="bookshelf">내 책장</button>
                     <button class="mypage-tab" data-tab="gallery">갤러리</button>
-                    <a href="https://lean-scan-49700045.figma.site/" target="_blank" rel="noopener noreferrer" class="mypage-tab">올도전</a>
-                    <a href="https://bet-tutu-99186634.figma.site" target="_blank" rel="noopener noreferrer" class="mypage-tab">명예의전당</a>
+                    <button class="mypage-tab" data-tab="allchallenge">올도전</button>
+                    <button class="mypage-tab" data-tab="fame">명예의전당</button>
                 </div>
 
                 <!-- MY 탭 콘텐츠 -->
@@ -1379,16 +2149,11 @@
                                 </div>
                             </div>
 
-                            <!-- 진도 설정 버튼들 -->
+                            <!-- 진도 설정 버튼 -->
                             <div class="space-y-2 mb-5">
                                 <button class="setting-btn">
                                     <i class="fa-solid fa-sliders text-blue-500"></i>
                                     <span>북클럽 진도 설정</span>
-                                    <i class="fa-solid fa-chevron-right ml-auto text-gray-400"></i>
-                                </button>
-                                <button class="setting-btn">
-                                    <i class="fa-solid fa-sliders text-purple-500"></i>
-                                    <span>KRS 진도 설정</span>
                                     <i class="fa-solid fa-chevron-right ml-auto text-gray-400"></i>
                                 </button>
                             </div>
@@ -1455,37 +2220,58 @@
                             </div>
                         </div>
 
-                        <!-- 3. 독서로 키재기 -->
-                        <div class="my-card">
+                        <!-- 3. 독서로 키재기 (가로형, 2단 full-width) -->
+                        <div class="my-card my-card-full">
                             <h3 class="my-card-title"><i class="fa-solid fa-ruler-vertical text-amber-500"></i> 독서로 키재기</h3>
 
-                            <!-- 키 측정 시각화 -->
-                            <div class="height-meter">
-                                <div class="height-label">
-                                    <div class="height-label-title">현재 목표</div>
-                                    <div class="height-label-name">세종대왕</div>
-                                </div>
-                                <div class="height-progress">80%</div>
-
-                                <div class="height-figure">
-                                    <div class="height-figure-img">
-                                        <div class="height-figure-silhouette">👑</div>
-                                        <div class="height-figure-fill">👑</div>
+                            <div class="height-layout">
+                                <!-- 좌측: 캐릭터 시각화 -->
+                                <div class="height-meter">
+                                    <div class="height-progress-badge">20%</div>
+                                    <div class="height-figure">
+                                        <img src="../img/king.png" alt="세종대왕">
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- 읽은 책 수 -->
-                            <div class="height-books">
-                                <div class="height-books-count">1,000권</div>
-                                <div class="height-books-label">여태까지 읽은 도서!</div>
-                            </div>
+                                <!-- 우측: 정보 영역 -->
+                                <div class="height-info">
+                                    <div class="height-target">
+                                        <div>
+                                            <div class="height-target-label">현재 목표</div>
+                                            <div class="height-target-name">세종대왕</div>
+                                        </div>
+                                    </div>
 
-                            <!-- 다음 목표 -->
-                            <div class="height-next">
-                                <span class="height-next-icon">🗼</span>
-                                <div class="height-next-text">
-                                    다음 목표: <span class="height-next-name">에펠탑</span> (250권 더!)
+                                    <!-- 프로그래스바 -->
+                                    <div>
+                                        <div class="height-progress-bar">
+                                            <div class="height-progress-fill" style="width: 20%;"></div>
+                                        </div>
+                                        <div style="display:flex;justify-content:space-between;margin-top:6px;">
+                                            <span style="font-size:11px;color:#9ca3af;">0권</span>
+                                            <span style="font-size:11px;color:#9ca3af;">5,000권</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- 통계 -->
+                                    <div class="height-stats">
+                                        <div class="height-stat-item">
+                                            <div class="height-stat-num">1,000권</div>
+                                            <div class="height-stat-label">여태까지 읽은 도서</div>
+                                        </div>
+                                        <div class="height-stat-item">
+                                            <div class="height-stat-num" style="color:#10b981;">4,000권</div>
+                                            <div class="height-stat-label">목표까지 남은 도서</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 다음 목표 -->
+                                    <div class="height-next">
+                                        <span class="height-next-icon">🗼</span>
+                                        <div class="height-next-text">
+                                            다음 목표: <span class="height-next-name">에펠탑</span> (250권 더!)
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1826,9 +2612,6 @@
                         <button class="bookshelf-tab" data-shelf="favorites" onclick="switchBookshelfTab('favorites')">
                             💛 찜한 도서 <span class="count" id="count-favorites">0</span>
                         </button>
-                        <button class="bookshelf-tab" data-shelf="recent" onclick="switchBookshelfTab('recent')">
-                            🕐 최근 본 도서 <span class="count" id="count-recent">0</span>
-                        </button>
                         <button class="bookshelf-tab" data-shelf="offline" onclick="switchBookshelfTab('offline')">
                             📚 우리 아이 책장 <span class="count" id="count-offline">12</span>
                         </button>
@@ -1915,7 +2698,600 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 올도전 탭 콘텐츠 -->
+                <div id="tab-allchallenge" class="tab-content hidden">
+                    <!-- 올도전 서브탭 -->
+                    <div class="challenge-subtabs">
+                        <button class="challenge-subtab active" data-ctab="today" onclick="switchChallengeTab('today')">
+                            <i class="fa-solid fa-fire"></i> 오늘의 도전
+                        </button>
+                        <button class="challenge-subtab" data-ctab="team" onclick="switchChallengeTab('team')">
+                            <i class="fa-solid fa-users"></i> 팀 도전
+                        </button>
+                    </div>
+
+                    <!-- 오늘의 도전 -->
+                    <div id="ctab-today" class="challenge-content">
+                        <div class="flex justify-center">
+                            <img src="../img/all.png" alt="오늘의 도전" style="max-width: 100%; height: auto; border-radius: 16px;">
+                        </div>
+                    </div>
+
+                    <!-- 팀 도전 -->
+                    <div id="ctab-team" class="challenge-content hidden">
+
+                        <!-- 1+2. 이번 주 팀 미션 & 우리팀 (좌우 레이아웃) -->
+                        <div class="tc-group">
+                            <!-- 왼쪽: 팀 미션 -->
+                            <div class="tc-mission-card">
+                                <span class="tc-mission-badge">✨ 이번 주 팀 미션</span>
+                                <div class="tc-mission-icon">👥</div>
+                                <h3 class="tc-mission-title">수학 단원평가<br>100점 맞기</h3>
+                                <div class="tc-mission-reward">⭐ 별 2개 + xp 100</div>
+                            </div>
+
+                            <!-- 오른쪽: 우리팀 -->
+                            <div class="tc-team-right">
+                                <div class="tc-team-header">
+                                    <h3 class="tc-team-header-title">이번 주 우리팀 : <strong>지식의숲</strong></h3>
+                                    <span class="tc-team-dday">⏱ D-3</span>
+                                </div>
+
+                            <!-- 대표 팀원 카드 -->
+                            <div class="tc-featured-card">
+                                <span class="tc-rank-badge">🏅 올랭 1등급</span>
+                                <div class="tc-featured-avatar">🐱</div>
+                                <p class="tc-featured-name">달콤한딸기 🍓</p>
+                                <p class="tc-featured-info">5학년 · 서울초등학교</p>
+                                <p class="tc-featured-quote">"뭘 해도 믿음만한 친구예요. 같은 팀이 된건 행운입니다."</p>
+                                <div class="tc-featured-result">
+                                    <span class="tc-result-success">미션 성공</span>
+                                </div>
+                                <p class="tc-featured-reward">⭐ 별 2개 + xp 10</p>
+                            </div>
+
+                            <!-- 팀원 리스트 -->
+                            <div class="tc-members-grid">
+                                <!-- 팀원 1 -->
+                                <div class="tc-member-card">
+                                    <div class="tc-member-top">
+                                        <div class="tc-member-avatar">🐰</div>
+                                        <div>
+                                            <p class="tc-member-name">별빛탐험가</p>
+                                            <p class="tc-member-info">5학년 · (서울)강초등학교</p>
+                                        </div>
+                                    </div>
+                                    <div class="tc-member-status">
+                                        <span class="tc-status-progress">🔄 진행중</span>
+                                        <div class="tc-progress-bar"><div class="tc-progress-fill" style="width:65%"></div></div>
+                                        <span class="tc-progress-text">65%</span>
+                                    </div>
+                                </div>
+                                <!-- 팀원 2 -->
+                                <div class="tc-member-card">
+                                    <div class="tc-member-top">
+                                        <div class="tc-member-avatar">🐻</div>
+                                        <div>
+                                            <p class="tc-member-name">과학박사</p>
+                                            <p class="tc-member-info">5학년 · (인천)미래초등학교</p>
+                                        </div>
+                                    </div>
+                                    <div class="tc-member-status">
+                                        <span class="tc-status-fail">❌ 미션 실패</span>
+                                        <button class="tc-help-btn">친구 도와주기 xp 100</button>
+                                    </div>
+                                </div>
+                                <!-- 팀원 3 -->
+                                <div class="tc-member-card">
+                                    <div class="tc-member-top">
+                                        <div class="tc-member-avatar">🐻</div>
+                                        <div>
+                                            <p class="tc-member-name">책읽는곰</p>
+                                            <p class="tc-member-info">5학년 · (서울)푸른초등학교</p>
+                                        </div>
+                                    </div>
+                                    <div class="tc-member-status">
+                                        <span class="tc-status-ready">⏳ 준비중</span>
+                                    </div>
+                                </div>
+                                <!-- 팀원 4 -->
+                                <div class="tc-member-card">
+                                    <div class="tc-member-top">
+                                        <span class="tc-rank-badge-sm">🏅 올랭 1등급</span>
+                                        <div class="tc-member-avatar">🦊</div>
+                                        <div>
+                                            <p class="tc-member-name">독서천재</p>
+                                            <p class="tc-member-info">5학년 · (서울)최강초등학교</p>
+                                        </div>
+                                    </div>
+                                    <p class="tc-member-desc">독서천재님은 팀 미션을 실패한 적이 없...</p>
+                                    <div class="tc-member-status">
+                                        <span class="tc-status-progress">🔄 진행중</span>
+                                        <div class="tc-progress-bar"><div class="tc-progress-fill" style="width:45%"></div></div>
+                                        <span class="tc-progress-text">45%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            </div><!-- /tc-team-right -->
+                        </div><!-- /tc-group -->
+
+                        <!-- 3. 나도 한마디 -->
+                        <div class="tc-comment-section">
+                            <h3 class="tc-comment-title">💬 나도 한마디 💬</h3>
+                            <div class="tc-marquee-wrap">
+                                <div class="tc-marquee-track">
+                                    <!-- 세트 1 -->
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">코딩마스터</p>
+                                        <p class="tc-comment-info">3학년 · (서울)서울초등학교</p>
+                                        <p class="tc-comment-text">"우리 팀 화이팅!"</p>
+                                        <span class="tc-comment-team" style="background:#FF6B6B;">🌟 꿈나무탐험대</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">영어천재</p>
+                                        <p class="tc-comment-info">6학년 · (서울)한강초등학교</p>
+                                        <p class="tc-comment-text">"모두 힘내세요!"</p>
+                                        <span class="tc-comment-team" style="background:#845EF7;">✨ 별빛정원</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">과학왕</p>
+                                        <p class="tc-comment-info">5학년 · (인천)미래초등학교</p>
+                                        <p class="tc-comment-text">"파이팅!"</p>
+                                        <span class="tc-comment-team" style="background:#20C997;">🚀 용감한탐험가</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">수학마법사</p>
+                                        <p class="tc-comment-info">6학년 · (부산)푸른초등학교</p>
+                                        <p class="tc-comment-text">"함께 해요!"</p>
+                                        <span class="tc-comment-team" style="background:#51CF66;">🍀 행운의숲</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">독서왕</p>
+                                        <p class="tc-comment-info">5학년 · (대전)햇살초등학교</p>
+                                        <p class="tc-comment-text">"우리 모두 최고!"</p>
+                                        <span class="tc-comment-team" style="background:#FCC419;">💡 스마트탐험단</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">그림요정</p>
+                                        <p class="tc-comment-info">4학년 · (경기)별빛초등학교</p>
+                                        <p class="tc-comment-text">"오늘도 열심히!"</p>
+                                        <span class="tc-comment-team" style="background:#FF922B;">🎨 창작공방</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">역사탐정</p>
+                                        <p class="tc-comment-info">5학년 · (대구)해맑은초등학교</p>
+                                        <p class="tc-comment-text">"같이 해내자!"</p>
+                                        <span class="tc-comment-team" style="background:#339AF0;">🔍 시간여행단</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">음악대장</p>
+                                        <p class="tc-comment-info">3학년 · (광주)무지개초등학교</p>
+                                        <p class="tc-comment-text">"즐겁게 도전!"</p>
+                                        <span class="tc-comment-team" style="background:#E64980;">🎵 멜로디하우스</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">우주비행사</p>
+                                        <p class="tc-comment-info">6학년 · (울산)하늘초등학교</p>
+                                        <p class="tc-comment-text">"끝까지 가보자!"</p>
+                                        <span class="tc-comment-team" style="background:#5C7CFA;">🚀 은하탐험대</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">요리사랑</p>
+                                        <p class="tc-comment-info">4학년 · (세종)나래초등학교</p>
+                                        <p class="tc-comment-text">"할 수 있어요!"</p>
+                                        <span class="tc-comment-team" style="background:#F06595;">🍳 맛있는세상</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">공룡박사</p>
+                                        <p class="tc-comment-info">3학년 · (제주)바다초등학교</p>
+                                        <p class="tc-comment-text">"최고의 팀이야!"</p>
+                                        <span class="tc-comment-team" style="background:#38D9A9;">🦕 쥬라기파크</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">별똥별</p>
+                                        <p class="tc-comment-info">5학년 · (수원)꿈나무초등학교</p>
+                                        <p class="tc-comment-text">"우리가 1등!"</p>
+                                        <span class="tc-comment-team" style="background:#9775FA;">⭐ 반짝이별</span>
+                                    </div>
+                                    <!-- 세트 2 (무한루프용 복제) -->
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">코딩마스터</p>
+                                        <p class="tc-comment-info">3학년 · (서울)서울초등학교</p>
+                                        <p class="tc-comment-text">"우리 팀 화이팅!"</p>
+                                        <span class="tc-comment-team" style="background:#FF6B6B;">🌟 꿈나무탐험대</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">영어천재</p>
+                                        <p class="tc-comment-info">6학년 · (서울)한강초등학교</p>
+                                        <p class="tc-comment-text">"모두 힘내세요!"</p>
+                                        <span class="tc-comment-team" style="background:#845EF7;">✨ 별빛정원</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">과학왕</p>
+                                        <p class="tc-comment-info">5학년 · (인천)미래초등학교</p>
+                                        <p class="tc-comment-text">"파이팅!"</p>
+                                        <span class="tc-comment-team" style="background:#20C997;">🚀 용감한탐험가</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">수학마법사</p>
+                                        <p class="tc-comment-info">6학년 · (부산)푸른초등학교</p>
+                                        <p class="tc-comment-text">"함께 해요!"</p>
+                                        <span class="tc-comment-team" style="background:#51CF66;">🍀 행운의숲</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">독서왕</p>
+                                        <p class="tc-comment-info">5학년 · (대전)햇살초등학교</p>
+                                        <p class="tc-comment-text">"우리 모두 최고!"</p>
+                                        <span class="tc-comment-team" style="background:#FCC419;">💡 스마트탐험단</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">그림요정</p>
+                                        <p class="tc-comment-info">4학년 · (경기)별빛초등학교</p>
+                                        <p class="tc-comment-text">"오늘도 열심히!"</p>
+                                        <span class="tc-comment-team" style="background:#FF922B;">🎨 창작공방</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">역사탐정</p>
+                                        <p class="tc-comment-info">5학년 · (대구)해맑은초등학교</p>
+                                        <p class="tc-comment-text">"같이 해내자!"</p>
+                                        <span class="tc-comment-team" style="background:#339AF0;">🔍 시간여행단</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">음악대장</p>
+                                        <p class="tc-comment-info">3학년 · (광주)무지개초등학교</p>
+                                        <p class="tc-comment-text">"즐겁게 도전!"</p>
+                                        <span class="tc-comment-team" style="background:#E64980;">🎵 멜로디하우스</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">우주비행사</p>
+                                        <p class="tc-comment-info">6학년 · (울산)하늘초등학교</p>
+                                        <p class="tc-comment-text">"끝까지 가보자!"</p>
+                                        <span class="tc-comment-team" style="background:#5C7CFA;">🚀 은하탐험대</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">요리사랑</p>
+                                        <p class="tc-comment-info">4학년 · (세종)나래초등학교</p>
+                                        <p class="tc-comment-text">"할 수 있어요!"</p>
+                                        <span class="tc-comment-team" style="background:#F06595;">🍳 맛있는세상</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">공룡박사</p>
+                                        <p class="tc-comment-info">3학년 · (제주)바다초등학교</p>
+                                        <p class="tc-comment-text">"최고의 팀이야!"</p>
+                                        <span class="tc-comment-team" style="background:#38D9A9;">🦕 쥬라기파크</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">별똥별</p>
+                                        <p class="tc-comment-info">5학년 · (수원)꿈나무초등학교</p>
+                                        <p class="tc-comment-text">"우리가 1등!"</p>
+                                        <span class="tc-comment-team" style="background:#9775FA;">⭐ 반짝이별</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="tc-write-btn" onclick="alert('한마디 작성 기능은 준비 중입니다.')">✏️</button>
+                        </div>
+
+                        <!-- 4. 다음 주 미션 고르기 -->
+                        <div class="tc-next-section">
+                            <div class="tc-next-header">
+                                <h3 class="tc-next-title">⚡ 다음 주 미션 고르기</h3>
+                                <p class="tc-next-notice">일요일 밤 11시까지만 변경할 수 있고, 신청하지 않으면 랜덤 미션이 제공돼요.</p>
+                            </div>
+                            <div class="tc-next-grid">
+                                <!-- 미션 1 -->
+                                <div class="tc-next-card">
+                                    <div class="tc-next-icon" style="color:#7C3AED;">📖</div>
+                                    <p class="tc-next-card-title">초등 필독서 3권 읽고 독후감 쓰기</p>
+                                    <span class="tc-next-ai">🤖 AI 예상 성공률 100%</span>
+                                    <div class="tc-next-meta">
+                                        <span>⭐ 별 1개</span>
+                                        <span>👥 2,897팀</span>
+                                    </div>
+                                    <button class="tc-next-btn" onclick="selectTeamMission(this)">도전 예약하기</button>
+                                </div>
+                                <!-- 미션 2 -->
+                                <div class="tc-next-card">
+                                    <div class="tc-next-icon" style="color:#059669;">🛒</div>
+                                    <p class="tc-next-card-title">스타샵에서 1000원 이상 사용해보기</p>
+                                    <span class="tc-next-ai">🤖 AI 예상 성공률 70%</span>
+                                    <div class="tc-next-meta">
+                                        <span>⭐ 별 5개</span>
+                                        <span>👥 1,842팀</span>
+                                    </div>
+                                    <button class="tc-next-btn" onclick="selectTeamMission(this)">도전 예약하기</button>
+                                </div>
+                                <!-- 미션 3 -->
+                                <div class="tc-next-card">
+                                    <div class="tc-next-icon" style="color:#DC2626;">🤖</div>
+                                    <p class="tc-next-card-title">AI챗봇과 구구단 게임 해보기</p>
+                                    <span class="tc-next-ai">🤖 AI 예상 성공률 50%</span>
+                                    <div class="tc-next-meta">
+                                        <span>⭐ 별 3개</span>
+                                        <span>👥 3,521팀</span>
+                                    </div>
+                                    <button class="tc-next-btn" onclick="selectTeamMission(this)">도전 예약하기</button>
+                                </div>
+                                <!-- 랜덤 미션 -->
+                                <div class="tc-next-card tc-next-random">
+                                    <div class="tc-next-icon">❓</div>
+                                    <p class="tc-next-card-title tc-random-title">랜덤미션</p>
+                                    <p class="tc-next-random-desc">신비로운 미션이 기다려요!</p>
+                                    <button class="tc-next-btn tc-next-btn-random" onclick="selectTeamMission(this)">도전 예약하기</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
+
+                <!-- 명예의전당 탭 콘텐츠 -->
+                <div id="tab-fame" class="tab-content hidden">
+
+                    <!-- 1. 스마트올 상장 -->
+                    <div class="fame-section">
+                        <div class="fame-section-header">
+                            <div class="fame-section-title">
+                                <i class="fa-solid fa-trophy"></i> 스마트올 상장
+                                <button class="fame-help-btn">?</button>
+                            </div>
+                            <button class="fame-year-select">2025년 <i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
+                        <div class="fame-scroll-wrap">
+                            <div class="fame-scroll-track">
+                                <!-- 1월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge green">1월</span>
+                                    <div class="fame-trophy">🏆<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge gold">⭐ 150</div>
+                                    <p class="fame-award-name">우수상</p>
+                                </div>
+                                <!-- 2월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge green">2월</span>
+                                    <div class="fame-trophy">🏆<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge gold">⭐ 150</div>
+                                    <p class="fame-award-name">우수상</p>
+                                </div>
+                                <!-- 3월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge green">3월</span>
+                                    <div class="fame-trophy">🏆<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge gold">⭐ 150</div>
+                                    <p class="fame-award-name">우수상</p>
+                                </div>
+                                <!-- 4월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge yellow">4월</span>
+                                    <div class="fame-trophy">🥇<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge purple">⭐ 300</div>
+                                    <p class="fame-award-name">최우수상</p>
+                                </div>
+                                <!-- 5월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge yellow">5월</span>
+                                    <div class="fame-trophy">🥇<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge purple">⭐ 300</div>
+                                    <p class="fame-award-name">최우수상</p>
+                                </div>
+                                <!-- 6월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge red">6월</span>
+                                    <div class="fame-trophy">🏅<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge blue">⭐ 100</div>
+                                    <p class="fame-award-name">자기주도학습상</p>
+                                </div>
+                                <!-- 7월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge red">7월</span>
+                                    <div class="fame-trophy">🥇<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge purple">⭐ 300</div>
+                                    <p class="fame-award-name">최우수상</p>
+                                </div>
+                                <!-- 8월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge red">8월</span>
+                                    <div class="fame-trophy">🏆<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge gold">⭐ 150</div>
+                                    <p class="fame-award-name">우수상</p>
+                                </div>
+                                <!-- 9월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge green">9월</span>
+                                    <div class="fame-trophy">🎖️<span class="sparkle">✨</span></div>
+                                    <div class="fame-star-badge green">⭐ 150</div>
+                                    <p class="fame-award-name">힘내자상</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. 북클럽 상장 -->
+                    <div class="fame-section">
+                        <div class="fame-section-header">
+                            <div class="fame-section-title">
+                                <i class="fa-solid fa-trophy"></i> 북클럽 상장
+                                <button class="fame-help-btn">?</button>
+                            </div>
+                            <button class="fame-year-select">2025년 <i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
+                        <div class="fame-scroll-wrap">
+                            <div class="fame-scroll-track">
+                                <!-- 1월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge blue">1월</span>
+                                    <div class="fame-trophy">🏆<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge gold">⭐ 30</div>
+                                    <p class="fame-award-name">독서왕</p>
+                                </div>
+                                <!-- 2월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge green">2월</span>
+                                    <div class="fame-trophy">🥇<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge green">⭐ 20</div>
+                                    <p class="fame-award-name">책사랑상</p>
+                                </div>
+                                <!-- 3월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge purple">3월</span>
+                                    <div class="fame-trophy">🏅<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge blue">⭐ 15</div>
+                                    <p class="fame-award-name">이야기탐험가상</p>
+                                </div>
+                                <!-- 4월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge yellow">4월</span>
+                                    <div class="fame-trophy">🎖️<span class="sparkle">✨</span></div>
+                                    <div class="fame-star-badge green">⭐ 10</div>
+                                    <p class="fame-award-name">책벌레임문상</p>
+                                </div>
+                                <!-- 5월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge purple">5월</span>
+                                    <div class="fame-trophy">🎗️<span class="sparkle">✨</span></div>
+                                    <div class="fame-star-badge red">⭐ 5</div>
+                                    <p class="fame-award-name">힘내자상</p>
+                                </div>
+                                <!-- 6월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge red">6월</span>
+                                    <div class="fame-trophy">🏆<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge gold">⭐ 30</div>
+                                    <p class="fame-award-name">독서왕</p>
+                                </div>
+                                <!-- 7월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge blue">7월</span>
+                                    <div class="fame-trophy">🥇<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge green">⭐ 20</div>
+                                    <p class="fame-award-name">책사랑상</p>
+                                </div>
+                                <!-- 8월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge green">8월</span>
+                                    <div class="fame-trophy">🎗️<span class="sparkle">✨</span></div>
+                                    <div class="fame-star-badge red">⭐ 5</div>
+                                    <p class="fame-award-name">힘내자상</p>
+                                </div>
+                                <!-- 9월 -->
+                                <div class="fame-award-card">
+                                    <span class="fame-month-badge green">9월</span>
+                                    <div class="fame-trophy">🏅<span class="sparkle">✨</span><span class="sparkle">⭐</span></div>
+                                    <div class="fame-star-badge blue">⭐ 15</div>
+                                    <p class="fame-award-name">이야기탐험가상</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. 나의 배지 -->
+                    <div class="fame-section">
+                        <div class="fame-section-header">
+                            <div class="fame-section-title">
+                                <i class="fa-solid fa-trophy"></i> 나의 배지
+                                <button class="fame-help-btn">?</button>
+                            </div>
+                            <button class="fame-team-link" onclick="switchToTeamChallenge()">팀 도전 계속하기</button>
+                        </div>
+                        <div class="fame-badge-grid">
+                            <!-- 배지 1 - 하이라이트 핑크 -->
+                            <div class="fame-badge-card highlight-pink">
+                                <span class="fame-badge-icon">🎂</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#F59E0B;"></i> 벌써 1년</p>
+                            </div>
+                            <!-- 배지 2 - 하이라이트 그린 -->
+                            <div class="fame-badge-card highlight-green">
+                                <span class="fame-badge-icon">🏆</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#F59E0B;"></i> 올랭 1 등급 달성</p>
+                            </div>
+                            <!-- 배지 3 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">🌤️</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> 주말에도 살짝</p>
+                                <p class="fame-badge-reward">⭐ 별 2개</p>
+                            </div>
+                            <!-- 배지 4 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">🌱</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> 이번달 첫 발자국</p>
+                                <p class="fame-badge-reward">⭐ 별 2개</p>
+                            </div>
+                            <!-- 배지 5 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">🎯</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> WSAT 모두 도전</p>
+                                <p class="fame-badge-reward">⭐ 별 150개</p>
+                            </div>
+                            <!-- 배지 6 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">📖</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> 필독서 10권 읽기</p>
+                                <p class="fame-badge-reward">⭐ 별 5개</p>
+                            </div>
+                            <!-- 배지 7 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">🌿</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> 오랜만이야</p>
+                                <p class="fame-badge-reward">⭐ 별 2개</p>
+                            </div>
+                            <!-- 배지 8 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">🔥</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> 10일 연속 출석</p>
+                                <p class="fame-badge-reward">⭐ 별 120개</p>
+                            </div>
+                            <!-- 배지 9 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">📝</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> DKT 진단평가 응시하기</p>
+                                <p class="fame-badge-reward">⭐ 별 5개</p>
+                            </div>
+                            <!-- 배지 10 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">👑</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> 월간 챔피언</p>
+                                <p class="fame-badge-reward">⭐ 별 150개</p>
+                            </div>
+                            <!-- 배지 11 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">🎄</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> 연휴 엔딩 출석</p>
+                                <p class="fame-badge-reward">⭐ 별 2개</p>
+                            </div>
+                            <!-- 배지 12 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">💯</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> 단원평가 연속 5회 100점</p>
+                                <p class="fame-badge-reward">⭐ 별 180개</p>
+                            </div>
+                            <!-- 배지 13 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">📋</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> 오답노트 정리왕</p>
+                                <p class="fame-badge-reward">⭐ 별 100개</p>
+                            </div>
+                            <!-- 배지 14 -->
+                            <div class="fame-badge-card">
+                                <span class="fame-badge-icon">🔄</span>
+                                <p class="fame-badge-name"><i class="fa-solid fa-certificate" style="color:#d1d5db;"></i> 복습왕</p>
+                                <p class="fame-badge-reward">⭐ 별 110개</p>
+                            </div>
+                            <!-- 잠금 배지 1 -->
+                            <div class="fame-badge-card locked">
+                                <span class="fame-badge-icon">🔒</span>
+                                <p class="fame-badge-name"></p>
+                            </div>
+                            <!-- 잠금 배지 2 -->
+                            <div class="fame-badge-card locked">
+                                <span class="fame-badge-icon">🔒</span>
+                                <p class="fame-badge-name"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
         </main>
     </div>
 
@@ -1956,9 +3332,6 @@
         const tabs = document.querySelectorAll('.mypage-tab');
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                // 외부 링크(<a> 태그)는 기본 동작 사용
-                if (tab.tagName === 'A') return;
-
                 // 활성 탭 변경
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
@@ -2069,9 +3442,9 @@
 
         // 책장 데이터 (읽는 중, 다 읽은 책은 샘플 데이터)
         const readingBooks = [
-            { id: 'book1', title: '오즈의 마법사', genre: '세계명작', bg: 'bg-gradient-to-br from-emerald-100 to-teal-200', emoji: '🧙', progress: 65 },
-            { id: 'book2', title: '이상한 나라의 앨리스', genre: '세계명작', bg: 'bg-gradient-to-br from-purple-100 to-pink-200', emoji: '🐰', progress: 30 },
-            { id: 'book3', title: '피터팬', genre: '세계명작', bg: 'bg-gradient-to-br from-blue-100 to-cyan-200', emoji: '🧚', progress: 80 }
+            { id: 'book1', title: '오즈의 마법사', genre: '세계명작', bg: 'bg-gradient-to-br from-emerald-100 to-teal-200', emoji: '🧙', progress: 65, favorited: true },
+            { id: 'book2', title: '이상한 나라의 앨리스', genre: '세계명작', bg: 'bg-gradient-to-br from-purple-100 to-pink-200', emoji: '🐰', progress: 30, favorited: false },
+            { id: 'book3', title: '피터팬', genre: '세계명작', bg: 'bg-gradient-to-br from-blue-100 to-cyan-200', emoji: '🧚', progress: 80, favorited: false }
         ];
 
         const completedBooks = [
@@ -2122,12 +3495,6 @@
                     emptyIcon = '💛';
                     emptyMsg = '찜한 도서가 없어요.<br>라이브러리에서 마음에 드는 도서를 찜해보세요!';
                     break;
-                case 'recent':
-                    // sessionStorage에서 최근 본 도서 가져오기 (book-library.html과 동기화)
-                    books = JSON.parse(sessionStorage.getItem('recentBooks') || '[]');
-                    emptyIcon = '🕐';
-                    emptyMsg = '최근 본 도서가 없어요.<br>라이브러리에서 책을 둘러보세요!';
-                    break;
                 case 'offline':
                     books = offlineBooks;
                     emptyIcon = '📚';
@@ -2137,7 +3504,6 @@
 
             // 카운트 업데이트
             document.getElementById('count-favorites').textContent = JSON.parse(sessionStorage.getItem('favoriteBooks') || '[]').length;
-            document.getElementById('count-recent').textContent = JSON.parse(sessionStorage.getItem('recentBooks') || '[]').length;
 
             if (books.length === 0) {
                 container.innerHTML = `
@@ -2161,7 +3527,18 @@
                     </div>
                 ` : '';
 
-                const badge = book.progress ? `<div class="bookshelf-book-badge">${book.progress}%</div>` : '';
+                // 진행률 배지 + 찜 버튼 (우측 상단)
+                const badgeHtml = book.progress ? `<div class="bookshelf-book-badge">${book.progress}%</div>` : '';
+                const favActive = book.favorited ? ' active' : '';
+                const favIconClass = book.favorited ? 'fa-solid' : 'fa-regular';
+                const topbar = `
+                    <div class="bookshelf-book-topbar">
+                        ${badgeHtml}
+                        <button class="bookshelf-fav-btn${favActive}" onclick="toggleShelfFav(event, '${book.id}')">
+                            <i class="${favIconClass} fa-heart"></i>
+                        </button>
+                    </div>
+                `;
 
                 // bg 클래스 또는 기본 색상 처리
                 const bgClass = book.bg || 'bg-gradient-to-br from-gray-100 to-gray-200';
@@ -2172,7 +3549,7 @@
                         <div class="bookshelf-book-cover ${bgClass}">
                             ${emoji}
                             ${progressBar}
-                            ${badge}
+                            ${topbar}
                         </div>
                         <div class="bookshelf-book-info">
                             <div class="bookshelf-book-title">${book.title}</div>
@@ -2189,6 +3566,17 @@
             // book-viewer로 이동하거나 책 상세 페이지로 이동
             console.log('책 열기:', bookId, genre);
             // 필요시 window.location.href = 'book-viewer.html?id=' + bookId;
+        }
+
+        function toggleShelfFav(event, bookId) {
+            event.stopPropagation();
+            // 모든 책 목록에서 해당 도서 찾기
+            const allBooks = [...readingBooks, ...completedBooks, ...offlineBooks];
+            const book = allBooks.find(b => b.id === bookId);
+            if (book) {
+                book.favorited = !book.favorited;
+            }
+            renderBookshelf();
         }
 
         // === 갤러리 데이터 ===
@@ -2227,6 +3615,39 @@
 
         let galleryFilter = 'all';
         let gallerySort = 'recent';
+
+        // === 올도전 탭 전환 ===
+        function switchChallengeTab(tab) {
+            document.querySelectorAll('.challenge-subtab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.challenge-subtab[data-ctab="${tab}"]`).classList.add('active');
+            document.querySelectorAll('.challenge-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('ctab-' + tab).classList.remove('hidden');
+        }
+
+        // === 팀 도전: 미션 예약 ===
+        // === 명예의전당 → 팀 도전 탭으로 이동 ===
+        function switchToTeamChallenge() {
+            // 올도전 탭 활성화
+            const tabs = document.querySelectorAll('.mypage-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            document.querySelector('.mypage-tab[data-tab="allchallenge"]').classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('tab-allchallenge').classList.remove('hidden');
+            // 팀도전 서브탭 클릭
+            const teamTab = document.querySelector('[data-ctab="team"]');
+            if (teamTab) teamTab.click();
+        }
+
+        function selectTeamMission(btn) {
+            // 기존 선택 해제
+            document.querySelectorAll('.tc-next-btn').forEach(b => {
+                b.classList.remove('selected');
+                b.textContent = '도전 예약하기';
+            });
+            // 선택 표시
+            btn.classList.add('selected');
+            btn.textContent = '✅ 예약 완료!';
+        }
 
         // === 갤러리 탭 전환 ===
         function switchGalleryTab(tab) {

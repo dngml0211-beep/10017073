@@ -32,11 +32,12 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
 
-        /* === Library Header - 브랜드 컬러 적용 === */
+        /* === Library Header - Epic! Inspired Design === */
         .library-header {
-            background: linear-gradient(180deg, #FEF3C7 0%, #FFF8E8 100%);
-            border-bottom: 2px solid #FFE4B8;
-            padding: 20px 0 16px;
+            background: white;
+            border-bottom: none;
+            box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+            padding: 20px 0 0;
         }
 
         /* === Header Top Row === */
@@ -44,392 +45,292 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         .header-title {
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: #92400E;
+            font-size: 24px;
+            font-weight: 900;
+            color: #1a1a2e;
             display: flex;
             align-items: center;
             gap: 10px;
+            letter-spacing: -0.5px;
         }
         .header-title i {
             color: #FF9F43;
-            font-size: 18px;
+            font-size: 22px;
         }
         .header-info {
             font-size: 13px;
-            color: #B45309;
-            background: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid #FFE4B8;
+            color: #6b7280;
+            background: linear-gradient(135deg, #FFF7ED, #FFEDD5);
+            padding: 7px 16px;
+            border-radius: 24px;
+            border: 1.5px solid #FDBA74;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(234,88,12,0.08);
         }
         .header-info span {
-            color: #FF9F43;
-            font-weight: 700;
+            color: #EA580C;
+            font-weight: 800;
         }
 
-        /* === Main Category Tabs (유아/초등/중등) - 통합 내비게이션 === */
+        /* === Main Category Tabs (유아/초등/중등) - Polished Segmented Control === */
         .main-category-tabs {
             display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-            background: rgba(255,255,255,0.6);
-            padding: 6px;
+            gap: 0;
+            margin-bottom: 0;
+            background: #f5f5f5;
+            padding: 4px;
             border-radius: 16px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
         }
         .main-category-tab {
             flex: 1;
-            padding: 10px 16px;
-            border-radius: 12px;
+            padding: 11px 18px;
+            border-radius: 13px;
             background: transparent;
             border: none;
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
-            color: #B45309;
+            color: #9ca3af;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
+            position: relative;
         }
         .main-category-tab:hover {
-            background: rgba(255,255,255,0.8);
-            color: #FF9F43;
+            color: #6b7280;
         }
         .main-category-tab.active {
-            background: #FF9F43;
-            color: white;
-            box-shadow: 0 2px 8px rgba(255,159,67,0.3);
+            background: white;
+            color: #1a1a2e;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+            font-weight: 800;
         }
 
-        /* === Sub Tabs (전체보기/전체카테고리/찜한도서/최근본도서) - 통합 네비게이션 === */
+        /* === Sub Tabs - Ink Bar Style (Epic! Inspired) === */
         .sub-tabs {
             display: flex;
-            gap: 4px;
-            background: rgba(255,255,255,0.5);
-            padding: 4px;
-            border-radius: 12px;
+            gap: 0;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            overflow-x: auto;
+            border-bottom: 1px solid #f0f0f0;
         }
         .sub-tab {
-            padding: 8px 16px;
-            border-radius: 10px;
+            padding: 14px 20px;
+            border-radius: 0;
             background: transparent;
             border: none;
+            border-bottom: 3px solid transparent;
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            color: #92400E;
+            color: #9ca3af;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
             display: flex;
             align-items: center;
             gap: 6px;
+            opacity: 0.6;
         }
         .sub-tab:hover {
-            background: rgba(255,255,255,0.7);
-            color: #FF9F43;
+            color: #6b7280;
+            background: transparent;
+            opacity: 0.8;
         }
         .sub-tab.active {
-            background: white;
-            color: #FF9F43;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            color: #EA580C;
+            border-bottom-color: #EA580C;
+            background: transparent;
+            font-weight: 800;
+            opacity: 1;
+            box-shadow: none;
         }
         .sub-tab i {
-            font-size: 12px;
-        }
-
-        /* === Content Info Bar === */
-        .content-info-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            padding: 12px 16px;
-            background: white;
-            border-radius: 12px;
-            border: 1px solid #f0ebe3;
-        }
-        .content-info {
             font-size: 13px;
-            color: #6b7280;
-        }
-        .content-info span {
-            color: #FF9F43;
-            font-weight: 700;
-        }
-        .sort-select {
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid #e8e0d4;
-            font-size: 12px;
-            color: #6b7280;
-            background: white;
-            cursor: pointer;
         }
 
-
-        /* === Category Grid View - 1:1 비율 균일 배치 === */
-        .category-grid-container {
-            display: none;
-        }
-        .category-grid {
+        /* === Category Card Grid (Duolingo Style - Compact) === */
+        .category-filter-bar {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(145px, 191px));
+            gap: 11px;
+            margin-bottom: 22px;
         }
-        @media (max-width: 1024px) {
-            .category-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (max-width: 768px) {
-            .category-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        }
-        @media (max-width: 480px) {
-            .category-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        @media (max-width: 640px) {
+            .category-filter-bar {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
         }
 
-        /* Duolingo Style Category Card - 1:1 비율 균일 */
         .category-card {
+            position: relative;
+            border-radius: 13px;
+            border: 1.5px solid #e5e7eb;
+            border-bottom: 3px solid #d1d5db;
+            background: white;
+            padding: 16px 11px 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 16px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            aspect-ratio: 1 / 1;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            gap: 6px;
         }
         .category-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
         .category-card:active {
-            transform: translateY(-2px) scale(0.98);
+            transform: translateY(1px);
+            border-bottom-width: 1.5px;
         }
+        .category-card.active {
+            box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+            transform: translateY(-1px);
+        }
+
         .category-card-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 16px;
+            width: 57px;
+            height: 57px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
             font-size: 24px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            background: #f3f4f6;
+            flex-shrink: 0;
         }
         .category-card-name {
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 2px;
-            text-align: center;
+            font-size: 15px;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1.2;
         }
         .category-card-desc {
-            font-size: 10px;
-            font-weight: 500;
-            text-align: center;
-            opacity: 0.7;
+            font-size: 11px;
+            color: #9ca3af;
+            line-height: 1.2;
         }
-        /* 카테고리 도서 수 배지 */
         .category-card-count {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255,255,255,0.9);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
+            top: 7px;
+            right: 8px;
+            font-size: 10px;
             font-weight: 700;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            color: #9ca3af;
+            background: rgba(0,0,0,0.04);
+            padding: 2px 7px;
+            border-radius: 8px;
         }
 
-        /* Category Color Themes */
-        .category-card.lang { background: linear-gradient(180deg, #E8F5E9 0%, #C8E6C9 100%); }
+        /* Category Color Themes - Duolingo Solid Button Style */
+        /* === Default (unselected) === */
+        .category-card.all { background: #F3E5F5; border-color: #CE93D8; border-bottom-color: #AB47BC; }
+        .category-card.all .category-card-icon { background: #9C27B0; }
+        .category-card.all .category-card-name, .category-card.all .category-card-desc { color: #7B1FA2; }
+        .category-card.all .category-card-count { color: #7B1FA2; }
+
+        .category-card.lang { background: #E8F5E9; border-color: #A5D6A7; border-bottom-color: #66BB6A; }
         .category-card.lang .category-card-icon { background: #4CAF50; }
         .category-card.lang .category-card-name, .category-card.lang .category-card-desc { color: #2E7D32; }
+        .category-card.lang .category-card-count { color: #2E7D32; }
 
-        .category-card.social { background: linear-gradient(180deg, #FFF3E0 0%, #FFE0B2 100%); }
+        .category-card.social { background: #FFF3E0; border-color: #FFCC80; border-bottom-color: #FFA726; }
         .category-card.social .category-card-icon { background: #FF9800; }
         .category-card.social .category-card-name, .category-card.social .category-card-desc { color: #E65100; }
+        .category-card.social .category-card-count { color: #E65100; }
 
-        .category-card.science { background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 100%); }
+        .category-card.science { background: #E3F2FD; border-color: #90CAF9; border-bottom-color: #42A5F5; }
         .category-card.science .category-card-icon { background: #2196F3; }
         .category-card.science .category-card-name, .category-card.science .category-card-desc { color: #1565C0; }
+        .category-card.science .category-card-count { color: #1565C0; }
 
-        .category-card.art { background: linear-gradient(180deg, #FFEBEE 0%, #FFCDD2 100%); }
+        .category-card.math { background: #E8EAF6; border-color: #9FA8DA; border-bottom-color: #5C6BC0; }
+        .category-card.math .category-card-icon { background: #3F51B5; }
+        .category-card.math .category-card-name, .category-card.math .category-card-desc { color: #283593; }
+        .category-card.math .category-card-count { color: #283593; }
+
+        .category-card.art { background: #FFEBEE; border-color: #EF9A9A; border-bottom-color: #EF5350; }
         .category-card.art .category-card-icon { background: #F44336; }
         .category-card.art .category-card-name, .category-card.art .category-card-desc { color: #C62828; }
+        .category-card.art .category-card-count { color: #C62828; }
 
-        .category-card.knowledge { background: linear-gradient(180deg, #F3E5F5 0%, #E1BEE7 100%); }
-        .category-card.knowledge .category-card-icon { background: #9C27B0; }
-        .category-card.knowledge .category-card-name, .category-card.knowledge .category-card-desc { color: #7B1FA2; }
+        .category-card.sports { background: #E0F7FA; border-color: #80DEEA; border-bottom-color: #26C6DA; }
+        .category-card.sports .category-card-icon { background: #00BCD4; }
+        .category-card.sports .category-card-name, .category-card.sports .category-card-desc { color: #00838F; }
+        .category-card.sports .category-card-count { color: #00838F; }
 
-        .category-card.english { background: linear-gradient(180deg, #E0F7FA 0%, #B2EBF2 100%); }
-        .category-card.english .category-card-icon { background: #00BCD4; }
-        .category-card.english .category-card-name, .category-card.english .category-card-desc { color: #00838F; }
+        .category-card.moral { background: #FCE4EC; border-color: #F48FB1; border-bottom-color: #EC407A; }
+        .category-card.moral .category-card-icon { background: #E91E63; }
+        .category-card.moral .category-card-name, .category-card.moral .category-card-desc { color: #AD1457; }
+        .category-card.moral .category-card-count { color: #AD1457; }
 
-        .category-card.audio { background: linear-gradient(180deg, #EDE7F6 0%, #D1C4E9 100%); }
-        .category-card.audio .category-card-icon { background: #673AB7; }
-        .category-card.audio .category-card-name, .category-card.audio .category-card-desc { color: #4527A0; }
+        .category-card.tech { background: #E0F2F1; border-color: #80CBC4; border-bottom-color: #26A69A; }
+        .category-card.tech .category-card-icon { background: #009688; }
+        .category-card.tech .category-card-name, .category-card.tech .category-card-desc { color: #00695C; }
+        .category-card.tech .category-card-count { color: #00695C; }
 
-        .category-card.textbook { background: linear-gradient(180deg, #E8EAF6 0%, #C5CAE9 100%); }
-        .category-card.textbook .category-card-icon { background: #3F51B5; }
-        .category-card.textbook .category-card-name, .category-card.textbook .category-card-desc { color: #283593; }
+        .category-card.app { background: #F1F8E9; border-color: #C5E1A5; border-bottom-color: #9CCC65; }
+        .category-card.app .category-card-icon { background: #8BC34A; }
+        .category-card.app .category-card-name, .category-card.app .category-card-desc { color: #558B2F; }
+        .category-card.app .category-card-count { color: #558B2F; }
 
-        .category-card.kinder { background: linear-gradient(180deg, #FFF8E1 0%, #FFECB3 100%); }
-        .category-card.kinder .category-card-icon { background: #FFC107; }
-        .category-card.kinder .category-card-name, .category-card.kinder .category-card-desc { color: #FF8F00; }
+        .category-card.home { background: #EDE7F6; border-color: #B39DDB; border-bottom-color: #7E57C2; }
+        .category-card.home .category-card-icon { background: #673AB7; }
+        .category-card.home .category-card-name, .category-card.home .category-card-desc { color: #4527A0; }
+        .category-card.home .category-card-count { color: #4527A0; }
 
-        .category-card.subscription { background: linear-gradient(180deg, #F1F8E9 0%, #DCEDC8 100%); }
-        .category-card.subscription .category-card-icon { background: #8BC34A; }
-        .category-card.subscription .category-card-name, .category-card.subscription .category-card-desc { color: #558B2F; }
+        .category-card.mathsci { background: #E3F2FD; border-color: #90CAF9; border-bottom-color: #42A5F5; }
+        .category-card.mathsci .category-card-icon { background: #2196F3; }
+        .category-card.mathsci .category-card-name, .category-card.mathsci .category-card-desc { color: #1565C0; }
+        .category-card.mathsci .category-card-count { color: #1565C0; }
 
-        .category-card.plus { background: linear-gradient(180deg, #FCE4EC 0%, #F8BBD9 100%); }
-        .category-card.plus .category-card-icon { background: #E91E63; }
-        .category-card.plus .category-card-name, .category-card.plus .category-card-desc { color: #AD1457; }
+        .category-card.emotion { background: #FFF8E1; border-color: #FFE082; border-bottom-color: #FFCA28; }
+        .category-card.emotion .category-card-icon { background: #FFC107; }
+        .category-card.emotion .category-card-name, .category-card.emotion .category-card-desc { color: #FF8F00; }
+        .category-card.emotion .category-card-count { color: #FF8F00; }
 
-        .category-card.app { background: linear-gradient(180deg, #E0F2F1 0%, #B2DFDB 100%); }
-        .category-card.app .category-card-icon { background: #009688; }
-        .category-card.app .category-card-name, .category-card.app .category-card-desc { color: #00695C; }
+        .category-card.health { background: #E0F7FA; border-color: #80DEEA; border-bottom-color: #26C6DA; }
+        .category-card.health .category-card-icon { background: #00BCD4; }
+        .category-card.health .category-card-name, .category-card.health .category-card-desc { color: #00838F; }
+        .category-card.health .category-card-count { color: #00838F; }
 
-        /* === Category Detail Page (페이지 전환 시) === */
-        .category-detail-view {
-            display: none;
-        }
-        .category-detail-view.active {
-            display: block;
-        }
-        .category-detail-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid #f0ebe3;
-        }
-        .category-back-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: white;
-            border: 1.5px solid #e8e0d4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #6b7280;
-            font-size: 13px;
-        }
-        .category-back-btn:hover {
-            background: #FF9F43;
-            border-color: #FF9F43;
-            color: white;
-        }
-        .category-detail-title {
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 15px;
-            font-weight: 600;
-            color: #374151;
-        }
-        .category-detail-count {
-            font-size: 13px;
-            color: #9ca3af;
-            margin-left: auto;
-        }
-        .category-detail-count span {
-            color: #FF9F43;
-            font-weight: 700;
-        }
+        /* === Active (selected) - Inverted: dark bg + white text === */
+        .category-card.active .category-card-icon { background: rgba(255,255,255,0.25); }
+        .category-card.active .category-card-name,
+        .category-card.active .category-card-desc,
+        .category-card.active .category-card-count { color: white; }
 
-        /* Legacy Expanded Section - Hidden */
-        .category-expanded {
-            display: none !important;
-        }
-        .category-expanded-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: white;
-            border: 1px solid #e8e0d4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #9ca3af;
-            transition: all 0.2s;
-        }
-        .category-expanded-close:hover {
-            background: #FF9F43;
-            border-color: #FF9F43;
-            color: white;
-        }
-        .category-expanded-books {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-        }
-        @media (max-width: 1024px) {
-            .category-expanded-books { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (max-width: 768px) {
-            .category-expanded-books { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        /* === Category Tabs (언어~추천앱) - 구버전 호환용 === */
-        .category-tabs-container {
-            margin-bottom: 16px;
-            display: none;
-        }
-        .category-tabs {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding: 4px 0;
-        }
-        .category-tab {
-            flex-shrink: 0;
-            padding: 10px 18px;
-            border-radius: 20px;
-            background: white;
-            border: 1.5px solid #e8e0d4;
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: #6b7280;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        .category-tab:hover {
-            border-color: #FFD4A0;
-            color: #FF9F43;
-        }
-        .category-tab.active {
-            background: #FF9F43;
-            border-color: #FF9F43;
-            color: white;
-        }
-        .category-tab .cat-count {
-            font-size: 11px;
-            margin-left: 4px;
-            opacity: 0.7;
-        }
+        .category-card.all.active { background: #7B1FA2; border-color: #6A1B9A; border-bottom-color: #4A148C; }
+        .category-card.lang.active { background: #2E7D32; border-color: #1B5E20; border-bottom-color: #1B5E20; }
+        .category-card.social.active { background: #E65100; border-color: #BF360C; border-bottom-color: #BF360C; }
+        .category-card.science.active { background: #1565C0; border-color: #0D47A1; border-bottom-color: #0D47A1; }
+        .category-card.math.active { background: #283593; border-color: #1A237E; border-bottom-color: #1A237E; }
+        .category-card.art.active { background: #C62828; border-color: #B71C1C; border-bottom-color: #B71C1C; }
+        .category-card.sports.active { background: #00838F; border-color: #006064; border-bottom-color: #006064; }
+        .category-card.moral.active { background: #AD1457; border-color: #880E4F; border-bottom-color: #880E4F; }
+        .category-card.tech.active { background: #00695C; border-color: #004D40; border-bottom-color: #004D40; }
+        .category-card.app.active { background: #558B2F; border-color: #33691E; border-bottom-color: #33691E; }
+        .category-card.home.active { background: #4527A0; border-color: #311B92; border-bottom-color: #311B92; }
+        .category-card.mathsci.active { background: #1565C0; border-color: #0D47A1; border-bottom-color: #0D47A1; }
+        .category-card.emotion.active { background: #FF8F00; border-color: #E65100; border-bottom-color: #E65100; }
+        .category-card.health.active { background: #00838F; border-color: #006064; border-bottom-color: #006064; }
 
         /* === Book Grid === */
         .book-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 16px;
-        }
-        @media (max-width: 1024px) {
-            .book-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         /* === Book Card === */
@@ -476,29 +377,27 @@
             font-weight: 700;
             letter-spacing: 0.1em;
         }
-        .book-badge {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 700;
-            color: white;
-        }
-        .book-badge.new {
-            background: linear-gradient(135deg, #FF6B6B, #ee5a5a);
-        }
-        .book-badge.popular {
-            background: linear-gradient(135deg, #FF9F43, #f97316);
-        }
-        .book-badge.recommend {
-            background: linear-gradient(135deg, #8B5CF6, #7c3aed);
-        }
-        .favorite-btn {
+
+        /* 상단 탑바 (진행률 배지 + 찜 버튼) */
+        .book-cover-topbar {
             position: absolute;
             top: 8px;
             right: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+        }
+        .book-progress-badge {
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(16,185,129,0.9);
+            color: white;
+            backdrop-filter: blur(4px);
+        }
+        .favorite-btn {
             width: 32px;
             height: 32px;
             border-radius: 50%;
@@ -521,6 +420,21 @@
         }
         .favorite-btn.active i {
             color: #ef4444;
+        }
+        /* 프로그래스바 (커버 하단) */
+        .book-reading-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: rgba(0,0,0,0.08);
+            z-index: 2;
+        }
+        .book-reading-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 0 3px 3px 0;
         }
         .book-info {
             padding: 12px;
@@ -593,16 +507,10 @@
         /* === Responsive === */
         @media (max-width: 768px) {
             .header-top-row { margin-bottom: 12px; }
-            .header-title { font-size: 16px; }
-            .header-info { font-size: 12px; }
-            .main-category-tabs { gap: 6px; }
-            .main-category-tab { padding: 10px 12px; font-size: 13px; }
-            .sub-tabs { gap: 4px; flex-wrap: wrap; }
-            .sub-tab { padding: 7px 10px; font-size: 12px; }
-            .sub-tab i { display: none; }
-            .content-info-bar { margin-bottom: 12px; }
-            .content-info { font-size: 12px; }
-            .book-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .header-title { font-size: 20px; }
+            .header-info { font-size: 12px; padding: 6px 12px; }
+            .main-category-tab { padding: 9px 14px; font-size: 14px; }
+            .sub-tab { padding: 12px 16px; font-size: 13px; }
             .book-info { padding: 10px; }
             .book-title { font-size: 13px; }
         }
@@ -621,13 +529,12 @@
             <!-- Sticky Header -->
             <div class="sticky top-0 z-20 library-header">
                 <div class="px-5 md:px-8">
-                    <!-- Header Top Row: Title + Count Info -->
+                    <!-- Header Top Row: Title -->
                     <div class="header-top-row">
                         <h1 class="header-title">
                             <i class="fa-solid fa-book-open-reader"></i>
                             북클럽 라이브러리
                         </h1>
-                        <div class="header-info">총 <span id="header-book-count">5,248</span>권</div>
                     </div>
 
                     <!-- Main Category Tabs (유아/초등/중등) -->
@@ -643,23 +550,23 @@
                         </button>
                     </div>
 
-                    <!-- Sub Tabs (전체보기/전체카테고리/찜한도서/최근본도서) -->
+                    <!-- Sub Tabs (전체카테고리/읽는중/다읽은책/찜한도서) -->
                     <div class="sub-tabs">
-                        <button class="sub-tab active" data-subtab="all" onclick="switchSubTab('all')">
-                            <i class="fa-solid fa-border-all"></i>
-                            <span>전체보기</span>
-                        </button>
-                        <button class="sub-tab" data-subtab="category" onclick="switchSubTab('category')">
+                        <button class="sub-tab active" data-subtab="category" onclick="switchSubTab('category')">
                             <i class="fa-solid fa-folder"></i>
-                            <span>전체 카테고리</span>
+                            <span>카테고리</span>
+                        </button>
+                        <button class="sub-tab" data-subtab="reading" onclick="switchSubTab('reading')">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                            <span>읽는 중</span>
                         </button>
                         <button class="sub-tab" data-subtab="favorites" onclick="switchSubTab('favorites')">
                             <i class="fa-solid fa-heart"></i>
-                            <span>찜한도서</span>
+                            <span>찜한 도서</span>
                         </button>
-                        <button class="sub-tab" data-subtab="recent" onclick="switchSubTab('recent')">
-                            <i class="fa-solid fa-clock-rotate-left"></i>
-                            <span>최근 본 도서</span>
+                        <button class="sub-tab" data-subtab="completed" onclick="switchSubTab('completed')">
+                            <i class="fa-solid fa-check-circle"></i>
+                            <span>다 읽은 책</span>
                         </button>
                     </div>
                 </div>
@@ -667,34 +574,17 @@
 
             <!-- Content Area -->
             <div class="px-5 md:px-8 pt-4 pb-8">
-                <!-- Content Info Bar (Simple text info) -->
-                <div class="content-info-bar" id="content-info-bar">
-                    <div class="content-info"><span id="book-count">5,248</span>권의 도서</div>
+                <!-- Category Filter Buttons (전체 카테고리 탭에서만 표시) -->
+                <div id="category-filter-bar" class="category-filter-bar">
+                    <!-- JS renders filter buttons -->
                 </div>
 
-                <!-- Category Grid View (전체 카테고리 탭에서만 표시) -->
-                <div class="category-grid-container" id="category-grid-container">
-                    <!-- Duolingo Style Category Grid -->
-                    <div class="category-grid" id="category-grid">
-                        <!-- JS renders category cards -->
-                    </div>
+                <!-- Content Info Bar -->
+                <div id="content-info-bar" style="margin-bottom:16px;">
+                    <div class="header-info" style="display:inline-flex;">총 <span id="book-count">5,248</span>권</div>
                 </div>
 
-                <!-- Category Detail View (카테고리 선택 시 페이지 전환) -->
-                <div class="category-detail-view" id="category-detail-view">
-                    <div class="category-detail-header">
-                        <button class="category-back-btn" onclick="backToCategoryGrid()">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </button>
-                        <div class="category-detail-title" id="category-detail-title">언어</div>
-                        <div class="category-detail-count"><span id="category-detail-count">128</span>권</div>
-                    </div>
-                    <div class="book-grid" id="category-books">
-                        <!-- JS renders books in selected category -->
-                    </div>
-                </div>
-
-                <!-- Book Grid (전체보기/찜한도서/최근본도서에서 표시) -->
+                <!-- Book Grid -->
                 <div class="book-grid" id="book-grid">
                     <!-- JS renders book cards -->
                 </div>
@@ -720,7 +610,7 @@
     function generateBooks(startId, category, count, levelPrefix, categories) {
         const books = [];
         const authors = ['김영희', '박철수', '이미영', '최지훈', '한서연', '정다은', '윤재민', '송민지', '강태호', '조수빈'];
-        const badges = ['', '', '', 'new', 'popular', 'recommend'];
+        const readingStatuses = ['', '', '', '', 'reading', 'reading', 'completed', 'completed', 'completed', ''];
 
         const titlesByCategory = {
             '언어': ['동화나라', '글자친구', '이야기보따리', '말놀이', '책읽는즐거움', '동시나라', '글쓰기대장', '낱말탐험', '옛이야기', '세계명작'],
@@ -745,15 +635,17 @@
             const levelNum = (i % 4) + 1;
             const level = levelPrefix + levelNum;
 
+            const status = readingStatuses[i % readingStatuses.length];
             books.push({
                 id: startId + i,
                 title: titleBase + ' ' + (Math.floor(i / 10) + 1) + '권',
                 author: authors[i % authors.length],
                 level: level,
                 category: cat,
-                img: (i < 4) ? `../img/book${(i % 4) + 1}.jpg` : '',
-                badge: badges[i % badges.length],
-                favorited: i % 7 === 0
+                img: '',
+                favorited: i % 7 === 0,
+                readingStatus: status,
+                readingProgress: status === 'reading' ? (Math.floor(Math.random() * 70) + 15) : 0
             });
         }
         return books;
@@ -781,7 +673,7 @@
     //  상태 관리
     // ============================================================
     let currentMainCategory = 'elementary';
-    let currentSubTab = 'all';
+    let currentSubTab = 'category';
     let currentCategory = '전체';
     let favorites = new Set();
     let recentViewed = [];
@@ -821,14 +713,12 @@
             tab.classList.toggle('active', tab.dataset.category === category);
         });
 
-        // 현재 서브탭에 따라 다르게 렌더링
+        // 현재 서브탭에 따라 렌더링
         if (currentSubTab === 'category') {
-            closeCategoryExpanded();
-            renderCategoryGrid();
-        } else {
-            renderBooks();
-            updateTotalCount();
+            renderCategoryFilterButtons();
         }
+        renderBooks();
+        updateTotalCount();
     }
 
     // ============================================================
@@ -844,32 +734,28 @@
         });
 
         // 요소 참조
-        const categoryGridContainer = document.getElementById('category-grid-container');
+        const filterBar = document.getElementById('category-filter-bar');
         const bookGrid = document.getElementById('book-grid');
         const contentInfoBar = document.getElementById('content-info-bar');
         const emptyState = document.getElementById('empty-state');
 
         if (subtab === 'category') {
-            // 전체 카테고리 탭: 카테고리 그리드 표시, 책 리스트 숨김
-            categoryGridContainer.style.display = 'block';
-            bookGrid.style.display = 'none';
-            contentInfoBar.style.display = 'none';
-            emptyState.style.display = 'none';
-            renderCategoryGrid();
-        } else {
-            // 다른 탭: 카테고리 그리드 숨김, 책 리스트 표시
-            categoryGridContainer.style.display = 'none';
+            // 전체 카테고리 탭: 카테고리 카드 + 책 리스트 모두 표시
+            filterBar.style.display = 'grid';
             bookGrid.style.display = 'grid';
-            contentInfoBar.style.display = 'flex';
-            closeCategoryExpanded();
-            renderBooks();
-            updateTotalCount();
+            contentInfoBar.style.display = 'block';
+            emptyState.style.display = 'none';
+            renderCategoryFilterButtons();
+        } else {
+            // 찜한도서/최근본도서: 필터 버튼 숨김, 책 리스트 표시
+            filterBar.style.display = 'none';
+            bookGrid.style.display = 'grid';
+            contentInfoBar.style.display = 'block';
         }
+        renderBooks();
+        updateTotalCount();
     }
 
-    // ============================================================
-    //  카테고리 그리드 렌더링 (전체 카테고리 탭)
-    // ============================================================
     // 카테고리 아이콘 매핑
     const categoryIcons = {
         '전체': '📚',
@@ -890,20 +776,20 @@
 
     // 카테고리별 CSS 클래스 매핑 (듀오링고 스타일 색상)
     const categoryColorClass = {
-        '전체': 'knowledge',
+        '전체': 'all',
         '언어': 'lang',
         '사회': 'social',
         '과학': 'science',
-        '수학': 'textbook',
+        '수학': 'math',
         '예술': 'art',
-        '체육': 'english',
-        '도덕': 'plus',
-        '실과': 'app',
-        '기술/가정': 'audio',
-        '추천앱': 'subscription',
-        '수/과학': 'science',
-        '사회/정서': 'kinder',
-        '신체/건강': 'english'
+        '체육': 'sports',
+        '도덕': 'moral',
+        '실과': 'tech',
+        '기술/가정': 'home',
+        '추천앱': 'app',
+        '수/과학': 'mathsci',
+        '사회/정서': 'emotion',
+        '신체/건강': 'health'
     };
 
     // 카테고리별 설명 텍스트
@@ -924,27 +810,29 @@
         '신체/건강': '신체발달, 건강'
     };
 
-    function renderCategoryGrid() {
-        const container = document.getElementById('category-grid');
+    // ============================================================
+    //  카테고리 필터 카드 렌더링
+    // ============================================================
+    function renderCategoryFilterButtons() {
+        const container = document.getElementById('category-filter-bar');
         const categories = booksData[currentMainCategory].categories;
-
-        // 카테고리 상세 뷰 숨기기
-        document.getElementById('category-detail-view').classList.remove('active');
 
         let html = '';
         categories.forEach(cat => {
-            const count = cat === '전체'
-                ? booksData[currentMainCategory].books.length
-                : booksData[currentMainCategory].books.filter(b => b.category === cat).length;
+            const isActive = cat === currentCategory ? ' active' : '';
             const icon = categoryIcons[cat] || '📁';
-            const colorClass = categoryColorClass[cat] || 'knowledge';
+            const colorClass = categoryColorClass[cat] || 'all';
             const desc = categoryDescriptions[cat] || '';
+            const label = cat === '전체' ? '전체보기' : cat;
+            const count = cat === '전체'
+                ? booksData[currentMainCategory].totalCount
+                : booksData[currentMainCategory].books.filter(b => b.category === cat).length;
 
             html += `
-            <div class="category-card ${colorClass}" onclick="openCategoryDetail('${cat}')">
+            <div class="category-card ${colorClass}${isActive}" onclick="switchCategoryFilter('${cat}')">
                 <div class="category-card-count">${count}권</div>
                 <div class="category-card-icon">${icon}</div>
-                <div class="category-card-name">${cat}</div>
+                <div class="category-card-name">${label}</div>
                 <div class="category-card-desc">${desc}</div>
             </div>`;
         });
@@ -953,252 +841,59 @@
     }
 
     // ============================================================
-    //  카테고리 상세 페이지 열기 (페이지 전환)
+    //  카테고리 필터 전환
     // ============================================================
-    function openCategoryDetail(category) {
+    function switchCategoryFilter(category) {
         currentCategory = category;
 
-        // 해당 카테고리 도서 가져오기
-        const books = category === '전체'
-            ? booksData[currentMainCategory].books
-            : booksData[currentMainCategory].books.filter(b => b.category === category);
-
-        // 상세 뷰 요소 업데이트
-        document.getElementById('category-detail-title').textContent = category;
-        document.getElementById('category-detail-count').textContent = books.length;
-
-        // 도서 렌더링
-        renderCategoryBooks(books);
-
-        // 카테고리 그리드 숨기고 상세 뷰 표시
-        document.getElementById('category-grid').style.display = 'none';
-        document.getElementById('category-detail-view').classList.add('active');
-
-        // 스크롤 상단으로
-        document.getElementById('main-scroll').scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // ============================================================
-    //  카테고리 도서 렌더링 (상세 페이지용)
-    // ============================================================
-    function renderCategoryBooks(books) {
-        const container = document.getElementById('category-books');
-
-        if (books.length === 0) {
-            container.innerHTML = '<div style="text-align:center;color:#9ca3af;padding:40px;">이 카테고리에는 도서가 없습니다.</div>';
-            return;
-        }
-
-        let html = '';
-        books.forEach(book => {
-            const badgeHtml = book.badge
-                ? `<div class="book-badge ${book.badge}">${getBadgeText(book.badge)}</div>`
-                : '';
-
-            const coverHtml = book.img
-                ? `<img src="${book.img}" alt="${book.title}" onerror="this.parentNode.innerHTML='<div class=\\'book-cover-placeholder\\'><i class=\\'fa-solid fa-book\\'></i><span>BOOK</span></div>'">`
-                : `<div class="book-cover-placeholder"><i class="fa-solid fa-book"></i><span>BOOK</span></div>`;
-
-            const favActiveClass = book.favorited ? 'active' : '';
-            const favIcon = book.favorited ? 'fa-solid' : 'fa-regular';
-
-            html += `
-            <div class="book-card" onclick="viewBook(${book.id})">
-                <div class="book-cover">
-                    ${coverHtml}
-                    ${badgeHtml}
-                    <button class="favorite-btn ${favActiveClass}" onclick="toggleFavorite(event, ${book.id})">
-                        <i class="${favIcon} fa-heart"></i>
-                    </button>
-                </div>
-                <div class="book-info">
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-author">${book.author}</div>
-                    <div class="book-meta">
-                        <span class="book-level">${book.level}</span>
-                        <span class="book-category">${book.category}</span>
-                    </div>
-                </div>
-            </div>`;
+        // 카드 활성화 상태 변경
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.classList.remove('active');
         });
-
-        container.innerHTML = html;
-    }
-
-    // ============================================================
-    //  카테고리 그리드로 돌아가기
-    // ============================================================
-    function backToCategoryGrid() {
-        currentCategory = '전체';
-
-        // 상세 뷰 숨기고 카테고리 그리드 표시
-        document.getElementById('category-detail-view').classList.remove('active');
-        document.getElementById('category-grid').style.display = 'grid';
-
-        // 스크롤 상단으로
-        document.getElementById('main-scroll').scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleCategoryExpanded(category) {
-        const expandedSection = document.getElementById('category-expanded');
-        const categoryNameEl = document.getElementById('expanded-category-name');
-        const categoryCountEl = document.getElementById('expanded-category-count');
-
-        // 같은 카테고리 클릭 시 접기
-        if (currentCategory === category && expandedSection.classList.contains('active')) {
-            closeCategoryExpanded();
-            return;
-        }
-
-        currentCategory = category;
-
-        // 카테고리 박스 활성화 상태 업데이트
-        document.querySelectorAll('.category-box').forEach(box => {
-            box.classList.toggle('active', box.querySelector('.category-box-name').textContent === category);
-        });
-
-        // 해당 카테고리 도서 가져오기
-        const books = category === '전체'
-            ? booksData[currentMainCategory].books
-            : booksData[currentMainCategory].books.filter(b => b.category === category);
-
-        categoryNameEl.textContent = category;
-        categoryCountEl.textContent = `(${books.length}권)`;
-
-        // 도서 렌더링
-        renderExpandedBooks(books);
-
-        // 펼침 섹션 표시
-        expandedSection.classList.add('active');
-
-        // 스크롤 이동
-        setTimeout(() => {
-            expandedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
-    }
-
-    function renderExpandedBooks(books) {
-        const container = document.getElementById('expanded-books');
-
-        if (books.length === 0) {
-            container.innerHTML = '<div style="text-align:center;color:#9ca3af;padding:40px;">이 카테고리에는 도서가 없습니다.</div>';
-            return;
-        }
-
-        let html = '';
-        books.forEach(book => {
-            const badgeHtml = book.badge
-                ? `<div class="book-badge ${book.badge}">${getBadgeText(book.badge)}</div>`
-                : '';
-
-            const coverHtml = book.img
-                ? `<img src="${book.img}" alt="${book.title}" onerror="this.parentNode.innerHTML='<div class=\\'book-cover-placeholder\\'><i class=\\'fa-solid fa-book\\'></i><span>BOOK</span></div>'">`
-                : `<div class="book-cover-placeholder"><i class="fa-solid fa-book"></i><span>BOOK</span></div>`;
-
-            const favActiveClass = book.favorited ? 'active' : '';
-            const favIcon = book.favorited ? 'fa-solid' : 'fa-regular';
-
-            html += `
-            <div class="book-card" onclick="viewBook(${book.id})">
-                <div class="book-cover">
-                    ${coverHtml}
-                    ${badgeHtml}
-                    <button class="favorite-btn ${favActiveClass}" onclick="toggleFavorite(event, ${book.id})">
-                        <i class="${favIcon} fa-heart"></i>
-                    </button>
-                </div>
-                <div class="book-info">
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-author">${book.author}</div>
-                    <div class="book-meta">
-                        <span class="book-level">${book.level}</span>
-                        <span class="book-category">${book.category}</span>
-                    </div>
-                </div>
-            </div>`;
-        });
-
-        container.innerHTML = html;
-    }
-
-    function closeCategoryExpanded() {
-        const expandedSection = document.getElementById('category-expanded');
-        expandedSection.classList.remove('active');
-        currentCategory = '전체';
-
-        // 카테고리 박스 활성화 상태 초기화
-        document.querySelectorAll('.category-box').forEach(box => {
-            box.classList.remove('active');
-        });
-    }
-
-    // ============================================================
-    //  카테고리 탭 렌더링 (언어~추천앱)
-    // ============================================================
-    function renderCategoryTabs() {
-        const container = document.getElementById('category-tabs');
+        // 현재 클릭된 카드 활성화
+        const cards = document.querySelectorAll('.category-card');
         const categories = booksData[currentMainCategory].categories;
+        const idx = categories.indexOf(category);
+        if (idx >= 0 && cards[idx]) {
+            cards[idx].classList.add('active');
+        }
 
-        let html = '';
-        categories.forEach(cat => {
-            const activeClass = cat === currentCategory ? 'active' : '';
-            const count = cat === '전체'
-                ? booksData[currentMainCategory].books.length
-                : booksData[currentMainCategory].books.filter(b => b.category === cat).length;
-
-            html += `
-            <button class="category-tab ${activeClass}" onclick="selectCategory('${cat}')">
-                ${cat}<span class="cat-count">(${count})</span>
-            </button>`;
-        });
-
-        container.innerHTML = html;
-    }
-
-    function selectCategory(category) {
-        currentCategory = category;
-
-        // 탭 활성화 상태 변경
-        document.querySelectorAll('.category-tab').forEach(tab => {
-            tab.classList.toggle('active', tab.textContent.includes(category));
-        });
-
-        renderCategoryTabs();
         renderBooks();
         updateTotalCount();
     }
 
+
     // ============================================================
     //  총 권수 업데이트
     // ============================================================
+    // 전체 카테고리 도서 합치기 헬퍼
+    function getAllBooks() {
+        let all = [];
+        Object.keys(booksData).forEach(cat => {
+            all = all.concat(booksData[cat].books);
+        });
+        return all;
+    }
+
     function updateTotalCount() {
         const countEl = document.getElementById('book-count');
-        const headerCountEl = document.getElementById('header-book-count');
         let count = 0;
 
-        if (currentSubTab === 'all') {
-            count = booksData[currentMainCategory].totalCount;
-        } else if (currentSubTab === 'category') {
+        if (currentSubTab === 'category') {
             if (currentCategory === '전체') {
                 count = booksData[currentMainCategory].totalCount;
             } else {
                 count = booksData[currentMainCategory].books.filter(b => b.category === currentCategory).length;
             }
+        } else if (currentSubTab === 'reading') {
+            count = booksData[currentMainCategory].books.filter(b => b.readingStatus === 'reading').length;
+        } else if (currentSubTab === 'completed') {
+            count = booksData[currentMainCategory].books.filter(b => b.readingStatus === 'completed').length;
         } else if (currentSubTab === 'favorites') {
-            count = booksData[currentMainCategory].books.filter(b => b.favorited).length;
-        } else if (currentSubTab === 'recent') {
-            const recentIds = recentViewed.map(r => r.id);
-            count = booksData[currentMainCategory].books.filter(b => recentIds.includes(b.id)).length;
+            count = getAllBooks().filter(b => b.favorited).length;
         }
 
         countEl.textContent = count.toLocaleString();
-
-        // 헤더의 총 권수도 업데이트 (메인 카테고리 전체 권수)
-        headerCountEl.textContent = booksData[currentMainCategory].totalCount.toLocaleString();
-
-        // 찜한도서/최근본도서일 때는 정렬 옵션 숨김
-        const sortSelect = document.getElementById('sort-select');
-        sortSelect.style.display = (currentSubTab === 'favorites' || currentSubTab === 'recent') ? 'none' : 'block';
     }
 
     // ============================================================
@@ -1209,29 +904,31 @@
         const emptyState = document.getElementById('empty-state');
         let books = [];
 
-        if (currentSubTab === 'all') {
-            books = booksData[currentMainCategory].books;
-        } else if (currentSubTab === 'category') {
+        if (currentSubTab === 'category') {
             books = currentCategory === '전체'
                 ? booksData[currentMainCategory].books
                 : booksData[currentMainCategory].books.filter(b => b.category === currentCategory);
+        } else if (currentSubTab === 'reading') {
+            books = booksData[currentMainCategory].books.filter(b => b.readingStatus === 'reading');
+        } else if (currentSubTab === 'completed') {
+            books = booksData[currentMainCategory].books.filter(b => b.readingStatus === 'completed');
         } else if (currentSubTab === 'favorites') {
-            books = booksData[currentMainCategory].books.filter(b => b.favorited);
-        } else if (currentSubTab === 'recent') {
-            const recentIds = recentViewed.map(r => r.id);
-            books = booksData[currentMainCategory].books.filter(b => recentIds.includes(b.id));
+            books = getAllBooks().filter(b => b.favorited);
         }
 
         if (books.length === 0) {
             container.innerHTML = '';
             emptyState.style.display = 'flex';
 
-            if (currentSubTab === 'favorites') {
+            if (currentSubTab === 'reading') {
+                emptyState.querySelector('.empty-state-title').textContent = '읽는 중인 도서가 없습니다';
+                emptyState.querySelector('.empty-state-desc').innerHTML = '도서를 읽기 시작하면 여기에 표시됩니다.';
+            } else if (currentSubTab === 'completed') {
+                emptyState.querySelector('.empty-state-title').textContent = '다 읽은 책이 없습니다';
+                emptyState.querySelector('.empty-state-desc').innerHTML = '독서를 완료하면 여기에 표시됩니다.';
+            } else if (currentSubTab === 'favorites') {
                 emptyState.querySelector('.empty-state-title').textContent = '찜한 도서가 없습니다';
                 emptyState.querySelector('.empty-state-desc').innerHTML = '마음에 드는 책에 하트를 눌러보세요!';
-            } else if (currentSubTab === 'recent') {
-                emptyState.querySelector('.empty-state-title').textContent = '최근 본 도서가 없습니다';
-                emptyState.querySelector('.empty-state-desc').innerHTML = '도서를 클릭하면 여기에 표시됩니다.';
             } else {
                 emptyState.querySelector('.empty-state-title').textContent = '도서가 없습니다';
                 emptyState.querySelector('.empty-state-desc').innerHTML = '이 카테고리에는 아직 도서가 없어요.';
@@ -1243,10 +940,6 @@
 
         let html = '';
         books.forEach(book => {
-            const badgeHtml = book.badge
-                ? `<div class="book-badge ${book.badge}">${getBadgeText(book.badge)}</div>`
-                : '';
-
             const coverHtml = book.img
                 ? `<img src="${book.img}" alt="${book.title}" onerror="this.parentNode.innerHTML='<div class=\\'book-cover-placeholder\\'><i class=\\'fa-solid fa-book\\'></i><span>BOOK</span></div>'">`
                 : `<div class="book-cover-placeholder"><i class="fa-solid fa-book"></i><span>BOOK</span></div>`;
@@ -1254,22 +947,28 @@
             const favActiveClass = book.favorited ? 'active' : '';
             const favIcon = book.favorited ? 'fa-solid' : 'fa-regular';
 
+            const isReading = book.readingStatus === 'reading' && book.readingProgress > 0;
+            const progressBarHtml = isReading ? `
+                    <div class="book-reading-progress">
+                        <div class="book-reading-progress-fill" style="width: ${book.readingProgress}%;"></div>
+                    </div>` : '';
+            const progressBadgeHtml = isReading ? `<div class="book-progress-badge">${book.readingProgress}%</div>` : '';
+
             html += `
             <div class="book-card" onclick="viewBook(${book.id})">
                 <div class="book-cover">
                     ${coverHtml}
-                    ${badgeHtml}
-                    <button class="favorite-btn ${favActiveClass}" onclick="toggleFavorite(event, ${book.id})">
-                        <i class="${favIcon} fa-heart"></i>
-                    </button>
+                    <div class="book-cover-topbar">
+                        ${progressBadgeHtml}
+                        <button class="favorite-btn ${favActiveClass}" onclick="toggleFavorite(event, ${book.id})">
+                            <i class="${favIcon} fa-heart"></i>
+                        </button>
+                    </div>
+                    ${progressBarHtml}
                 </div>
                 <div class="book-info">
                     <div class="book-title">${book.title}</div>
                     <div class="book-author">${book.author}</div>
-                    <div class="book-meta">
-                        <span class="book-level">${book.level}</span>
-                        <span class="book-category">${book.category}</span>
-                    </div>
                 </div>
             </div>`;
         });
@@ -1277,14 +976,6 @@
         container.innerHTML = html;
     }
 
-    function getBadgeText(badge) {
-        const texts = {
-            'new': 'NEW',
-            'popular': '인기',
-            'recommend': '추천'
-        };
-        return texts[badge] || '';
-    }
 
     // ============================================================
     //  찜하기 토글
@@ -1344,7 +1035,7 @@
                 books.sort((a, b) => b.id - a.id);
                 break;
             case 'popular':
-                books.sort((a, b) => (b.badge === 'popular' ? 1 : 0) - (a.badge === 'popular' ? 1 : 0));
+                books.sort((a, b) => b.id - a.id);
                 break;
             case 'title':
                 books.sort((a, b) => a.title.localeCompare(b.title, 'ko'));
@@ -1361,6 +1052,7 @@
         loadSidebar('book-library');
         loadLogoutModal();
         loadUserData();
+        renderCategoryFilterButtons();
         renderBooks();
         updateTotalCount();
     });
