@@ -782,11 +782,19 @@
 
             // 현재 책 정보를 세션에 저장 (퀴즈에서 사용)
             const bookData = sessionStorage.getItem('currentBook');
+            const isReReadingMode = sessionStorage.getItem('isReReadingMode') === 'true';
+
             if (bookData) {
                 const book = JSON.parse(bookData);
-                // 다시 읽기(reReading)일 때는 completed 상태를 변경하지 않음
-                // 최초 1번만 프로그래스바에 영향
-                if (!book.reReading) {
+
+                // 다시 읽기 모드에서는 임시 진행상태만 업데이트
+                if (isReReadingMode || book.isReReading) {
+                    const rereadKey = 'rereadProgress_' + book.week + '_' + book.bookType;
+                    const rereadProgress = JSON.parse(sessionStorage.getItem(rereadKey) || '{}');
+                    rereadProgress.bookCompleted = true;
+                    sessionStorage.setItem(rereadKey, JSON.stringify(rereadProgress));
+                } else {
+                    // 최초 읽기일 때만 completed 상태를 변경
                     book.completed = true;
                 }
                 sessionStorage.setItem('currentBook', JSON.stringify(book));

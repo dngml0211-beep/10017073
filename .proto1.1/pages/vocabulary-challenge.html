@@ -591,18 +591,29 @@
 
             document.getElementById('game-complete').classList.remove('hidden');
 
-            // 학습 완료 상태 저장 (주차별 키)
+            // 학습 완료 상태 저장 (주차별+책타입별 키 사용)
             const bookData = JSON.parse(sessionStorage.getItem('currentBook') || '{}');
             const week = bookData.week || 1;
-            const progressKey = 'learningProgress_w' + week;
-            const progressData = JSON.parse(sessionStorage.getItem(progressKey) || '{}');
-            progressData.vocabCompleted = true;
-            progressData.vocabScore = score;
-            progressData.weekCompleted = true;
-            sessionStorage.setItem(progressKey, JSON.stringify(progressData));
+            const bookType = bookData.bookType || 'core';
+            const isReReadingMode = sessionStorage.getItem('isReReadingMode') === 'true' || bookData.isReReading;
 
-            // 하위 호환: 기존 키에도 저장
-            sessionStorage.setItem('learningProgress', JSON.stringify(progressData));
+            // 다시 읽기 모드에서는 실제 진행상태를 업데이트하지 않음
+            if (!isReReadingMode) {
+                const progressKey = 'learningProgress_w' + week + '_' + bookType;
+                const progressData = JSON.parse(sessionStorage.getItem(progressKey) || '{}');
+                progressData.vocabCompleted = true;
+                progressData.vocabScore = score;
+                progressData.weekCompleted = true;
+                sessionStorage.setItem(progressKey, JSON.stringify(progressData));
+
+                // 하위 호환: 기존 키에도 저장
+                sessionStorage.setItem('learningProgress', JSON.stringify(progressData));
+            }
+
+            // 어휘챌린지 완료 플래그 설정 (홈에서 확인용 - 다시 읽기 모드에서도 필요)
+            sessionStorage.setItem('vocabJustCompleted', 'true');
+            sessionStorage.setItem('vocabCompletedWeek', week.toString());
+            sessionStorage.setItem('vocabCompletedBookType', bookType);
         }
 
         function endGame() {

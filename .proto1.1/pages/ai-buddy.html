@@ -181,6 +181,37 @@
         .activity-icon.video { background: #fce7f3; color: #ec4899; }
         .activity-icon.debate { background: #dbeafe; color: #3b82f6; }
 
+        /* 책 섬네일 스타일 */
+        .activity-book-thumb {
+            width: 60px; height: 80px;
+            border-radius: 8px;
+            background: linear-gradient(145deg, #f3f4f6, #e5e7eb);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            flex-shrink: 0;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .activity-book-thumb i {
+            font-size: 20px;
+            color: #9ca3af;
+        }
+        .activity-book-thumb span {
+            font-size: 9px;
+            font-weight: 700;
+            color: #9ca3af;
+            letter-spacing: 0.05em;
+        }
+        .activity-book-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .activity-meta {
             flex: 1;
             min-width: 0;
@@ -218,15 +249,44 @@
             gap: 12px;
         }
         .video-thumb {
-            width: 80px; height: 60px;
+            width: 28px; height: 28px;
             border-radius: 8px;
             background: linear-gradient(135deg, #ec4899, #f472b6);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 20px;
+            font-size: 14px;
             flex-shrink: 0;
+        }
+
+        /* 질문렌즈/독서토론 아이콘 프리뷰 */
+        .activity-preview.with-icon {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .preview-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .preview-icon.question {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            color: #8b5cf6;
+        }
+        .preview-icon.debate {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #3b82f6;
+        }
+        .preview-text {
+            flex: 1;
+            line-height: 1.6;
         }
 
         /* === 빈 상태 === */
@@ -498,6 +558,14 @@
     <script src="../js/sidebar.js"></script>
 
     <script>
+    // === 책 이미지 매핑 ===
+    const bookImageMap = {
+        '오즈의 마법사': '../img/book1.jpg',
+        '약속은 즐거워': '../img/book2.jpg',
+        '숭숭이와 나': '../img/book3.jpg',
+        '빨간머리 앤': '../img/book4.jpg'
+    };
+
     // === 활동 데이터 (샘플) ===
     const activityData = [
         {
@@ -637,11 +705,6 @@
     }
 
     function renderActivityCard(activity) {
-        const iconClass = activity.type === 'question' ? 'question' :
-                          activity.type === 'video' ? 'video' : 'debate';
-        const icon = activity.type === 'question' ? 'fa-magnifying-glass' :
-                     activity.type === 'video' ? 'fa-video' : 'fa-comments';
-
         let previewHtml = '';
         if (activity.type === 'video') {
             previewHtml = `
@@ -653,17 +716,37 @@
                     </div>
                 </div>
             `;
+        } else if (activity.type === 'question') {
+            previewHtml = `
+                <div class="activity-preview with-icon">
+                    <div class="preview-icon question"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    <div class="preview-text">"${activity.preview}"</div>
+                </div>
+            `;
+        } else if (activity.type === 'debate') {
+            previewHtml = `
+                <div class="activity-preview with-icon">
+                    <div class="preview-icon debate"><i class="fa-solid fa-comments"></i></div>
+                    <div class="preview-text">"${activity.preview}"</div>
+                </div>
+            `;
         } else {
             previewHtml = `<div class="activity-preview">"${activity.preview}"</div>`;
         }
 
         const time = activity.date.split(' ')[1];
 
+        // 책 이미지 확인
+        const bookImage = bookImageMap[activity.book];
+        const thumbContent = bookImage
+            ? `<img src="${bookImage}" alt="${activity.book}">`
+            : `<i class="fa-solid fa-book"></i><span>BOOK</span>`;
+
         return `
             <div class="activity-card" onclick="viewActivity(${activity.id})">
                 <div class="activity-card-header">
-                    <div class="activity-icon ${iconClass}">
-                        <i class="fa-solid ${icon}"></i>
+                    <div class="activity-book-thumb">
+                        ${thumbContent}
                     </div>
                     <div class="activity-meta">
                         <div class="activity-book">

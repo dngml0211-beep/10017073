@@ -174,10 +174,11 @@ function selectApp(appId) {
     const apps = {
         'bookclub-krs': { name: '웅진북클럽 KRS', home: 'home.html' },
         bookclub:       { name: '웅진북클럽',     home: 'home2.html' },
-        'smart-thinkbig': { name: '스마트씽크빅', home: null },
-        smartall:       { name: '스마트올',       home: null },
-        superpot:       { name: '슈퍼팟',         home: null },
-        lingocity:      { name: '링고시티',       home: null }
+        'bookclub-b2c': { name: '북클럽 B2C',     home: 'home.html' },
+        'smart-thinkbig': { name: '스마트씽크빅', home: 'smart-thinkbig.html' },
+        smartall:       { name: '스마트올',       home: 'smartall.html' },
+        superpot:       { name: '슈퍼팟',         home: 'superpot.html' },
+        lingocity:      { name: '링고시티',       home: 'lingocity.html' }
     };
 
     // 체크 아이콘 업데이트
@@ -190,26 +191,16 @@ function selectApp(appId) {
     applyAppNavVisibility(appId);
 
     // 앱 이동 처리
-    if (appId === 'bookclub-krs' || appId === 'bookclub') {
-        const targetHome = apps[appId].home;
-        const currentPage = window.location.pathname.split('/').pop();
+    const targetHome = apps[appId].home;
+    const currentPage = window.location.pathname.split('/').pop();
 
-        setTimeout(() => {
-            toggleAppMenu();
-            // 홈 페이지 간 전환이 필요한 경우 이동
-            if (currentPage === 'home.html' || currentPage === 'home2.html') {
-                if (currentPage !== targetHome) {
-                    window.location.href = targetHome;
-                }
-            }
-        }, 200);
-    } else {
-        // 다른 앱 - 알림 표시
-        alert(apps[appId].name + ' 앱으로 이동합니다!');
-        setTimeout(() => {
-            toggleAppMenu();
-        }, 200);
-    }
+    setTimeout(() => {
+        toggleAppMenu();
+        // 페이지 이동이 필요한 경우
+        if (currentPage !== targetHome) {
+            window.location.href = targetHome;
+        }
+    }, 200);
 }
 
 /**
@@ -217,6 +208,7 @@ function selectApp(appId) {
  */
 function applyAppNavVisibility(appId) {
     const krsOnlyItems = document.querySelectorAll('[data-krs-only]');
+    const b2cHideItems = document.querySelectorAll('[data-b2c-hide]');
     const homeLink = document.getElementById('nav-home-link');
 
     // 하단 네비 홈 링크도 함께 처리
@@ -225,12 +217,24 @@ function applyAppNavVisibility(appId) {
     if (appId === 'bookclub') {
         // KRS 전용 항목 숨기기
         krsOnlyItems.forEach(el => { el.style.display = 'none'; });
+        b2cHideItems.forEach(el => { el.style.display = ''; });
         // 홈 링크를 home2.html로 변경
         if (homeLink) { homeLink.href = 'home2.html'; }
         if (bottomNavHome) { bottomNavHome.href = 'home2.html'; }
+    } else if (appId === 'bookclub-b2c') {
+        // B2C 모드: KRS 도서관 표시, 라이브러리/AI독서도구함/올도전 숨기기
+        krsOnlyItems.forEach(el => { el.style.display = 'none'; });
+        b2cHideItems.forEach(el => { el.style.display = 'none'; });
+        // KRS 도서관만 표시 (data-b2c-show 속성으로 구분)
+        const b2cShowItems = document.querySelectorAll('[data-b2c-show]');
+        b2cShowItems.forEach(el => { el.style.display = ''; });
+        // 홈 링크를 home.html로 변경
+        if (homeLink) { homeLink.href = 'home.html'; }
+        if (bottomNavHome) { bottomNavHome.href = 'home.html'; }
     } else {
         // 모든 항목 표시 (KRS 모드)
         krsOnlyItems.forEach(el => { el.style.display = ''; });
+        b2cHideItems.forEach(el => { el.style.display = ''; });
         // 홈 링크를 home.html로 변경
         if (homeLink) { homeLink.href = 'home.html'; }
         if (bottomNavHome) { bottomNavHome.href = 'home.html'; }
@@ -241,7 +245,7 @@ function applyAppNavVisibility(appId) {
  * 앱 체크 아이콘 및 로고 라벨 복원
  */
 function restoreAppCheckIcons(appId) {
-    ['bookclub-krs', 'bookclub', 'smart-thinkbig', 'smartall', 'superpot', 'lingocity'].forEach(id => {
+    ['bookclub-krs', 'bookclub', 'bookclub-b2c', 'smart-thinkbig', 'smartall', 'superpot', 'lingocity'].forEach(id => {
         const check = document.getElementById('check-' + id);
         const item = check?.closest('.app-item');
         if (check) {
@@ -258,7 +262,13 @@ function restoreAppCheckIcons(appId) {
     // 로고 KRS 라벨 업데이트
     const krsLabel = document.getElementById('logo-krs-label');
     if (krsLabel) {
-        krsLabel.textContent = (appId === 'bookclub-krs') ? 'KRS' : '';
+        if (appId === 'bookclub-krs') {
+            krsLabel.textContent = 'KRS';
+        } else if (appId === 'bookclub-b2c') {
+            krsLabel.textContent = 'B2C';
+        } else {
+            krsLabel.textContent = '';
+        }
     }
 }
 
@@ -279,7 +289,7 @@ function loadInlineSidebar(container, currentPage) {
             </div>
 
             <!-- 앱 선택 메뉴 (드롭다운 - 오버레이) -->
-            <div id="app-menu" class="hidden absolute left-0 right-0 top-[62px] bottom-[50px] z-10 px-2 py-2 bg-white/95 backdrop-blur-sm overflow-y-auto">
+            <div id="app-menu" class="hidden absolute left-0 right-0 top-[42px] bottom-[50px] z-10 px-2 py-2 bg-white/95 backdrop-blur-sm overflow-y-auto">
                 <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-1.5 space-y-0.5">
                     <button onclick="selectApp('bookclub-krs')" class="app-item active w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all bg-white shadow-sm">
                         <div class="w-9 h-9 bg-gradient-to-br from-brand-primary to-brand-dark rounded-xl flex items-center justify-center text-white text-base shadow-md">📖</div>
@@ -296,6 +306,14 @@ function loadInlineSidebar(container, currentPage) {
                             <p class="text-[10px] text-gray-400">독서 · 학습</p>
                         </div>
                         <i class="fa-solid fa-check text-brand-primary text-sm hidden" id="check-bookclub"></i>
+                    </button>
+                    <button onclick="selectApp('bookclub-b2c')" class="app-item w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all hover:bg-white">
+                        <div class="w-9 h-9 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-xl flex items-center justify-center text-white text-base shadow-md">📕</div>
+                        <div class="text-left flex-1 min-w-0">
+                            <p class="font-noto text-sm text-gray-800 truncate">북클럽 B2C</p>
+                            <p class="text-[10px] text-gray-400">개인 독서</p>
+                        </div>
+                        <i class="fa-solid fa-check text-brand-primary text-sm hidden" id="check-bookclub-b2c"></i>
                     </button>
                     <button onclick="selectApp('smart-thinkbig')" class="app-item w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all hover:bg-white">
                         <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center text-white text-base shadow-md">🧠</div>
@@ -347,11 +365,11 @@ function loadInlineSidebar(container, currentPage) {
                     <i class="fa-solid fa-house text-xl w-6 text-center"></i>
                     <span class="font-noto text-lg">홈</span>
                 </a>
-                <a href="library.html" data-page="library" data-krs-only class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="library.html" data-page="library" data-krs-only data-b2c-show class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-book-open text-xl w-6 text-center"></i>
                     <span class="font-noto text-lg">KRS 도서관</span>
                 </a>
-                <a href="book-library.html" data-page="book-library" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="book-library.html" data-page="book-library" data-b2c-hide class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
                     <i class="fa-solid fa-layer-group text-xl w-6 text-center"></i>
                     <span class="font-noto text-lg">라이브러리</span>
                 </a>
@@ -364,17 +382,20 @@ function loadInlineSidebar(container, currentPage) {
                     <span class="font-noto text-lg">스타샵</span>
                 </a>
 
-                <!-- KRS 전용: AI 버디 -->
-                <div data-krs-only>
+                <!-- KRS/B2C 전용: AI 독서도구함 -->
+                <div data-krs-only data-b2c-show>
                     <div class="pt-4 pb-2 px-2"></div>
-                    <a href="ai-buddy.html" data-page="ai-buddy" class="w-full flex items-center gap-3 px-3 py-3 rounded-2xl transition-all hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 group" style="text-decoration:none;">
-                        <div class="relative w-10 h-10 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-xl shadow-md">
-                            🐿️
-                            <div class="absolute -top-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
-                        </div>
-                        <div class="flex-1 text-left min-w-0">
-                            <p class="font-noto text-sm text-gray-700">AI 버디</p>
-                        </div>
+                    <a href="ai-buddy.html" data-page="ai-buddy" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-all hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 group" style="text-decoration:none;">
+                        <span class="text-xl w-6 text-center">🧰</span>
+                        <span class="font-noto text-lg group-hover:text-purple-600 transition-colors">AI 독서도구함</span>
+                    </a>
+                </div>
+
+                <!-- KRS/B2C 전용: 올도전 -->
+                <div data-krs-only data-b2c-show>
+                    <a href="all-challenge.html" data-page="all-challenge" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-all hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 group" style="text-decoration:none;">
+                        <span class="text-xl w-6 text-center">🏆</span>
+                        <span class="font-noto text-lg group-hover:text-purple-600 transition-colors">올도전</span>
                     </a>
                 </div>
             </nav>
@@ -436,12 +457,13 @@ function renderBottomNav(currentPage) {
 
     const savedApp = sessionStorage.getItem('selectedApp') || 'bookclub-krs';
     const isKRS = (savedApp === 'bookclub-krs');
-    const homeHref = isKRS ? 'home.html' : 'home2.html';
+    const isB2C = (savedApp === 'bookclub-b2c');
+    const homeHref = (savedApp === 'bookclub') ? 'home2.html' : 'home.html';
 
     const navItems = [
         { id: 'home', href: homeHref, icon: 'fa-solid fa-house', label: '홈' },
-        { id: 'library', href: 'library.html', icon: 'fa-solid fa-book-open', label: '도서관', krsOnly: true },
-        { id: 'book-library', href: 'book-library.html', icon: 'fa-solid fa-layer-group', label: '라이브러리' },
+        { id: 'library', href: 'library.html', icon: 'fa-solid fa-book-open', label: '도서관', krsOnly: true, b2cShow: true },
+        { id: 'book-library', href: 'book-library.html', icon: 'fa-solid fa-layer-group', label: '라이브러리', b2cHide: true },
         { id: 'mypage', href: 'mypage.html', icon: 'fa-solid fa-user', label: '마이페이지' },
     ];
 
@@ -451,14 +473,29 @@ function renderBottomNav(currentPage) {
 
     let inner = '<div class="bottom-nav-inner">';
     navItems.forEach(item => {
-        const krsAttr = item.krsOnly ? ' data-krs-only' : '';
-        const hiddenStyle = (item.krsOnly && !isKRS) ? ' style="display:none"' : '';
+        let attrs = '';
+        let hiddenStyle = '';
+
+        if (item.krsOnly) attrs += ' data-krs-only';
+        if (item.b2cShow) attrs += ' data-b2c-show';
+        if (item.b2cHide) attrs += ' data-b2c-hide';
+
+        // 가시성 결정
+        if (savedApp === 'bookclub') {
+            // 웅진북클럽: krsOnly 항목 숨김
+            if (item.krsOnly) hiddenStyle = ' style="display:none"';
+        } else if (isB2C) {
+            // B2C: krsOnly 기본 숨김, b2cShow만 표시, b2cHide 숨김
+            if (item.krsOnly && !item.b2cShow) hiddenStyle = ' style="display:none"';
+            if (item.b2cHide) hiddenStyle = ' style="display:none"';
+        }
+
         const isActive = (item.id === currentPage) || (item.id === 'home' && currentPage === 'home2');
         const activeClass = isActive ? ' active' : '';
 
         const iconEl = '<i class="' + item.icon + '"></i>';
 
-        inner += '<a href="' + item.href + '" class="bottom-nav-item' + activeClass + '"' + krsAttr + hiddenStyle + '>'
+        inner += '<a href="' + item.href + '" class="bottom-nav-item' + activeClass + '"' + attrs + hiddenStyle + '>'
             + iconEl + '<span>' + item.label + '</span></a>';
     });
     inner += '</div>';
@@ -479,13 +516,16 @@ function renderFloatingBuddy(currentPage) {
 
     const savedApp = sessionStorage.getItem('selectedApp') || 'bookclub-krs';
     const isKRS = (savedApp === 'bookclub-krs');
+    const isB2C = (savedApp === 'bookclub-b2c');
 
     const btn = document.createElement('a');
     btn.id = 'floating-buddy';
     btn.href = 'ai-buddy.html';
     btn.className = 'floating-buddy';
     btn.setAttribute('data-krs-only', '');
-    if (!isKRS) btn.style.display = 'none';
+    btn.setAttribute('data-b2c-show', '');
+    // KRS 또는 B2C 모드에서만 표시 (웅진북클럽 등에서는 숨김)
+    if (!isKRS && !isB2C) btn.style.display = 'none';
 
     btn.innerHTML = '<span class="floating-buddy-emoji">🐿️</span>'
         + '<span class="floating-buddy-pulse"></span>';

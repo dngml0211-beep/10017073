@@ -11,7 +11,7 @@
     </div>
 
     <!-- 앱 선택 메뉴 (드롭다운 - 오버레이) -->
-    <div id="app-menu" class="hidden absolute left-0 right-0 top-[62px] bottom-[50px] z-10 px-2 py-2 bg-white/95 backdrop-blur-sm animate-fadeIn overflow-y-auto">
+    <div id="app-menu" class="hidden absolute left-0 right-0 top-[42px] bottom-[50px] z-10 px-2 py-2 bg-white/95 backdrop-blur-sm animate-fadeIn overflow-y-auto">
         <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-1.5 space-y-0.5">
             <!-- 웅진북클럽 KRS -->
             <button onclick="selectApp('bookclub-krs')" class="app-item active w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all">
@@ -34,6 +34,17 @@
                     <p class="text-[10px] text-gray-400">독서 · 학습</p>
                 </div>
                 <i class="fa-solid fa-check text-brand-primary text-sm hidden" id="check-bookclub"></i>
+            </button>
+            <!-- 북클럽 B2C -->
+            <button onclick="selectApp('bookclub-b2c')" class="app-item w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all hover:bg-white">
+                <div class="w-9 h-9 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-xl flex items-center justify-center text-white text-base shadow-md">
+                    📕
+                </div>
+                <div class="text-left flex-1 min-w-0">
+                    <p class="font-noto text-sm text-gray-800 truncate">북클럽 B2C</p>
+                    <p class="text-[10px] text-gray-400">개인 독서</p>
+                </div>
+                <i class="fa-solid fa-check text-brand-primary text-sm hidden" id="check-bookclub-b2c"></i>
             </button>
             <!-- 스마트씽크빅 -->
             <button onclick="selectApp('smart-thinkbig')" class="app-item w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all hover:bg-white">
@@ -105,11 +116,11 @@
             <i class="fa-solid fa-house text-xl w-6 text-center"></i>
             <span class="font-noto text-lg tracking-wide">홈</span>
         </a>
-        <a href="library.html" data-page="library" data-krs-only class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors">
+        <a href="library.html" data-page="library" data-krs-only data-b2c-show class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors">
             <i class="fa-solid fa-book-open text-xl w-6 text-center"></i>
             <span class="font-noto text-lg tracking-wide">KRS 도서관</span>
         </a>
-        <a href="book-library.html" data-page="book-library" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors">
+        <a href="book-library.html" data-page="book-library" data-b2c-hide class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors">
             <i class="fa-solid fa-layer-group text-xl w-6 text-center"></i>
             <span class="font-noto text-lg tracking-wide">라이브러리</span>
         </a>
@@ -122,12 +133,20 @@
             <span class="font-noto text-lg tracking-wide">스타샵</span>
         </a>
 
-        <!-- KRS 전용: AI 독서도구함 -->
-        <div data-krs-only>
+        <!-- KRS/B2C 전용: AI 독서도구함 -->
+        <div data-krs-only data-b2c-show>
             <div class="pt-4 pb-2 px-2"></div>
             <a href="ai-buddy.html" data-page="ai-buddy" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-all hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 group" style="text-decoration:none;">
                 <span class="text-xl w-6 text-center">🧰</span>
                 <span class="font-noto text-lg tracking-wide group-hover:text-purple-600 transition-colors">AI 독서도구함</span>
+            </a>
+        </div>
+
+        <!-- KRS/B2C 전용: 올도전 -->
+        <div data-krs-only data-b2c-show>
+            <a href="all-challenge.html" data-page="all-challenge" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-all hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 group" style="text-decoration:none;">
+                <span class="text-xl w-6 text-center">🏆</span>
+                <span class="font-noto text-lg tracking-wide group-hover:text-purple-600 transition-colors">올도전</span>
             </a>
         </div>
     </nav>

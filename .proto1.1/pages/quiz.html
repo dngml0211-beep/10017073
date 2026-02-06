@@ -584,24 +584,33 @@
             const bookData = JSON.parse(sessionStorage.getItem('currentBook') || '{}');
             const week = bookData.week || 1;
             const bookType = bookData.bookType || 'core';
-            const progressKey = 'learningProgress_w' + week + '_' + bookType;
+            const isReReadingMode = sessionStorage.getItem('isReReadingMode') === 'true' || bookData.isReReading;
 
-            const progressData = JSON.parse(sessionStorage.getItem(progressKey) || '{}');
-            progressData.quizCompleted = true;
-            progressData.quizScore = accuracy;
-            sessionStorage.setItem(progressKey, JSON.stringify(progressData));
+            // 다시 읽기 모드에서는 실제 진행상태를 업데이트하지 않음
+            if (!isReReadingMode) {
+                const progressKey = 'learningProgress_w' + week + '_' + bookType;
+                const progressData = JSON.parse(sessionStorage.getItem(progressKey) || '{}');
+                progressData.quizCompleted = true;
+                progressData.quizScore = accuracy;
+                sessionStorage.setItem(progressKey, JSON.stringify(progressData));
 
-            // 교과서 짝꿍책 퀴즈 완료 시 별상자 트리거 플래그 설정
-            if (bookType === 'textbook') {
-                sessionStorage.setItem('textbookQuizJustCompleted', 'true');
-                sessionStorage.setItem('textbookQuizCompletedWeek', week.toString());
+                // 교과서 짝꿍책 퀴즈 완료 시 별상자 트리거 플래그 설정 (하위 호환)
+                if (bookType === 'textbook') {
+                    sessionStorage.setItem('textbookQuizJustCompleted', 'true');
+                    sessionStorage.setItem('textbookQuizCompletedWeek', week.toString());
+                }
+
+                // 기존 호환용 키에도 저장
+                const legacyProgress = JSON.parse(sessionStorage.getItem('learningProgress') || '{}');
+                legacyProgress.quizCompleted = true;
+                legacyProgress.quizScore = accuracy;
+                sessionStorage.setItem('learningProgress', JSON.stringify(legacyProgress));
             }
 
-            // 기존 호환용 키에도 저장
-            const legacyProgress = JSON.parse(sessionStorage.getItem('learningProgress') || '{}');
-            legacyProgress.quizCompleted = true;
-            legacyProgress.quizScore = accuracy;
-            sessionStorage.setItem('learningProgress', JSON.stringify(legacyProgress));
+            // 퀴즈 완료 플래그 설정 (홈에서 확인용 - 다시 읽기 모드에서도 필요)
+            sessionStorage.setItem('quizJustCompleted', 'true');
+            sessionStorage.setItem('quizCompletedWeek', week.toString());
+            sessionStorage.setItem('quizCompletedBookType', bookType);
         }
 
         function goToVocabChallenge() {
