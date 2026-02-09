@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>북클럽 3.0 놀이학습 v1.1</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Apple SD Gothic Neo',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body,#root{width:100%;height:100%;overflow:hidden;background:#f8fafc}
+@keyframes pop-in{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{transform:scale(1.15) rotate(5deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes sparkle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes confetti-fall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@keyframes slide-up{0%{transform:translateY(30px);opacity:0}100%{transform:translateY(0);opacity:1}}
+.anim-pop{animation:pop-in .5s ease-out both}
+.anim-float{animation:float 3s ease-in-out infinite}
+.anim-sparkle{animation:sparkle 1.5s ease-in-out infinite}
+.anim-shake{animation:shake .4s ease-in-out}
+.anim-slide-up{animation:slide-up .4s ease-out both}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useRef,useCallback,useReducer,useMemo} = React;
+
+/* ────────── 활동 정의 ────────── */
+const PAGES = [
+  {id:1, type:'intro',  title:'놀이학습 시작!', stars:0},
+  {id:2, type:'drag',   title:'동물 친구 집 찾기', stars:3},
+  {id:3, type:'color',  title:'무지개 나비 색칠하기', stars:2},
+  {id:4, type:'match',  title:'과일 이름 연결하기', stars:3},
+  {id:5, type:'camera', title:'나만의 북클럽 카메라', stars:2},
+];
+
+/* ────────── 리듀서 ────────── */
+function reducer(s, a) {
+  switch(a.type) {
+    case 'COMPLETE': {
+      const c = new Set(s.completed);
+      c.add(a.id);
+      return {...s, completed:c, totalStars:s.totalStars+(a.stars||0)};
+    }
+    case 'GO': return {...s, page:a.page};
+    case 'RESET': return {completed:new Set(), page:1, totalStars:0};
+    default: return s;
+  }
+}
+
+/* ────────── 완료 오버레이 ────────── */
+function CompletionOverlay({stars, onNext}) {
+  const [shown, setShown] = useState([]);
+  useEffect(() => {
+    const ts = [];
+    for (let i=0; i<stars; i++) ts.push(setTimeout(() => setShown(p=>[...p,i]), 500+i*400));
+    return () => ts.forEach(clearTimeout);
+  }, [stars]);
+  return (
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm anim-slide-up">
+      <div className="bg-white rounded-3xl p-8 shadow-2xl flex flex-col items-center gap-5 mx-6 max-w-sm w-full">
+        <div className="text-6xl anim-float">🎉</div>
+        <h3 className="text-2xl font-black text-gray-800">잘했어요!</h3>
+        <div className="flex gap-3">
+          {Array.from({length:stars}).map((_,i)=>(
+            <span key={i} className="text-5xl transition-all duration-500"
+              style={{transform:shown.includes(i)?'scale(1) rotate(0)':'scale(0) rotate(-180deg)',
+                      opacity:shown.includes(i)?1:0, transitionDelay:`${i*100}ms`}}>⭐</span>
+          ))}
+        </div>
+        <button onClick={onNext}
+          className="mt-2 px-10 py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-black rounded-full shadow-lg active:scale-95 transition-transform text-lg">
+          다음으로 →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ────────── 최종 완료 오버레이 ────────── */
+function FinalOverlay({totalStars, onRestart}) {
+  return (
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-amber-400/90 to-orange-500/90 backdrop-blur-sm">
+      <div className="bg-white rounded-3xl p-10 shadow-2xl flex flex-col items-center gap-5 mx-6 max-w-sm w-full anim-pop">
+        <div className="text-7xl">🏆</div>
+        <h3 className="text-3xl font-black text-gray-800">모두 완료!</h3>
+        <p className="text-lg text-gray-500 text-center">놀이학습을 모두 끝냈어요</p>
+        <div className="flex items-center gap-2 bg-amber-50 px-6 py-3 rounded-2xl">
+          <span className="text-3xl">⭐</span>
+          <span className="text-3xl font-black text-amber-600">{totalStars}개</span>
+        </div>
+        <button onClick={onRestart}
+          className="mt-2 px-10 py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-black rounded-full shadow-lg active:scale-95 transition-transform">
+          처음부터 다시하기
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   1. 인트로 페이지
+   ══════════════════════════════════════ */
+function IntroPage({onComplete}) {
+  const activities = [
+    {emoji:'🐾', label:'동물 친구 집 찾기', color:'bg-emerald-50 text-emerald-700'},
+    {emoji:'🎨', label:'무지개 나비 색칠하기', color:'bg-pink-50 text-pink-700'},
+    {emoji:'🔗', label:'과일 이름 연결하기', color:'bg-purple-50 text-purple-700'},
+    {emoji:'📸', label:'나만의 북클럽 카메라', color:'bg-sky-50 text-sky-700'},
+  ];
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-sky-50 via-white to-amber-50 px-6">
+      <div className="text-8xl mb-6 anim-float">🎮</div>
+      <h2 className="text-3xl font-black text-gray-800 mb-2">놀이학습 시작!</h2>
+      <p className="text-base text-gray-400 mb-8">재미있는 활동 4가지가 기다리고 있어요</p>
+      <div className="flex flex-col gap-3 w-full max-w-xs mb-10">
+        {activities.map((a,i)=>(
+          <div key={i} className={`flex items-center gap-4 px-5 py-3 rounded-2xl ${a.color} anim-slide-up`}
+               style={{animationDelay:`${i*100}ms`}}>
+            <span className="text-2xl">{a.emoji}</span>
+            <span className="font-bold">{a.label}</span>
+          </div>
+        ))}
+      </div>
+      <button onClick={onComplete}
+        className="px-12 py-5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-black rounded-full shadow-xl active:scale-95 transition-transform text-xl">
+        시작하기!
+      </button>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   2. 드래그앤드롭 - 동물 친구 집 찾기
+   ══════════════════════════════════════ */
+function DragDropActivity({onComplete}) {
+  const ANIMALS = [
+    {id:'dog',   emoji:'🐕', name:'강아지', target:'house'},
+    {id:'fish',  emoji:'🐟', name:'물고기', target:'water'},
+    {id:'bird',  emoji:'🐦', name:'새',     target:'tree'},
+    {id:'rabbit',emoji:'🐰', name:'토끼',   target:'burrow'},
+  ];
+  const ZONES = [
+    {id:'house', emoji:'🏠', name:'집',   bg:'bg-orange-50 border-orange-200'},
+    {id:'water', emoji:'🌊', name:'연못', bg:'bg-blue-50 border-blue-200'},
+    {id:'tree',  emoji:'🌳', name:'나무', bg:'bg-green-50 border-green-200'},
+    {id:'burrow',emoji:'🕳️', name:'굴',   bg:'bg-amber-50 border-amber-200'},
+  ];
+  const cRef = useRef(null);
+  const [items, setItems] = useState(()=>
+    ANIMALS.map((a,i)=>({...a, placed:false, correct:false}))
+  );
+  const [dragging, setDragging] = useState(null);
+  const [dragPos, setDragPos] = useState({x:0,y:0});
+  const dragPosRef = useRef({x:0,y:0}); // ref로 실시간 위치 추적
+  const draggingRef = useRef(null);
+  const [showDone, setShowDone] = useState(false);
+  const [shakeId, setShakeId] = useState(null);
+  const zoneRefs = useRef({});
+
+  const handleDragStart = (e, itemId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const it = items.find(i=>i.id===itemId);
+    if (it.placed) return;
+    draggingRef.current = itemId;
+    setDragging(itemId);
+    const pos = {x:e.clientX, y:e.clientY};
+    dragPosRef.current = pos;
+    setDragPos(pos);
+  };
+
+  const handleDragMove = useCallback((e) => {
+    if (!draggingRef.current) return;
+    e.preventDefault();
+    const pos = {x:e.clientX, y:e.clientY};
+    dragPosRef.current = pos;
+    setDragPos(pos);
+  },[]);
+
+  const handleDragEnd = useCallback((e) => {
+    const currentDragging = draggingRef.current;
+    if (!currentDragging) return;
+    // 이벤트에서 직접 좌표 읽기 (pointerup 좌표가 있으면 사용, 없으면 ref)
+    const endX = e.clientX || dragPosRef.current.x;
+    const endY = e.clientY || dragPosRef.current.y;
+
+    // 각 zone과의 거리 체크 - 존 영역 안에 들어왔는지 판정
+    let matched = null;
+    let minDist = Infinity;
+    ZONES.forEach(z => {
+      const el = zoneRefs.current[z.id];
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      // 존 영역 내부에 있는지 체크 (여유 마진 20px)
+      const margin = 20;
+      const inZone = endX >= r.left - margin && endX <= r.right + margin &&
+                     endY >= r.top - margin && endY <= r.bottom + margin;
+      if (inZone) {
+        const cx = r.left + r.width/2;
+        const cy = r.top + r.height/2;
+        const dist = Math.sqrt(Math.pow(endX-cx,2)+Math.pow(endY-cy,2));
+        if (dist < minDist) {
+          minDist = dist;
+          matched = z;
+        }
+      }
+    });
+
+    setItems(prev => {
+      const dragItem = prev.find(i=>i.id===currentDragging);
+      if (!dragItem) return prev;
+
+      if (matched && matched.id === dragItem.target) {
+        // 정답
+        const next = prev.map(it => it.id===currentDragging ? {...it, placed:true, correct:true, placedZone:matched.id} : it);
+        if (next.every(it=>it.placed)) setTimeout(()=>setShowDone(true), 600);
+        return next;
+      } else if (matched) {
+        // 오답 - 흔들기
+        setShakeId(currentDragging);
+        setTimeout(()=>setShakeId(null), 500);
+      }
+      return prev;
+    });
+
+    draggingRef.current = null;
+    setDragging(null);
+  },[]);
+
+  // document 레벨에서 pointermove/pointerup 처리 (드래그 중 영역 벗어나도 동작)
+  useEffect(() => {
+    document.addEventListener('pointermove', handleDragMove);
+    document.addEventListener('pointerup', handleDragEnd);
+    document.addEventListener('pointercancel', handleDragEnd);
+    return () => {
+      document.removeEventListener('pointermove', handleDragMove);
+      document.removeEventListener('pointerup', handleDragEnd);
+      document.removeEventListener('pointercancel', handleDragEnd);
+    };
+  }, [handleDragMove, handleDragEnd]);
+
+  const placedInZone = (zoneId) => items.find(it=>it.placed && it.placedZone===zoneId);
+
+  return (
+    <div className="w-full h-full flex flex-col bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 select-none"
+         style={{touchAction:'none'}}>
+      {/* 안내 */}
+      <div className="text-center py-3 px-4">
+        <p className="text-sm font-bold text-emerald-700">🐾 동물을 드래그해서 알맞은 집에 놓아주세요!</p>
+      </div>
+
+      <div className="flex-1 flex px-4 pb-4 gap-4">
+        {/* 왼쪽: 동물 카드 */}
+        <div className="flex flex-col gap-3 justify-center w-1/3">
+          {items.filter(it=>!it.placed).map(it=>(
+            <div key={it.id}
+              className={`flex items-center gap-3 px-4 py-4 bg-white rounded-2xl shadow-lg border-2 border-gray-100 cursor-grab active:cursor-grabbing transition-all
+                ${shakeId===it.id ? 'anim-shake border-red-300 bg-red-50' : 'hover:shadow-xl hover:scale-105'}
+                ${dragging===it.id ? 'opacity-40 scale-90' : ''}`}
+              onPointerDown={e=>handleDragStart(e, it.id)}
+              style={{touchAction:'none'}}>
+              <span className="text-4xl">{it.emoji}</span>
+              <span className="font-black text-gray-700">{it.name}</span>
+            </div>
+          ))}
+          {items.filter(it=>!it.placed).length===0 && (
+            <div className="text-center text-gray-400 font-bold py-8">모두 완료!</div>
+          )}
+        </div>
+
+        {/* 오른쪽: 드롭 존 */}
+        <div className="flex flex-col gap-3 justify-center flex-1">
+          {ZONES.map(z=>{
+            const placed = placedInZone(z.id);
+            return (
+              <div key={z.id} ref={el=>zoneRefs.current[z.id]=el}
+                className={`flex items-center gap-4 px-5 py-5 rounded-2xl border-3 border-dashed transition-all
+                  ${placed ? 'bg-green-50 border-green-400 shadow-lg' : z.bg}`}>
+                <span className="text-4xl">{z.emoji}</span>
+                <span className="font-black text-lg text-gray-600">{z.name}</span>
+                {placed && (
+                  <div className="ml-auto flex items-center gap-2 anim-pop">
+                    <span className="text-3xl">{placed.emoji}</span>
+                    <span className="text-green-500 text-2xl">✅</span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 드래그 중인 아이템 (플로팅) */}
+      {dragging && (
+        <div className="fixed z-50 pointer-events-none"
+          style={{left:dragPos.x-40, top:dragPos.y-40}}>
+          <div className="w-20 h-20 bg-white rounded-2xl shadow-2xl flex items-center justify-center border-2 border-blue-400">
+            <span className="text-5xl">{items.find(i=>i.id===dragging)?.emoji}</span>
+          </div>
+        </div>
+      )}
+
+      {showDone && <CompletionOverlay stars={3} onNext={onComplete}/>}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   3. 색칠하기 - 무지개 나비
+   ══════════════════════════════════════ */
+function ColoringActivity({onComplete}) {
+  const PALETTE = ['#EF4444','#F97316','#FACC15','#22C55E','#3B82F6','#8B5CF6','#EC4899','#FFFFFF'];
+  const canvasRef = useRef(null);
+  const ctxRef = useRef(null);
+  const containerRef = useRef(null);
+  const [color, setColor] = useState(PALETTE[0]);
+  const [tool, setTool] = useState('pen');
+  const [lineWidth, setLineWidth] = useState(8);
+  const drawing = useRef(false);
+  const history = useRef([]);
+  const [histLen, setHistLen] = useState(0);
+  const [showDone, setShowDone] = useState(false);
+
+  /* 나비 윤곽선 그리기 */
+  const drawButterfly = useCallback((ctx, w, h) => {
+    ctx.save();
+    ctx.fillStyle = '#FFFBEB';
+    ctx.fillRect(0,0,w,h);
+
+    const cx = w/2, cy = h/2;
+    const s = Math.min(w,h) * 0.35;
+
+    ctx.strokeStyle = '#374151';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    // 왼쪽 위 날개
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - s*0.1);
+    ctx.bezierCurveTo(cx - s*0.5, cy - s*1.0, cx - s*1.2, cy - s*0.6, cx - s*0.8, cy - s*0.05);
+    ctx.bezierCurveTo(cx - s*0.6, cy + s*0.1, cx - s*0.2, cy + s*0.05, cx, cy + s*0.05);
+    ctx.stroke();
+
+    // 오른쪽 위 날개
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - s*0.1);
+    ctx.bezierCurveTo(cx + s*0.5, cy - s*1.0, cx + s*1.2, cy - s*0.6, cx + s*0.8, cy - s*0.05);
+    ctx.bezierCurveTo(cx + s*0.6, cy + s*0.1, cx + s*0.2, cy + s*0.05, cx, cy + s*0.05);
+    ctx.stroke();
+
+    // 왼쪽 아래 날개
+    ctx.beginPath();
+    ctx.moveTo(cx, cy + s*0.05);
+    ctx.bezierCurveTo(cx - s*0.3, cy + s*0.15, cx - s*0.9, cy + s*0.2, cx - s*0.7, cy + s*0.65);
+    ctx.bezierCurveTo(cx - s*0.5, cy + s*0.8, cx - s*0.15, cy + s*0.5, cx, cy + s*0.35);
+    ctx.stroke();
+
+    // 오른쪽 아래 날개
+    ctx.beginPath();
+    ctx.moveTo(cx, cy + s*0.05);
+    ctx.bezierCurveTo(cx + s*0.3, cy + s*0.15, cx + s*0.9, cy + s*0.2, cx + s*0.7, cy + s*0.65);
+    ctx.bezierCurveTo(cx + s*0.5, cy + s*0.8, cx + s*0.15, cy + s*0.5, cx, cy + s*0.35);
+    ctx.stroke();
+
+    // 몸통
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + s*0.1, s*0.06, s*0.45, 0, 0, Math.PI*2);
+    ctx.fillStyle = '#92400E';
+    ctx.fill();
+    ctx.stroke();
+
+    // 머리
+    ctx.beginPath();
+    ctx.arc(cx, cy - s*0.35, s*0.1, 0, Math.PI*2);
+    ctx.fillStyle = '#78350F';
+    ctx.fill();
+    ctx.stroke();
+
+    // 더듬이
+    ctx.beginPath();
+    ctx.moveTo(cx - s*0.04, cy - s*0.42);
+    ctx.quadraticCurveTo(cx - s*0.25, cy - s*0.7, cx - s*0.2, cy - s*0.75);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx - s*0.2, cy - s*0.75, 4, 0, Math.PI*2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(cx + s*0.04, cy - s*0.42);
+    ctx.quadraticCurveTo(cx + s*0.25, cy - s*0.7, cx + s*0.2, cy - s*0.75);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx + s*0.2, cy - s*0.75, 4, 0, Math.PI*2);
+    ctx.fill();
+
+    // 날개 패턴 (점선 원)
+    const dotR = s * 0.12;
+    [
+      [cx - s*0.45, cy - s*0.35],
+      [cx + s*0.45, cy - s*0.35],
+      [cx - s*0.35, cy - s*0.55],
+      [cx + s*0.35, cy - s*0.55],
+      [cx - s*0.5, cy + s*0.35],
+      [cx + s*0.5, cy + s*0.35],
+    ].forEach(([px,py]) => {
+      ctx.beginPath();
+      ctx.arc(px, py, dotR, 0, Math.PI*2);
+      ctx.setLineDash([4,4]);
+      ctx.strokeStyle = '#9CA3AF';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.strokeStyle = '#374151';
+      ctx.lineWidth = 3;
+    });
+
+    ctx.restore();
+  }, []);
+
+  /* 캔버스 초기화 */
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
+    const dpr = window.devicePixelRatio || 1;
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctxRef.current = ctx;
+    drawButterfly(ctx, w, h);
+    saveHistory();
+  }, [drawButterfly]);
+
+  const saveHistory = () => {
+    const c = canvasRef.current;
+    if (!c) return;
+    const data = c.toDataURL();
+    history.current.push(data);
+    if (history.current.length > 30) history.current.shift();
+    setHistLen(history.current.length);
+  };
+
+  const undo = () => {
+    if (history.current.length <= 1) return;
+    history.current.pop();
+    const last = history.current[history.current.length-1];
+    const img = new Image();
+    img.onload = () => {
+      const c = canvasRef.current;
+      const ctx = ctxRef.current;
+      const dpr = window.devicePixelRatio || 1;
+      ctx.clearRect(0,0,c.width/dpr,c.height/dpr);
+      ctx.drawImage(img, 0, 0, c.width/dpr, c.height/dpr);
+      setHistLen(history.current.length);
+    };
+    img.src = last;
+  };
+
+  /* Flood Fill */
+  const floodFill = (canvas, ctx, startX, startY, fillColor) => {
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.width;
+    const h = canvas.height;
+    const sx = Math.round(startX * dpr);
+    const sy = Math.round(startY * dpr);
+    const imgData = ctx.getImageData(0,0,w,h);
+    const data = imgData.data;
+    const idx = (sy*w+sx)*4;
+    const sr = data[idx], sg = data[idx+1], sb = data[idx+2], sa = data[idx+3];
+
+    // Parse fill color
+    const temp = document.createElement('canvas').getContext('2d');
+    temp.fillStyle = fillColor;
+    temp.fillRect(0,0,1,1);
+    const fc = temp.getImageData(0,0,1,1).data;
+    if (sr===fc[0]&&sg===fc[1]&&sb===fc[2]) return;
+
+    const tolerance = 40;
+    const match = (i) => {
+      return Math.abs(data[i]-sr)<=tolerance &&
+             Math.abs(data[i+1]-sg)<=tolerance &&
+             Math.abs(data[i+2]-sb)<=tolerance &&
+             Math.abs(data[i+3]-sa)<=tolerance;
+    };
+    const stack = [[sx,sy]];
+    const visited = new Set();
+    while(stack.length) {
+      const [x,y] = stack.pop();
+      const key = y*w+x;
+      if (visited.has(key)||x<0||x>=w||y<0||y>=h) continue;
+      const i = key*4;
+      if (!match(i)) continue;
+      visited.add(key);
+      data[i]=fc[0]; data[i+1]=fc[1]; data[i+2]=fc[2]; data[i+3]=255;
+      stack.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
+    }
+    // Save back with original scale
+    const tmpCtx = document.createElement('canvas').getContext('2d');
+    tmpCtx.canvas.width = w;
+    tmpCtx.canvas.height = h;
+    tmpCtx.putImageData(imgData, 0, 0);
+    ctx.save();
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0,0,w,h);
+    ctx.drawImage(tmpCtx.canvas, 0, 0);
+    ctx.restore();
+  };
+
+  const getPos = (e) => {
+    const r = canvasRef.current.getBoundingClientRect();
+    const cx = (e.touches ? e.touches[0].clientX : e.clientX);
+    const cy = (e.touches ? e.touches[0].clientY : e.clientY);
+    return {x: cx - r.left, y: cy - r.top};
+  };
+
+  const handleStart = (e) => {
+    e.preventDefault();
+    const pos = getPos(e);
+    if (tool === 'fill') {
+      const dpr = window.devicePixelRatio || 1;
+      const ctx = ctxRef.current;
+      ctx.save();
+      ctx.setTransform(1,0,0,1,0,0);
+      floodFill(canvasRef.current, ctx, pos.x, pos.y, color);
+      ctx.restore();
+      saveHistory();
+      return;
+    }
+    drawing.current = true;
+    const ctx = ctxRef.current;
+    ctx.strokeStyle = tool==='eraser' ? '#FFFBEB' : color;
+    ctx.lineWidth = tool==='eraser' ? lineWidth*3 : lineWidth;
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+  };
+
+  const handleMove = (e) => {
+    if (!drawing.current) return;
+    e.preventDefault();
+    const pos = getPos(e);
+    ctxRef.current.lineTo(pos.x, pos.y);
+    ctxRef.current.stroke();
+  };
+
+  const handleEnd = () => {
+    if (drawing.current) { drawing.current = false; saveHistory(); }
+  };
+
+  return (
+    <div className="w-full h-full flex flex-col bg-amber-50 select-none">
+      {/* 안내 */}
+      <div className="text-center py-2 px-4 bg-white/80">
+        <p className="text-sm font-bold text-pink-600">🎨 나비를 예쁘게 색칠해보세요!</p>
+      </div>
+
+      {/* 캔버스 */}
+      <div ref={containerRef} className="flex-1 relative overflow-hidden">
+        <canvas ref={canvasRef} className="absolute inset-0"
+          style={{touchAction:'none'}}
+          onPointerDown={handleStart} onPointerMove={handleMove}
+          onPointerUp={handleEnd} onPointerCancel={handleEnd}/>
+      </div>
+
+      {/* 도구바 */}
+      <div className="bg-white border-t border-gray-200 px-3 py-2 space-y-2">
+        {/* 색상 */}
+        <div className="flex items-center gap-2 justify-center">
+          {PALETTE.map(c=>(
+            <button key={c} onClick={()=>{setColor(c);setTool('pen');}}
+              className={`w-9 h-9 rounded-full border-3 transition-all ${color===c&&tool==='pen'?'scale-125 border-gray-800 shadow-lg':'border-gray-200'}`}
+              style={{backgroundColor:c, boxShadow:c==='#FFFFFF'?'inset 0 0 0 1px #ddd':'none'}}/>
+          ))}
+        </div>
+        {/* 도구 */}
+        <div className="flex items-center gap-2 justify-center">
+          <button onClick={()=>setTool('pen')}
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition ${tool==='pen'?'bg-gray-800 text-white':'bg-gray-100 text-gray-600'}`}>
+            ✏️ 펜
+          </button>
+          <button onClick={()=>setTool('fill')}
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition ${tool==='fill'?'bg-gray-800 text-white':'bg-gray-100 text-gray-600'}`}>
+            🪣 채우기
+          </button>
+          <button onClick={()=>setTool('eraser')}
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition ${tool==='eraser'?'bg-gray-800 text-white':'bg-gray-100 text-gray-600'}`}>
+            🧹 지우개
+          </button>
+          <div className="flex items-center gap-1 ml-2">
+            <span className="text-xs text-gray-400">굵기</span>
+            <input type="range" min="2" max="20" value={lineWidth} onChange={e=>setLineWidth(+e.target.value)}
+              className="w-20 h-1.5 accent-gray-700"/>
+          </div>
+          <button onClick={undo} disabled={histLen<=1}
+            className={`px-4 py-2 rounded-xl text-sm font-bold ${histLen>1?'bg-gray-100 text-gray-600':'bg-gray-50 text-gray-300'}`}>
+            ↩ 되돌리기
+          </button>
+          <button onClick={()=>setShowDone(true)}
+            className="px-4 py-2 rounded-xl text-sm font-bold bg-green-500 text-white shadow">
+            ✅ 완료
+          </button>
+        </div>
+      </div>
+
+      {showDone && <CompletionOverlay stars={2} onNext={onComplete}/>}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   4. 선긋기 - 과일 이름 연결하기
+   ══════════════════════════════════════ */
+function LineMatchActivity({onComplete}) {
+  const WORDS = [
+    {id:'apple',  text:'사과', emoji:'🍎'},
+    {id:'banana', text:'바나나',emoji:'🍌'},
+    {id:'grape',  text:'포도', emoji:'🍇'},
+    {id:'melon',  text:'수박', emoji:'🍉'},
+  ];
+
+  const cRef = useRef(null);
+  const [connections, setConnections] = useState([]);
+  const [active, setActive] = useState(null);
+  const [mousePos, setMousePos] = useState({x:0,y:0});
+  const [wrongLine, setWrongLine] = useState(null);
+  const [showDone, setShowDone] = useState(false);
+  const leftRefs = useRef({});
+  const rightRefs = useRef({});
+  const shuffled = useMemo(()=>[...WORDS].sort(()=>Math.random()-0.5),[]);
+
+  const getCenter = (el) => {
+    if (!el||!cRef.current) return {x:0,y:0};
+    const cr = cRef.current.getBoundingClientRect();
+    const er = el.getBoundingClientRect();
+    return {x:er.left+er.width/2-cr.left, y:er.top+er.height/2-cr.top};
+  };
+
+  const getPos = (e) => {
+    if (!cRef.current) return {x:0,y:0};
+    const cr = cRef.current.getBoundingClientRect();
+    const cx = e.touches ? e.touches[0].clientX : e.clientX;
+    const cy = e.touches ? e.touches[0].clientY : e.clientY;
+    return {x:cx-cr.left, y:cy-cr.top};
+  };
+
+  const handleLeftDown = (e, wordId) => {
+    e.preventDefault();
+    if (connections.find(c=>c.from===wordId)) return;
+    const center = getCenter(leftRefs.current[wordId]);
+    setActive({from:wordId, startX:center.x, startY:center.y});
+    setMousePos(getPos(e));
+  };
+
+  const handleMove = (e) => {
+    if (!active) return;
+    e.preventDefault();
+    setMousePos(getPos(e));
+  };
+
+  const handleUp = (e) => {
+    if (!active) return;
+    const pos = getPos(e);
+    let matched = null;
+    shuffled.forEach(w => {
+      const el = rightRefs.current[w.id];
+      if (!el) return;
+      const center = getCenter(el);
+      const dist = Math.sqrt(Math.pow(pos.x-center.x,2)+Math.pow(pos.y-center.y,2));
+      if (dist < 50 && !connections.find(c=>c.to===w.id)) matched = w;
+    });
+
+    if (matched) {
+      const endCenter = getCenter(rightRefs.current[matched.id]);
+      if (matched.id === active.from) {
+        // 정답
+        const newConn = {from:active.from, to:matched.id, sx:active.startX, sy:active.startY, ex:endCenter.x, ey:endCenter.y};
+        const next = [...connections, newConn];
+        setConnections(next);
+        if (next.length === WORDS.length) setTimeout(()=>setShowDone(true), 600);
+      } else {
+        // 오답
+        setWrongLine({sx:active.startX, sy:active.startY, ex:endCenter.x, ey:endCenter.y});
+        setTimeout(()=>setWrongLine(null), 700);
+      }
+    }
+    setActive(null);
+  };
+
+  return (
+    <div className="w-full h-full relative bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 select-none overflow-hidden"
+      ref={cRef} style={{touchAction:'none'}}
+      onPointerMove={handleMove} onPointerUp={handleUp} onPointerCancel={()=>setActive(null)}>
+
+      <div className="text-center py-3">
+        <p className="text-sm font-bold text-purple-700">🔗 왼쪽 단어를 오른쪽 과일로 선을 그어 연결하세요!</p>
+      </div>
+
+      {/* SVG 선 */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
+        {connections.map((c,i)=>(
+          <g key={i}>
+            <line x1={c.sx} y1={c.sy} x2={c.ex} y2={c.ey} stroke="#22C55E" strokeWidth="4" strokeLinecap="round"/>
+            <text x={(c.sx+c.ex)/2} y={(c.sy+c.ey)/2-10} textAnchor="middle" fontSize="20">✅</text>
+          </g>
+        ))}
+        {active && (
+          <line x1={active.startX} y1={active.startY} x2={mousePos.x} y2={mousePos.y}
+            stroke="#3B82F6" strokeWidth="4" strokeDasharray="10,5" strokeLinecap="round" opacity="0.7"/>
+        )}
+        {wrongLine && (
+          <line x1={wrongLine.sx} y1={wrongLine.sy} x2={wrongLine.ex} y2={wrongLine.ey}
+            stroke="#EF4444" strokeWidth="4" strokeLinecap="round" opacity="0.8">
+            <animate attributeName="opacity" from="0.8" to="0" dur="0.7s" fill="freeze"/>
+          </line>
+        )}
+      </svg>
+
+      {/* 왼쪽: 단어 */}
+      <div className="absolute left-6 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-20">
+        {WORDS.map(w=>{
+          const connected = connections.find(c=>c.from===w.id);
+          return (
+            <div key={w.id} ref={el=>leftRefs.current[w.id]=el}
+              className={`px-6 py-4 rounded-2xl font-black text-lg shadow-lg cursor-pointer transition-all
+                ${connected ? 'bg-green-100 text-green-700 border-2 border-green-400 scale-95' : 'bg-white text-gray-700 border-2 border-gray-100 active:scale-95 hover:shadow-xl'}`}
+              onPointerDown={e=>handleLeftDown(e,w.id)}>
+              {w.text}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* 오른쪽: 과일 이모지 */}
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-20">
+        {shuffled.map(w=>{
+          const connected = connections.find(c=>c.to===w.id);
+          return (
+            <div key={w.id} ref={el=>rightRefs.current[w.id]=el}
+              className={`w-18 h-18 rounded-2xl flex items-center justify-center text-5xl shadow-lg transition-all
+                ${connected ? 'bg-green-100 border-2 border-green-400 scale-95' : 'bg-white border-2 border-gray-100'}`}
+              style={{width:'72px',height:'72px'}}>
+              {w.emoji}
+            </div>
+          );
+        })}
+      </div>
+
+      {showDone && <CompletionOverlay stars={3} onNext={onComplete}/>}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   5. 카메라 - 나만의 북클럽 카메라
+   ══════════════════════════════════════ */
+function CameraModule({onComplete}) {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const streamRef = useRef(null);
+  const [phase, setPhase] = useState('init');
+  const [photoSrc, setPhotoSrc] = useState(null);
+  const [showDone, setShowDone] = useState(false);
+  const [frame, setFrame] = useState('classic');
+
+  const FRAMES = [
+    {id:'classic', label:'클래식', border:'border-amber-700', bg:'bg-amber-50'},
+    {id:'rainbow', label:'무지개', border:'border-pink-400',  bg:'bg-gradient-to-r from-pink-50 to-sky-50'},
+    {id:'star',    label:'별별',   border:'border-indigo-400',bg:'bg-indigo-50'},
+  ];
+
+  const SAMPLES = [
+    {emoji:'📚',label:'책'},
+    {emoji:'🌈',label:'무지개'},
+    {emoji:'🌻',label:'해바라기'},
+    {emoji:'🎨',label:'팔레트'},
+    {emoji:'🦊',label:'여우'},
+    {emoji:'🐰',label:'토끼'},
+  ];
+
+  const startCamera = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video:{facingMode:{ideal:'environment'},width:{ideal:640},height:{ideal:480}},audio:false
+      });
+      streamRef.current = stream;
+      if (videoRef.current) {videoRef.current.srcObject=stream;videoRef.current.play();}
+      setPhase('live');
+    } catch(e) {
+      console.warn('Camera unavailable:', e);
+      setPhase('fallback');
+    }
+  },[]);
+
+  const stopCamera = useCallback(()=>{
+    if (streamRef.current) {streamRef.current.getTracks().forEach(t=>t.stop());streamRef.current=null;}
+  },[]);
+
+  useEffect(()=>{startCamera();return ()=>stopCamera();},[startCamera,stopCamera]);
+
+  const capture = () => {
+    const v = videoRef.current, c = canvasRef.current;
+    if (!v||!c) return;
+    c.width=v.videoWidth; c.height=v.videoHeight;
+    c.getContext('2d').drawImage(v,0,0);
+    setPhotoSrc(c.toDataURL('image/jpeg',0.85));
+    stopCamera();
+    setPhase('review');
+  };
+
+  const useSample = (emoji) => {
+    const c = document.createElement('canvas');
+    c.width=400;c.height=400;
+    const ctx=c.getContext('2d');
+    ctx.fillStyle='#F0F9FF';ctx.fillRect(0,0,400,400);
+    ctx.font='140px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(emoji,200,200);
+    setPhotoSrc(c.toDataURL('image/png'));
+    setPhase('review');
+  };
+
+  const retake = () => {setPhotoSrc(null);startCamera();};
+
+  const currentFrame = FRAMES.find(f=>f.id===frame);
+
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 select-none relative">
+      <canvas ref={canvasRef} className="hidden"/>
+
+      {phase==='init' && (
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-3 border-white/30 border-t-white rounded-full animate-spin"/>
+          <span className="text-sm text-white/60">카메라 준비 중...</span>
+        </div>
+      )}
+
+      {phase==='live' && (
+        <div className="flex flex-col items-center gap-5">
+          <div className={`relative rounded-2xl overflow-hidden shadow-2xl border-4 ${currentFrame.border}`}>
+            <video ref={videoRef} className="w-80 h-60 object-cover bg-black" autoPlay playsInline muted/>
+          </div>
+          {/* 프레임 선택 */}
+          <div className="flex gap-2">
+            {FRAMES.map(f=>(
+              <button key={f.id} onClick={()=>setFrame(f.id)}
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${frame===f.id?'bg-white text-gray-800 shadow-lg':'bg-white/10 text-white/70 border border-white/20'}`}>
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <button onClick={capture}
+            className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-xl active:scale-90 transition-transform">
+            <div className="w-16 h-16 rounded-full border-4 border-gray-300"/>
+          </button>
+        </div>
+      )}
+
+      {phase==='fallback' && (
+        <div className="flex flex-col items-center gap-5 px-8">
+          <span className="text-5xl">📷</span>
+          <p className="text-base text-white/70 text-center font-bold">카메라를 사용할 수 없어요</p>
+          <p className="text-sm text-white/50 text-center">아래에서 샘플 이미지를 선택해주세요!</p>
+          <div className="grid grid-cols-3 gap-3 mt-2">
+            {SAMPLES.map(s=>(
+              <button key={s.emoji} onClick={()=>useSample(s.emoji)}
+                className="flex flex-col items-center gap-1 w-20 h-20 rounded-2xl bg-white/10 justify-center text-3xl hover:bg-white/20 active:scale-95 transition-all border border-white/20">
+                <span>{s.emoji}</span>
+                <span className="text-[10px] text-white/50">{s.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {phase==='review' && photoSrc && (
+        <div className="flex flex-col items-center gap-5">
+          <div className={`${currentFrame.bg} p-4 pb-12 rounded-lg shadow-2xl transform -rotate-2`}>
+            <img src={photoSrc} className="w-72 h-52 object-cover rounded" alt="촬영 사진"/>
+            <p className="text-center text-xs text-gray-400 mt-2 font-bold">📸 북클럽 3.0</p>
+          </div>
+          <div className="flex gap-3">
+            <button onClick={retake}
+              className="px-6 py-3 rounded-full bg-white/10 text-white font-bold border border-white/20 active:scale-95 transition">
+              🔄 다시찍기
+            </button>
+            <button onClick={()=>{setPhase('done');}}
+              className="px-6 py-3 rounded-full bg-white text-gray-800 font-bold active:scale-95 transition shadow-lg">
+              ✅ 사용하기
+            </button>
+          </div>
+        </div>
+      )}
+
+      {phase==='done' && photoSrc && (
+        <div className="flex flex-col items-center gap-5">
+          <div className="relative anim-pop">
+            <div className={`${currentFrame.bg} p-5 pb-16 rounded-lg shadow-2xl transform rotate-1`}>
+              <img src={photoSrc} className="w-72 h-52 object-cover rounded" alt="내 사진"/>
+              <div className="absolute bottom-5 inset-x-0 text-center">
+                <p className="font-black text-gray-700">나의 북클럽 사진</p>
+                <p className="text-xs text-gray-400 mt-0.5">{new Date().toLocaleDateString('ko-KR')}</p>
+              </div>
+            </div>
+            <div className="absolute -top-4 -right-4 text-3xl anim-float">📌</div>
+          </div>
+          {!showDone && (
+            <button onClick={()=>setShowDone(true)}
+              className="px-10 py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-black rounded-full shadow-lg active:scale-95 transition-transform text-lg">
+              완료하기 🎉
+            </button>
+          )}
+          {showDone && <CompletionOverlay stars={2} onNext={onComplete}/>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   메인 뷰어
+   ══════════════════════════════════════ */
+function PlayLearningViewer() {
+  const [state, dispatch] = useReducer(reducer, {completed:new Set(), page:1, totalStars:0});
+  const def = PAGES[state.page-1];
+  const total = PAGES.length;
+  const allDone = state.completed.size === total;
+
+  const handleComplete = useCallback(()=>{
+    dispatch({type:'COMPLETE', id:def.id, stars:def.stars});
+    if (state.page < total) dispatch({type:'GO', page:state.page+1});
+  },[def, state.page, total]);
+
+  const renderActivity = () => {
+    switch(def.type) {
+      case 'intro':  return <IntroPage onComplete={handleComplete}/>;
+      case 'drag':   return <DragDropActivity onComplete={handleComplete}/>;
+      case 'color':  return <ColoringActivity onComplete={handleComplete}/>;
+      case 'match':  return <LineMatchActivity onComplete={handleComplete}/>;
+      case 'camera': return <CameraModule onComplete={handleComplete}/>;
+      default: return null;
+    }
+  };
+
+  return (
+    <div className="w-full h-full flex flex-col bg-white">
+      {/* 상단 헤더 */}
+      <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100 z-30 shrink-0 shadow-sm">
+        <div className="flex items-center gap-2">
+          <span className="text-xl">🎮</span>
+          <span className="font-black text-gray-700 truncate max-w-[200px]">{def.title}</span>
+        </div>
+        <div className="flex items-center gap-2 bg-amber-50 px-4 py-1.5 rounded-full">
+          <span className="text-lg">⭐</span>
+          <span className="font-black text-amber-600">{state.totalStars}</span>
+        </div>
+      </div>
+
+      {/* 활동 영역 */}
+      <div className="flex-1 relative overflow-hidden">
+        {renderActivity()}
+      </div>
+
+      {/* 하단 프로그레스 */}
+      <div className="flex items-center gap-3 px-4 py-3 bg-white border-t border-gray-100 shrink-0 shadow-sm">
+        <button onClick={()=>state.page>1 && dispatch({type:'GO', page:state.page-1})}
+          disabled={state.page<=1}
+          className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg transition ${state.page<=1?'text-gray-300 bg-gray-50':'text-gray-600 bg-gray-100 active:scale-90'}`}>
+          ‹
+        </button>
+
+        <div className="flex-1 flex items-center gap-2">
+          {PAGES.map((p,i)=>(
+            <button key={p.id}
+              onClick={()=>dispatch({type:'GO', page:i+1})}
+              className={`flex-1 h-3 rounded-full cursor-pointer transition-all relative
+                ${state.completed.has(p.id) ? 'bg-green-400 shadow-sm' :
+                  state.page===i+1 ? 'bg-blue-400 shadow-sm' : 'bg-gray-200'}`}>
+              {state.completed.has(p.id) && (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs">✅</span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        <span className="text-sm font-bold text-gray-400 min-w-[50px] text-center">
+          {state.completed.size}/{total}
+        </span>
+
+        <button onClick={()=>state.page<total && dispatch({type:'GO', page:state.page+1})}
+          disabled={state.page>=total}
+          className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg transition ${state.page>=total?'text-gray-300 bg-gray-50':'text-gray-600 bg-gray-100 active:scale-90'}`}>
+          ›
+        </button>
+      </div>
+
+      {/* 전체 완료 */}
+      {allDone && <FinalOverlay totalStars={state.totalStars} onRestart={()=>dispatch({type:'RESET'})}/>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<PlayLearningViewer/>);
+</script>
+</body>
+</html>

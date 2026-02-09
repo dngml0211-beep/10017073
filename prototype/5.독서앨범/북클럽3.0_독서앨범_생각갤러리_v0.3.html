@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>북클럽 3.0 독서앨범 - 생각 갤러리</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+html,body,#root{width:100%;height:100%;overflow:hidden;background:#fff}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+@keyframes sticker-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+.animate-sticker-pop { animation: sticker-pop 0.3s ease-out; }
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+.animate-wiggle { animation: wiggle 0.5s ease-in-out; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState} = React;
+
+// 스티커 리액션 종류
+const STICKER_REACTIONS = [
+  { id: 'thumb', emoji: '👍', label: '최고!', color: 'from-amber-400 to-orange-400' },
+  { id: 'heart', emoji: '❤️', label: '사랑해!', color: 'from-pink-400 to-rose-400' },
+  { id: 'sparkle', emoji: '✨', label: '반짝!', color: 'from-yellow-400 to-amber-400' },
+  { id: 'hand', emoji: '✋', label: '나도!', color: 'from-purple-400 to-indigo-400' },
+];
+
+// 카테고리 탭 설정
+const ALBUM_TABS = {
+  all: { icon: '📚', label: '전체', filter: () => true },
+  feeling: { icon: '💭', label: '내 마음', filter: (item) => item.type === 'feeling' },
+  character: { icon: '🎭', label: '주인공', filter: (item) => item.type === 'character' },
+  question: { icon: '❓', label: '궁금해', filter: (item) => item.type === 'question' },
+  doodle: { icon: '🎨', label: '자유 그림', filter: (item) => item.type === 'doodle' },
+};
+
+function ThoughtGallery() {
+  // 앨범 아이템 샘플 데이터
+  const [albumItems, setAlbumItems] = useState([
+    {
+      id: 1,
+      type: 'feeling',
+      bookTitle: '숲속 친구들의 모험',
+      bookEmoji: '🦊',
+      bookColor: '#FFE4C4',
+      content: '친구들이랑 모험하니까 신났어요! 나도 여우처럼 용감해지고 싶어요.',
+      drawing: '🌲🦊🐰🌈',
+      createdAt: '2026.01.25',
+      likes: { thumb: 3, heart: 2, sparkle: 1, hand: 2 },
+    },
+    {
+      id: 2,
+      type: 'character',
+      bookTitle: '마법사의 비밀 책',
+      bookEmoji: '🧙',
+      bookColor: '#E6E6FA',
+      content: '내가 마법사가 되면 하늘을 날고 싶어요! 그리고 친구들한테 맛있는 과자를 만들어 줄 거예요.',
+      drawing: '✨🧙‍♂️🪄⭐',
+      createdAt: '2026.01.24',
+      likes: { thumb: 5, heart: 6, sparkle: 3, hand: 1 },
+    },
+    {
+      id: 3,
+      type: 'question',
+      bookTitle: '공룡은 왜 사라졌을까?',
+      bookEmoji: '🦕',
+      bookColor: '#98FB98',
+      content: '공룡이 다시 살아나면 어떨까? 무섭지만 보고 싶어요!',
+      drawing: '🦖🌋❓🤔',
+      createdAt: '2026.01.23',
+      likes: { thumb: 1, heart: 0, sparkle: 2, hand: 0 },
+    },
+    {
+      id: 4,
+      type: 'doodle',
+      bookTitle: '무지개 나라 여행',
+      bookEmoji: '🌈',
+      bookColor: '#FFB6C1',
+      content: '무지개 나라는 정말 예뻤어요. 빨주노초파남보 색깔이 다 있어요!',
+      drawing: '🌈☁️🦄🎨',
+      createdAt: '2026.01.22',
+      likes: { thumb: 2, heart: 3, sparkle: 4, hand: 1 },
+    },
+    {
+      id: 5,
+      type: 'feeling',
+      bookTitle: '바다 속 친구들',
+      bookEmoji: '🐠',
+      bookColor: '#87CEEB',
+      content: '물고기들이 신나게 헤엄치는 걸 보니까 나도 수영하고 싶어요!',
+      drawing: '🌊🐠🐡🦀',
+      createdAt: '2026.01.21',
+      likes: { thumb: 4, heart: 2, sparkle: 2, hand: 3 },
+    },
+    {
+      id: 6,
+      type: 'character',
+      bookTitle: '슈퍼 히어로의 하루',
+      bookEmoji: '🦸',
+      bookColor: '#FFD700',
+      content: '나도 히어로가 되면 나쁜 사람들을 혼내주고 싶어요!',
+      drawing: '⚡🦸‍♂️💪✨',
+      createdAt: '2026.01.20',
+      likes: { thumb: 6, heart: 4, sparkle: 3, hand: 2 },
+    },
+  ]);
+
+  const [albumTab, setAlbumTab] = useState('all');
+  const [reactionMap, setReactionMap] = useState(new Map());
+
+  const filteredItems = albumItems.filter(ALBUM_TABS[albumTab].filter);
+
+  return (
+    <div className="w-full h-full flex flex-col bg-gradient-to-br from-purple-50 via-pink-50 to-amber-50">
+      {/* 상단 헤더 */}
+      <div className="shrink-0 px-6 py-4 bg-white/80 backdrop-blur-sm">
+        <h3 className="font-black text-xl flex items-center gap-2 text-slate-700">
+          🎨 생각 갤러리
+        </h3>
+        <span className="text-sm font-bold text-slate-600 mt-1 block">
+          내 생각카드 {albumItems.length}개
+        </span>
+      </div>
+
+      {/* 카테고리 탭 */}
+      <div className="shrink-0 px-6 py-3 bg-white/50">
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          {Object.entries(ALBUM_TABS).map(([key, config]) => (
+            <button
+              key={key}
+              onClick={() => setAlbumTab(key)}
+              className={`px-4 py-2.5 rounded-xl flex items-center gap-2 whitespace-nowrap transition-all ${
+                albumTab === key
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                  : 'bg-white text-slate-600 shadow'
+              }`}
+            >
+              <span className="text-lg">{config.icon}</span>
+              <span className="font-bold">{config.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 폴라로이드 카드 그리드 */}
+      <div className="flex-1 overflow-y-auto p-6 relative">
+        {/* 배경 장식 */}
+        {['⭐','☁️','✨','📖','🌟','🐿️','🌈','💫'].map((ico, i) => (
+          <span key={`bg-${i}`} className="absolute text-2xl pointer-events-none animate-float-slow"
+            style={{ left: `${3 + (i * 13) % 90}%`, top: `${5 + (i * 17) % 80}%`, opacity: 0.08, animationDelay: `${i * 0.5}s`, zIndex: 0 }}>
+            {ico}
+          </span>
+        ))}
+
+        {filteredItems.length > 0 ? (
+          <>
+            <div className="grid grid-cols-3 gap-6 relative z-10">
+              {filteredItems.map((item) => {
+                const rotation = ((item.id % 5) - 2) * 1.8;
+                const totalLikes = item.likes ? Object.values(item.likes).reduce((a, b) => a + b, 0) : 0;
+                return (
+                  <div
+                    key={item.id}
+                    className="relative cursor-pointer transition-all duration-300 group"
+                    style={{ transform: `rotate(${rotation}deg)` }}
+                    onMouseEnter={e => e.currentTarget.style.transform = 'rotate(0deg) translateY(-8px)'}
+                    onMouseLeave={e => e.currentTarget.style.transform = `rotate(${rotation}deg)`}
+                  >
+                    {/* 폴라로이드 프레임 */}
+                    <div className="rounded-xl overflow-hidden shadow-xl transition-shadow group-hover:shadow-2xl bg-white"
+                      style={{ padding: '10px 10px 12px 10px' }}>
+                      {/* 사진 영역 */}
+                      <div className="aspect-[4/3] rounded-lg overflow-hidden relative"
+                        style={{ background: `linear-gradient(135deg, ${item.bookColor}80, ${item.bookColor}30)` }}>
+                        <div className="w-full h-full flex flex-col items-center justify-center p-4">
+                          <span className="text-5xl drop-shadow-lg mb-2">{item.drawing}</span>
+                          <p className="text-sm font-bold text-center leading-snug line-clamp-3 text-slate-800">
+                            {item.content}
+                          </p>
+                        </div>
+                        {/* 타입 뱃지 */}
+                        <div className="absolute top-2 left-2 px-2 py-1 rounded-lg text-sm shadow-sm bg-white/90">
+                          {ALBUM_TABS[item.type]?.icon}
+                        </div>
+                      </div>
+
+                      {/* 하단: 날짜 + 책 제목 */}
+                      <div className="pt-2 px-1">
+                        <div className="flex items-center gap-1.5 mb-1.5">
+                          <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0"
+                            style={{ backgroundColor: item.bookColor }}>
+                            <span className="text-xs">{item.bookEmoji}</span>
+                          </div>
+                          <span className="text-xs font-bold truncate text-slate-600">
+                            {item.bookTitle}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] text-slate-400">{item.createdAt}</span>
+                          {totalLikes > 0 && (
+                            <span className="text-[10px] font-bold text-pink-400">
+                              👍{item.likes?.thumb || 0} ❤️{item.likes?.heart || 0} ✨{item.likes?.sparkle || 0} ✋{item.likes?.hand || 0}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* 스티커 리액션 버튼 4종 */}
+                      <div className="flex gap-1.5 mt-2 justify-center">
+                        {STICKER_REACTIONS.map(reaction => {
+                          const myReaction = reactionMap.get(`album-${item.id}`);
+                          const isSelected = myReaction === reaction.id;
+                          const count = item.likes?.[reaction.id] || 0;
+                          return (
+                            <button
+                              key={reaction.id}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setReactionMap(prev => {
+                                  const next = new Map(prev);
+                                  const key = `album-${item.id}`;
+                                  if (next.get(key) === reaction.id) {
+                                    next.delete(key);
+                                    setAlbumItems(items => items.map(it =>
+                                      it.id === item.id ? { ...it, likes: { ...it.likes, [reaction.id]: Math.max(0, (it.likes?.[reaction.id] || 0) - 1) } } : it
+                                    ));
+                                  } else {
+                                    const prevReaction = next.get(key);
+                                    next.set(key, reaction.id);
+                                    setAlbumItems(items => items.map(it => {
+                                      if (it.id !== item.id) return it;
+                                      const newLikes = { ...it.likes };
+                                      if (prevReaction) newLikes[prevReaction] = Math.max(0, (newLikes[prevReaction] || 0) - 1);
+                                      newLikes[reaction.id] = (newLikes[reaction.id] || 0) + 1;
+                                      return { ...it, likes: newLikes };
+                                    }));
+                                  }
+                                  return next;
+                                });
+                              }}
+                              className={`flex flex-col items-center p-2 rounded-xl transition-all duration-300 ${
+                                isSelected
+                                  ? `bg-gradient-to-b ${reaction.color} text-white shadow-lg animate-sticker-pop`
+                                  : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
+                              }`}
+                              style={{ minWidth: '52px' }}
+                            >
+                              <span className={`text-2xl ${isSelected ? 'animate-wiggle' : ''}`}>{reaction.emoji}</span>
+                              <span className="text-[10px] font-bold mt-0.5">{isSelected ? count + 1 : count}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* 가이드 문구 */}
+            <div className="flex items-center justify-center gap-3 mt-6 mb-2 relative z-10 text-slate-400">
+              <span className="text-3xl">🐿️</span>
+              <p className="text-sm font-bold">생각카드에 스티커를 붙여봐!</p>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-20 text-slate-400">
+            <span className="text-7xl block mb-4">📷</span>
+            <p className="text-2xl font-bold mb-2">아직 앨범이 비어있어요!</p>
+            <p className="text-lg">책을 읽고 나만의 앨범을 채워보세요</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<ThoughtGallery />);
+</script>
+</body>
+</html>
