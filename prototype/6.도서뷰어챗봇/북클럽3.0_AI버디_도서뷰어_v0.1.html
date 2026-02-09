@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>북클럽 3.0 AI버디 도서뷰어 v0.1</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Apple SD Gothic Neo',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body,#root{width:100%;height:100%;overflow:hidden;background:#1a1a2e}
+
+@keyframes buddy-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes buddy-enter{0%{transform:scale(0) translateY(40px);opacity:0}60%{transform:scale(1.1) translateY(-5px)}100%{transform:scale(1) translateY(0);opacity:1}}
+@keyframes bubble-in{0%{transform:scale(0.5) translateY(10px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
+@keyframes confetti-fall{0%{transform:translateY(-10vh) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 8px rgba(255,183,77,0.4)}50%{box-shadow:0 0 20px rgba(255,183,77,0.8)}}
+@keyframes star-pop{0%{transform:scale(0) rotate(0);opacity:0}60%{transform:scale(1.3) rotate(180deg);opacity:1}100%{transform:scale(1) rotate(360deg);opacity:1}}
+@keyframes slide-up{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes tail-wag{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(15deg)}}
+@keyframes zzz{0%{opacity:0;transform:translateY(0) scale(0.5)}50%{opacity:1;transform:translateY(-15px) scale(1)}100%{opacity:0;transform:translateY(-30px) scale(0.5)}}
+
+.buddy-bounce{animation:buddy-bounce 2s ease-in-out infinite}
+.buddy-enter{animation:buddy-enter 0.5s ease-out both}
+.bubble-in{animation:bubble-in 0.3s ease-out both}
+.confetti{animation:confetti-fall 3s linear both}
+.pulse-glow{animation:pulse-glow 2s ease-in-out infinite}
+.star-pop{animation:star-pop 0.6s ease-out both}
+.anim-slide-up{animation:slide-up 0.4s ease-out both}
+.anim-float{animation:float 3s ease-in-out infinite}
+.tail-wag{animation:tail-wag 0.4s ease-in-out infinite}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState, useEffect, useRef, useCallback, useMemo} = React;
+
+/* ══════════════════════════════════════
+   SVG 다람쥐 캐릭터 (감정별 5종)
+   ══════════════════════════════════════ */
+function SquirrelBuddy({ emotion = 'kind', size = 80, animate = true }) {
+  const emotions = {
+    kind:    { eyeShape:'normal', mouthShape:'smile',  cheekOpacity:0.6, bodyColor:'#8B5E3C', tailWag:false, extraClass:'' },
+    excited: { eyeShape:'sparkle', mouthShape:'bigSmile', cheekOpacity:0.8, bodyColor:'#8B5E3C', tailWag:true, extraClass:'buddy-bounce' },
+    comfort: { eyeShape:'sad', mouthShape:'worried', cheekOpacity:0.3, bodyColor:'#8B5E3C', tailWag:false, extraClass:'' },
+    study:   { eyeShape:'determined', mouthShape:'grin', cheekOpacity:0.5, bodyColor:'#8B5E3C', tailWag:false, extraClass:'' },
+    sleepy:  { eyeShape:'closed', mouthShape:'sleepy', cheekOpacity:0.4, bodyColor:'#8B5E3C', tailWag:false, extraClass:'anim-float' },
+  };
+  const e = emotions[emotion] || emotions.kind;
+
+  const renderEyes = () => {
+    switch(e.eyeShape) {
+      case 'sparkle':
+        return (<>
+          <circle cx="38" cy="42" r="5" fill="#2D1B0E"/>
+          <circle cx="62" cy="42" r="5" fill="#2D1B0E"/>
+          <circle cx="40" cy="40" r="2" fill="white"/>
+          <circle cx="64" cy="40" r="2" fill="white"/>
+          <path d="M35 35 L37 33 L39 35 L37 37Z" fill="white" opacity="0.8"><animateTransform attributeName="transform" type="rotate" values="0 37 35;360 37 35" dur="2s" repeatCount="indefinite"/></path>
+          <path d="M59 35 L61 33 L63 35 L61 37Z" fill="white" opacity="0.8"><animateTransform attributeName="transform" type="rotate" values="0 61 35;360 61 35" dur="2s" repeatCount="indefinite"/></path>
+        </>);
+      case 'sad':
+        return (<>
+          <ellipse cx="38" cy="44" rx="4" ry="5" fill="#2D1B0E"/>
+          <ellipse cx="62" cy="44" rx="4" ry="5" fill="#2D1B0E"/>
+          <circle cx="39" cy="42" r="1.5" fill="white" opacity="0.8"/>
+          <circle cx="63" cy="42" r="1.5" fill="white" opacity="0.8"/>
+          <path d="M33 37 Q38 39 43 37" stroke="#2D1B0E" strokeWidth="1.5" fill="none"/>
+          <path d="M57 37 Q62 39 67 37" stroke="#2D1B0E" strokeWidth="1.5" fill="none"/>
+        </>);
+      case 'determined':
+        return (<>
+          <circle cx="38" cy="42" r="4.5" fill="#2D1B0E"/>
+          <circle cx="62" cy="42" r="4.5" fill="#2D1B0E"/>
+          <circle cx="39" cy="41" r="1.5" fill="white"/>
+          <circle cx="63" cy="41" r="1.5" fill="white"/>
+          <line x1="33" y1="36" x2="43" y2="34" stroke="#2D1B0E" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="57" y1="34" x2="67" y2="36" stroke="#2D1B0E" strokeWidth="2" strokeLinecap="round"/>
+        </>);
+      case 'closed':
+        return (<>
+          <path d="M33 42 Q38 46 43 42" stroke="#2D1B0E" strokeWidth="2" fill="none" strokeLinecap="round"/>
+          <path d="M57 42 Q62 46 67 42" stroke="#2D1B0E" strokeWidth="2" fill="none" strokeLinecap="round"/>
+        </>);
+      default:
+        return (<>
+          <circle cx="38" cy="42" r="4.5" fill="#2D1B0E"/>
+          <circle cx="62" cy="42" r="4.5" fill="#2D1B0E"/>
+          <circle cx="40" cy="41" r="1.8" fill="white"/>
+          <circle cx="64" cy="41" r="1.8" fill="white"/>
+        </>);
+    }
+  };
+
+  const renderMouth = () => {
+    switch(e.mouthShape) {
+      case 'bigSmile':
+        return <path d="M42 54 Q50 62 58 54" stroke="#2D1B0E" strokeWidth="2" fill="#FF8A80" strokeLinecap="round"/>;
+      case 'worried':
+        return <path d="M43 56 Q50 52 57 56" stroke="#2D1B0E" strokeWidth="1.8" fill="none" strokeLinecap="round"/>;
+      case 'grin':
+        return (<>
+          <path d="M43 53 Q50 58 57 53" stroke="#2D1B0E" strokeWidth="2" fill="none" strokeLinecap="round"/>
+          <line x1="50" y1="53" x2="50" y2="56" stroke="#2D1B0E" strokeWidth="1" strokeLinecap="round"/>
+        </>);
+      case 'sleepy':
+        return <path d="M45 55 Q50 57 55 55" stroke="#2D1B0E" strokeWidth="1.5" fill="none" strokeLinecap="round"/>;
+      default:
+        return <path d="M43 53 Q50 59 57 53" stroke="#2D1B0E" strokeWidth="2" fill="none" strokeLinecap="round"/>;
+    }
+  };
+
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" className={animate ? e.extraClass : ''}>
+      {/* 꼬리 */}
+      <g className={e.tailWag ? 'tail-wag' : ''} style={{transformOrigin:'30px 70px'}}>
+        <path d="M25 70 Q5 45 15 25 Q25 15 30 30 Q32 45 28 65" fill="#C67C4E" stroke="#A0622E" strokeWidth="1"/>
+        <path d="M20 55 Q10 40 18 28" stroke="#D4956B" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.5"/>
+      </g>
+      {/* 몸통 */}
+      <ellipse cx="50" cy="72" rx="22" ry="18" fill={e.bodyColor}/>
+      <ellipse cx="50" cy="74" rx="16" ry="12" fill="#D4956B"/>
+      {/* 머리 */}
+      <circle cx="50" cy="42" r="24" fill={e.bodyColor}/>
+      {/* 귀 */}
+      <ellipse cx="32" cy="22" rx="8" ry="10" fill={e.bodyColor} transform="rotate(-15 32 22)"/>
+      <ellipse cx="32" cy="22" rx="5" ry="7" fill="#D4956B" transform="rotate(-15 32 22)"/>
+      <ellipse cx="68" cy="22" rx="8" ry="10" fill={e.bodyColor} transform="rotate(15 68 22)"/>
+      <ellipse cx="68" cy="22" rx="5" ry="7" fill="#D4956B" transform="rotate(15 68 22)"/>
+      {/* 얼굴 밝은 부분 */}
+      <ellipse cx="50" cy="48" rx="18" ry="14" fill="#D4956B"/>
+      {/* 볼 터치 */}
+      <circle cx="30" cy="50" r="5" fill="#FF9999" opacity={e.cheekOpacity}/>
+      <circle cx="70" cy="50" r="5" fill="#FF9999" opacity={e.cheekOpacity}/>
+      {/* 눈 */}
+      {renderEyes()}
+      {/* 코 */}
+      <ellipse cx="50" cy="48" rx="3" ry="2.5" fill="#2D1B0E"/>
+      {/* 입 */}
+      {renderMouth()}
+      {/* 팔 */}
+      <ellipse cx="30" cy="68" rx="6" ry="4" fill={e.bodyColor} transform="rotate(20 30 68)"/>
+      <ellipse cx="70" cy="68" rx="6" ry="4" fill={e.bodyColor} transform="rotate(-20 70 68)"/>
+      {/* 졸림 ZZZ */}
+      {emotion === 'sleepy' && (<>
+        <text x="70" y="25" fontSize="10" fill="#7C8DB5" fontWeight="bold" opacity="0.7">
+          z<animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+        </text>
+        <text x="78" y="18" fontSize="8" fill="#7C8DB5" fontWeight="bold">
+          z<animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+        </text>
+        <text x="84" y="12" fontSize="6" fill="#7C8DB5" fontWeight="bold">
+          z<animate attributeName="opacity" values="0;1;0" dur="2s" begin="1s" repeatCount="indefinite"/>
+        </text>
+      </>)}
+      {/* 열공 머리띠 */}
+      {emotion === 'study' && (
+        <g>
+          <rect x="28" y="28" width="44" height="6" rx="3" fill="#FF6B6B" opacity="0.9"/>
+          <text x="50" y="34" fontSize="5" fill="white" textAnchor="middle" fontWeight="bold">열공!</text>
+        </g>
+      )}
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════
+   샘플 도서 페이지 (시뮬레이션)
+   ══════════════════════════════════════ */
+const BOOK_DATA = {
+  title: '숲속 친구들의 모험',
+  totalPages: 16,
+  pages: [
+    { bg:'#FFF8E7', title:'숲속 친구들의 모험', subtitle:'글 · 그림  김보미', isTitle:true, img:'🦊🐿️🐰' },
+    { bg:'#F0FFF0', text:'어느 따뜻한 봄날, 숲속 마을에 아침 해가 밝았어요.\n다람쥐 도토리는 기지개를 켜며 창밖을 내다봤어요.', img:'🌅🏡' },
+    { bg:'#FFF0F5', text:'"오늘은 뭔가 특별한 일이 일어날 것 같아!"\n도토리는 설레는 마음으로 집을 나섰어요.', img:'🐿️✨' },
+    { bg:'#F0F8FF', text:'길을 걷다 보니 여우 친구 루비를 만났어요.\n"도토리야, 어디 가니?" 루비가 물었어요.', img:'🐿️🦊' },
+    { bg:'#FFFFF0', text:'"숲 끝에 있는 무지개 연못을 찾아가려고!"\n"정말? 나도 같이 가도 돼?"', img:'🌈💧' },
+    { bg:'#FFF5EE', text:'둘은 함께 숲길을 걸었어요.\n나뭇잎 사이로 햇살이 반짝반짝 빛났어요.', img:'🌳☀️' },
+    { bg:'#F5FFFA', text:'갑자기 길이 두 갈래로 나뉘었어요.\n"어느 쪽으로 가야 할까?" 도토리가 고민했어요.', img:'🛤️🤔' },
+    { bg:'#FFF0F0', text:'그때 토끼 친구 하양이가 나타났어요.\n"왼쪽 길이 맞아! 내가 안내해 줄게!"', img:'🐰👈' },
+    { bg:'#F0FFFF', text:'셋은 함께 왼쪽 길을 따라갔어요.\n점점 신비로운 소리가 들려왔어요.', img:'🎵🌿' },
+    { bg:'#FFFAF0', text:'드디어 무지개 연못에 도착했어요!\n일곱 빛깔 무지개가 연못 위에 떠 있었어요.', img:'🌈✨💧' },
+    { bg:'#F8F0FF', text:'"와아~ 정말 아름답다!"\n세 친구는 감탄했어요.', img:'😍🌈' },
+    { bg:'#FFF8F0', text:'연못 옆에는 작은 보물상자가 있었어요.\n"이건 뭘까?" 루비가 조심스럽게 열었어요.', img:'📦✨' },
+    { bg:'#F0FFF8', text:'상자 안에는 반짝이는 우정의 돌이 세 개 들어있었어요.\n"우리 셋을 위한 거야!"', img:'💎💎💎' },
+    { bg:'#FFF0FF', text:'세 친구는 각자 하나씩 우정의 돌을 나눠 가졌어요.\n"영원히 친구하자!" 모두 약속했어요.', img:'🤝💕' },
+    { bg:'#FFFFF5', text:'해가 지기 전에 집으로 돌아온 세 친구.\n오늘의 모험은 최고의 추억이 되었어요.', img:'🌇🏡' },
+    { bg:'#FFF8E7', title:'끝', subtitle:'숲속 친구들의 모험은 계속됩니다...', isTitle:true, img:'🐿️🦊🐰💫' },
+  ]
+};
+
+/* ══════════════════════════════════════
+   AI 버디 시나리오 엔진
+   ══════════════════════════════════════ */
+const SCENARIOS = {
+  S01: { id:'S01', emotion:'kind',    priority:1,  cooldown:Infinity, msg: (d) => `안녕! 이 책은 '${d.title}'이야! 같이 읽어볼까? 📖`, buttons:[] },
+  S02: { id:'S02', emotion:'kind',    priority:1,  cooldown:Infinity, msg: (d) => `${d.name}아! 오늘도 왔구나! 지난번에 ${d.lastPage}페이지까지 읽었지? 이어서 가볼까! 💪`, buttons:[{label:'이어 읽기', action:'resume'}] },
+  S03: { id:'S03', emotion:'excited', priority:1,  cooldown:Infinity, msg: (d) => `또 왔네! 이 책이 재미있나 보다~ 😆` },
+  S04: { id:'S04', emotion:'study',   priority:7,  cooldown:120,      msg: (d) => `와~ 집중력 대단한걸? 벌써 ${d.readPages}페이지나 읽었어! 🔥` },
+  S05: { id:'S05', emotion:'kind',    priority:6,  cooldown:180,      msg: () => `이 부분이 재미있나 보다! 천천히 읽어도 괜찮아 😊\n혹시 어려운 단어가 있으면 꾹 눌러봐!` },
+  S06a:{ id:'S06a',emotion:'comfort', priority:2,  cooldown:300,      msg: () => `잠깐 쉬고 있는 거야? 괜찮아~ 준비되면 다시 읽자! ☕` },
+  S06b:{ id:'S06b',emotion:'sleepy',  priority:2,  cooldown:300,      msg: () => `혹시 졸린 건 아니지? 😴 이 장면부터 다시 볼까?`, buttons:[{label:'다시 읽기', action:'refocus'}] },
+  S06c:{ id:'S06c',emotion:'sleepy',  priority:2,  cooldown:300,      msg: () => `오늘은 여기까지 읽을까? 내일 이어서 읽어도 돼! 🌙`, buttons:[{label:'북마크하고 나가기', action:'bookmark'},{label:'더 읽을래!', action:'continue'}] },
+  S07: { id:'S07', emotion:'kind',    priority:3,  cooldown:120,      msg: () => `앗! 너무 빨리 넘기고 있는 것 같아~\n천천히 읽어보는 건 어때? 📖` },
+  S08: { id:'S08', emotion:'excited', priority:5,  cooldown:Infinity, msg: () => `벌써 반이나 읽었어! 🎉\n여기서 잠깐, 퀴즈 하나 풀어볼까?`, buttons:[{label:'퀴즈 풀기 🧩', action:'quiz'},{label:'나중에 할래', action:'dismiss'}] },
+  S09: { id:'S09', emotion:'study',   priority:5,  cooldown:Infinity, msg: () => `4분의 1이나 읽었어! 이 속도면 금방이다~ 💪` },
+  S10: { id:'S10', emotion:'excited', priority:5,  cooldown:Infinity, msg: () => `거의 다 왔다! 조금만 더 힘내자! 🏃‍♂️` },
+  S11: { id:'S11', emotion:'excited', priority:4,  cooldown:Infinity, msg: (d) => `와~ 마지막 ${d.remain}페이지만 남았어! 끝까지 가보자! 🎊` },
+  S12: { id:'S12', emotion:'excited', priority:1,  cooldown:Infinity, msg: (d) => `🎉🎉🎉 다 읽었다!\n'${d.title}' 완독 축하해! 정말 대단해!`, buttons:[{label:'독후 활동 하기 🎨', action:'activity'},{label:'다른 책 읽기 📚', action:'next'}] },
+  S16: { id:'S16', emotion:'kind',    priority:9,  cooldown:Infinity, msg: () => `아침부터 책 읽다니 대단해!\n오늘 하루 좋은 시작이야! ☀️` },
+  S17: { id:'S17', emotion:'kind',    priority:9,  cooldown:Infinity, msg: () => `밥 먹고 책 읽기! 완벽한 조합이다~ 🍚📖` },
+  S18: { id:'S18', emotion:'sleepy',  priority:9,  cooldown:Infinity, msg: () => `이 시간에도 열심이구나!\n근데 너무 늦으면 내일 읽자~ 🌙` },
+};
+
+/* ══════════════════════════════════════
+   퀴즈 데이터
+   ══════════════════════════════════════ */
+const QUIZZES = [
+  { q:'도토리가 찾아가려는 곳은?', opts:['무지개 연못','깊은 동굴','높은 산'], answer:0 },
+  { q:'여우 친구의 이름은?', opts:['하양','루비','도토리'], answer:1 },
+  { q:'보물상자 안에는 무엇이 있었나요?', opts:['금화','우정의 돌','열쇠'], answer:1 },
+];
+
+/* ══════════════════════════════════════
+   컨페티 이펙트
+   ══════════════════════════════════════ */
+function Confetti() {
+  const colors = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF6EC7','#A855F7'];
+  const pieces = useMemo(() => Array.from({length:40}, (_,i) => ({
+    id:i, left: Math.random()*100, delay: Math.random()*2, dur: 2+Math.random()*2,
+    color: colors[Math.floor(Math.random()*colors.length)], size: 6+Math.random()*8,
+    type: Math.random()>0.5?'circle':'rect'
+  })), []);
+  return (
+    <div className="fixed inset-0 z-[100] pointer-events-none overflow-hidden">
+      {pieces.map(p => (
+        <div key={p.id} className="confetti absolute" style={{
+          left:`${p.left}%`, top:'-20px', animationDelay:`${p.delay}s`, animationDuration:`${p.dur}s`,
+          width:p.size, height:p.size, backgroundColor:p.color,
+          borderRadius: p.type==='circle'?'50%':'2px',
+        }}/>
+      ))}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   말풍선 컴포넌트
+   ══════════════════════════════════════ */
+function SpeechBubble({ message, buttons, onButton, onClose }) {
+  return (
+    <div className="bubble-in absolute bottom-full right-0 mb-2 w-64" onClick={e => e.stopPropagation()}>
+      <div className="bg-white rounded-2xl shadow-xl p-4 relative" style={{filter:'drop-shadow(0 4px 12px rgba(0,0,0,0.15))'}}>
+        <button onClick={onClose} className="absolute top-2 right-2 w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs hover:bg-gray-200">✕</button>
+        <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap pr-5 font-medium">{message}</p>
+        {buttons && buttons.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {buttons.map((b, i) => (
+              <button key={i} onClick={() => onButton(b.action)}
+                className="px-3 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700 hover:bg-amber-200 active:scale-95 transition">
+                {b.label}
+              </button>
+            ))}
+          </div>
+        )}
+        {/* 꼬리 */}
+        <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white transform rotate-45" style={{filter:'drop-shadow(2px 2px 2px rgba(0,0,0,0.05))'}}/>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   퀴즈 오버레이
+   ══════════════════════════════════════ */
+function QuizOverlay({ quiz, onAnswer, onClose }) {
+  const [selected, setSelected] = useState(null);
+  const [answered, setAnswered] = useState(false);
+
+  const handleSelect = (idx) => {
+    if (answered) return;
+    setSelected(idx);
+    setAnswered(true);
+    setTimeout(() => onAnswer(idx === quiz.answer), 1500);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[90] bg-black/50 backdrop-blur-sm flex items-center justify-center p-6">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 anim-slide-up">
+        <div className="flex items-center gap-2 mb-4">
+          <SquirrelBuddy emotion="excited" size={40} animate={false}/>
+          <h3 className="font-black text-lg text-gray-800">중간 퀴즈! 🧩</h3>
+        </div>
+        <p className="font-bold text-gray-700 mb-4 text-base">{quiz.q}</p>
+        <div className="space-y-2">
+          {quiz.opts.map((opt, i) => {
+            let cls = 'bg-gray-50 hover:bg-amber-50 border-gray-200';
+            if (answered && i === quiz.answer) cls = 'bg-green-100 border-green-400';
+            else if (answered && i === selected) cls = 'bg-red-100 border-red-400';
+            return (
+              <button key={i} onClick={() => handleSelect(i)}
+                className={`w-full text-left p-3 rounded-xl border-2 font-medium transition ${cls}`}>
+                {opt}
+              </button>
+            );
+          })}
+        </div>
+        {answered && (
+          <div className={`mt-4 p-3 rounded-xl text-center font-bold ${selected === quiz.answer ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-500'}`}>
+            {selected === quiz.answer ? '정답이야! 대단해! 🎉' : '아쉽다~ 다시 읽어보면 알 수 있을 거야! 💪'}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   도서 페이지 컴포넌트
+   ══════════════════════════════════════ */
+function BookPage({ data, pageNum, total }) {
+  if (data.isTitle) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center" style={{background:data.bg}}>
+        <div className="text-7xl mb-6">{data.img}</div>
+        <h1 className="text-3xl font-black text-gray-800 mb-3">{data.title}</h1>
+        <p className="text-gray-500 text-lg">{data.subtitle}</p>
+      </div>
+    );
+  }
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center p-8" style={{background:data.bg}}>
+      <div className="text-6xl mb-8">{data.img}</div>
+      <p className="text-xl leading-relaxed text-gray-800 text-center font-medium whitespace-pre-line max-w-md">{data.text}</p>
+      <div className="absolute bottom-4 right-4 text-sm text-gray-400 font-medium">{pageNum} / {total}</div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   테스트 모드 패널 (왼쪽)
+   ══════════════════════════════════════ */
+function TestPanel({ open, onToggle, currentEmotion, onEmotionChange, onTriggerScenario, currentBubbleMsg }) {
+  const emotions = [
+    { key:'kind',    emoji:'😊', label:'다정함', color:'bg-green-400', border:'border-green-500' },
+    { key:'excited', emoji:'🎉', label:'신남',   color:'bg-yellow-400', border:'border-yellow-500' },
+    { key:'comfort', emoji:'💜', label:'위로',   color:'bg-purple-500', border:'border-purple-600' },
+    { key:'study',   emoji:'💪', label:'열공',   color:'bg-amber-400', border:'border-amber-500' },
+    { key:'sleepy',  emoji:'😴', label:'취침',   color:'bg-gray-500', border:'border-gray-600' },
+  ];
+
+  const entryScenarios = [
+    { id:'S01', emoji:'🌟', label:'최초 진입', color:'bg-green-500' },
+    { id:'S02', emoji:'📖', label:'일자별 첫 진입', color:'bg-teal-500' },
+    { id:'S03', emoji:'🔄', label:'일자별 재진입', color:'bg-teal-600' },
+  ];
+
+  const readingScenarios = [
+    { id:'S04', emoji:'🔥', label:'집중 읽기 격려', color:'bg-orange-500' },
+    { id:'S05', emoji:'😊', label:'장시간 체류', color:'bg-blue-500' },
+    { id:'S06a', emoji:'☕', label:'이탈 감지 (3분)', color:'bg-purple-500' },
+    { id:'S06b', emoji:'😴', label:'이탈 감지 (5분)', color:'bg-purple-600' },
+    { id:'S06c', emoji:'🌙', label:'이탈 감지 (7분)', color:'bg-purple-700' },
+    { id:'S07', emoji:'📖', label:'빠른 넘김 감지', color:'bg-red-500' },
+    { id:'S08', emoji:'🧩', label:'중간 퀴즈 제안', color:'bg-pink-500' },
+  ];
+
+  const progressScenarios = [
+    { id:'S09', emoji:'💪', label:'25% 달성', color:'bg-amber-500' },
+    { id:'S10', emoji:'🏃', label:'75% 달성', color:'bg-amber-600' },
+    { id:'S11', emoji:'🎊', label:'완독 직전', color:'bg-amber-700' },
+    { id:'S12', emoji:'🎉', label:'완독 축하', color:'bg-red-500' },
+  ];
+
+  const timeScenarios = [
+    { id:'S16', emoji:'☀️', label:'아침 독서', color:'bg-sky-400' },
+    { id:'S17', emoji:'🍚', label:'점심 시간', color:'bg-sky-500' },
+    { id:'S18', emoji:'🌙', label:'저녁/야간', color:'bg-indigo-600' },
+  ];
+
+  const [activeScenario, setActiveScenario] = useState(null);
+
+  const handleScenario = (id) => {
+    setActiveScenario(id);
+    onTriggerScenario(id);
+  };
+
+  if (!open) return (
+    <button onClick={onToggle} className="fixed top-2 left-2 z-[80] px-3 py-1.5 rounded-lg bg-green-600/90 text-white text-xs font-bold backdrop-blur-sm hover:bg-green-500 transition">
+      ● 테스트 모드
+    </button>
+  );
+
+  return (
+    <div className="fixed top-2 left-2 z-[80] w-80 bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl text-sm overflow-hidden border border-gray-200" style={{maxHeight:'calc(100vh - 16px)'}}>
+      <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100">
+        <span className="font-black text-gray-800">● <span className="text-green-600">테스트 모드</span></span>
+        <button onClick={onToggle} className="text-gray-400 hover:text-gray-600 text-xs font-bold px-2 py-1 rounded hover:bg-gray-100">✕</button>
+      </div>
+      <div className="p-4 space-y-4 overflow-y-auto" style={{maxHeight:'calc(100vh - 70px)'}}>
+
+        {/* 챗봇 감정 상태 (자동 표시) */}
+        <div>
+          <h3 className="font-bold text-gray-800 text-xs mb-1">챗봇 감정 상태</h3>
+          <p className="text-[10px] text-gray-400 mb-2">시나리오 선택 시 자동 변경됨</p>
+          <div className="flex gap-1.5">
+            {emotions.map(em => (
+              <div key={em.key}
+                className={`flex-1 flex flex-col items-center gap-1 py-2 rounded-lg transition-all ${currentEmotion === em.key ? em.color + ' text-white ring-2 ring-offset-1 ring-blue-500 scale-105 shadow-md' : 'bg-gray-100 text-gray-400'}`}>
+                <span className="text-lg">{em.emoji}</span>
+                <span className="text-[10px] font-bold">{em.label}</span>
+                {currentEmotion === em.key && <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"/>}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <hr className="border-gray-200"/>
+
+        {/* 진입 시나리오 */}
+        <div>
+          <h3 className="font-bold text-gray-600 text-xs mb-2">💬 진입 시나리오</h3>
+          <div className="space-y-1.5">
+            {entryScenarios.map(s => (
+              <button key={s.id} onClick={() => handleScenario(s.id)}
+                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg font-bold text-sm text-white transition-all ${s.color} ${activeScenario === s.id ? 'ring-2 ring-offset-1 ring-blue-500 scale-[1.02]' : 'opacity-80 hover:opacity-100'}`}>
+                <span>{s.emoji}</span><span>{s.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <hr className="border-gray-200"/>
+
+        {/* 읽기 중 시나리오 */}
+        <div>
+          <h3 className="font-bold text-gray-600 text-xs mb-2">📖 읽기 중 시나리오</h3>
+          <div className="space-y-1.5">
+            {readingScenarios.map(s => (
+              <button key={s.id} onClick={() => handleScenario(s.id)}
+                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg font-bold text-sm text-white transition-all ${s.color} ${activeScenario === s.id ? 'ring-2 ring-offset-1 ring-blue-500 scale-[1.02]' : 'opacity-80 hover:opacity-100'}`}>
+                <span>{s.emoji}</span><span>{s.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <hr className="border-gray-200"/>
+
+        {/* 진척도 시나리오 */}
+        <div>
+          <h3 className="font-bold text-gray-600 text-xs mb-2">📊 진척도 시나리오</h3>
+          <div className="space-y-1.5">
+            {progressScenarios.map(s => (
+              <button key={s.id} onClick={() => handleScenario(s.id)}
+                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg font-bold text-sm text-white transition-all ${s.color} ${activeScenario === s.id ? 'ring-2 ring-offset-1 ring-blue-500 scale-[1.02]' : 'opacity-80 hover:opacity-100'}`}>
+                <span>{s.emoji}</span><span>{s.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <hr className="border-gray-200"/>
+
+        {/* 시간대별 시나리오 */}
+        <div>
+          <h3 className="font-bold text-gray-600 text-xs mb-2">🕐 시간대별 시나리오</h3>
+          <div className="space-y-1.5">
+            {timeScenarios.map(s => (
+              <button key={s.id} onClick={() => handleScenario(s.id)}
+                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg font-bold text-sm text-white transition-all ${s.color} ${activeScenario === s.id ? 'ring-2 ring-offset-1 ring-blue-500 scale-[1.02]' : 'opacity-80 hover:opacity-100'}`}>
+                <span>{s.emoji}</span><span>{s.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <hr className="border-gray-200"/>
+
+        {/* 현재 말풍선 */}
+        <div>
+          <h3 className="font-bold text-gray-600 text-xs mb-2">현재 말풍선</h3>
+          <div className="bg-gray-50 rounded-xl p-3 min-h-[40px]">
+            <p className="text-xs text-gray-600 whitespace-pre-wrap italic">
+              {currentBubbleMsg || '(말풍선 없음)'}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   데이터 로깅 패널 (오른쪽)
+   ══════════════════════════════════════ */
+function DataPanel({ data, open, onToggle }) {
+  const emotionMap = { kind:'😊 다정함', excited:'🎉 신남', comfort:'💜 위로', study:'💪 열공', sleepy:'😴 취침' };
+  const emotionLevel = { kind:4, excited:7, comfort:2, study:5, sleepy:1 };
+  const emotionLabelMap = { kind:'안정 (기본)', excited:'신남 (에너지 충만)', comfort:'위로 (가라앉음)', study:'다정함 (안정)', sleepy:'졸림 (에너지 저하)' };
+  const level = emotionLevel[data.emotion] || 4;
+
+  if (!open) return (
+    <button onClick={onToggle} className="fixed top-2 right-2 z-[80] px-3 py-1.5 rounded-lg bg-gray-800/80 text-green-400 text-xs font-mono backdrop-blur-sm">
+      📊 Data Logging <span className="bg-green-600 text-white px-1 rounded text-[10px] ml-1">DEV</span>
+    </button>
+  );
+  return (
+    <div className="fixed top-2 right-2 z-[80] w-80 bg-gray-900/95 backdrop-blur-sm rounded-2xl shadow-2xl text-xs font-mono text-gray-300 overflow-hidden" style={{maxHeight:'calc(100vh - 16px)'}}>
+      <div className="flex items-center justify-between px-4 py-2.5 bg-gray-800">
+        <span className="text-green-400 font-bold">📊 Data Logging <span className="bg-green-600 text-white px-1.5 py-0.5 rounded text-[10px] ml-1">DEV</span></span>
+        <button onClick={onToggle} className="text-gray-500 hover:text-white text-xs">접기</button>
+      </div>
+      <div className="p-3 space-y-3 overflow-y-auto" style={{maxHeight:'calc(100vh - 60px)'}}>
+
+        {/* 학습자 정보 */}
+        <div className="bg-gray-800/50 rounded-xl p-3 space-y-1.5">
+          <h4 className="text-red-400 font-bold text-xs mb-2">🧑 학습자 정보</h4>
+          <div className="flex justify-between"><span className="text-gray-400">이름</span><span className="text-white font-bold">{data.name}</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">학년</span><span className="text-white font-bold">초{data.grade}</span></div>
+        </div>
+
+        {/* 아이 상태 */}
+        <div className="bg-gray-800/50 rounded-xl p-3 space-y-2">
+          <h4 className="text-amber-400 font-bold text-xs">😊 아이 상태 (8단계) <span className="text-gray-500 font-normal">- 내부 감정 강도 판단 지표</span></h4>
+          <p className="text-[10px] text-gray-500 leading-tight">👆 말 길이, 이모지, 키워드를 종합하여 에너지+감정 안정도를 8단계로 수치화</p>
+          <div className="flex justify-between"><span className="text-gray-400">현재 레벨</span><span className="text-cyan-400 font-bold">{level}/8</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">상태 설명</span><span className="text-white">{emotionLabelMap[data.emotion] || '안정 (기본)'}</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">→ 캐릭터</span><span className="text-white">{emotionMap[data.emotion] || '😊 다정함'}</span></div>
+          {/* 레벨 바 */}
+          <div className="w-full bg-gray-700 rounded-full h-2 mt-1">
+            <div className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-blue-500 to-cyan-400" style={{width:`${(level/8)*100}%`}}/>
+          </div>
+          <div className="bg-gray-700/50 rounded-lg p-2 mt-2 space-y-0.5 text-[10px]">
+            <p className="text-gray-400">● 8단계 → 캐릭터 매핑</p>
+            <p className="text-gray-500">1~2 → 😴 취침 (완전 기진맥진)</p>
+            <p className="text-gray-500">3 → 💜 위로 (가라앉음)</p>
+            <p className="text-gray-500">4~5 → 😊 다정함 (안정)</p>
+            <p className="text-gray-500">6~8 → 🎉 신남 (에너지 충만)</p>
+            <p className="text-amber-500 mt-1">🔥 열공 = 금주 주제 + 레벨3 이상</p>
+          </div>
+        </div>
+
+        {/* 관심사 태그 */}
+        <div className="bg-gray-800/50 rounded-xl p-3">
+          <h4 className="text-green-400 font-bold text-xs mb-1">🏷️ 관심사 태그</h4>
+          <p className="text-gray-500 text-[10px]">대화 시작 후 수집됨</p>
+        </div>
+
+        {/* 세션 데이터 */}
+        <div className="bg-gray-800/50 rounded-xl p-3 space-y-1.5">
+          <h4 className="text-purple-400 font-bold text-xs mb-2">📡 세션 데이터</h4>
+          <div className="flex justify-between"><span className="text-gray-400">대화 시간</span><span className="text-white">{String(Math.floor(data.sessionTime/60)).padStart(2,'0')}:{String(data.sessionTime%60).padStart(2,'0')}</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">메시지 수</span><span className="text-white">0</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">대화 모드</span><span className="text-white">독서 모드</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">종료 유형</span><span className="text-white">-</span></div>
+        </div>
+
+        <hr className="border-gray-700"/>
+
+        {/* 기존 읽기 데이터 */}
+        <div className="space-y-1.5">
+          <h4 className="text-amber-400 font-bold text-xs">📚 독서 데이터</h4>
+          <div className="flex justify-between"><span className="text-gray-400">도서</span><span className="text-white">{data.bookTitle}</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">현재 페이지</span><span className="text-white">{data.page} / {data.totalPages}</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">진행률</span><span className="text-white">{data.progress}%</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">페이지 체류</span><span className="text-white">{data.pageTime}초</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">마지막 시나리오</span><span className="text-white">{data.lastScenario || '-'}</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">빠른넘김</span><span className="text-white">{data.fastFlipCount}</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">연속읽기</span><span className="text-white">{data.steadyCount}</span></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   메인 앱
+   ══════════════════════════════════════ */
+function App() {
+  // 페이지 상태
+  const [page, setPage] = useState(1);
+  const totalPages = BOOK_DATA.totalPages;
+  const [uiVisible, setUiVisible] = useState(true);
+
+  // AI 버디 상태
+  const [buddyVisible, setBuddyVisible] = useState(false);
+  const [buddyEmotion, setBuddyEmotion] = useState('kind');
+  const [bubbleMsg, setBubbleMsg] = useState(null);
+  const [bubbleButtons, setBubbleButtons] = useState([]);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [quizIdx, setQuizIdx] = useState(0);
+
+  // 트래킹 데이터
+  const [sessionTime, setSessionTime] = useState(0);
+  const [pageTime, setPageTime] = useState(0);
+  const [fastFlipCount, setFastFlipCount] = useState(0);
+  const [steadyCount, setSteadyCount] = useState(0);
+  const lastFlipRef = useRef(Date.now());
+  const idleTimerRef = useRef(null);
+  const triggeredRef = useRef(new Set());
+  const lastBubbleRef = useRef(0);
+  const [devOpen, setDevOpen] = useState(false);
+  const [testOpen, setTestOpen] = useState(false);
+
+  const userName = '하준';
+
+  // 세션 타이머
+  useEffect(() => {
+    const t = setInterval(() => setSessionTime(s => s + 1), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  // 페이지 체류 타이머
+  useEffect(() => {
+    setPageTime(0);
+    const t = setInterval(() => setPageTime(s => s + 1), 1000);
+    return () => clearInterval(t);
+  }, [page]);
+
+  // 진입 시나리오 (최초)
+  useEffect(() => {
+    setTimeout(() => {
+      setBuddyVisible(true);
+      triggerScenario('S01');
+    }, 800);
+  }, []);
+
+  // 이탈 감지 (페이지 체류 시간 기반)
+  useEffect(() => {
+    if (pageTime === 90 && !triggeredRef.current.has('S05_'+page)) {
+      triggeredRef.current.add('S05_'+page);
+      triggerScenario('S05');
+    }
+    if (pageTime === 180 && !triggeredRef.current.has('S06a')) {
+      triggerScenario('S06a');
+      triggeredRef.current.add('S06a');
+    }
+    if (pageTime === 300 && !triggeredRef.current.has('S06b')) {
+      triggerScenario('S06b');
+      triggeredRef.current.add('S06b');
+    }
+    if (pageTime === 420 && !triggeredRef.current.has('S06c')) {
+      triggerScenario('S06c');
+      triggeredRef.current.add('S06c');
+    }
+  }, [pageTime]);
+
+  const triggerScenario = (id, force) => {
+    const now = Date.now();
+    // 쿨다운 체크 (이탈 감지 제외, force일 때 무시)
+    if (!force && !id.startsWith('S06') && !id.startsWith('S01') && !id.startsWith('S12')) {
+      if (now - lastBubbleRef.current < 5000) return; // 최소 5초 간격
+    }
+    const s = SCENARIOS[id];
+    if (!s) return;
+    const data = {
+      title: BOOK_DATA.title, name: userName, lastPage: page,
+      readPages: page, remain: totalPages - page,
+    };
+    const msg = typeof s.msg === 'function' ? s.msg(data) : s.msg;
+    setBuddyEmotion(s.emotion);
+    setBubbleMsg(msg);
+    setBubbleButtons(s.buttons || []);
+    lastBubbleRef.current = now;
+  };
+
+  const closeBubble = () => { setBubbleMsg(null); setBubbleButtons([]); };
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    const now = Date.now();
+    const elapsed = now - lastFlipRef.current;
+    lastFlipRef.current = now;
+
+    closeBubble();
+
+    // 빠른 넘김 감지
+    if (elapsed < 3000) {
+      setFastFlipCount(c => {
+        const nc = c + 1;
+        if (nc >= 3 && !triggeredRef.current.has('S07_'+page)) {
+          triggeredRef.current.add('S07_'+page);
+          setTimeout(() => triggerScenario('S07'), 300);
+        }
+        return nc;
+      });
+    } else {
+      setFastFlipCount(0);
+    }
+
+    // 안정적 읽기 감지 (15~60초)
+    if (elapsed >= 8000 && elapsed <= 60000) {
+      setSteadyCount(c => {
+        const nc = c + 1;
+        if (nc >= 5 && !triggeredRef.current.has('S04')) {
+          triggeredRef.current.add('S04');
+          setTimeout(() => triggerScenario('S04'), 300);
+        }
+        return nc;
+      });
+    } else if (elapsed > 60000) {
+      setSteadyCount(0);
+    }
+
+    // 이탈 감지 초기화
+    triggeredRef.current.delete('S06a');
+    triggeredRef.current.delete('S06b');
+    triggeredRef.current.delete('S06c');
+
+    setPage(newPage);
+
+    // 진척도 시나리오
+    const progress = Math.round((newPage / totalPages) * 100);
+    setTimeout(() => {
+      if (progress >= 25 && progress < 30 && !triggeredRef.current.has('S09')) {
+        triggeredRef.current.add('S09');
+        triggerScenario('S09');
+      }
+      if (progress >= 50 && progress < 55 && !triggeredRef.current.has('S08')) {
+        triggeredRef.current.add('S08');
+        triggerScenario('S08');
+      }
+      if (progress >= 75 && progress < 80 && !triggeredRef.current.has('S10')) {
+        triggeredRef.current.add('S10');
+        triggerScenario('S10');
+      }
+      if (totalPages - newPage <= 3 && totalPages - newPage > 0 && !triggeredRef.current.has('S11')) {
+        triggeredRef.current.add('S11');
+        triggerScenario('S11');
+      }
+      if (newPage === totalPages && !triggeredRef.current.has('S12')) {
+        triggeredRef.current.add('S12');
+        triggerScenario('S12');
+        setShowConfetti(true);
+        setTimeout(() => setShowConfetti(false), 4000);
+      }
+    }, 500);
+  };
+
+  const handleBuddyButton = (action) => {
+    closeBubble();
+    switch(action) {
+      case 'quiz':
+        setQuizIdx(Math.floor(Math.random() * QUIZZES.length));
+        setShowQuiz(true);
+        break;
+      case 'activity':
+        setBuddyEmotion('kind');
+        setBubbleMsg('감상문 쓰기 기능으로 이동할게! 🎨');
+        setTimeout(closeBubble, 2000);
+        break;
+      case 'bookmark':
+        setBuddyEmotion('kind');
+        setBubbleMsg(`${page}페이지에 북마크했어! 다음에 이어서 읽자! 📌`);
+        setTimeout(closeBubble, 2000);
+        break;
+      case 'continue':
+        setBuddyEmotion('study');
+        setBubbleMsg('좋아! 더 읽어보자! 화이팅! 💪');
+        setTimeout(closeBubble, 2000);
+        break;
+      case 'refocus':
+        setBuddyEmotion('kind');
+        setBubbleMsg('자, 다시 집중! 이 페이지부터 읽어보자! 📖');
+        setTimeout(closeBubble, 2000);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleQuizAnswer = (correct) => {
+    setTimeout(() => {
+      setShowQuiz(false);
+      if (correct) {
+        setBuddyEmotion('excited');
+        setBubbleMsg('정답! 역시 잘 읽고 있구나! 🎉');
+      } else {
+        setBuddyEmotion('comfort');
+        setBubbleMsg('괜찮아~ 다시 읽으면서 찾아보자! 📖');
+      }
+      setTimeout(closeBubble, 2500);
+    }, 500);
+  };
+
+  // 스와이프
+  const touchStartRef = useRef(null);
+  const handleTouchStart = (e) => { touchStartRef.current = e.touches[0].clientX; };
+  const handleTouchEnd = (e) => {
+    if (!touchStartRef.current) return;
+    const diff = touchStartRef.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      diff > 0 ? handlePageChange(page + 1) : handlePageChange(page - 1);
+    }
+    touchStartRef.current = null;
+  };
+
+  const progress = Math.round((page / totalPages) * 100);
+  const pageData = BOOK_DATA.pages[page - 1];
+
+  return (
+    <div className="w-full h-full flex flex-col bg-gray-900 select-none">
+      {/* 상단 바 */}
+      <div className={`shrink-0 flex items-center justify-between px-4 py-2 bg-black/60 backdrop-blur-sm z-30 transition-opacity duration-300 ${uiVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className="flex items-center gap-3">
+          <button className="text-white/70 text-lg">✕</button>
+          <span className="text-white/90 font-bold text-sm truncate max-w-[200px]">{BOOK_DATA.title}</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-white/60 text-xs font-mono">{page}/{totalPages}</span>
+        </div>
+      </div>
+
+      {/* 진행률 바 */}
+      <div className={`shrink-0 h-1 bg-gray-800 transition-opacity duration-300 ${uiVisible ? 'opacity-100' : 'opacity-0'}`}>
+        <div className="h-full bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-500 rounded-r-full" style={{width:`${progress}%`}}/>
+      </div>
+
+      {/* 도서 페이지 */}
+      <div className="flex-1 relative overflow-hidden"
+        onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
+        onClick={() => setUiVisible(v => !v)}>
+        <div className="absolute inset-0">
+          <BookPage data={pageData} pageNum={page} total={totalPages}/>
+        </div>
+
+        {/* 좌우 넘김 버튼 */}
+        <button onClick={(e) => { e.stopPropagation(); handlePageChange(page - 1); }}
+          className={`absolute left-0 top-0 bottom-0 w-16 flex items-center justify-start pl-2 transition-opacity ${page > 1 && uiVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+          <span className="text-3xl text-black/20 hover:text-black/40 transition">‹</span>
+        </button>
+        <button onClick={(e) => { e.stopPropagation(); handlePageChange(page + 1); }}
+          className={`absolute right-0 top-0 bottom-0 w-16 flex items-center justify-end pr-2 transition-opacity ${page < totalPages && uiVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+          <span className="text-3xl text-black/20 hover:text-black/40 transition">›</span>
+        </button>
+      </div>
+
+      {/* AI 버디 */}
+      {buddyVisible && (
+        <div className="fixed bottom-6 right-4 z-50" onClick={e => e.stopPropagation()}>
+          {/* 말풍선 */}
+          {bubbleMsg && (
+            <SpeechBubble message={bubbleMsg} buttons={bubbleButtons} onButton={handleBuddyButton} onClose={closeBubble}/>
+          )}
+          {/* 다람쥐 캐릭터 */}
+          <div className="buddy-enter cursor-pointer pulse-glow rounded-full"
+            onClick={() => {
+              if (!bubbleMsg) {
+                const msgs = ['무엇이 궁금해? 😊','재미있게 읽고 있어?','도움이 필요하면 말해!'];
+                setBubbleMsg(msgs[Math.floor(Math.random() * msgs.length)]);
+                setTimeout(closeBubble, 3000);
+              }
+            }}>
+            <SquirrelBuddy emotion={buddyEmotion} size={70}/>
+          </div>
+        </div>
+      )}
+
+      {/* 컨페티 */}
+      {showConfetti && <Confetti/>}
+
+      {/* 퀴즈 */}
+      {showQuiz && (
+        <QuizOverlay quiz={QUIZZES[quizIdx]} onAnswer={handleQuizAnswer} onClose={() => setShowQuiz(false)}/>
+      )}
+
+      {/* 테스트 모드 패널 (왼쪽) */}
+      <TestPanel
+        open={testOpen}
+        onToggle={() => setTestOpen(v => !v)}
+        currentEmotion={buddyEmotion}
+        onEmotionChange={(em) => { setBuddyEmotion(em); }}
+        onTriggerScenario={(id) => {
+          if (!buddyVisible) setBuddyVisible(true);
+          // S12 완독축하 시 컨페티
+          if (id === 'S12') {
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 4000);
+          }
+          // S08 중간퀴즈 제안 시 퀴즈도 가능하게
+          triggerScenario(id, true);
+        }}
+        currentBubbleMsg={bubbleMsg}
+      />
+
+      {/* 데이터 로깅 패널 (오른쪽) */}
+      <DataPanel
+        open={devOpen}
+        onToggle={() => setDevOpen(v => !v)}
+        data={{
+          name: userName, grade: 4, bookTitle: BOOK_DATA.title,
+          page, totalPages, progress, sessionTime, pageTime,
+          emotion: buddyEmotion, lastScenario: triggeredRef.current.size > 0 ? [...triggeredRef.current].pop() : '-',
+          fastFlipCount, steadyCount,
+        }}
+      />
+
+      {/* 하단 컨트롤 */}
+      <div className={`shrink-0 px-4 py-3 bg-black/60 backdrop-blur-sm flex items-center gap-4 z-30 transition-opacity duration-300 ${uiVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <span className="text-white/60 text-xs">{page}</span>
+        <input type="range" min="1" max={totalPages} value={page}
+          onChange={e => handlePageChange(+e.target.value)}
+          className="flex-1 h-1 accent-amber-400"/>
+        <span className="text-white/60 text-xs">{totalPages}</span>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
