@@ -187,6 +187,9 @@ function selectApp(appId) {
     // 앱 상태 저장
     sessionStorage.setItem('selectedApp', appId);
 
+    // hideLibraryMenu 플래그 초기화 (사용자가 명시적으로 앱을 선택한 경우)
+    sessionStorage.removeItem('hideLibraryMenu');
+
     // 네비게이션 가시성 업데이트
     applyAppNavVisibility(appId);
 
@@ -214,6 +217,9 @@ function applyAppNavVisibility(appId) {
     // 하단 네비 홈 링크도 함께 처리
     const bottomNavHome = document.querySelector('#bottom-nav .bottom-nav-item');
 
+    // hideLibraryMenu 플래그 확인 (proto-nav에서 설정)
+    const hideLibrary = sessionStorage.getItem('hideLibraryMenu') === 'true';
+
     if (appId === 'bookclub') {
         // KRS 전용 항목 숨기기
         krsOnlyItems.forEach(el => { el.style.display = 'none'; });
@@ -238,6 +244,14 @@ function applyAppNavVisibility(appId) {
         // 홈 링크를 home.html로 변경
         if (homeLink) { homeLink.href = 'home.html'; }
         if (bottomNavHome) { bottomNavHome.href = 'home.html'; }
+    }
+
+    // hideLibraryMenu 플래그가 true일 경우 라이브러리 메뉴 숨기기
+    if (hideLibrary) {
+        const libraryLink = document.querySelector('a[href="library.html"]');
+        const bottomLibrary = document.querySelector('#bottom-nav a[href="library.html"]');
+        if (libraryLink) { libraryLink.style.display = 'none'; }
+        if (bottomLibrary) { bottomLibrary.style.display = 'none'; }
     }
 }
 
@@ -289,9 +303,9 @@ function loadInlineSidebar(container, currentPage) {
             </div>
 
             <!-- 앱 선택 메뉴 (드롭다운 - 오버레이) -->
-            <div id="app-menu" class="hidden absolute left-0 right-0 top-[42px] bottom-[50px] z-10 px-2 py-2 bg-white/95 backdrop-blur-sm overflow-y-auto">
+            <div id="app-menu" class="hidden absolute left-0 right-0 top-[42px] bottom-[50px] z-10 px-2 py-2 bg-white/95 backdrop-blur-sm animate-fadeIn overflow-y-auto">
                 <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-1.5 space-y-0.5">
-                    <button onclick="selectApp('bookclub-krs')" class="app-item active w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all bg-white shadow-sm">
+                    <button onclick="selectApp('bookclub-krs')" class="app-item active w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all">
                         <div class="w-9 h-9 bg-gradient-to-br from-brand-primary to-brand-dark rounded-xl flex items-center justify-center text-white text-base shadow-md">📖</div>
                         <div class="text-left flex-1 min-w-0">
                             <p class="font-noto text-sm text-gray-800 truncate">웅진북클럽 KRS</p>
@@ -352,7 +366,12 @@ function loadInlineSidebar(container, currentPage) {
 
             <!-- 프로필 카드 -->
             <div id="profile-section" class="mx-3 mb-4 p-3 bg-gradient-to-br from-brand-bg to-yellow-200 rounded-2xl flex items-center gap-3 shadow-sm transition-all duration-300">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-300 to-brand-primary flex items-center justify-center text-2xl border-2 border-white shadow-md">🔥</div>
+                <div class="relative">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-300 to-brand-primary flex items-center justify-center text-2xl border-2 border-white shadow-md">🔥</div>
+                    <div class="absolute -bottom-1 -right-1 bg-gradient-to-r from-brand-primary to-orange-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow-sm flex items-center gap-0.5">
+                        <i class="fa-solid fa-star text-yellow-300"></i> Lv.5
+                    </div>
+                </div>
                 <div>
                     <p class="font-noto text-[13px] text-gray-800" data-user-name>우희</p>
                     <p class="text-xs text-gray-500">독서 탐험가</p>
@@ -360,26 +379,26 @@ function loadInlineSidebar(container, currentPage) {
             </div>
 
             <!-- 네비게이션 -->
-            <nav id="nav-section" class="flex-1 px-2 space-y-1 transition-all duration-300">
-                <a href="home.html" data-page="home" id="nav-home-link" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-all text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+            <nav id="nav-section" class="flex-1 px-2 space-y-1 overflow-y-auto hide-scrollbar transition-all duration-300">
+                <a href="home.html" data-page="home" id="nav-home-link" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-all">
                     <i class="fa-solid fa-house text-xl w-6 text-center"></i>
-                    <span class="font-noto text-lg">홈</span>
+                    <span class="font-noto text-lg tracking-wide">홈</span>
                 </a>
-                <a href="library.html" data-page="library" data-krs-only data-b2c-show class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="library.html" data-page="library" data-krs-only data-b2c-show class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors">
                     <i class="fa-solid fa-book-open text-xl w-6 text-center"></i>
-                    <span class="font-noto text-lg">KRS 도서관</span>
+                    <span class="font-noto text-lg tracking-wide">KRS 도서관</span>
                 </a>
-                <a href="book-library.html" data-page="book-library" data-b2c-hide class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="book-library.html" data-page="book-library" data-b2c-hide class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors">
                     <i class="fa-solid fa-layer-group text-xl w-6 text-center"></i>
-                    <span class="font-noto text-lg">라이브러리</span>
+                    <span class="font-noto text-lg tracking-wide">라이브러리</span>
                 </a>
-                <a href="mypage.html" data-page="mypage" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="mypage.html" data-page="mypage" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors">
                     <i class="fa-solid fa-user text-xl w-6 text-center"></i>
-                    <span class="font-noto text-lg">마이페이지</span>
+                    <span class="font-noto text-lg tracking-wide">마이페이지</span>
                 </a>
-                <a href="starshop.html" data-page="starshop" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors text-gray-500 hover:bg-orange-50 hover:text-brand-primary">
+                <a href="starshop.html" data-page="starshop" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors">
                     <i class="fa-solid fa-star text-xl w-6 text-center"></i>
-                    <span class="font-noto text-lg">스타샵</span>
+                    <span class="font-noto text-lg tracking-wide">스타샵</span>
                 </a>
 
                 <!-- KRS/B2C 전용: AI 독서도구함 -->
@@ -387,21 +406,22 @@ function loadInlineSidebar(container, currentPage) {
                     <div class="pt-4 pb-2 px-2"></div>
                     <a href="ai-buddy.html" data-page="ai-buddy" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-all hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 group" style="text-decoration:none;">
                         <span class="text-xl w-6 text-center">🧰</span>
-                        <span class="font-noto text-lg group-hover:text-purple-600 transition-colors">AI 독서도구함</span>
+                        <span class="font-noto text-lg tracking-wide group-hover:text-purple-600 transition-colors">AI 독서도구함</span>
                     </a>
                 </div>
 
-                <!-- KRS/B2C 전용: 올도전 -->
+                <!-- KRS/B2C 전용: 북클럽 도전 -->
                 <div data-krs-only data-b2c-show>
                     <a href="all-challenge.html" data-page="all-challenge" class="nav-link flex items-center gap-3 px-3 py-3 rounded-2xl transition-all hover:bg-gradient-to-r hover:from-violet-50 hover:to-purple-50 group" style="text-decoration:none;">
-                        <span class="text-xl w-6 text-center">🏆</span>
-                        <span class="font-noto text-lg group-hover:text-purple-600 transition-colors">올도전</span>
+                        <span class="text-xl w-6 text-center">♥️</span>
+                        <span class="font-noto text-lg tracking-wide group-hover:text-purple-600 transition-colors">북클럽 도전</span>
                     </a>
                 </div>
             </nav>
-            <div class="p-4 relative z-20 bg-white">
+            <!-- 푸터 -->
+            <div class="p-4 pt-0 relative z-20 bg-white">
                 <div class="flex items-center justify-between text-gray-400 mb-2 px-1">
-                    <button class="hover:text-brand-primary text-sm font-medium">
+                    <button onclick="window.location.href='settings.html'" class="hover:text-brand-primary text-sm font-medium">
                         <i class="fa-solid fa-gear mr-2"></i>설정
                     </button>
                     <button data-logout class="hover:text-red-400 text-sm font-medium">
@@ -411,6 +431,12 @@ function loadInlineSidebar(container, currentPage) {
             </div>
         </aside>
         <style>
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fadeIn { animation: fadeIn 0.2s ease-out; }
+            .app-item.active { background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
             #logo-arrow.rotate { transform: rotate(180deg); }
         </style>
     `;
@@ -436,11 +462,15 @@ function loadInlineLogoutModal(container) {
     container.innerHTML = `
         <div id="logout-modal" class="hidden fixed inset-0 z-[10000] items-center justify-center">
             <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="hideLogoutModal()"></div>
-            <div class="relative bg-white rounded-3xl p-8 shadow-2xl max-w-sm w-full mx-4">
-                <h3 class="font-noto text-xl text-center text-gray-800 mb-4">로그아웃 하시겠어요?</h3>
+            <div class="relative bg-white rounded-3xl p-8 shadow-2xl max-w-sm w-full mx-4 animate-pop-in">
+                <div class="w-16 h-16 mx-auto mb-4 bg-orange-100 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-right-from-bracket text-2xl text-brand-primary"></i>
+                </div>
+                <h3 class="font-noto text-xl text-center text-gray-800 mb-2">로그아웃 하시겠어요?</h3>
+                <p class="text-sm text-gray-500 text-center mb-6">다음에 또 만나요! 📚</p>
                 <div class="flex gap-3">
-                    <button onclick="hideLogoutModal()" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200">취소</button>
-                    <button onclick="performLogout()" class="flex-1 py-3 rounded-xl bg-brand-primary text-white font-bold hover:bg-orange-600">확인</button>
+                    <button onclick="hideLogoutModal()" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition-colors">취소</button>
+                    <button onclick="performLogout()" class="flex-1 py-3 rounded-xl bg-brand-primary text-white font-bold hover:bg-orange-600 shadow-md transition-colors">확인</button>
                 </div>
             </div>
         </div>

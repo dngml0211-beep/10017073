@@ -6,8 +6,7 @@
 .sidebar {
     width: 200px;
     background: white;
-    height: 100%;
-    min-height: 100vh;
+    height: 100vh;
     box-shadow: 4px 0 8px -4px rgba(0, 0, 0, 0.1);
     border-right: 1px solid #e5e7eb;
     z-index: 20;
@@ -21,12 +20,18 @@
     padding: 0;
 }
 
+/* 사이드바 로고/프로필/푸터 - 축소 방지 */
+.sidebar > .px-3:first-child,
+.sidebar > #profile-section,
+.sidebar > .p-4:last-child {
+    flex-shrink: 0;
+}
+
 /* 사이드바 컨테이너 - 높이 풀 채움 */
 #sidebar-container {
     margin: 0;
     padding: 0;
-    height: 100%;
-    min-height: 100vh;
+    height: 100vh;
     background: white;
     flex-shrink: 0;
     display: flex;

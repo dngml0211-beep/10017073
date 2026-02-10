@@ -113,22 +113,107 @@
             gap: 8px;
         }
 
-        /* === 내 현황 2칼럼 레이아웃 === */
+        /* === 내 현황 2그룹 레이아웃 === */
         .my-status-container {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* 1. 상단 그룹: 프로필 + 별 + 스타샵 */
+        .status-group-top {
+            background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             gap: 20px;
-            align-items: start;
         }
 
-        .my-status-left {
-            min-width: 0;
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
         }
 
-        .my-status-right {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .stars-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .star-display {
+            display: flex;
+            align-items: center;
             gap: 12px;
+            padding-right: 16px;
+            border-right: 2px solid rgba(251, 146, 60, 0.2);
+        }
+
+        /* 2. 나의 독서 활동 그룹 */
+        .status-group-activity {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .activity-header {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .activity-info-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .activity-info-item {
+            flex: 1;
+            min-width: 200px;
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 12px 16px;
+        }
+
+        .activity-info-label {
+            font-size: 12px;
+            color: #6B7280;
+            margin-bottom: 4px;
+        }
+
+        .activity-info-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1F2937;
+        }
+
+        .activity-info-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #F59E0B;
+            background: #FEF3C7;
+            padding: 2px 8px;
+            border-radius: 8px;
+            margin-left: 6px;
+        }
+
+        /* 활동 카드 그리드 (1x5) */
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            width: 100%;
         }
 
         /* === 활동 카드 슬라이더 === */
@@ -226,12 +311,12 @@
         }
 
         .review-card .activity-card-thumbnail {
-            width: 60px;
-            height: 80px;
+            width: 80px;
+            height: 60px;
             border-radius: 8px;
             overflow: hidden;
             margin-bottom: 8px;
-            box-shadow: 0 4px 12px rgba(59,130,246,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -252,6 +337,22 @@
             justify-content: center;
             font-size: 32px;
             border: 2px solid #3b82f6;
+        }
+
+        .default-review-cover {
+            width: 100%;
+            height: 100%;
+            background: #FAFAFA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6B7280;
+            border: 1.5px solid #E5E7EB;
+            font-family: 'Noto Sans KR', sans-serif;
+            letter-spacing: 0.5px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .review-card .activity-card-title {
@@ -325,6 +426,34 @@
             box-shadow: 0 2px 8px rgba(251,191,36,0.2);
         }
 
+        /* 5. 받은 뱃지 (뱃지 테마) */
+        .badge-card {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border-color: #9ca3af;
+        }
+
+        .badge-card .activity-card-icon {
+            font-size: 36px;
+            animation: badge-shine 3s infinite;
+        }
+
+        @keyframes badge-shine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .badge-card .activity-card-badge-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: #374151;
+            margin-top: 4px;
+            padding: 4px 12px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #9ca3af;
+            box-shadow: 0 2px 8px rgba(156,163,175,0.2);
+        }
+
         /* 공통 스타일 */
         .activity-card-content {
             display: flex;
@@ -354,21 +483,43 @@
         }
 
         /* 모바일 반응형 */
-        @media (max-width: 1024px) {
-            .my-status-container {
-                grid-template-columns: 1fr;
-                gap: 16px;
+        @media (max-width: 768px) {
+            .status-group-top {
+                flex-direction: column;
+                text-align: center;
             }
 
-            .my-status-right {
+            .profile-section {
+                flex-direction: column;
+            }
+
+            .stars-section {
+                flex-direction: column;
+            }
+
+            .star-display {
+                border-right: none;
+                border-bottom: 2px solid rgba(251, 146, 60, 0.2);
+                padding-right: 0;
+                padding-bottom: 12px;
+            }
+
+            .activity-info-row {
+                flex-direction: column;
+            }
+
+            .activity-info-item {
+                min-width: 100%;
+            }
+
+            .activity-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media (max-width: 640px) {
-            .my-status-right {
+        @media (max-width: 480px) {
+            .activity-grid {
                 grid-template-columns: 1fr;
-                gap: 10px;
             }
 
             .activity-card {
@@ -623,14 +774,14 @@
         /* === 독서로 키재기 (가로형) === */
         .height-layout {
             display: flex;
-            align-items: stretch;
+            align-items: flex-end;
             gap: 24px;
         }
         .height-meter {
             position: relative;
-            width: 200px;
-            min-width: 200px;
-            height: 240px;
+            width: 280px;
+            min-width: 280px;
+            height: 336px;
             background: linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 100%);
             border-radius: 16px;
             overflow: hidden;
@@ -642,19 +793,20 @@
         }
         .height-figure {
             position: relative;
-            width: 160px;
-            height: 180px;
+            width: 224px;
+            height: 252px;
             display: flex;
             flex-direction: column;
             align-items: center;
             z-index: 2;
         }
         .height-figure img {
-            width: 150px;
+            width: 210px;
             height: auto;
             object-fit: contain;
             position: relative;
             top: -20px;
+            margin-right: 20px;
         }
         .height-progress-badge {
             position: absolute;
@@ -752,7 +904,7 @@
             .height-meter {
                 width: 100%;
                 min-width: unset;
-                height: 220px;
+                height: 308px;
             }
         }
 
@@ -2610,18 +2762,32 @@
         /* === 갤러리 그리드 === */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr); /* 모바일: 2열 */
             gap: 8px;
             width: 100%;
         }
-        @media (min-width: 640px) {
+        @media (min-width: 480px) {
             .gallery-grid {
+                grid-template-columns: repeat(3, 1fr); /* 작은 태블릿: 3열 */
                 gap: 10px;
+            }
+        }
+        @media (min-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr); /* 태블릿: 4열 */
+                gap: 12px;
             }
         }
         @media (min-width: 1024px) {
             .gallery-grid {
-                gap: 12px;
+                grid-template-columns: repeat(5, 1fr); /* 작은 데스크톱: 5열 */
+                gap: 14px;
+            }
+        }
+        @media (min-width: 1280px) {
+            .gallery-grid {
+                grid-template-columns: repeat(6, 1fr); /* 큰 데스크톱: 6열 */
+                gap: 16px;
             }
         }
 
@@ -2702,29 +2868,52 @@
             display: none !important;
         }
 
-        /* === 갤러리 피드 === */
+        /* === 갤러리 피드 (릴스 스타일 그리드) === */
         .gallery-feed {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
             gap: 16px;
+            max-width: 900px;
+        }
+        @media (min-width: 580px) {
+            .gallery-feed {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+        }
+        @media (min-width: 900px) {
+            .gallery-feed {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 14px;
+            }
+        }
+        @media (min-width: 1200px) {
+            .gallery-feed {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
         }
 
-        /* === 피드 카드 (친구 작품) === */
+        /* === 피드 카드 (친구 작품 - 릴스 스타일) === */
         .feed-card {
             background: white;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             transition: all 0.2s;
+            max-width: 320px;
+            width: 100%;
+            justify-self: center;
         }
         .feed-card:hover {
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
         }
         .feed-card.highlight {
             border: 2px solid #FF9F43;
         }
         .feed-card-header {
-            padding: 12px 16px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -2733,37 +2922,37 @@
             background: #FFF7ED;
         }
         .feed-card-avatar {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .feed-card-visual {
             width: 100%;
-            aspect-ratio: 4/3;
+            aspect-ratio: 3/4;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 64px;
+            font-size: 56px;
         }
         .feed-card-body {
-            padding: 12px 16px;
+            padding: 10px 14px;
         }
         .feed-card-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
+            gap: 10px;
+            margin-bottom: 6px;
         }
         .feed-card-action {
             background: transparent;
             border: none;
             color: #6b7280;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
@@ -2778,7 +2967,16 @@
             color: #ef4444;
         }
         .feed-card-action i {
-            font-size: 16px;
+            font-size: 14px;
+        }
+        /* 모바일 1컬럼: 카드 전체 너비 */
+        @media (max-width: 579px) {
+            .feed-card {
+                max-width: 100%;
+            }
+            .feed-card-visual {
+                aspect-ratio: 4/5;
+            }
         }
 
         /* === 친구 카드 (관심친구) === */
@@ -2791,6 +2989,8 @@
             justify-content: space-between;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             transition: all 0.2s;
+            max-width: 500px;
+            width: 100%;
         }
         .friend-card:hover {
             transform: translateY(-2px);
@@ -2806,6 +3006,8 @@
             font-size: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             flex-shrink: 0;
+            aspect-ratio: 1; /* 정원 비율 유지 */
+            line-height: 1; /* 이모지 중앙 정렬 */
         }
 
         /* === 팔로우 버튼 === */
@@ -3686,122 +3888,111 @@
                             <h3 class="my-card-title"><i class="fa-solid fa-user text-brand-primary"></i> 내 현황</h3>
 
                             <div class="my-status-container">
-                                <!-- 좌측: 기존 내 현황 -->
-                                <div class="my-status-left">
-                                    <!-- 프로필 -->
-                                    <div class="flex items-center gap-3 mb-4">
-                                <div class="profile-photo" onclick="openProfileModal()">
-                                    <span id="profile-emoji">😎</span>
-                                    <div class="profile-photo-edit">
-                                        <i class="fa-solid fa-camera"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <p class="font-noto text-lg font-bold text-gray-800">우희</p>
-                                    <p class="text-sm text-gray-500">3학년 2반</p>
-                                </div>
-                            </div>
-
-                            <!-- 독서레벨 & 점수 -->
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="level-badge">
-                                    <i class="fa-solid fa-trophy"></i>
-                                    <span>Lv.5</span>
-                                </div>
-                                <div class="text-sm">
-                                    <span class="text-gray-500">독서점수</span>
-                                    <span class="font-bold text-brand-primary ml-1">898점</span>
-                                </div>
-                            </div>
-
-                            <!-- 독서 취향 -->
-                            <div class="mb-3">
-                                <p class="text-xs text-gray-500 mb-2">나의 독서 취향</p>
-                                <div class="taste-badge">
-                                    <span>📚</span>
-                                    <span>만화가 좋아!</span>
-                                </div>
-                            </div>
-
-                            <!-- 진도 설정 버튼 -->
-                            <div class="space-y-2 mb-3">
-                                <button class="setting-btn">
-                                    <i class="fa-solid fa-sliders text-blue-500"></i>
-                                    <span>북클럽 진도 설정</span>
-                                    <i class="fa-solid fa-chevron-right ml-auto text-gray-400"></i>
-                                </button>
-                            </div>
-
-                            <!-- 별 개수 -->
-                            <div class="star-count mb-3">
-                                <span style="font-size:24px;">⭐</span>
-                                <div>
-                                    <div class="star-count-num">5,788</div>
-                                    <div class="star-count-label">내가 모은 별</div>
-                                </div>
-                            </div>
-
-                            <!-- 스타샵 바로가기 -->
-                            <a href="starshop.html" class="starshop-btn">
-                                <i class="fa-solid fa-store"></i>
-                                <span>스타샵 바로가기</span>
-                            </a>
-                                </div>
-
-                                <!-- 우측: 활동 카드 슬라이더 -->
-                                <div class="my-status-right">
-                                    <div class="activity-slider">
-                                        <div class="activity-slider-track" id="activitySliderTrack">
-                                            <!-- 1. 최근 출석일 -->
-                                            <div class="activity-card attendance-card">
-                                        <div class="activity-card-icon">🔥</div>
-                                        <div class="activity-card-content">
-                                            <div class="activity-card-label">최근 출석일</div>
-                                            <div class="activity-card-value">2026.02.10</div>
-                                            <div class="activity-card-badge">연속 7일!</div>
+                                <!-- 1. 상단 그룹: 프로필 + 별 + 스타샵 -->
+                                <div class="status-group-top">
+                                    <!-- 프로필 섹션 -->
+                                    <div class="profile-section">
+                                        <div class="profile-photo" onclick="openProfileModal()">
+                                            <span id="profile-emoji">😎</span>
+                                            <div class="profile-photo-edit">
+                                                <i class="fa-solid fa-camera"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="font-noto text-lg font-bold text-gray-800">우희</p>
+                                            <p class="text-sm text-gray-500">3학년 2반</p>
                                         </div>
                                     </div>
 
-                                    <!-- 2. 나의 감상문 -->
-                                    <div class="activity-card review-card">
-                                        <div class="activity-card-thumbnail">
-                                            <div class="default-book-cover">📖</div>
+                                    <!-- 별 + 스타샵 섹션 -->
+                                    <div class="stars-section">
+                                        <div class="star-display">
+                                            <span style="font-size:32px;">⭐</span>
+                                            <div>
+                                                <div class="star-count-num">5,788</div>
+                                                <div class="star-count-label">내가 모은 별</div>
+                                            </div>
                                         </div>
-                                        <div class="activity-card-content">
-                                            <div class="activity-card-label">나의 감상문</div>
-                                            <div class="activity-card-title">해리포터와 마법사의 돌</div>
-                                            <div class="activity-card-date">2026.02.08</div>
+                                        <a href="starshop.html" class="starshop-btn">
+                                            <i class="fa-solid fa-store"></i>
+                                            <span>스타샵 가기</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- 2. 나의 독서 활동 그룹 -->
+                                <div class="status-group-activity">
+                                    <h3 class="activity-header">📚 나의 독서 활동</h3>
+
+                                    <!-- 독서점수 & 취향 -->
+                                    <div class="activity-info-row">
+                                        <div class="activity-info-item">
+                                            <div class="activity-info-label">나의 독서점수</div>
+                                            <div class="activity-info-value">
+                                                550점 <span class="activity-info-badge">승급 도전 중!</span>
+                                            </div>
+                                        </div>
+                                        <div class="activity-info-item">
+                                            <div class="activity-info-label">나의 독서 취향</div>
+                                            <div class="activity-info-value">
+                                                📚 만화가 좋아!
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- 3. 내가 획득한 단어 -->
-                                    <div class="activity-card word-card">
-                                        <div class="activity-card-icon">📝</div>
-                                        <div class="activity-card-content">
-                                            <div class="activity-card-label">획득한 단어</div>
-                                            <div class="activity-card-word">매끈매끈하다</div>
-                                            <div class="activity-card-badge">+5 단어</div>
+                                    <!-- 5개 활동 카드 (1x5) -->
+                                    <div class="activity-grid">
+                                        <!-- 1. 최근 출석일 -->
+                                        <div class="activity-card attendance-card">
+                                            <div class="activity-card-icon">🔥</div>
+                                            <div class="activity-card-content">
+                                                <div class="activity-card-label">최근 출석일</div>
+                                                <div class="activity-card-value">2026.02.10</div>
+                                                <div class="activity-card-badge">연속 7일!</div>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <!-- 4. 내가 획득한 상장 -->
-                                    <div class="activity-card award-card">
-                                        <div class="activity-card-icon">🏆</div>
-                                        <div class="activity-card-content">
-                                            <div class="activity-card-label">획득한 상장</div>
-                                            <div class="activity-card-award">책사랑상</div>
-                                            <div class="activity-card-date">2026.01.15</div>
+                                        <!-- 2. 나의 감상문 -->
+                                        <div class="activity-card review-card">
+                                            <div class="activity-card-thumbnail">
+                                                <div class="default-review-cover">감상문</div>
+                                            </div>
+                                            <div class="activity-card-content">
+                                                <div class="activity-card-label">나의 감상문</div>
+                                                <div class="activity-card-title">해리포터와 마법사의 돌</div>
+                                                <div class="activity-card-date">2026.02.08</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                        </div>
-                                    </div>
 
-                                    <!-- 인디케이터 -->
-                                    <div class="activity-slider-dots" id="activitySliderDots">
-                                        <span class="dot active" data-index="0"></span>
-                                        <span class="dot" data-index="1"></span>
-                                        <span class="dot" data-index="2"></span>
-                                        <span class="dot" data-index="3"></span>
+                                        <!-- 3. 내가 획득한 단어 -->
+                                        <div class="activity-card word-card">
+                                            <div class="activity-card-icon">📝</div>
+                                            <div class="activity-card-content">
+                                                <div class="activity-card-label">획득한 단어</div>
+                                                <div class="activity-card-word">매끈매끈하다</div>
+                                                <div class="activity-card-badge">+5 단어</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 4. 내가 획득한 상장 -->
+                                        <div class="activity-card award-card">
+                                            <div class="activity-card-icon">🏆</div>
+                                            <div class="activity-card-content">
+                                                <div class="activity-card-label">획득한 상장</div>
+                                                <div class="activity-card-award">책사랑상</div>
+                                                <div class="activity-card-date">2026.01.15</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 5. 내가 받은 뱃지 -->
+                                        <div class="activity-card badge-card">
+                                            <div class="activity-card-icon">🎖️</div>
+                                            <div class="activity-card-content">
+                                                <div class="activity-card-label">받은 뱃지</div>
+                                                <div class="activity-card-badge-name">독서왕</div>
+                                                <div class="activity-card-badge">3개 보유</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -3860,9 +4051,9 @@
 
                                     <!-- 다음 목표 -->
                                     <div class="height-next">
-                                        <span class="height-next-icon">🗼</span>
+                                        <span class="height-next-icon">🗽</span>
                                         <div class="height-next-text">
-                                            다음 목표: <span class="height-next-name">에펠탑</span> (250권 더!)
+                                            다음 목표: <span class="height-next-name">자유의 여신상</span> (250권 더!)
                                         </div>
                                     </div>
                                 </div>
@@ -4844,6 +5035,15 @@
                 // 콘텐츠 전환
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
                 document.getElementById('tab-' + tab.dataset.tab).classList.remove('hidden');
+
+                // 갤러리 탭 진입 시 내 작품 렌더링 보장
+                if (tab.dataset.tab === 'gallery') {
+                    renderMyGallery();
+                }
+                // 내 책장 탭 진입 시 책장 렌더링 보장
+                if (tab.dataset.tab === 'bookshelf') {
+                    renderBookshelf();
+                }
             });
         });
 
@@ -5558,11 +5758,33 @@
                                    '🔒 잠김';
                 const statusClass = `milestone-stage-${status}`;
 
+                // Calculate fill percentage based on status
+                let fillPercent = milestone.heightPercent;
+                if (status === 'completed') {
+                    // Already achieved stages: 100% fill
+                    fillPercent = 100;
+                } else if (status === 'current') {
+                    // Current stage (세종대왕): 20% fill
+                    fillPercent = 20;
+                } else if (status === 'locked') {
+                    // Future stages: decreasing fill based on distance from current
+                    const stagesAfterCurrent = milestone.stage - USER_CURRENT_STAGE;
+                    if (stagesAfterCurrent === 1) {
+                        fillPercent = 20; // First stage after current
+                    } else if (stagesAfterCurrent === 2) {
+                        fillPercent = 5;  // Second stage after current
+                    } else if (stagesAfterCurrent === 3) {
+                        fillPercent = 1;  // Third stage after current
+                    } else {
+                        fillPercent = 0;  // Fourth+ stages after current
+                    }
+                }
+
                 html += `
                     <div class="milestone-stage ${index === 0 ? 'active-stage' : ''} ${statusClass}" data-stage="${milestone.stage}">
                         <div class="milestone-status-badge">${statusText}</div>
                         <div class="milestone-stage-visual">
-                            <div class="milestone-height-bar" style="height: ${milestone.heightPercent}%;"></div>
+                            <div class="milestone-height-bar" style="height: ${fillPercent}%;"></div>
                             <div class="milestone-emoji">${milestone.emoji}</div>
                         </div>
                         <div class="milestone-stage-info">
@@ -6080,5 +6302,8 @@
         </div>
     </div>
 
+<!-- Proto Navigation (공통 Dev Tool) -->
+<link rel="stylesheet" href="../css/proto-nav.css">
+<script src="../js/proto-nav.js"></script>
 </body>
 </html>
