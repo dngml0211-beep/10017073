@@ -113,16 +113,280 @@
             gap: 8px;
         }
 
+        /* === 내 현황 2칼럼 레이아웃 === */
+        .my-status-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .my-status-left {
+            min-width: 0;
+        }
+
+        .my-status-right {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        /* === 활동 카드 슬라이더 === */
+        .activity-slider {
+            width: 100%;
+            display: contents;
+        }
+
+        .activity-slider-track {
+            display: contents;
+        }
+
+        .activity-slider-track .activity-card {
+            min-width: 0;
+        }
+
+        /* 슬라이더 인디케이터 */
+        .activity-slider-dots {
+            display: none;
+        }
+
+        .activity-slider-dots .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .activity-slider-dots .dot:hover {
+            background: #9ca3af;
+            transform: scale(1.2);
+        }
+
+        .activity-slider-dots .dot.active {
+            background: #fbbf24;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* === 활동 카드 === */
+        .activity-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            min-height: 140px;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        /* 1. 최근 출석일 (불꽃 테마) */
+        .attendance-card {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border-color: #fb923c;
+        }
+
+        .attendance-card .activity-card-icon {
+            font-size: 36px;
+            animation: fire 1.5s infinite;
+        }
+
+        @keyframes fire {
+            0%, 100% { transform: scale(1) rotate(-5deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .attendance-card .activity-card-badge {
+            background: #fb923c;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* 2. 나의 감상문 (책 테마) */
+        .review-card {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-color: #3b82f6;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .review-card .activity-card-thumbnail {
+            width: 60px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .review-card .activity-card-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .default-book-cover {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border: 2px solid #3b82f6;
+        }
+
+        .review-card .activity-card-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e40af;
+            margin-top: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* 3. 획득한 단어 (단어장 테마) */
+        .word-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-color: #10b981;
+        }
+
+        .word-card .activity-card-icon {
+            font-size: 32px;
+        }
+
+        .word-card .activity-card-word {
+            font-size: 14px;
+            font-weight: 800;
+            color: #065f46;
+            margin-top: 4px;
+            padding: 4px 10px;
+            background: white;
+            border-radius: 8px;
+            border: 2px dashed #10b981;
+        }
+
+        .word-card .activity-card-badge {
+            background: #10b981;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        /* 4. 획득한 상장 (트로피 테마) */
+        .award-card {
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
+            border-color: #fbbf24;
+        }
+
+        .award-card .activity-card-icon {
+            font-size: 36px;
+            animation: trophy 2s infinite;
+        }
+
+        @keyframes trophy {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1) rotate(10deg); }
+        }
+
+        .award-card .activity-card-award {
+            font-size: 13px;
+            font-weight: 800;
+            color: #92400e;
+            margin-top: 4px;
+            padding: 4px 12px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #fbbf24;
+            box-shadow: 0 2px 8px rgba(251,191,36,0.2);
+        }
+
+        /* 공통 스타일 */
+        .activity-card-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .activity-card-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .activity-card-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .activity-card-date {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        /* 모바일 반응형 */
+        @media (max-width: 1024px) {
+            .my-status-container {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .my-status-right {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .my-status-right {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .activity-card {
+                padding: 14px;
+                min-height: 120px;
+            }
+        }
+
         /* === 프로필 섹션 === */
         .profile-photo {
-            width: 80px;
-            height: 80px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             background: linear-gradient(135deg, #FF9F43, #F368E0);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
+            font-size: 32px;
             cursor: pointer;
             position: relative;
             transition: transform 0.2s;
@@ -195,20 +459,20 @@
         .star-count {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 18px;
+            gap: 8px;
+            padding: 10px 14px;
             background: linear-gradient(135deg, #fef9c3, #fef08a);
-            border-radius: 16px;
+            border-radius: 12px;
             border: 1px solid #fde047;
         }
         .star-count-num {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
             color: #ca8a04;
             font-family: 'Noto Sans KR', sans-serif;
         }
         .star-count-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #a16207;
             font-weight: 500;
         }
@@ -3417,12 +3681,15 @@
                 <!-- MY 탭 콘텐츠 -->
                 <div id="tab-my" class="tab-content">
                     <div class="my-grid">
-                        <!-- 1. 내 현황 -->
-                        <div class="my-card">
+                        <!-- 1. 내 현황 (확장) -->
+                        <div class="my-card my-card-full">
                             <h3 class="my-card-title"><i class="fa-solid fa-user text-brand-primary"></i> 내 현황</h3>
 
-                            <!-- 프로필 -->
-                            <div class="flex items-center gap-4 mb-5">
+                            <div class="my-status-container">
+                                <!-- 좌측: 기존 내 현황 -->
+                                <div class="my-status-left">
+                                    <!-- 프로필 -->
+                                    <div class="flex items-center gap-3 mb-4">
                                 <div class="profile-photo" onclick="openProfileModal()">
                                     <span id="profile-emoji">😎</span>
                                     <div class="profile-photo-edit">
@@ -3448,7 +3715,7 @@
                             </div>
 
                             <!-- 독서 취향 -->
-                            <div class="mb-5">
+                            <div class="mb-3">
                                 <p class="text-xs text-gray-500 mb-2">나의 독서 취향</p>
                                 <div class="taste-badge">
                                     <span>📚</span>
@@ -3457,7 +3724,7 @@
                             </div>
 
                             <!-- 진도 설정 버튼 -->
-                            <div class="space-y-2 mb-5">
+                            <div class="space-y-2 mb-3">
                                 <button class="setting-btn">
                                     <i class="fa-solid fa-sliders text-blue-500"></i>
                                     <span>북클럽 진도 설정</span>
@@ -3466,8 +3733,8 @@
                             </div>
 
                             <!-- 별 개수 -->
-                            <div class="star-count mb-4">
-                                <span style="font-size:28px;">⭐</span>
+                            <div class="star-count mb-3">
+                                <span style="font-size:24px;">⭐</span>
                                 <div>
                                     <div class="star-count-num">5,788</div>
                                     <div class="star-count-label">내가 모은 별</div>
@@ -3479,55 +3746,68 @@
                                 <i class="fa-solid fa-store"></i>
                                 <span>스타샵 바로가기</span>
                             </a>
+                                </div>
+
+                                <!-- 우측: 활동 카드 슬라이더 -->
+                                <div class="my-status-right">
+                                    <div class="activity-slider">
+                                        <div class="activity-slider-track" id="activitySliderTrack">
+                                            <!-- 1. 최근 출석일 -->
+                                            <div class="activity-card attendance-card">
+                                        <div class="activity-card-icon">🔥</div>
+                                        <div class="activity-card-content">
+                                            <div class="activity-card-label">최근 출석일</div>
+                                            <div class="activity-card-value">2026.02.10</div>
+                                            <div class="activity-card-badge">연속 7일!</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 2. 나의 감상문 -->
+                                    <div class="activity-card review-card">
+                                        <div class="activity-card-thumbnail">
+                                            <div class="default-book-cover">📖</div>
+                                        </div>
+                                        <div class="activity-card-content">
+                                            <div class="activity-card-label">나의 감상문</div>
+                                            <div class="activity-card-title">해리포터와 마법사의 돌</div>
+                                            <div class="activity-card-date">2026.02.08</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 3. 내가 획득한 단어 -->
+                                    <div class="activity-card word-card">
+                                        <div class="activity-card-icon">📝</div>
+                                        <div class="activity-card-content">
+                                            <div class="activity-card-label">획득한 단어</div>
+                                            <div class="activity-card-word">매끈매끈하다</div>
+                                            <div class="activity-card-badge">+5 단어</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 4. 내가 획득한 상장 -->
+                                    <div class="activity-card award-card">
+                                        <div class="activity-card-icon">🏆</div>
+                                        <div class="activity-card-content">
+                                            <div class="activity-card-label">획득한 상장</div>
+                                            <div class="activity-card-award">책사랑상</div>
+                                            <div class="activity-card-date">2026.01.15</div>
+                                        </div>
+                                    </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 인디케이터 -->
+                                    <div class="activity-slider-dots" id="activitySliderDots">
+                                        <span class="dot active" data-index="0"></span>
+                                        <span class="dot" data-index="1"></span>
+                                        <span class="dot" data-index="2"></span>
+                                        <span class="dot" data-index="3"></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- 2. 출석 달력 -->
-                        <div class="my-card">
-                            <h3 class="my-card-title"><i class="fa-solid fa-calendar-check text-green-500"></i> 출석</h3>
-
-                            <!-- 달력 헤더 -->
-                            <div class="calendar-header">
-                                <span class="calendar-month">2026년 2월</span>
-                                <div class="calendar-nav">
-                                    <button><i class="fa-solid fa-chevron-left"></i></button>
-                                    <button><i class="fa-solid fa-chevron-right"></i></button>
-                                </div>
-                            </div>
-
-                            <!-- 요일 -->
-                            <div class="calendar-weekdays">
-                                <div class="calendar-weekday sun">일</div>
-                                <div class="calendar-weekday">월</div>
-                                <div class="calendar-weekday">화</div>
-                                <div class="calendar-weekday">수</div>
-                                <div class="calendar-weekday">목</div>
-                                <div class="calendar-weekday">금</div>
-                                <div class="calendar-weekday sat">토</div>
-                            </div>
-
-                            <!-- 날짜 -->
-                            <div class="calendar-days" id="calendar-grid">
-                                <!-- JS로 렌더링 -->
-                            </div>
-
-                            <!-- 출석 통계 -->
-                            <div class="attendance-stats">
-                                <div class="attendance-stat">
-                                    <div class="attendance-stat-num">23</div>
-                                    <div class="attendance-stat-label">이번 달 출석</div>
-                                </div>
-                                <div class="attendance-stat">
-                                    <div class="attendance-stat-num" style="color:#10b981;">7</div>
-                                    <div class="attendance-stat-label">연속 출석</div>
-                                </div>
-                                <div class="attendance-stat">
-                                    <div class="attendance-stat-num" style="color:#8b5cf6;">156</div>
-                                    <div class="attendance-stat-label">총 출석</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 3. 독서로 키재기 (가로형, 2단 full-width) -->
+                        <!-- 2. 독서로 키재기 (가로형, 2단 full-width) -->
                         <div class="my-card my-card-full">
                             <h3 class="my-card-title">
                                 <i class="fa-solid fa-ruler-vertical text-amber-500"></i> 독서로 키재기
@@ -5696,6 +5976,65 @@
             alert('작품 상세보기: ' + id);
         }
 
+        // === 활동 카드 슬라이더 ===
+        let currentSlideIndex = 0;
+        let sliderInterval = null;
+        const SLIDE_INTERVAL = 3000; // 3초
+
+        function initActivitySlider() {
+            const track = document.getElementById('activitySliderTrack');
+            const dots = document.querySelectorAll('.activity-slider-dots .dot');
+
+            if (!track || dots.length === 0) return;
+
+            // Dot 클릭 이벤트
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                    resetSliderInterval();
+                });
+            });
+
+            // 자동 슬라이드 시작
+            startAutoSlide();
+        }
+
+        function goToSlide(index) {
+            const track = document.getElementById('activitySliderTrack');
+            const dots = document.querySelectorAll('.activity-slider-dots .dot');
+            const totalSlides = dots.length;
+
+            currentSlideIndex = index;
+
+            // 슬라이더 이동
+            const offset = -100 * currentSlideIndex;
+            track.style.transform = `translateX(${offset}%)`;
+
+            // Dot 업데이트
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentSlideIndex].classList.add('active');
+        }
+
+        function nextSlide() {
+            const dots = document.querySelectorAll('.activity-slider-dots .dot');
+            const totalSlides = dots.length;
+            const nextIndex = (currentSlideIndex + 1) % totalSlides;
+            goToSlide(nextIndex);
+        }
+
+        function startAutoSlide() {
+            sliderInterval = setInterval(() => {
+                nextSlide();
+            }, SLIDE_INTERVAL);
+        }
+
+        function resetSliderInterval() {
+            if (sliderInterval) {
+                clearInterval(sliderInterval);
+            }
+            startAutoSlide();
+        }
+
         // === Init ===
         document.addEventListener('DOMContentLoaded', () => {
             loadSidebar('mypage');
@@ -5705,6 +6044,7 @@
             renderMyGallery(); // 갤러리 초기화
             renderFriendsGallery();
             renderFollowingTab();
+            initActivitySlider(); // 슬라이더 초기화
         });
     </script>
 
