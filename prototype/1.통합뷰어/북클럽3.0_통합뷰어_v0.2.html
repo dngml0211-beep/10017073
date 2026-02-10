@@ -442,32 +442,80 @@ function SquirrelBuddy({ emotion = 'kind', size = 80, animate = true }) {
   };
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" className={animate ? e.extraClass : ''}>
+      {/* 그림자 */}
+      <ellipse cx="50" cy="92" rx="28" ry="5" fill="black" opacity="0.15"/>
+
+      {/* 꼬리 - 더 풍성하게 */}
       <g className={e.tailWag ? 'tail-wag' : ''} style={{transformOrigin:'30px 70px'}}>
-        <path d="M25 70 Q5 45 15 25 Q25 15 30 30 Q32 45 28 65" fill="#C67C4E" stroke="#A0622E" strokeWidth="1"/>
-        <path d="M20 55 Q10 40 18 28" stroke="#D4956B" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.5"/>
+        <defs>
+          <radialGradient id="tailGradient" cx="30%" cy="30%">
+            <stop offset="0%" stopColor="#D4956B"/>
+            <stop offset="100%" stopColor="#A0622E"/>
+          </radialGradient>
+        </defs>
+        <path d="M25 70 Q5 45 15 25 Q25 15 32 28 Q35 45 30 65" fill="url(#tailGradient)" stroke="#8B5E3C" strokeWidth="1.5"/>
+        <path d="M22 58 Q12 42 20 28" stroke="#E8B892" strokeWidth="4" fill="none" strokeLinecap="round" opacity="0.6"/>
+        <path d="M18 52 Q8 38 16 26" stroke="#F5D5B8" strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.4"/>
       </g>
-      <ellipse cx="50" cy="72" rx="22" ry="18" fill={e.bodyColor}/>
-      <ellipse cx="50" cy="74" rx="16" ry="12" fill="#D4956B"/>
-      <circle cx="50" cy="42" r="24" fill={e.bodyColor}/>
-      <ellipse cx="32" cy="22" rx="8" ry="10" fill={e.bodyColor} transform="rotate(-15 32 22)"/>
-      <ellipse cx="32" cy="22" rx="5" ry="7" fill="#D4956B" transform="rotate(-15 32 22)"/>
-      <ellipse cx="68" cy="22" rx="8" ry="10" fill={e.bodyColor} transform="rotate(15 68 22)"/>
-      <ellipse cx="68" cy="22" rx="5" ry="7" fill="#D4956B" transform="rotate(15 68 22)"/>
-      <ellipse cx="50" cy="48" rx="18" ry="14" fill="#D4956B"/>
-      <circle cx="30" cy="50" r="5" fill="#FF9999" opacity={e.cheekOpacity}/>
-      <circle cx="70" cy="50" r="5" fill="#FF9999" opacity={e.cheekOpacity}/>
+
+      {/* 몸통 - 입체감 */}
+      <defs>
+        <radialGradient id="bodyGradient" cx="40%" cy="30%">
+          <stop offset="0%" stopColor="#A67C52"/>
+          <stop offset="100%" stopColor="#8B5E3C"/>
+        </radialGradient>
+        <radialGradient id="bellyGradient" cx="40%" cy="20%">
+          <stop offset="0%" stopColor="#F5D5B8"/>
+          <stop offset="100%" stopColor="#D4956B"/>
+        </radialGradient>
+      </defs>
+      <ellipse cx="50" cy="72" rx="23" ry="19" fill="url(#bodyGradient)"/>
+      <ellipse cx="50" cy="74" rx="17" ry="13" fill="url(#bellyGradient)"/>
+
+      {/* 얼굴 - 더 동글동글 */}
+      <circle cx="50" cy="42" r="26" fill="url(#bodyGradient)"/>
+
+      {/* 귀 - 더 귀엽게 */}
+      <ellipse cx="30" cy="20" rx="9" ry="12" fill="url(#bodyGradient)" transform="rotate(-20 30 20)"/>
+      <ellipse cx="30" cy="21" rx="6" ry="8" fill="url(#bellyGradient)" transform="rotate(-20 30 21)"/>
+      <ellipse cx="70" cy="20" rx="9" ry="12" fill="url(#bodyGradient)" transform="rotate(20 70 20)"/>
+      <ellipse cx="70" cy="21" rx="6" ry="8" fill="url(#bellyGradient)" transform="rotate(20 70 21)"/>
+
+      {/* 얼굴 밝은 부분 */}
+      <ellipse cx="50" cy="48" rx="20" ry="16" fill="url(#bellyGradient)"/>
+
+      {/* 볼터치 - 더 크고 선명하게 */}
+      <circle cx="28" cy="50" r="6" fill="#FFB3B3" opacity={e.cheekOpacity}/>
+      <circle cx="72" cy="50" r="6" fill="#FFB3B3" opacity={e.cheekOpacity}/>
+      <circle cx="26" cy="48" r="2.5" fill="#FFC9C9" opacity={e.cheekOpacity * 0.8}/>
+      <circle cx="74" cy="48" r="2.5" fill="#FFC9C9" opacity={e.cheekOpacity * 0.8}/>
+
+      {/* 눈 */}
       {renderEyes()}
-      <ellipse cx="50" cy="48" rx="3" ry="2.5" fill="#2D1B0E"/>
+
+      {/* 코 - 더 귀엽게 */}
+      <ellipse cx="50" cy="49" rx="3.5" ry="3" fill="#2D1B0E"/>
+      <circle cx="49" cy="48" r="1" fill="white" opacity="0.6"/>
+
+      {/* 입 */}
       {renderMouth()}
-      <ellipse cx="30" cy="68" rx="6" ry="4" fill={e.bodyColor} transform="rotate(20 30 68)"/>
-      <ellipse cx="70" cy="68" rx="6" ry="4" fill={e.bodyColor} transform="rotate(-20 70 68)"/>
+
+      {/* 발 - 더 입체적 */}
+      <ellipse cx="35" cy="88" rx="7" ry="5" fill="#A67C52" transform="rotate(15 35 88)"/>
+      <ellipse cx="35" cy="89" rx="5" ry="3" fill="#D4956B" transform="rotate(15 35 89)"/>
+      <ellipse cx="65" cy="88" rx="7" ry="5" fill="#A67C52" transform="rotate(-15 65 88)"/>
+      <ellipse cx="65" cy="89" rx="5" ry="3" fill="#D4956B" transform="rotate(-15 65 89)"/>
+
+      {/* 졸음 표시 */}
       {emotion === 'sleepy' && (<>
-        <text x="70" y="25" fontSize="10" fill="#7C8DB5" fontWeight="bold" opacity="0.7">z<animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/></text>
-        <text x="78" y="18" fontSize="8" fill="#7C8DB5" fontWeight="bold">z<animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.5s" repeatCount="indefinite"/></text>
-        <text x="84" y="12" fontSize="6" fill="#7C8DB5" fontWeight="bold">z<animate attributeName="opacity" values="0;1;0" dur="2s" begin="1s" repeatCount="indefinite"/></text>
+        <text x="75" y="25" fontSize="12" fill="#7C8DB5" fontWeight="bold" opacity="0.8">z<animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/></text>
+        <text x="82" y="18" fontSize="10" fill="#7C8DB5" fontWeight="bold">z<animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.5s" repeatCount="indefinite"/></text>
+        <text x="88" y="12" fontSize="8" fill="#7C8DB5" fontWeight="bold">z<animate attributeName="opacity" values="0;1;0" dur="2s" begin="1s" repeatCount="indefinite"/></text>
       </>)}
+
+      {/* 열공 머리띠 */}
       {emotion === 'study' && (
-        <g><rect x="28" y="28" width="44" height="6" rx="3" fill="#FF6B6B" opacity="0.9"/><text x="50" y="34" fontSize="5" fill="white" textAnchor="middle" fontWeight="bold">열공!</text></g>
+        <g><rect x="26" y="26" width="48" height="7" rx="3.5" fill="#FF6B6B" opacity="0.95" stroke="white" strokeWidth="0.5"/><text x="50" y="32" fontSize="6" fill="white" textAnchor="middle" fontWeight="bold">열공!</text></g>
       )}
     </svg>
   );
@@ -907,6 +955,7 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
   const [breakTimeLeft, setBreakTimeLeft] = useState(60);
   const gazeTimerRef = useRef(null);
   const gazeStageRef = useRef(0);
+  const bubbleTimeoutRef = useRef(null); // 말풍선 타이머 참조
 
   // ── 세션 타이머 ──
   useEffect(() => {
@@ -942,20 +991,19 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
       gazeStageRef.current = nextScenario.stage;
       switch(nextScenario.action) {
         case 'bubble':
-          setBubbleMsg(nextScenario.msg);
-          setTimeout(() => setBubbleMsg(null), 5000);
+          showBubbleMsg(nextScenario.msg);
           break;
         case 'bookmark':
-          setBubbleMsg(nextScenario.msg);
+          showBubbleMsg(nextScenario.msg);
           // 자동 북마크 기능 (실제로는 서버 저장)
           break;
         case 'stretch':
           setBuddyState('stretch');
           setShowStretchGuide(true);
-          setBubbleMsg(nextScenario.msg);
+          showBubbleMsg(nextScenario.msg);
           break;
         case 'break':
-          setBubbleMsg(nextScenario.msg);
+          showBubbleMsg(nextScenario.msg);
           setShowBreakTimer(true);
           setBreakTimeLeft(60);
           break;
@@ -968,11 +1016,11 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
   useEffect(() => {
     if (!showBreakTimer) return;
     const t = setInterval(() => setBreakTimeLeft(s => {
-      if (s <= 1) { setShowBreakTimer(false); setBubbleMsg('잘 쉬었어! 다시 읽어볼까? 😊'); setTimeout(() => setBubbleMsg(null), 5000); return 60; }
+      if (s <= 1) { setShowBreakTimer(false); showBubbleMsg('잘 쉬었어! 다시 읽어볼까? 😊'); return 60; }
       return s - 1;
     }), 1000);
     return () => clearInterval(t);
-  }, [showBreakTimer]);
+  }, [showBreakTimer, showBubbleMsg]);
 
   // ── 페이지별 시간 기록 (리포트용) ──
   useEffect(() => {
@@ -981,7 +1029,19 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
     }
   }, [buddyPageTime, page]);
 
-  const closeBuddyBubble = useCallback(() => setBubbleMsg(null), []);
+  const closeBuddyBubble = useCallback(() => {
+    if (bubbleTimeoutRef.current) { clearTimeout(bubbleTimeoutRef.current); bubbleTimeoutRef.current = null; }
+    setBubbleMsg(null);
+  }, []);
+
+  const showBubbleMsg = useCallback((msg, duration = 5000) => {
+    if (bubbleTimeoutRef.current) { clearTimeout(bubbleTimeoutRef.current); bubbleTimeoutRef.current = null; }
+    setBubbleMsg(msg);
+    bubbleTimeoutRef.current = setTimeout(() => {
+      setBubbleMsg(null);
+      bubbleTimeoutRef.current = null;
+    }, duration);
+  }, []);
 
   // ── 진입 + 목표설정 ──
   useEffect(() => {
@@ -999,9 +1059,8 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
   const handleGoalSelect = useCallback((goal) => {
     setReadingGoal(goal);
     setShowGoalPicker(false);
-    setBubbleMsg(`좋아! ${goal.pages === Infinity ? '끝까지' : goal.pages + '페이지'} 같이 읽자! ${goal.emoji}`);
-    setTimeout(() => setBubbleMsg(null), 5000);
-  }, []);
+    showBubbleMsg(`좋아! ${goal.pages === Infinity ? '끝까지' : goal.pages + '페이지'} 같이 읽자! ${goal.emoji}`);
+  }, [showBubbleMsg]);
 
   // ── 페이지 넘김 감지 (방향 인식 개선) ──
   const checkBuddyOnPageChange = useCallback((newPage, prevPage) => {
@@ -1013,7 +1072,7 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
     // 이탈 감지 초기화
     idleStageRef.current = 0;
     setBuddyState('reading');
-    if (bubbleMsg) setBubbleMsg(null);
+    // 페이지 넘길 때 말풍선 유지 (자동으로 5초 후 사라짐)
 
     // 빠른 넘김 (앞으로만 = 건너뛰기 가능, 뒤로 = 복습이므로 무시)
     if (elapsed < 3000 && dir === 'forward') {
@@ -1021,8 +1080,7 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
         const nc = c + 1;
         if (nc >= 5 && !triggeredRef.current.has('fastflip_'+newPage)) {
           triggeredRef.current.add('fastflip_'+newPage);
-          setBubbleMsg('혹시 이 부분 어려워? 괜찮아~ 😊');
-          setTimeout(() => setBubbleMsg(null), 5000);
+          showBubbleMsg('혹시 이 부분 어려워? 괜찮아~ 😊');
         }
         return nc;
       });
@@ -1043,9 +1101,9 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
       if (readPages >= readingGoal.pages && !triggeredRef.current.has('goal_met')) {
         triggeredRef.current.add('goal_met');
         setBuddyState('happy');
-        setBubbleMsg('🎉 목표 달성! ' + readPages + '페이지 읽었어!');
+        showBubbleMsg('🎉 목표 달성! ' + readPages + '페이지 읽었어!');
         setShowConfetti(true);
-        setTimeout(() => { setShowConfetti(false); setBubbleMsg(null); }, 4000);
+        setTimeout(() => setShowConfetti(false), 4000);
       }
     }
 
@@ -1053,11 +1111,11 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
     if (newPage === totalPages && !triggeredRef.current.has('complete')) {
       triggeredRef.current.add('complete');
       setBuddyState('happy');
-      setBubbleMsg('🎉🎉🎉 다 읽었다! 정말 대단해!');
+      showBubbleMsg('🎉🎉🎉 다 읽었다! 정말 대단해!');
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 4000);
     }
-  }, [totalPages, startPage, readingGoal, bubbleMsg, closeBuddyBubble]);
+  }, [totalPages, startPage, readingGoal, showBubbleMsg]);
 
   // ── 버디 미니메뉴 액션 ──
   const handleBuddyAction = useCallback((action) => {
@@ -1065,14 +1123,14 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
     switch(action) {
       case 'rest':
         setBuddyState('sleepy');
-        setBubbleMsg('좋아, 쉬면서 준비되면 다시 읽자! ☕');
+        showBubbleMsg('좋아, 쉬면서 준비되면 다시 읽자! ☕');
         setShowBreakTimer(true);
         setBreakTimeLeft(60);
         break;
       case 'stretch':
         setBuddyState('stretch');
         setShowStretchGuide(true);
-        setBubbleMsg(STRETCH_GUIDES[Math.floor(Math.random() * STRETCH_GUIDES.length)]);
+        showBubbleMsg(STRETCH_GUIDES[Math.floor(Math.random() * STRETCH_GUIDES.length)]);
         break;
       case 'report':
         setShowReport(true);
@@ -1082,7 +1140,7 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
         setSubMode('write');
         break;
     }
-  }, [captureCurrentPage]);
+  }, [captureCurrentPage, showBubbleMsg]);
 
   // ── 테스트 패널 시뮬레이트 핸들러 ──
   const handleTestSimulate = useCallback((type, val) => {
@@ -1095,8 +1153,7 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
         setShowGoalPicker(true);
         break;
       case 'bubble':
-        setBubbleMsg(val);
-        setTimeout(() => setBubbleMsg(null), 5000);
+        showBubbleMsg(val);
         break;
       case 'gaze':
         // 시선추적 상태 시뮬레이션
@@ -1111,43 +1168,43 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
         if (!scenario) break;
         gazeStageRef.current = stageNum;
         switch(scenario.action) {
-          case 'bubble': setBubbleMsg(scenario.msg); setTimeout(() => setBubbleMsg(null), 5000); break;
-          case 'bookmark': setBubbleMsg(scenario.msg); break;
-          case 'stretch': setBuddyState('stretch'); setShowStretchGuide(true); setBubbleMsg(scenario.msg); break;
-          case 'break': setBubbleMsg(scenario.msg); setShowBreakTimer(true); setBreakTimeLeft(60); break;
+          case 'bubble': showBubbleMsg(scenario.msg); break;
+          case 'bookmark': showBubbleMsg(scenario.msg); break;
+          case 'stretch': setBuddyState('stretch'); setShowStretchGuide(true); showBubbleMsg(scenario.msg); break;
+          case 'break': showBubbleMsg(scenario.msg); setShowBreakTimer(true); setBreakTimeLeft(60); break;
         }
         break;
       }
       case 'stretch':
         setBuddyState('stretch');
         setShowStretchGuide(true);
-        setBubbleMsg(STRETCH_GUIDES[Math.floor(Math.random() * STRETCH_GUIDES.length)]);
+        showBubbleMsg(STRETCH_GUIDES[Math.floor(Math.random() * STRETCH_GUIDES.length)]);
         break;
       case 'breakTimer':
         setShowBreakTimer(true);
         setBreakTimeLeft(60);
-        setBubbleMsg('잠깐 쉬는 시간! 1분만 쉬고 오자 ⏰');
+        showBubbleMsg('잠깐 쉬는 시간! 1분만 쉬고 오자 ⏰');
         break;
       case 'menu':
         setBuddyMenuOpen(true);
         break;
       case 'goalMet':
         setBuddyState('happy');
-        setBubbleMsg('🎉 목표 달성! 대단해!');
+        showBubbleMsg('🎉 목표 달성! 대단해!');
         setShowConfetti(true);
-        setTimeout(() => { setShowConfetti(false); setBubbleMsg(null); }, 4000);
+        setTimeout(() => setShowConfetti(false), 4000);
         break;
       case 'complete':
         setBuddyState('happy');
-        setBubbleMsg('🎉🎉🎉 다 읽었다! 정말 대단해!');
+        showBubbleMsg('🎉🎉🎉 다 읽었다! 정말 대단해!');
         setShowConfetti(true);
-        setTimeout(() => { setShowConfetti(false); }, 4000);
+        setTimeout(() => setShowConfetti(false), 4000);
         break;
       case 'report':
         setShowReport(true);
         break;
     }
-  }, [buddyVisible]);
+  }, [buddyVisible, showBubbleMsg]);
 
 
   // ── Pen mode state ──
@@ -1663,8 +1720,12 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
           )}
 
           <div className={`buddy-enter cursor-pointer rounded-full transition-all duration-500 ${buddyState === 'sleepy' ? 'opacity-60' : ''} ${buddyState === 'stretch' ? 'animate-bounce' : ''}`}
-            onClick={() => { if (bubbleMsg) { setBubbleMsg(null); } else { setBuddyMenuOpen(v => !v); } }}>
-            <SquirrelBuddy emotion={buddyState === 'happy' ? 'excited' : buddyState === 'sleepy' ? 'sleepy' : buddyState === 'stretch' ? 'excited' : 'kind'} size={70}/>
+            style={{
+              filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))',
+              transform: buddyMenuOpen ? 'scale(1.1)' : 'scale(1)',
+            }}
+            onClick={() => { if (bubbleMsg) { closeBuddyBubble(); } else { setBuddyMenuOpen(v => !v); } }}>
+            <SquirrelBuddy emotion={buddyState === 'happy' ? 'excited' : buddyState === 'sleepy' ? 'sleepy' : buddyState === 'stretch' ? 'excited' : 'kind'} size={90}/>
           </div>
         </div>
       )}
@@ -1713,7 +1774,7 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
                 {breakTimeLeft}
               </span>
             </div>
-            <button onClick={() => { setShowBreakTimer(false); setBuddyState('reading'); setGazeState('onText'); setBubbleMsg('좋아! 다시 읽자! 💪'); setTimeout(() => setBubbleMsg(null), 5000); }}
+            <button onClick={() => { setShowBreakTimer(false); setBuddyState('reading'); setGazeState('onText'); showBubbleMsg('좋아! 다시 읽자! 💪'); }}
               className="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-400 text-white font-bold shadow active:scale-95 transition">
               다시 읽을래!
             </button>
