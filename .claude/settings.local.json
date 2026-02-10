@@ -46,7 +46,14 @@
       "WebFetch(domain:train-vocal-08312576.figma.site)",
       "Bash(__NEW_LINE_7122df08aa3e256d__ python3 -c \"\nimport re\nwith open\\(''북클럽3.0_통합뷰어_v0.2.html'', ''r'', encoding=''utf-8''\\) as f:\n    content = f.read\\(\\)\n\n# Replace handleStartWrite\\(\\) call in handleBuddyButton with inline logic\n# and remove handleStartWrite from dependency array\nold = ''''''      case ''activity'':\n        setBuddyEmotion\\(''kind''\\);\n        setBubbleMsg\\(''감상문 쓰기 기능으로 이동할게! 🎨''\\);\n        setTimeout\\(closeBuddyBubble, 2000\\);\n        handleStartWrite\\(\\);\n        break;''''''\nnew = ''''''      case ''activity'':\n        setBuddyEmotion\\(''kind''\\);\n        setBubbleMsg\\(''감상문 쓰기 기능으로 이동할게! 🎨''\\);\n        setTimeout\\(\\(\\) => { closeBuddyBubble\\(\\); setEditingReport\\(null\\); setCapturedPage\\(captureCurrentPage\\(\\)\\); setSubMode\\(''write''\\); }, 2000\\);\n        break;''''''\ncontent = content.replace\\(old, new\\)\n\n# Fix the dependency array\nold_dep = ''}, [closeBuddyBubble, page, handleStartWrite]\\);''\nnew_dep = ''}, [closeBuddyBubble, page, captureCurrentPage]\\);''\ncontent = content.replace\\(old_dep, new_dep\\)\n\nwith open\\(''북클럽3.0_통합뷰어_v0.2.html'', ''w'', encoding=''utf-8''\\) as f:\n    f.write\\(content\\)\n\nprint\\(''Fixed handleBuddyButton dependency''\\)\n\")",
       "Bash(git rm:*)",
-      "Bash(start \"\" \"C:\\\\Users\\\\10016775\\\\Desktop\\\\2025_서비스기획팀\\\\북클럽3.0\\\\북클럽3.0_통합뷰어\\\\prototype\\\\1.통합뷰어\\\\북클럽3.0_독서뷰어_v0.3.html\")"
+      "Bash(start \"\" \"C:\\\\Users\\\\10016775\\\\Desktop\\\\2025_서비스기획팀\\\\북클럽3.0\\\\북클럽3.0_통합뷰어\\\\prototype\\\\1.통합뷰어\\\\북클럽3.0_독서뷰어_v0.3.html\")",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(git clone:*)",
+      "Bash(git fetch:*)"
     ]
   }
 }
