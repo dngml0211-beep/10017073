@@ -1,0 +1,10 @@
+pages:
+  stage: deploy
+  script:
+    - mkdir -p public
+    - cp -r .proto1.0/* public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master

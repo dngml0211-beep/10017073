@@ -1,0 +1,3220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>북클럽 3.0 - 올도전</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#FEF3C7', primary: '#FF9F43', dark: '#F368E0', secondary: '#54a0ff', green: '#1dd1a1', paper: '#FDFBF7'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 25px -5px rgba(0, 0, 0, 0.05)',
+                        'floating': '0 20px 25px -5px rgba(255, 159, 67, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+
+    <style>
+        .font-noto { font-family: 'Noto Sans KR', sans-serif; }
+
+        /* === 페이지 헤더 (보라색 테마) === */
+        .page-header {
+            background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+            padding: 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 120px; height: 120px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        .page-header-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .page-header-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 6px;
+        }
+        .challenge-avatar {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* === 도전 탭 === */
+        .challenge-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 16px 24px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .challenge-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 20px;
+            border-radius: 16px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+        .challenge-tab:hover {
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+        }
+        .challenge-tab.active {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-color: #8b5cf6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        .challenge-tab i {
+            font-size: 18px;
+        }
+
+        /* === 콘텐츠 영역 === */
+        .challenge-container {
+            padding: 24px;
+            background: #f9fafb;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* === 오늘의 도전 영역 === */
+        .today-challenge-section {
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        /* 섹션 타이틀 */
+        .section-title-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 4px;
+        }
+        .section-title-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title-icon {
+            font-size: 24px;
+        }
+        .section-title-text {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a1a2e;
+        }
+        .section-title-count {
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+        }
+
+        /* 도전 카드 리스트 */
+        .challenge-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 0 4px;
+        }
+
+        /* 도전 카드 */
+        .challenge-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border-radius: 20px;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.2s;
+        }
+        .challenge-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .challenge-item.completed {
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            border-color: #7c3aed;
+        }
+        .challenge-item.completed .challenge-text {
+            color: white;
+        }
+        .challenge-item.completed .challenge-label {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* 아이콘 영역 */
+        .challenge-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+        .challenge-icon.blue {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        }
+        .challenge-icon.yellow {
+            background: linear-gradient(135deg, #fde047, #facc15);
+        }
+        .challenge-icon.green {
+            background: linear-gradient(135deg, #86efac, #4ade80);
+        }
+
+        /* 텍스트 영역 */
+        .challenge-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .challenge-label {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+        .challenge-text {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* 버튼 영역 */
+        .challenge-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border-radius: 24px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .challenge-btn.orange {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            color: white;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+        .challenge-btn.orange:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
+        }
+        .challenge-btn.done {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            color: white;
+        }
+        .challenge-btn-icon {
+            width: 22px;
+            height: 22px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .challenge-btn-icon.star {
+            background: linear-gradient(135deg, #fde047, #facc15);
+            color: #92400e;
+        }
+
+        /* === KRS 승급 도전 (게임화된 스타일) === */
+        .krs-quest-section {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 2px solid #e5e7eb;
+        }
+
+        /* 퀘스트 헤더 */
+        .krs-quest-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 16px;
+            border: 2px solid #3b82f6;
+        }
+
+        .krs-level-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .krs-level-badge i {
+            font-size: 18px;
+        }
+
+        .krs-level-status {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ea580c;
+            padding: 6px 14px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        /* 진행 상황 카드 */
+        .krs-progress-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 2px solid #e5e7eb;
+        }
+
+        .krs-progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .krs-progress-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .krs-progress-score {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .krs-current-score {
+            font-size: 28px;
+            font-weight: 800;
+            color: #3b82f6;
+        }
+
+        .krs-score-divider {
+            font-size: 20px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .krs-target-score {
+            font-size: 18px;
+            font-weight: 700;
+            color: #6b7280;
+        }
+
+        /* 진행률 바 */
+        .krs-progress-bar-container {
+            margin-bottom: 12px;
+        }
+
+        .krs-progress-bar {
+            height: 24px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .krs-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 10px;
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+        }
+
+        .krs-progress-percent {
+            font-size: 14px;
+            font-weight: 700;
+            color: #3b82f6;
+            text-align: right;
+        }
+
+        .krs-remaining-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #fef3c7;
+            border-radius: 12px;
+            border: 2px solid #fbbf24;
+            font-size: 14px;
+            color: #92400e;
+            margin-top: 12px;
+        }
+
+        .krs-remaining-info i {
+            color: #f59e0b;
+        }
+
+        .krs-remaining-info strong {
+            font-weight: 800;
+            color: #ea580c;
+        }
+
+        /* 점수 획득 기준 */
+        .krs-points-guide {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 2px solid #e5e7eb;
+        }
+
+        .krs-guide-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+
+        .krs-points-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .krs-points-card {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .krs-points-card.week1 {
+            border-color: #93c5fd;
+            background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+        }
+
+        .krs-points-card.week2 {
+            border-color: #a5b4fc;
+            background: linear-gradient(135deg, #e0e7ff 0%, #eef2ff 100%);
+        }
+
+        .krs-points-week {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .krs-points-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .krs-points-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .krs-points-label {
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .krs-points-value {
+            font-size: 14px;
+            font-weight: 800;
+            color: #3b82f6;
+        }
+
+        .krs-points-total {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1f2937;
+            padding-top: 8px;
+            border-top: 2px solid rgba(0,0,0,0.1);
+            text-align: right;
+        }
+
+        .krs-cycle-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #4b5563;
+        }
+
+        .krs-cycle-info i {
+            color: #6b7280;
+        }
+
+        .krs-cycle-info strong {
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        /* 보상 카드 */
+        .krs-reward-card {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(251,191,36,0.2);
+            border: 2px solid #fbbf24;
+        }
+
+        .krs-reward-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .krs-reward-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .krs-reward-badge {
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .krs-reward-badge.bronze {
+            background: linear-gradient(135deg, #cd7f32, #d4a574);
+            color: white;
+            box-shadow: 0 2px 8px rgba(205,127,50,0.3);
+        }
+
+        .krs-reward-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .krs-reward-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #fbbf24;
+        }
+
+        .krs-reward-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .krs-reward-text {
+            flex: 1;
+        }
+
+        .krs-reward-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 2px;
+        }
+
+        .krs-reward-desc {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .krs-quest-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #fbbf24;
+        }
+
+        .krs-quest-title-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .krs-quest-badge-icon {
+            font-size: 48px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .krs-quest-title-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .krs-quest-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .krs-quest-subtitle {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .krs-quest-level-tag {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            color: white;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+        }
+
+        /* 진행률 카드 */
+        .krs-quest-progress-card {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #3b82f6;
+        }
+
+        .krs-quest-progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .krs-quest-progress-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .krs-quest-progress-score {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1e40af;
+        }
+
+        .krs-quest-progress-bar {
+            height: 32px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 2px solid #3b82f6;
+            position: relative;
+        }
+
+        .krs-quest-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            transition: width 0.6s ease;
+            box-shadow: 0 0 20px rgba(251,191,36,0.5);
+        }
+
+        .krs-quest-progress-percent {
+            font-size: 14px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .krs-quest-progress-remaining {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .krs-quest-progress-remaining i {
+            color: #f59e0b;
+            font-size: 16px;
+        }
+
+        .krs-quest-progress-remaining strong {
+            font-weight: 800;
+            color: #ea580c;
+        }
+
+        /* 활동 미션 */
+        .krs-quest-missions {
+            margin-bottom: 20px;
+        }
+
+        .krs-quest-missions-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .krs-quest-mission-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .krs-quest-mission-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .krs-quest-mission-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-color: #fbbf24;
+        }
+
+        .krs-quest-mission-card.highlight {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fbbf24;
+            box-shadow: 0 0 20px rgba(251,191,36,0.3);
+        }
+
+        .krs-quest-mission-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .krs-quest-mission-content {
+            flex: 1;
+        }
+
+        .krs-quest-mission-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .krs-quest-mission-xp {
+            font-size: 16px;
+            font-weight: 800;
+            color: #f59e0b;
+        }
+
+        .krs-quest-mission-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .krs-quest-cycle-note {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #4b5563;
+        }
+
+        .krs-quest-cycle-note i {
+            color: #3b82f6;
+        }
+
+        /* 보상 미리보기 */
+        .krs-quest-reward-preview {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 3px solid #fbbf24;
+            box-shadow: 0 0 30px rgba(251,191,36,0.3);
+        }
+
+        .krs-quest-reward-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #92400e;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .krs-quest-reward-title i {
+            color: #f59e0b;
+            font-size: 18px;
+        }
+
+        .krs-quest-reward-items {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .krs-quest-reward-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 24px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #fbbf24;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .krs-quest-reward-icon {
+            font-size: 40px;
+        }
+
+        .krs-quest-reward-divider {
+            font-size: 24px;
+            font-weight: 800;
+            color: #92400e;
+        }
+
+        .krs-quest-reward-message {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #92400e;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 12px;
+        }
+
+        /* 통합 헤더 (배지 + 보상) */
+        .krs-quest-header-unified {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 3px solid #fbbf24;
+            box-shadow: 0 4px 20px rgba(251,191,36,0.3);
+        }
+
+        .krs-quest-header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(251,191,36,0.3);
+        }
+
+        .krs-quest-reward-inline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .krs-quest-reward-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #92400e;
+        }
+
+        .krs-quest-reward-badges {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .krs-reward-badge {
+            padding: 8px 16px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #fbbf24;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            white-space: nowrap;
+        }
+
+        .krs-reward-divider {
+            font-size: 18px;
+            font-weight: 800;
+            color: #92400e;
+        }
+
+        /* KRS 미션 챌린지 아이템 */
+        .challenge-item.krs-mission {
+            background: linear-gradient(135deg, #fffbeb 0%, #fefce8 100%);
+            border-color: #fbbf24;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-item.krs-mission:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251,191,36,0.3);
+            border-color: #f59e0b;
+        }
+
+        /* XP 버튼 */
+        .challenge-btn.xp-btn {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(251,191,36,0.4);
+            border: none;
+        }
+
+        .challenge-btn.xp-btn:hover {
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(251,191,36,0.5);
+        }
+
+        .challenge-btn.xp-btn .challenge-btn-icon.star {
+            font-size: 16px;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+        }
+
+        /* 보라색 아이콘 */
+        .challenge-icon.purple {
+            background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+        }
+
+        /* 퀘스트 푸터 */
+        .krs-quest-footer {
+            margin-top: 20px;
+            padding: 16px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 12px;
+            border: 2px solid #3b82f6;
+            text-align: center;
+        }
+
+        .krs-quest-footer-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+
+        .krs-quest-footer-highlight {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ea580c;
+        }
+
+        /* === A 영역: 6개월 장기 목표 (듀오링고 보라색 보상 스타일) === */
+        .krs-long-term-section {
+            margin-bottom: 32px;
+        }
+
+        .krs-goal-card {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border-radius: 20px;
+            padding: 32px;
+            border: 3px solid #a855f7;
+            box-shadow: 0 4px 16px rgba(168, 85, 247, 0.2);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .krs-goal-card:hover {
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .krs-goal-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .krs-goal-badge-large {
+            font-size: 80px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 4px 12px rgba(168, 85, 247, 0.4));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .krs-goal-info {
+            flex: 1;
+        }
+
+        .krs-goal-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #6b21a8;
+            margin: 0 0 8px 0;
+        }
+
+        .krs-goal-subtitle {
+            font-size: 16px;
+            font-weight: 600;
+            color: #9333ea;
+            margin: 0;
+        }
+
+        .krs-goal-level-tag {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #a855f7, #c084fc);
+            color: white;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        .krs-goal-progress {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 2px solid #e9d5ff;
+            box-shadow: 0 2px 8px rgba(168, 85, 247, 0.08);
+        }
+
+        .krs-goal-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .krs-goal-progress-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #7c3aed;
+        }
+
+        .krs-goal-progress-xp {
+            font-size: 20px;
+            font-weight: 800;
+            color: #6b21a8;
+        }
+
+        .krs-goal-progress-bar {
+            height: 20px;
+            background: #f3e8ff;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 14px;
+            border: 2px solid #e9d5ff;
+        }
+
+        .krs-goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a855f7, #c084fc);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 14px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+        }
+
+        .krs-goal-progress-percent {
+            font-size: 13px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .krs-goal-progress-remaining {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #7c3aed;
+        }
+
+        .krs-goal-progress-remaining i {
+            color: #a855f7;
+            font-size: 18px;
+        }
+
+        .krs-goal-progress-remaining strong {
+            font-weight: 800;
+            color: #6b21a8;
+        }
+
+        .krs-goal-reward {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            border: 2px solid #fbbf24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 16px rgba(251, 191, 36, 0.2);
+        }
+
+        .krs-goal-reward-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #92400e;
+        }
+
+        .krs-goal-reward-items {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .krs-goal-reward-item {
+            padding: 8px 16px;
+            background: white;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #1f2937;
+            border: 2px solid #fbbf24;
+            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15);
+        }
+
+        .krs-goal-reward-divider {
+            font-size: 18px;
+            font-weight: 800;
+            color: #f59e0b;
+        }
+
+        .krs-goal-period {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #7c3aed;
+            border: 2px dashed #c084fc;
+        }
+
+        .krs-goal-period i {
+            font-size: 16px;
+            color: #a855f7;
+        }
+
+        /* === B 영역: 주간 미션 === */
+        .krs-weekly-section {
+            margin-bottom: 32px;
+        }
+
+        .krs-mission-list {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+
+        .krs-mission-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            background: #fafafa;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .krs-mission-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .krs-mission-item:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+
+        .krs-mission-checkbox {
+            flex-shrink: 0;
+            font-size: 24px;
+            color: #9ca3af;
+            transition: all 0.3s ease;
+        }
+
+        .krs-mission-item:hover .krs-mission-checkbox {
+            color: #6b7280;
+            transform: scale(1.1);
+        }
+
+        .krs-mission-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .krs-mission-icon.blue {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+        }
+
+        .krs-mission-icon.green {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid #10b981;
+        }
+
+        .krs-mission-icon.yellow {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #fbbf24;
+        }
+
+        .krs-mission-icon.purple {
+            background: linear-gradient(135deg, #e9d5ff, #d8b4fe);
+            border: 2px solid #a855f7;
+        }
+
+        .krs-mission-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .krs-mission-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .krs-mission-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .krs-mission-xp {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 12px;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 4px 12px rgba(251,191,36,0.3);
+            flex-shrink: 0;
+        }
+
+        .krs-mission-xp-icon {
+            font-size: 16px;
+            animation: sparkle 2s infinite;
+        }
+
+        .krs-mission-xp-value {
+            font-size: 15px;
+        }
+
+        .krs-weekly-note {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-radius: 12px;
+            border: 2px solid #3b82f6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .krs-weekly-note i {
+            font-size: 16px;
+            color: #3b82f6;
+        }
+
+        /* 모바일 반응형 */
+        @media (max-width: 768px) {
+            .krs-quest-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .krs-quest-header-unified {
+                padding: 16px;
+            }
+
+            .krs-quest-header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .krs-quest-badge-icon {
+                font-size: 36px;
+            }
+
+            .krs-quest-title {
+                font-size: 18px;
+            }
+
+            .krs-quest-title-text h3 {
+                font-size: 18px;
+            }
+
+            .krs-quest-title-text p {
+                font-size: 13px;
+            }
+
+            .krs-quest-level-tag {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+
+            .krs-quest-reward-inline {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .krs-quest-reward-badges {
+                flex-wrap: wrap;
+            }
+
+            .krs-reward-badge {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+
+            .krs-quest-mission-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .krs-quest-reward-items {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .krs-quest-reward-divider {
+                transform: rotate(90deg);
+            }
+
+            /* A 영역 모바일 */
+            .today-challenge-section {
+                padding: 0 16px;
+            }
+
+            .krs-goal-card {
+                padding: 24px;
+            }
+
+            .krs-goal-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 16px;
+            }
+
+            .krs-goal-badge-large {
+                font-size: 64px;
+            }
+
+            .krs-goal-title {
+                font-size: 18px;
+            }
+
+            .krs-goal-subtitle {
+                font-size: 14px;
+            }
+
+            .krs-goal-level-tag {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+
+            .krs-goal-progress {
+                padding: 16px;
+            }
+
+            .krs-goal-progress-label {
+                font-size: 14px;
+            }
+
+            .krs-goal-progress-xp {
+                font-size: 16px;
+            }
+
+            .krs-goal-progress-bar {
+                height: 14px;
+            }
+
+            .krs-goal-progress-percent {
+                font-size: 11px;
+            }
+
+            .krs-goal-progress-remaining {
+                font-size: 13px;
+            }
+
+            .krs-goal-reward {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 14px 16px;
+            }
+
+            .krs-goal-reward-label {
+                font-size: 13px;
+            }
+
+            .krs-goal-reward-items {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .krs-goal-reward-item {
+                font-size: 13px;
+                padding: 5px 12px;
+            }
+
+            .krs-goal-period {
+                font-size: 12px;
+                padding: 10px 14px;
+            }
+
+            /* B 영역 모바일 */
+            .krs-mission-list {
+                padding: 12px;
+            }
+
+            .krs-mission-item {
+                flex-wrap: wrap;
+                gap: 12px;
+                padding: 14px;
+            }
+
+            .krs-mission-checkbox {
+                font-size: 20px;
+            }
+
+            .krs-mission-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .krs-mission-info {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .krs-mission-label {
+                font-size: 11px;
+            }
+
+            .krs-mission-text {
+                font-size: 14px;
+            }
+
+            .krs-mission-xp {
+                padding: 8px 12px;
+            }
+
+            .krs-mission-xp-icon {
+                font-size: 14px;
+            }
+
+            .krs-mission-xp-value {
+                font-size: 13px;
+            }
+
+            .krs-weekly-note {
+                font-size: 13px;
+                padding: 12px 16px;
+            }
+        }
+
+        /* === 팀 도전 스타일 === */
+        .tc-group {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 900px) {
+            .tc-group { grid-template-columns: 1fr; }
+        }
+
+        /* 팀 미션 카드 */
+        .tc-mission-card {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border-radius: 20px;
+            padding: 28px 24px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .tc-mission-card::before {
+            content: '';
+            position: absolute;
+            top: -30px; right: -30px;
+            width: 100px; height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        .tc-mission-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .tc-mission-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        .tc-mission-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+        .tc-mission-reward {
+            background: rgba(255,255,255,0.15);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* 우리팀 영역 */
+        .tc-team-right {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .tc-team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .tc-team-header-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 15px;
+            color: #374151;
+        }
+        .tc-team-header-title strong {
+            color: #8b5cf6;
+            font-weight: 700;
+        }
+        .tc-team-dday {
+            background: #fef3c7;
+            color: #d97706;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* 대표 팀원 카드 */
+        .tc-featured-card {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #fcd34d;
+        }
+        .tc-rank-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .tc-featured-avatar {
+            width: 60px; height: 60px;
+            margin: 0 auto 8px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .tc-featured-name {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 2px;
+        }
+        .tc-featured-info {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+        .tc-featured-quote {
+            font-size: 13px;
+            color: #6b7280;
+            font-style: italic;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .tc-featured-result {
+            margin-bottom: 8px;
+        }
+        .tc-result-success {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .tc-featured-reward {
+            font-size: 13px;
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        /* 팀원 그리드 */
+        .tc-members-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        @media (max-width: 600px) {
+            .tc-members-grid { grid-template-columns: 1fr; }
+        }
+        .tc-member-card {
+            background: white;
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .tc-member-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .tc-member-avatar {
+            width: 40px; height: 40px;
+            background: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .tc-member-name {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+        .tc-member-info {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+        .tc-member-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .tc-status-progress {
+            font-size: 12px;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .tc-status-fail {
+            font-size: 12px;
+            color: #ef4444;
+            font-weight: 600;
+        }
+        .tc-status-ready {
+            font-size: 12px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+        .tc-progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .tc-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 3px;
+        }
+        .tc-progress-text {
+            font-size: 12px;
+            color: #3b82f6;
+            font-weight: 700;
+        }
+        .tc-help-btn {
+            background: #fef3c7;
+            color: #d97706;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .tc-help-btn:hover {
+            background: #fde68a;
+        }
+
+        /* 나도 한마디 - 하단 흘러가는 영역 */
+        .tc-comment-section {
+            background: linear-gradient(180deg, rgba(249,250,251,0) 0%, #f3f4f6 20%);
+            border-radius: 0;
+            padding: 24px 0 20px;
+            margin-top: 32px;
+            margin-bottom: -24px;
+            margin-left: -24px;
+            margin-right: -24px;
+            position: relative;
+            border-top: 1px solid #e5e7eb;
+            box-sizing: border-box;
+        }
+        .tc-comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+        .tc-comment-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-align: left;
+            margin: 0;
+        }
+        .tc-marquee-wrap {
+            overflow: hidden;
+            padding: 12px 0;
+            margin: 0;
+        }
+        .tc-marquee-track {
+            display: flex;
+            gap: 18px;
+            width: max-content;
+            animation: tcMarquee 60s linear infinite;
+            padding: 16px 0;
+            padding-left: 24px;
+        }
+        .tc-marquee-wrap:hover .tc-marquee-track {
+            animation-play-state: paused;
+        }
+        @keyframes tcMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .tc-comment-card {
+            flex-shrink: 0;
+            width: 192px;
+            background: white;
+            border-radius: 16px;
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+        .tc-float-1 { animation: tcFloat1 3.2s ease-in-out infinite; }
+        .tc-float-2 { animation: tcFloat2 4.0s ease-in-out infinite; }
+        .tc-float-3 { animation: tcFloat3 3.6s ease-in-out infinite; }
+        @keyframes tcFloat1 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes tcFloat2 {
+            0%, 100% { transform: translateY(0); }
+            35% { transform: translateY(-6px); }
+            70% { transform: translateY(3px); }
+        }
+        @keyframes tcFloat3 {
+            0%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            75% { transform: translateY(2px); }
+        }
+        .tc-comment-name {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 2px;
+        }
+        .tc-comment-info {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-bottom: 10px;
+        }
+        .tc-comment-text {
+            font-size: 15px;
+            color: #4B5563;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .tc-comment-team {
+            display: inline-block;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .tc-write-btn {
+            height: 36px;
+            padding: 0 18px;
+            background: white;
+            border: 1.5px solid #d1d5db;
+            border-radius: 18px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .tc-write-btn:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+            transform: translateY(-1px);
+        }
+
+        /* 다음 주 미션 고르기 */
+        .tc-next-section {
+            margin-top: 20px;
+        }
+        .tc-next-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tc-next-header-left {
+            flex: 1;
+        }
+        .tc-next-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+        .tc-next-notice {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+        .tc-refresh-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border: 2px solid #F59E0B;
+            color: #D97706;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tc-refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245,158,11,0.3);
+        }
+        .tc-refresh-btn i {
+            transition: transform 0.3s;
+        }
+        .tc-refresh-btn:active i {
+            transform: rotate(180deg);
+        }
+        .tc-next-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        /* 반응형: 2x2 */
+        @media (max-width: 900px) {
+            .tc-next-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        /* 반응형: 1x1 */
+        @media (max-width: 480px) {
+            .tc-next-grid { grid-template-columns: 1fr; }
+        }
+        .tc-next-card {
+            background: white;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 18px 14px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .tc-next-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .tc-next-card.selected-card {
+            border: 2px solid #10B981;
+            background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+        }
+        .tc-next-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .tc-next-card-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            min-height: 36px;
+        }
+        .tc-next-ai {
+            display: inline-block;
+            background: #EDE9FE;
+            color: #7C3AED;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .tc-next-meta {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+        .tc-next-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            color: white;
+            border: none;
+            padding: 9px 0;
+            border-radius: 12px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tc-next-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .tc-next-btn.selected {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        /* 다음 주 미션 미리보기 (팀 미션 카드 내) */
+        .tc-next-preview {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px dashed rgba(255,255,255,0.3);
+        }
+        .tc-next-preview-label {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-bottom: 6px;
+        }
+        .tc-next-preview-content {
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .tc-next-preview-empty {
+            font-size: 12px;
+            opacity: 0.7;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .tc-comment-card {
+                width: 168px;
+                padding: 16px;
+            }
+            .tc-comment-name { font-size: 14px; }
+            .tc-comment-text { font-size: 14px; }
+            .tc-marquee-track { gap: 14px; }
+        }
+
+        /* 내 메시지 스타일 (특별) */
+        .tc-comment-card.my-message {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border: 2px solid #F59E0B;
+            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.35);
+            position: relative;
+        }
+        .tc-comment-card.my-message::before {
+            content: '✨ 나';
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .tc-comment-card.my-message .tc-comment-name {
+            color: #D97706;
+        }
+
+        /* 한마디 작성 팝업 */
+        .comment-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        .comment-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .comment-modal {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s;
+        }
+        .comment-modal-overlay.active .comment-modal {
+            transform: translateY(0) scale(1);
+        }
+        .comment-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .comment-modal-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .comment-modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f3f4f6;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .comment-textarea {
+            width: 100%;
+            height: 100px;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 16px;
+            font-size: 15px;
+            font-family: 'Noto Sans KR', sans-serif;
+            resize: none;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+        .comment-textarea:focus {
+            outline: none;
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+        }
+        .comment-char-count {
+            text-align: right;
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 16px;
+        }
+        .comment-submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #7C3AED, #8B5CF6);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .comment-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124,58,237,0.4);
+        }
+        .comment-submit-btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* 친구 도와주기 팝업 */
+        .help-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        .help-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .help-modal {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s;
+        }
+        .help-modal-overlay.active .help-modal {
+            transform: translateY(0) scale(1);
+        }
+        .help-modal-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .help-modal-title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+        }
+        .help-modal-desc {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .help-modal-friend {
+            background: #f3f4f6;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .help-modal-avatar {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .help-modal-friend-info {
+            text-align: left;
+        }
+        .help-modal-friend-name {
+            font-weight: 700;
+            color: #1a1a2e;
+            font-size: 15px;
+        }
+        .help-modal-friend-status {
+            font-size: 12px;
+            color: #ef4444;
+        }
+        .help-modal-cost {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border: 2px solid #F59E0B;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .help-modal-cost-label {
+            font-size: 12px;
+            color: #92400E;
+            margin-bottom: 4px;
+        }
+        .help-modal-cost-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #D97706;
+        }
+        .help-modal-btns {
+            display: flex;
+            gap: 12px;
+        }
+        .help-modal-cancel {
+            flex: 1;
+            padding: 14px;
+            background: #f3f4f6;
+            color: #6b7280;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .help-modal-confirm {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .help-modal-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16,185,129,0.4);
+        }
+
+        /* 성공 상태로 변경된 카드 */
+        .tc-member-card.helped .tc-status-fail {
+            display: none;
+        }
+        .tc-member-card.helped .tc-help-btn {
+            display: none;
+        }
+        .tc-member-card.helped .tc-status-helped {
+            display: inline-block;
+            font-size: 12px;
+            color: #10b981;
+            font-weight: 600;
+        }
+        .tc-status-helped {
+            display: none;
+        }
+
+        /* 토스트 애니메이션 */
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(-50%) translateY(0); }
+            to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+        }
+    </style>
+</head>
+<body class="bg-white font-sans text-gray-800 h-screen overflow-hidden">
+    <!-- 모바일 햄버거 버튼 -->
+    <button class="sidebar-toggle" id="sidebar-toggle-btn" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars text-gray-600 text-lg"></i>
+    </button>
+
+    <!-- 사이드바 오버레이 -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <div class="flex w-full h-full">
+        <!-- Sidebar Container -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="flex-1 h-full overflow-y-auto">
+            <!-- 페이지 헤더 -->
+            <div class="page-header">
+                <div class="flex items-center gap-16px">
+                    <div class="challenge-avatar">
+                        🏆
+                    </div>
+                    <div style="margin-left:12px;">
+                        <div class="page-header-title">
+                            올도전
+                        </div>
+                        <div class="page-header-desc">
+                            매일 도전하고 친구들과 함께 성장해요
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 도전 탭 -->
+            <div class="challenge-tabs">
+                <button class="challenge-tab active" data-ctab="today" onclick="switchChallengeTab('today')">
+                    <i class="fa-solid fa-fire"></i>
+                    오늘의 도전
+                </button>
+                <button class="challenge-tab" data-ctab="team" onclick="switchChallengeTab('team')">
+                    <i class="fa-solid fa-users"></i>
+                    팀 도전
+                </button>
+            </div>
+
+            <!-- 콘텐츠 영역 -->
+            <div class="challenge-container">
+                <!-- 오늘의 도전 -->
+                <div id="ctab-today" class="challenge-content">
+                    <div class="today-challenge-section">
+                        <!-- 도전 리스트 -->
+                        <div class="challenge-list">
+                        </div>
+
+                        <!-- B 영역: 주간 미션 -->
+                        <div class="krs-weekly-section" style="margin-top: 32px;">
+                            <!-- 섹션 타이틀 -->
+                            <div class="section-title-bar" style="margin-bottom: 16px;">
+                                <div class="section-title-main">
+                                    <span class="section-title-icon">⚡</span>
+                                    <span class="section-title-text">이번 주 미션</span>
+                                </div>
+                                <span class="section-title-count">0/4 완료</span>
+                            </div>
+
+                            <!-- 미션 리스트 -->
+                            <div class="krs-mission-list">
+                                <!-- 미션 1: 코어북 -->
+                                <div class="krs-mission-item">
+                                    <div class="krs-mission-checkbox">
+                                        <i class="fa-regular fa-square"></i>
+                                    </div>
+                                    <div class="krs-mission-icon blue">📘</div>
+                                    <div class="krs-mission-info">
+                                        <div class="krs-mission-label">[KRS 메인]</div>
+                                        <div class="krs-mission-text">코어북 읽기 + 활동</div>
+                                    </div>
+                                    <div class="krs-mission-xp">
+                                        <span class="krs-mission-xp-icon">⚡</span>
+                                        <span class="krs-mission-xp-value">+20 XP</span>
+                                    </div>
+                                </div>
+
+                                <!-- 미션 2: 퀴즈 -->
+                                <div class="krs-mission-item">
+                                    <div class="krs-mission-checkbox">
+                                        <i class="fa-regular fa-square"></i>
+                                    </div>
+                                    <div class="krs-mission-icon green">📝</div>
+                                    <div class="krs-mission-info">
+                                        <div class="krs-mission-label">[KRS 퀴즈]</div>
+                                        <div class="krs-mission-text">독서 퀴즈 완료</div>
+                                    </div>
+                                    <div class="krs-mission-xp">
+                                        <span class="krs-mission-xp-icon">⚡</span>
+                                        <span class="krs-mission-xp-value">+10 XP</span>
+                                    </div>
+                                </div>
+
+                                <!-- 미션 3: 관리이북 -->
+                                <div class="krs-mission-item">
+                                    <div class="krs-mission-checkbox">
+                                        <i class="fa-regular fa-square"></i>
+                                    </div>
+                                    <div class="krs-mission-icon yellow">📙</div>
+                                    <div class="krs-mission-info">
+                                        <div class="krs-mission-label">[KRS 짝꿍책]</div>
+                                        <div class="krs-mission-text">관리이북 읽기</div>
+                                    </div>
+                                    <div class="krs-mission-xp">
+                                        <span class="krs-mission-xp-icon">⚡</span>
+                                        <span class="krs-mission-xp-value">+10 XP</span>
+                                    </div>
+                                </div>
+
+                                <!-- 미션 4: 리텔링 -->
+                                <div class="krs-mission-item">
+                                    <div class="krs-mission-checkbox">
+                                        <i class="fa-regular fa-square"></i>
+                                    </div>
+                                    <div class="krs-mission-icon purple">🎤</div>
+                                    <div class="krs-mission-info">
+                                        <div class="krs-mission-label">[KRS 리텔링]</div>
+                                        <div class="krs-mission-text">리텔링 활동 완료</div>
+                                    </div>
+                                    <div class="krs-mission-xp">
+                                        <span class="krs-mission-xp-icon">⚡</span>
+                                        <span class="krs-mission-xp-value">+10 XP</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 주간 안내 -->
+                            <div class="krs-weekly-note">
+                                <i class="fa-solid fa-rotate"></i>
+                                <span>매주 반복되는 미션이에요. 완료하면 장기 목표의 XP를 획득해요!</span>
+                            </div>
+                        </div>
+
+                        <!-- A 영역: 6개월 장기 목표 -->
+                        <div class="krs-long-term-section" style="margin-top: 32px;">
+                            <!-- 섹션 타이틀 -->
+                            <div class="section-title-bar" style="margin-bottom: 16px;">
+                                <div class="section-title-main">
+                                    <span class="section-title-icon">🏆</span>
+                                    <span class="section-title-text">6개월 도전 목표</span>
+                                </div>
+                            </div>
+
+                            <!-- 목표 카드 -->
+                            <div class="krs-goal-card">
+                                <!-- 헤더: 배지 + 제목 + 레벨 -->
+                                <div class="krs-goal-header">
+                                    <div class="krs-goal-badge-large">🥉</div>
+                                    <div class="krs-goal-info">
+                                        <h3 class="krs-goal-title">브론즈 뱃지 도전!</h3>
+                                        <p class="krs-goal-subtitle">K2-1 레벨 승급을 향해 🚀</p>
+                                    </div>
+                                    <div class="krs-goal-level-tag">Lv. K2-1</div>
+                                </div>
+
+                                <!-- 진행률 -->
+                                <div class="krs-goal-progress">
+                                    <div class="krs-goal-progress-header">
+                                        <span class="krs-goal-progress-label">승급 진행률</span>
+                                        <span class="krs-goal-progress-xp">420 / 600 XP</span>
+                                    </div>
+                                    <div class="krs-goal-progress-bar">
+                                        <div class="krs-goal-progress-fill" style="width: 70%;">
+                                            <span class="krs-goal-progress-percent">70%</span>
+                                        </div>
+                                    </div>
+                                    <div class="krs-goal-progress-remaining">
+                                        <i class="fa-solid fa-bolt"></i>
+                                        <span>승급까지 <strong>180 XP</strong> 남았어요!</span>
+                                    </div>
+                                </div>
+
+                                <!-- 보상 -->
+                                <div class="krs-goal-reward">
+                                    <span class="krs-goal-reward-label">🎁 승급 보상</span>
+                                    <div class="krs-goal-reward-items">
+                                        <span class="krs-goal-reward-item">🏆 K2-2 레벨</span>
+                                        <span class="krs-goal-reward-divider">+</span>
+                                        <span class="krs-goal-reward-item">🥉 브론즈 뱃지</span>
+                                    </div>
+                                </div>
+
+                                <!-- 기간 안내 -->
+                                <div class="krs-goal-period">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                    <span>6개월(24주) 동안 꾸준히 활동하면 달성!</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 나도 한마디 (오늘의 도전에 배치) -->
+                        <div class="tc-comment-section" style="margin-top: 24px;">
+                            <div class="tc-comment-header">
+                                <h3 class="tc-comment-title">💬 나도 한마디 💬</h3>
+                                <button class="tc-write-btn" onclick="openCommentModal()">✏️ 작성</button>
+                            </div>
+                            <div class="tc-marquee-wrap">
+                                <div class="tc-marquee-track" id="comment-track">
+                                    <!-- 세트 1 -->
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">코딩마스터</p>
+                                        <p class="tc-comment-info">3학년 · (서울)서울초등학교</p>
+                                        <p class="tc-comment-text">"우리 팀 화이팅!"</p>
+                                        <span class="tc-comment-team" style="background:#FF6B6B;">🌟 꿈나무탐험대</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">영어천재</p>
+                                        <p class="tc-comment-info">6학년 · (서울)한강초등학교</p>
+                                        <p class="tc-comment-text">"모두 힘내세요!"</p>
+                                        <span class="tc-comment-team" style="background:#845EF7;">✨ 별빛정원</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">과학왕</p>
+                                        <p class="tc-comment-info">5학년 · (인천)미래초등학교</p>
+                                        <p class="tc-comment-text">"파이팅!"</p>
+                                        <span class="tc-comment-team" style="background:#20C997;">🚀 용감한탐험가</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">수학마법사</p>
+                                        <p class="tc-comment-info">6학년 · (부산)푸른초등학교</p>
+                                        <p class="tc-comment-text">"함께 해요!"</p>
+                                        <span class="tc-comment-team" style="background:#51CF66;">🍀 행운의숲</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">독서왕</p>
+                                        <p class="tc-comment-info">5학년 · (대전)햇살초등학교</p>
+                                        <p class="tc-comment-text">"우리 모두 최고!"</p>
+                                        <span class="tc-comment-team" style="background:#FCC419;">💡 스마트탐험단</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">그림요정</p>
+                                        <p class="tc-comment-info">4학년 · (경기)별빛초등학교</p>
+                                        <p class="tc-comment-text">"오늘도 열심히!"</p>
+                                        <span class="tc-comment-team" style="background:#FF922B;">🎨 창작공방</span>
+                                    </div>
+                                    <!-- 세트 2 (무한루프용 복제) -->
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">코딩마스터</p>
+                                        <p class="tc-comment-info">3학년 · (서울)서울초등학교</p>
+                                        <p class="tc-comment-text">"우리 팀 화이팅!"</p>
+                                        <span class="tc-comment-team" style="background:#FF6B6B;">🌟 꿈나무탐험대</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">영어천재</p>
+                                        <p class="tc-comment-info">6학년 · (서울)한강초등학교</p>
+                                        <p class="tc-comment-text">"모두 힘내세요!"</p>
+                                        <span class="tc-comment-team" style="background:#845EF7;">✨ 별빛정원</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">과학왕</p>
+                                        <p class="tc-comment-info">5학년 · (인천)미래초등학교</p>
+                                        <p class="tc-comment-text">"파이팅!"</p>
+                                        <span class="tc-comment-team" style="background:#20C997;">🚀 용감한탐험가</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-1">
+                                        <p class="tc-comment-name">수학마법사</p>
+                                        <p class="tc-comment-info">6학년 · (부산)푸른초등학교</p>
+                                        <p class="tc-comment-text">"함께 해요!"</p>
+                                        <span class="tc-comment-team" style="background:#51CF66;">🍀 행운의숲</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-2">
+                                        <p class="tc-comment-name">독서왕</p>
+                                        <p class="tc-comment-info">5학년 · (대전)햇살초등학교</p>
+                                        <p class="tc-comment-text">"우리 모두 최고!"</p>
+                                        <span class="tc-comment-team" style="background:#FCC419;">💡 스마트탐험단</span>
+                                    </div>
+                                    <div class="tc-comment-card tc-float-3">
+                                        <p class="tc-comment-name">그림요정</p>
+                                        <p class="tc-comment-info">4학년 · (경기)별빛초등학교</p>
+                                        <p class="tc-comment-text">"오늘도 열심히!"</p>
+                                        <span class="tc-comment-team" style="background:#FF922B;">🎨 창작공방</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 팀 도전 -->
+                <div id="ctab-team" class="challenge-content hidden">
+                    <!-- 팀 미션 & 우리팀 -->
+                    <div class="tc-group">
+                        <!-- 왼쪽: 팀 미션 -->
+                        <div class="tc-mission-card">
+                            <span class="tc-mission-badge">✨ 이번 주 팀 미션</span>
+                            <div class="tc-mission-icon">👥</div>
+                            <h3 class="tc-mission-title">수학 단원평가<br>100점 맞기</h3>
+                            <div class="tc-mission-reward">⭐ 별 2개 + xp 100</div>
+                            <!-- 다음 주 미션 미리보기 -->
+                            <div class="tc-next-preview" id="next-mission-preview">
+                                <p class="tc-next-preview-label">📅 다음 주 미션</p>
+                                <div class="tc-next-preview-empty" id="next-mission-empty">
+                                    👇 미션을 골라주세요!
+                                </div>
+                                <div class="tc-next-preview-content" id="next-mission-content" style="display:none;">
+                                    <span id="next-mission-icon"></span>
+                                    <span id="next-mission-title"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 오른쪽: 우리팀 -->
+                        <div class="tc-team-right">
+                            <div class="tc-team-header">
+                                <h3 class="tc-team-header-title">이번 주 우리팀 : <strong>지식의숲</strong></h3>
+                                <span class="tc-team-dday">⏱ D-3</span>
+                            </div>
+
+                            <!-- 대표 팀원 카드 -->
+                            <div class="tc-featured-card">
+                                <span class="tc-rank-badge">🏅 올랭 1등급</span>
+                                <div class="tc-featured-avatar">🐱</div>
+                                <p class="tc-featured-name">달콤한딸기 🍓</p>
+                                <p class="tc-featured-info">5학년 · 서울초등학교</p>
+                                <p class="tc-featured-quote">"뭘 해도 믿음만한 친구예요. 같은 팀이 된건 행운입니다."</p>
+                                <div class="tc-featured-result">
+                                    <span class="tc-result-success">미션 성공</span>
+                                </div>
+                                <p class="tc-featured-reward">⭐ 별 2개 + xp 10</p>
+                            </div>
+
+                            <!-- 팀원 그리드 -->
+                            <div class="tc-members-grid">
+                                <div class="tc-member-card">
+                                    <div class="tc-member-top">
+                                        <div class="tc-member-avatar">🐰</div>
+                                        <div>
+                                            <p class="tc-member-name">별빛탐험가</p>
+                                            <p class="tc-member-info">5학년 · (서울)강초등학교</p>
+                                        </div>
+                                    </div>
+                                    <div class="tc-member-status">
+                                        <span class="tc-status-progress">🔄 진행중</span>
+                                        <div class="tc-progress-bar"><div class="tc-progress-fill" style="width:65%"></div></div>
+                                        <span class="tc-progress-text">65%</span>
+                                    </div>
+                                </div>
+                                <div class="tc-member-card" id="science-doctor-card">
+                                    <div class="tc-member-top">
+                                        <div class="tc-member-avatar">🐻</div>
+                                        <div>
+                                            <p class="tc-member-name">과학박사</p>
+                                            <p class="tc-member-info">5학년 · (인천)미래초등학교</p>
+                                        </div>
+                                    </div>
+                                    <div class="tc-member-status">
+                                        <span class="tc-status-fail">❌ 미션 실패</span>
+                                        <span class="tc-status-helped">✅ 도움 받아 성공!</span>
+                                        <button class="tc-help-btn" onclick="openHelpModal()">친구 도와주기 🎟️1</button>
+                                    </div>
+                                </div>
+                                <div class="tc-member-card">
+                                    <div class="tc-member-top">
+                                        <div class="tc-member-avatar">🐻</div>
+                                        <div>
+                                            <p class="tc-member-name">책읽는곰</p>
+                                            <p class="tc-member-info">5학년 · (서울)푸른초등학교</p>
+                                        </div>
+                                    </div>
+                                    <div class="tc-member-status">
+                                        <span class="tc-status-ready">⏳ 준비중</span>
+                                    </div>
+                                </div>
+                                <div class="tc-member-card">
+                                    <div class="tc-member-top">
+                                        <div class="tc-member-avatar">🦊</div>
+                                        <div>
+                                            <p class="tc-member-name">나는우희</p>
+                                            <p class="tc-member-info">5학년 · (서울)해맑은초등학교</p>
+                                        </div>
+                                    </div>
+                                    <div class="tc-member-status">
+                                        <span class="tc-status-progress">🔄 진행중</span>
+                                        <div class="tc-progress-bar"><div class="tc-progress-fill" style="width:40%"></div></div>
+                                        <span class="tc-progress-text">40%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. 다음 주 미션 고르기 -->
+                    <div class="tc-next-section">
+                        <div class="tc-next-header">
+                            <div class="tc-next-header-left">
+                                <h3 class="tc-next-title">⚡ 다음 주 미션 고르기</h3>
+                                <p class="tc-next-notice">일요일 밤 11시까지만 변경할 수 있고, 신청하지 않으면 랜덤 미션이 제공돼요.</p>
+                            </div>
+                            <button class="tc-refresh-btn" onclick="refreshMissions()">
+                                <i class="fa-solid fa-rotate"></i>
+                                <span>새로 불러오기</span>
+                                <span style="color:#92400E;">xp 50</span>
+                            </button>
+                        </div>
+                        <div class="tc-next-grid" id="mission-grid">
+                            <!-- 미션 1 -->
+                            <div class="tc-next-card" data-mission="mission1" data-icon="📖" data-title="초등 필독서 3권 읽고 독후감 쓰기">
+                                <div class="tc-next-icon" style="color:#7C3AED;">📖</div>
+                                <p class="tc-next-card-title">초등 필독서 3권 읽고 독후감 쓰기</p>
+                                <span class="tc-next-ai">🤖 AI 예상 성공률 100%</span>
+                                <div class="tc-next-meta">
+                                    <span>⭐ 별 1개</span>
+                                    <span>👥 2,897팀</span>
+                                </div>
+                                <button class="tc-next-btn" onclick="selectTeamMission(this)">도전 예약하기</button>
+                            </div>
+                            <!-- 미션 2 -->
+                            <div class="tc-next-card" data-mission="mission2" data-icon="🛒" data-title="스타샵에서 1000원 이상 사용해보기">
+                                <div class="tc-next-icon" style="color:#059669;">🛒</div>
+                                <p class="tc-next-card-title">스타샵에서 1000원 이상 사용해보기</p>
+                                <span class="tc-next-ai">🤖 AI 예상 성공률 70%</span>
+                                <div class="tc-next-meta">
+                                    <span>⭐ 별 5개</span>
+                                    <span>👥 1,842팀</span>
+                                </div>
+                                <button class="tc-next-btn" onclick="selectTeamMission(this)">도전 예약하기</button>
+                            </div>
+                            <!-- 미션 3 -->
+                            <div class="tc-next-card" data-mission="mission3" data-icon="🤖" data-title="AI챗봇과 구구단 게임 해보기">
+                                <div class="tc-next-icon" style="color:#DC2626;">🤖</div>
+                                <p class="tc-next-card-title">AI챗봇과 구구단 게임 해보기</p>
+                                <span class="tc-next-ai">🤖 AI 예상 성공률 50%</span>
+                                <div class="tc-next-meta">
+                                    <span>⭐ 별 3개</span>
+                                    <span>👥 3,521팀</span>
+                                </div>
+                                <button class="tc-next-btn" onclick="selectTeamMission(this)">도전 예약하기</button>
+                            </div>
+                            <!-- 랜덤 미션 (컬러 통일) -->
+                            <div class="tc-next-card" data-mission="random" data-icon="❓" data-title="랜덤미션">
+                                <div class="tc-next-icon" style="color:#7C3AED;">❓</div>
+                                <p class="tc-next-card-title">랜덤미션</p>
+                                <span class="tc-next-ai">🎲 신비로운 미션!</span>
+                                <div class="tc-next-meta">
+                                    <span>⭐ ???</span>
+                                    <span>👥 892팀</span>
+                                </div>
+                                <button class="tc-next-btn" onclick="selectTeamMission(this)">도전 예약하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 로그아웃 모달 컨테이너 -->
+    <div id="logout-modal-container"></div>
+
+    <!-- 한마디 작성 팝업 -->
+    <div class="comment-modal-overlay" id="comment-modal-overlay" onclick="closeCommentModal(event)">
+        <div class="comment-modal" onclick="event.stopPropagation()">
+            <div class="comment-modal-header">
+                <h3 class="comment-modal-title">✏️ 나도 한마디</h3>
+                <button class="comment-modal-close" onclick="closeCommentModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <textarea class="comment-textarea" id="comment-textarea" placeholder="친구들에게 응원의 한마디를 남겨보세요!" maxlength="30" oninput="updateCharCount()"></textarea>
+            <div class="comment-char-count"><span id="char-count">0</span>/30</div>
+            <button class="comment-submit-btn" id="comment-submit-btn" onclick="submitComment()" disabled>한마디 등록하기</button>
+        </div>
+    </div>
+
+    <!-- 친구 도와주기 팝업 -->
+    <div class="help-modal-overlay" id="help-modal-overlay" onclick="closeHelpModal(event)">
+        <div class="help-modal" onclick="event.stopPropagation()">
+            <div class="help-modal-icon">🤝</div>
+            <h3 class="help-modal-title">친구 도와주기</h3>
+            <p class="help-modal-desc">티켓을 사용하여 친구의 미션을<br>성공으로 바꿔줄 수 있어요!</p>
+            <div class="help-modal-friend">
+                <div class="help-modal-avatar">🐻</div>
+                <div class="help-modal-friend-info">
+                    <p class="help-modal-friend-name">과학박사</p>
+                    <p class="help-modal-friend-status">❌ 미션 실패</p>
+                </div>
+            </div>
+            <div class="help-modal-cost">
+                <p class="help-modal-cost-label">사용 티켓</p>
+                <p class="help-modal-cost-value">🎟️ 1장</p>
+            </div>
+            <div class="help-modal-btns">
+                <button class="help-modal-cancel" onclick="closeHelpModal()">취소</button>
+                <button class="help-modal-confirm" onclick="confirmHelp()">도와주기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="../js/common.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script>
+    // === 도전 탭 전환 ===
+    function switchChallengeTab(tab) {
+        // 탭 버튼 상태 변경
+        document.querySelectorAll('.challenge-tab').forEach(t => {
+            t.classList.toggle('active', t.dataset.ctab === tab);
+        });
+
+        // 콘텐츠 표시/숨김
+        document.querySelectorAll('.challenge-content').forEach(c => {
+            c.classList.add('hidden');
+        });
+        document.getElementById('ctab-' + tab).classList.remove('hidden');
+    }
+
+    // === 팀 미션 선택 ===
+    function selectTeamMission(btn) {
+        // 모든 버튼 및 카드 초기화
+        document.querySelectorAll('.tc-next-btn').forEach(b => {
+            b.classList.remove('selected');
+            b.textContent = '도전 예약하기';
+        });
+        document.querySelectorAll('.tc-next-card').forEach(c => {
+            c.classList.remove('selected-card');
+        });
+
+        // 선택한 버튼 활성화
+        btn.classList.add('selected');
+        btn.textContent = '✓ 예약 완료';
+
+        // 카드 선택 상태
+        const card = btn.closest('.tc-next-card');
+        card.classList.add('selected-card');
+
+        // 다음 주 미션 미리보기 업데이트
+        const icon = card.dataset.icon;
+        const title = card.dataset.title;
+
+        document.getElementById('next-mission-empty').style.display = 'none';
+        document.getElementById('next-mission-content').style.display = 'flex';
+        document.getElementById('next-mission-icon').textContent = icon;
+        document.getElementById('next-mission-title').textContent = title;
+
+        // localStorage에 저장
+        localStorage.setItem('selectedNextMission', JSON.stringify({ icon, title }));
+    }
+
+    // === 미션 새로 불러오기 ===
+    const missionPool = [
+        { icon: '📖', title: '초등 필독서 3권 읽고 독후감 쓰기', color: '#7C3AED', ai: '100%', stars: '1개', teams: '2,897' },
+        { icon: '🛒', title: '스타샵에서 1000원 이상 사용해보기', color: '#059669', ai: '70%', stars: '5개', teams: '1,842' },
+        { icon: '🤖', title: 'AI챗봇과 구구단 게임 해보기', color: '#DC2626', ai: '50%', stars: '3개', teams: '3,521' },
+        { icon: '📚', title: '일주일간 매일 책 1권씩 읽기', color: '#2563EB', ai: '85%', stars: '4개', teams: '1,523' },
+        { icon: '✏️', title: '독서 일기 5일 연속 쓰기', color: '#7C3AED', ai: '90%', stars: '2개', teams: '2,145' },
+        { icon: '🎯', title: '어휘 퀴즈 만점 3회 달성하기', color: '#EA580C', ai: '65%', stars: '3개', teams: '1,876' },
+        { icon: '🏆', title: '독서왕 랭킹 50위 안에 들기', color: '#D97706', ai: '40%', stars: '7개', teams: '987' },
+        { icon: '🌟', title: '친구 3명 이상 독서 도와주기', color: '#059669', ai: '80%', stars: '4개', teams: '1,654' },
+        { icon: '📝', title: '책 추천 리뷰 2개 작성하기', color: '#7C3AED', ai: '95%', stars: '2개', teams: '3,012' },
+        { icon: '🎮', title: 'AI 독서 게임 5판 클리어하기', color: '#DC2626', ai: '75%', stars: '3개', teams: '2,341' }
+    ];
+
+    function refreshMissions() {
+        // XP 확인 및 차감
+        let xp = parseInt(localStorage.getItem('userXP') || '500');
+        if (xp < 50) {
+            showRefreshToast('XP가 부족합니다!', 'error');
+            return;
+        }
+        xp -= 50;
+        localStorage.setItem('userXP', xp);
+
+        // 미션 선택 초기화
+        document.getElementById('next-mission-empty').style.display = 'block';
+        document.getElementById('next-mission-content').style.display = 'none';
+        localStorage.removeItem('selectedNextMission');
+
+        // 랜덤 미션 3개 선택
+        const shuffled = [...missionPool].sort(() => Math.random() - 0.5);
+        const selectedMissions = shuffled.slice(0, 3);
+
+        // 그리드 렌더링
+        const grid = document.getElementById('mission-grid');
+        let html = '';
+
+        selectedMissions.forEach((m, i) => {
+            html += `
+            <div class="tc-next-card" data-mission="mission${i+1}" data-icon="${m.icon}" data-title="${m.title}">
+                <div class="tc-next-icon" style="color:${m.color};">${m.icon}</div>
+                <p class="tc-next-card-title">${m.title}</p>
+                <span class="tc-next-ai">🤖 AI 예상 성공률 ${m.ai}</span>
+                <div class="tc-next-meta">
+                    <span>⭐ 별 ${m.stars}</span>
+                    <span>👥 ${m.teams}팀</span>
+                </div>
+                <button class="tc-next-btn" onclick="selectTeamMission(this)">도전 예약하기</button>
+            </div>`;
+        });
+
+        // 랜덤 미션 추가
+        html += `
+            <div class="tc-next-card" data-mission="random" data-icon="❓" data-title="랜덤미션">
+                <div class="tc-next-icon" style="color:#7C3AED;">❓</div>
+                <p class="tc-next-card-title">랜덤미션</p>
+                <span class="tc-next-ai">🎲 신비로운 미션!</span>
+                <div class="tc-next-meta">
+                    <span>⭐ ???</span>
+                    <span>👥 892팀</span>
+                </div>
+                <button class="tc-next-btn" onclick="selectTeamMission(this)">도전 예약하기</button>
+            </div>`;
+
+        grid.innerHTML = html;
+
+        showRefreshToast('새로운 미션을 불러왔어요! (xp -50)', 'success');
+    }
+
+    function showRefreshToast(message, type) {
+        const toast = document.createElement('div');
+        const bgColor = type === 'error'
+            ? 'linear-gradient(135deg, #EF4444, #DC2626)'
+            : 'linear-gradient(135deg, #F59E0B, #D97706)';
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${bgColor};
+            color: white;
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            z-index: 2000;
+            animation: toastIn 0.3s ease-out;
+        `;
+        toast.innerHTML = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'toastOut 0.3s ease-out forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+
+    // === 한마디 작성 팝업 ===
+    function openCommentModal() {
+        document.getElementById('comment-modal-overlay').classList.add('active');
+        document.getElementById('comment-textarea').value = '';
+        document.getElementById('char-count').textContent = '0';
+        document.getElementById('comment-submit-btn').disabled = true;
+    }
+
+    function closeCommentModal(event) {
+        if (event && event.target !== event.currentTarget) return;
+        document.getElementById('comment-modal-overlay').classList.remove('active');
+    }
+
+    function updateCharCount() {
+        const textarea = document.getElementById('comment-textarea');
+        const count = textarea.value.length;
+        document.getElementById('char-count').textContent = count;
+        document.getElementById('comment-submit-btn').disabled = count === 0;
+    }
+
+    function submitComment() {
+        const textarea = document.getElementById('comment-textarea');
+        const message = textarea.value.trim();
+        if (!message) return;
+
+        // 내 메시지 카드 생성
+        const myCard = document.createElement('div');
+        myCard.className = 'tc-comment-card my-message tc-float-1';
+        myCard.innerHTML = `
+            <p class="tc-comment-name">나는우희</p>
+            <p class="tc-comment-info">5학년 · (서울)해맑은초등학교</p>
+            <p class="tc-comment-text">"${message}"</p>
+            <span class="tc-comment-team" style="background:#F59E0B;">🦊 지식의숲</span>
+        `;
+
+        // 트랙 맨 앞에 추가
+        const track = document.getElementById('comment-track');
+        track.insertBefore(myCard, track.firstChild);
+
+        // localStorage에 저장
+        localStorage.setItem('myComment', message);
+
+        // 팝업 닫기
+        closeCommentModal();
+
+        // 성공 알림
+        showCommentToast();
+    }
+
+    function showCommentToast() {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 8px 24px rgba(16,185,129,0.4);
+            z-index: 2000;
+            animation: toastIn 0.3s ease-out;
+        `;
+        toast.innerHTML = '✨ 한마디가 등록되었어요!';
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'toastOut 0.3s ease-out forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+
+    // === 친구 도와주기 팝업 ===
+    function openHelpModal() {
+        document.getElementById('help-modal-overlay').classList.add('active');
+    }
+
+    function closeHelpModal(event) {
+        if (event && event.target !== event.currentTarget) return;
+        document.getElementById('help-modal-overlay').classList.remove('active');
+    }
+
+    function confirmHelp() {
+        // 티켓 차감 (localStorage)
+        let tickets = parseInt(localStorage.getItem('tickets') || '10');
+        if (tickets < 1) {
+            alert('티켓이 부족합니다!');
+            return;
+        }
+        tickets -= 1;
+        localStorage.setItem('tickets', tickets);
+
+        // 과학박사 카드 상태 변경
+        const card = document.getElementById('science-doctor-card');
+        card.classList.add('helped');
+
+        // 상태 저장
+        localStorage.setItem('scienceDoctorHelped', 'true');
+
+        // 팝업 닫기
+        closeHelpModal();
+
+        // 성공 알림
+        showHelpToast();
+    }
+
+    function showHelpToast() {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #7C3AED, #8B5CF6);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 8px 24px rgba(124,58,237,0.4);
+            z-index: 2000;
+            animation: toastIn 0.3s ease-out;
+        `;
+        toast.innerHTML = '🎉 과학박사를 도와줬어요! 🎟️-1';
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'toastOut 0.3s ease-out forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+
+    // === Init ===
+    document.addEventListener('DOMContentLoaded', () => {
+        loadSidebar('all-challenge');
+        loadLogoutModal();
+
+        // 저장된 내 메시지가 있으면 복원
+        const savedComment = localStorage.getItem('myComment');
+        if (savedComment) {
+            const myCard = document.createElement('div');
+            myCard.className = 'tc-comment-card my-message tc-float-1';
+            myCard.innerHTML = `
+                <p class="tc-comment-name">나는우희</p>
+                <p class="tc-comment-info">5학년 · (서울)해맑은초등학교</p>
+                <p class="tc-comment-text">"${savedComment}"</p>
+                <span class="tc-comment-team" style="background:#F59E0B;">🦊 지식의숲</span>
+            `;
+            const track = document.getElementById('comment-track');
+            track.insertBefore(myCard, track.firstChild);
+        }
+
+        // 도움 상태 복원
+        const helped = localStorage.getItem('scienceDoctorHelped');
+        if (helped === 'true') {
+            document.getElementById('science-doctor-card').classList.add('helped');
+        }
+
+        // 저장된 다음 주 미션 선택 복원
+        const savedMission = localStorage.getItem('selectedNextMission');
+        if (savedMission) {
+            const { icon, title } = JSON.parse(savedMission);
+            document.getElementById('next-mission-empty').style.display = 'none';
+            document.getElementById('next-mission-content').style.display = 'flex';
+            document.getElementById('next-mission-icon').textContent = icon;
+            document.getElementById('next-mission-title').textContent = title;
+
+            // 해당 카드 선택 상태로 표시
+            document.querySelectorAll('.tc-next-card').forEach(card => {
+                if (card.dataset.title === title) {
+                    card.classList.add('selected-card');
+                    const btn = card.querySelector('.tc-next-btn');
+                    btn.classList.add('selected');
+                    btn.textContent = '✓ 예약 완료';
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
