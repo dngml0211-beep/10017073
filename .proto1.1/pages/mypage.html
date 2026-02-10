@@ -492,6 +492,438 @@
             }
         }
 
+        /* === Info 버튼 === */
+        .height-info-btn {
+            margin-left: auto;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .height-info-btn:hover {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+        }
+
+        .height-info-btn i {
+            font-size: 14px;
+        }
+
+        /* === 마일스톤 모달 === */
+        .milestone-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .milestone-modal.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .milestone-modal-content {
+            position: relative;
+            background: white;
+            border-radius: 28px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* 닫기 버튼 */
+        .milestone-close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: #f3f4f6;
+            color: #6b7280;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .milestone-close-btn:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+            transform: rotate(90deg);
+        }
+
+        /* 타이틀 */
+        .milestone-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .milestone-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        /* 캐러셀 */
+        .milestone-carousel {
+            position: relative;
+            min-height: 420px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        /* 네비게이션 */
+        .milestone-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .milestone-nav-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+            background: white;
+            color: #6b7280;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .milestone-nav-btn:hover:not(:disabled) {
+            border-color: #fbbf24;
+            background: #fffbeb;
+            color: #f59e0b;
+            transform: scale(1.1);
+        }
+
+        .milestone-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* 인디케이터 */
+        .milestone-indicators {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .milestone-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .milestone-dot:hover {
+            background: #9ca3af;
+        }
+
+        .milestone-dot.active {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            width: 28px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+        }
+
+        /* === 단계 카드 === */
+        .milestone-stage {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            border: 3px solid #e5e7eb;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .milestone-stage.active-stage {
+            display: block;
+            animation: stageSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes stageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 상태 배지 */
+        .milestone-status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        /* === Stage Visual === */
+        .milestone-stage-visual {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(180deg, #ffffff 0%, #fef9c3 100%);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 16px;
+            border: 2px solid #fde68a;
+            overflow: hidden;
+        }
+
+        .milestone-height-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, #fbbf24, #f59e0b);
+            transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0.3;
+            border-radius: 0 0 14px 14px;
+        }
+
+        .milestone-emoji {
+            font-size: 80px;
+            z-index: 2;
+            animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* 단계 정보 */
+        .milestone-stage-info {
+            text-align: center;
+        }
+
+        .milestone-stage-number {
+            font-size: 14px;
+            color: #f59e0b;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .milestone-stage-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .milestone-stage-stats {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .milestone-books,
+        .milestone-height {
+            font-size: 14px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .milestone-stage-desc {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        /* === 상태별 스타일 === */
+        /* 획득 완료 */
+        .milestone-stage-completed {
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .milestone-stage-completed .milestone-status-badge {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+
+        .milestone-stage-completed .milestone-stage-visual {
+            background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+            border-color: #86efac;
+        }
+
+        /* 진행중 (현재 단계) */
+        .milestone-stage-current {
+            border-color: #fbbf24;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
+        }
+
+        .milestone-stage-current .milestone-status-badge {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(251, 191, 36, 0);
+            }
+        }
+
+        /* 잠김 */
+        .milestone-stage-locked {
+            border-color: #d1d5db;
+            background: #f9fafb;
+            opacity: 0.7;
+        }
+
+        .milestone-stage-locked .milestone-status-badge {
+            background: #9ca3af;
+            color: white;
+        }
+
+        .milestone-stage-locked .milestone-stage-visual {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .milestone-stage-locked .milestone-emoji {
+            filter: grayscale(1);
+            opacity: 0.5;
+        }
+
+        /* === 모바일 반응형 === */
+        @media (max-width: 640px) {
+            .milestone-modal-content {
+                padding: 24px;
+                border-radius: 24px;
+            }
+
+            .milestone-title {
+                font-size: 20px;
+            }
+
+            .milestone-stage {
+                padding: 20px;
+            }
+
+            .milestone-stage-visual {
+                height: 160px;
+            }
+
+            .milestone-emoji {
+                font-size: 64px;
+            }
+
+            .milestone-stage-title {
+                font-size: 18px;
+            }
+
+            .milestone-nav-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .milestone-indicators {
+                gap: 6px;
+            }
+
+            .milestone-dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            .milestone-dot.active {
+                width: 24px;
+            }
+
+            .height-info-btn span {
+                display: none;
+            }
+
+            .height-info-btn {
+                width: 32px;
+                height: 32px;
+                padding: 0;
+                border-radius: 50%;
+            }
+        }
+
         /* === 리포트 탭 스타일 === */
         .report-toggle {
             display: flex;
@@ -1073,6 +1505,278 @@
             border-bottom-color: #FF9F43;
         }
         .gallery-subtab i { margin-right: 4px; }
+
+        /* === 갤러리 필터 === */
+        .gallery-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+        .gallery-filter {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .gallery-filter:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+        .gallery-filter.active {
+            background: #FF9F43;
+            color: white;
+            border-color: #FF9F43;
+        }
+
+        /* === 갤러리 정렬 버튼 === */
+        .gallery-sort {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .gallery-sort:hover {
+            color: #6b7280;
+        }
+        .gallery-sort.active {
+            color: #FF9F43;
+        }
+
+        /* === 갤러리 그리드 === */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+        @media (min-width: 640px) {
+            .gallery-grid {
+                gap: 10px;
+            }
+        }
+        @media (min-width: 1024px) {
+            .gallery-grid {
+                gap: 12px;
+            }
+        }
+
+        /* === 갤러리 아이템 === */
+        .gallery-item {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%; /* 정사각형 비율 */
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: 12px;
+            background: #f3f4f6;
+            transition: all 0.2s;
+        }
+        .gallery-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        .gallery-item-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+        .gallery-item-type {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(255,255,255,0.95);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            z-index: 2;
+        }
+        .gallery-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1;
+        }
+        .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+        .gallery-item-likes {
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .gallery-item-title {
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            padding: 0 8px;
+        }
+
+        /* === 갤러리 콘텐츠 === */
+        .gallery-content {
+            display: block;
+        }
+        .gallery-content.hidden {
+            display: none !important;
+        }
+
+        /* === 갤러리 피드 === */
+        .gallery-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* === 피드 카드 (친구 작품) === */
+        .feed-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.2s;
+        }
+        .feed-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .feed-card.highlight {
+            border: 2px solid #FF9F43;
+        }
+        .feed-card-header {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .feed-card-header.highlight-bg {
+            background: #FFF7ED;
+        }
+        .feed-card-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .feed-card-visual {
+            width: 100%;
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+        }
+        .feed-card-body {
+            padding: 12px 16px;
+        }
+        .feed-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .feed-card-action {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.2s;
+        }
+        .feed-card-action:hover {
+            color: #374151;
+        }
+        .feed-card-action.liked {
+            color: #ef4444;
+        }
+        .feed-card-action i {
+            font-size: 16px;
+        }
+
+        /* === 친구 카드 (관심친구) === */
+        .friend-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.2s;
+        }
+        .friend-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .friend-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+
+        /* === 팔로우 버튼 === */
+        .follow-btn {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: none;
+            background: #FF9F43;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .follow-btn:hover {
+            background: #FF8C1F;
+            transform: scale(1.05);
+        }
+        .follow-btn.following {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        .follow-btn.following:hover {
+            background: #e5e7eb;
+        }
 
         /* === 올도전 서브탭 === */
         .challenge-subtabs {
@@ -1811,195 +2515,6 @@
             .fame-award-card { width: 110px; }
         }
 
-        .gallery-filters {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
-        .gallery-filter {
-            flex-shrink: 0;
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1.5px solid #e5e7eb;
-            background: white;
-            font-size: 12px;
-            font-weight: 600;
-            color: #6b7280;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .gallery-filter:hover { border-color: #d1d5db; background: #f9fafb; }
-        .gallery-filter.active {
-            background: #FF9F43;
-            color: white;
-            border-color: #FF9F43;
-        }
-
-        .gallery-sort {
-            background: none;
-            border: none;
-            font-size: 12px;
-            font-weight: 600;
-            color: #9ca3af;
-            cursor: pointer;
-        }
-        .gallery-sort.active { color: #FF9F43; }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
-        }
-        @media (min-width: 768px) {
-            .gallery-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        }
-        .gallery-item {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .gallery-item-bg {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-        }
-        .gallery-item-type {
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            padding: 2px 6px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.9);
-            font-size: 9px;
-            font-weight: 700;
-        }
-        .gallery-item-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        .gallery-item:hover .gallery-item-overlay { opacity: 1; }
-        .gallery-item-likes {
-            color: white;
-            font-size: 12px;
-            font-weight: 700;
-        }
-        .gallery-item-title {
-            color: white;
-            font-size: 10px;
-            margin-top: 4px;
-        }
-
-        .gallery-feed {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-        }
-        @media (min-width: 640px) {
-            .gallery-feed { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (min-width: 1024px) {
-            .gallery-feed { grid-template-columns: repeat(3, 1fr); }
-        }
-        .feed-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-        }
-        .feed-card.highlight { border: 2px solid #ffedd5; }
-        .feed-card-header {
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .feed-card-header.highlight-bg { background: #fffbf5; }
-        .feed-card-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-        .feed-card-visual {
-            aspect-ratio: 4/3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-        }
-        .feed-card-body { padding: 12px 16px; }
-        .feed-card-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-        .feed-card-action {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: none;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .feed-card-action.liked { color: #f43f5e; }
-        .feed-card-action:not(.liked) { color: #9ca3af; }
-
-        .follow-btn {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .follow-btn.following {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-        .follow-btn:not(.following) {
-            background: linear-gradient(135deg, #FF9F43, #f59e0b);
-            color: white;
-        }
-
-        .friend-card {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        .friend-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
         /* === 프로필 변경 모달 === */
         .profile-modal {
             display: none;
@@ -2221,7 +2736,13 @@
 
                         <!-- 3. 독서로 키재기 (가로형, 2단 full-width) -->
                         <div class="my-card my-card-full">
-                            <h3 class="my-card-title"><i class="fa-solid fa-ruler-vertical text-amber-500"></i> 독서로 키재기</h3>
+                            <h3 class="my-card-title">
+                                <i class="fa-solid fa-ruler-vertical text-amber-500"></i> 독서로 키재기
+                                <button class="height-info-btn" onclick="openMilestoneModal()" title="어디까지 클 수 있을까?">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                    <span>어디까지 클 수 있을까?</span>
+                                </button>
+                            </h3>
 
                             <div class="height-layout">
                                 <!-- 좌측: 캐릭터 시각화 -->
@@ -2279,136 +2800,14 @@
 
                 <!-- 리포트 탭 콘텐츠 -->
                 <div id="tab-report" class="tab-content hidden">
-                    <!-- 주간/월간 토글 -->
+                    <!-- 월간/KRS 토글 -->
                     <div class="report-toggle">
-                        <button class="report-toggle-btn active" data-report="weekly" onclick="switchReportType('weekly')">주간 리포트</button>
-                        <button class="report-toggle-btn" data-report="monthly" onclick="switchReportType('monthly')">월간 리포트</button>
-                    </div>
-
-                    <!-- ===== 주간 리포트 ===== -->
-                    <div id="report-weekly" class="report-content">
-                        <div class="report-period">
-                            <strong>2026년 1월 4주차</strong> · 1월 27일 ~ 2월 2일
-                        </div>
-
-                        <!-- 핵심 지표 -->
-                        <div class="report-stats-grid">
-                            <div class="report-stat-item">
-                                <div class="report-stat-icon" style="background: #fef3c7;">📚</div>
-                                <div class="report-stat-value">12권</div>
-                                <div class="report-stat-label">읽은 도서</div>
-                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> 3권</div>
-                            </div>
-                            <div class="report-stat-item">
-                                <div class="report-stat-icon" style="background: #dbeafe;">⏱️</div>
-                                <div class="report-stat-value">4.5h</div>
-                                <div class="report-stat-label">독서 시간</div>
-                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> 45분</div>
-                            </div>
-                            <div class="report-stat-item">
-                                <div class="report-stat-icon" style="background: #dcfce7;">✅</div>
-                                <div class="report-stat-value">31개</div>
-                                <div class="report-stat-label">완료 활동</div>
-                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> 8개</div>
-                            </div>
-                            <div class="report-stat-item">
-                                <div class="report-stat-icon" style="background: #fce7f3;">⭐</div>
-                                <div class="report-stat-value">248</div>
-                                <div class="report-stat-label">획득한 별</div>
-                                <div class="report-stat-change up"><i class="fa-solid fa-arrow-up"></i> 58개</div>
-                            </div>
-                        </div>
-
-                        <!-- 활동별 참여 현황 -->
-                        <div class="report-card">
-                            <h3 class="report-card-title">
-                                <i class="fa-solid fa-chart-bar" style="color: #3b82f6;"></i>
-                                활동별 참여
-                            </h3>
-                            <div class="report-bar-list">
-                                <div class="report-bar-item">
-                                    <div class="report-bar-label">질문렌즈</div>
-                                    <div class="report-bar-track">
-                                        <div class="report-bar-fill" style="width: 85%; background: linear-gradient(90deg, #f97316, #fb923c);">6회</div>
-                                    </div>
-                                </div>
-                                <div class="report-bar-item">
-                                    <div class="report-bar-label">영상리텔링</div>
-                                    <div class="report-bar-track">
-                                        <div class="report-bar-fill" style="width: 70%; background: linear-gradient(90deg, #8b5cf6, #a78bfa);">5회</div>
-                                    </div>
-                                </div>
-                                <div class="report-bar-item">
-                                    <div class="report-bar-label">독서토론</div>
-                                    <div class="report-bar-track">
-                                        <div class="report-bar-fill" style="width: 55%; background: linear-gradient(90deg, #10b981, #34d399);">4회</div>
-                                    </div>
-                                </div>
-                                <div class="report-bar-item">
-                                    <div class="report-bar-label">어휘챌린지</div>
-                                    <div class="report-bar-track">
-                                        <div class="report-bar-fill" style="width: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa);">8회</div>
-                                    </div>
-                                </div>
-                                <div class="report-bar-item">
-                                    <div class="report-bar-label">독후퀴즈</div>
-                                    <div class="report-bar-track">
-                                        <div class="report-bar-fill" style="width: 100%; background: linear-gradient(90deg, #ec4899, #f472b6);">8회</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 이번 주 하이라이트 -->
-                        <div class="report-card">
-                            <h3 class="report-card-title">
-                                <i class="fa-solid fa-star" style="color: #f59e0b;"></i>
-                                이번 주 하이라이트
-                            </h3>
-                            <div class="report-highlight-list">
-                                <div class="report-highlight-item">
-                                    <div class="report-highlight-icon" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">🏆</div>
-                                    <div class="report-highlight-info">
-                                        <div class="report-highlight-title">어휘왕 달성!</div>
-                                        <div class="report-highlight-desc">어휘챌린지 8회 연속 완료</div>
-                                    </div>
-                                    <div class="report-highlight-badge" style="background: #fef3c7; color: #d97706;">+50⭐</div>
-                                </div>
-                                <div class="report-highlight-item">
-                                    <div class="report-highlight-icon" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe);">📖</div>
-                                    <div class="report-highlight-info">
-                                        <div class="report-highlight-title">다독가 뱃지 획득</div>
-                                        <div class="report-highlight-desc">이번 주 12권 독서 완료</div>
-                                    </div>
-                                    <div class="report-highlight-badge" style="background: #dbeafe; color: #2563eb;">New!</div>
-                                </div>
-                                <div class="report-highlight-item">
-                                    <div class="report-highlight-icon" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0);">💬</div>
-                                    <div class="report-highlight-info">
-                                        <div class="report-highlight-title">토론 베스트 의견</div>
-                                        <div class="report-highlight-desc">"오즈의 마법사" 토론에서 선정</div>
-                                    </div>
-                                    <div class="report-highlight-badge" style="background: #dcfce7; color: #16a34a;">+30⭐</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 획득 뱃지 -->
-                        <div class="report-card">
-                            <h3 class="report-card-title">
-                                <i class="fa-solid fa-medal" style="color: #8b5cf6;"></i>
-                                획득 뱃지
-                            </h3>
-                            <div class="report-badge-list">
-                                <div class="report-badge"><span class="report-badge-icon">📚</span><span class="report-badge-text">다독가</span></div>
-                                <div class="report-badge"><span class="report-badge-icon">🔥</span><span class="report-badge-text">7일 연속출석</span></div>
-                                <div class="report-badge"><span class="report-badge-icon">💡</span><span class="report-badge-text">질문마스터</span></div>
-                            </div>
-                        </div>
+                        <button class="report-toggle-btn active" data-report="monthly" onclick="switchReportType('monthly')">월간 리포트</button>
+                        <button class="report-toggle-btn" data-report="krs" onclick="switchReportType('krs')">KRS 레벨 리포트</button>
                     </div>
 
                     <!-- ===== 월간 리포트 ===== -->
-                    <div id="report-monthly" class="report-content hidden">
+                    <div id="report-monthly" class="report-content">
                         <div class="report-period">
                             <strong>2026년 1월</strong> · 월간 종합 리포트
                         </div>
@@ -2593,6 +2992,309 @@
                                 <div class="report-badge"><span class="report-badge-icon">💡</span><span class="report-badge-text">질문마스터</span></div>
                                 <div class="report-badge"><span class="report-badge-icon">🔥</span><span class="report-badge-text">연속출석7일</span></div>
                                 <div class="report-badge"><span class="report-badge-icon">⭐</span><span class="report-badge-text">1000스타</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== KRS 레벨 리포트 (듀오링고 스타일) ===== -->
+                    <div id="report-krs" class="report-content hidden">
+                        <!-- 히어로 섹션: 큰 숫자로 임팩트 -->
+                        <div style="background: linear-gradient(135deg, #1cb0f6 0%, #1899d6 50%, #0073b1 100%); border-radius: 20px; padding: 32px 24px; color: white; margin-bottom: 20px; position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+                            <div style="position: absolute; bottom: -60px; left: -60px; width: 250px; height: 250px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+
+                            <div style="position: relative; z-index: 1;">
+                                <!-- 상단 레벨 배지 -->
+                                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); padding: 8px 16px; border-radius: 20px; margin-bottom: 16px;">
+                                    <span style="font-size: 20px;">🏆</span>
+                                    <span style="font-size: 14px; font-weight: 700;">K1-2 레벨</span>
+                                </div>
+
+                                <!-- 메인 성과 -->
+                                <div style="margin-bottom: 20px;">
+                                    <div style="font-size: 48px; font-weight: 800; line-height: 1; margin-bottom: 12px;">
+                                        18<span style="font-size: 28px; font-weight: 600; opacity: 0.9;">/24</span>
+                                    </div>
+                                    <div style="font-size: 18px; font-weight: 600; opacity: 0.95;">권 완료! 정말 잘하고 있어요 🎉</div>
+                                </div>
+
+                                <!-- 프로그레스 바 -->
+                                <div style="background: rgba(255,255,255,0.25); border-radius: 16px; height: 16px; overflow: hidden; margin-bottom: 12px;">
+                                    <div style="width: 75%; height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); border-radius: 16px; transition: width 0.8s ease;"></div>
+                                </div>
+
+                                <!-- 하단 정보 -->
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="font-size: 13px; opacity: 0.9;">🎯 다음 레벨까지 6권 남았어요</div>
+                                    <div style="font-size: 16px; font-weight: 700;">75%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 스트릭 & 주간 목표 -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                            <!-- 일일 스트릭 -->
+                            <div style="background: linear-gradient(135deg, #ff9500 0%, #ff6b00 100%); border-radius: 16px; padding: 20px; color: white; position: relative; overflow: hidden;">
+                                <div style="position: absolute; top: -20px; right: -20px; font-size: 100px; opacity: 0.15;">🔥</div>
+                                <div style="position: relative; z-index: 1;">
+                                    <div style="font-size: 40px; margin-bottom: 8px;">🔥</div>
+                                    <div style="font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 4px;">12</div>
+                                    <div style="font-size: 14px; font-weight: 600; opacity: 0.95;">일 연속 학습중</div>
+                                    <div style="font-size: 12px; opacity: 0.85; margin-top: 8px;">대단해요! 계속 불을 지펴요 🚀</div>
+                                </div>
+                            </div>
+
+                            <!-- 주간 목표 -->
+                            <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                                <div style="font-size: 32px; margin-bottom: 8px;">⭐</div>
+                                <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px; font-weight: 600;">이번 주 목표</div>
+                                <div style="font-size: 32px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 8px;">5<span style="font-size: 20px; font-weight: 600; color: #6b7280;">/7</span></div>
+                                <div style="background: #e5e7eb; border-radius: 8px; height: 8px; overflow: hidden;">
+                                    <div style="width: 71%; height: 100%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 8px;"></div>
+                                </div>
+                                <div style="font-size: 12px; color: #10b981; margin-top: 6px; font-weight: 600;">71% 달성</div>
+                            </div>
+                        </div>
+
+                        <!-- XP (경험치) & 리더보드 -->
+                        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; margin-bottom: 20px;">
+                            <!-- 총 XP -->
+                            <div style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); border-radius: 16px; padding: 24px; color: white; position: relative; overflow: hidden;">
+                                <div style="position: absolute; top: -30px; right: -30px; font-size: 140px; opacity: 0.1;">⚡</div>
+                                <div style="position: relative; z-index: 1;">
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.25); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">⚡</div>
+                                        <div>
+                                            <div style="font-size: 13px; opacity: 0.9; font-weight: 600;">총 획득 XP</div>
+                                            <div style="font-size: 36px; font-weight: 800; line-height: 1;">3,420</div>
+                                        </div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.2); border-radius: 10px; padding: 12px; margin-top: 12px;">
+                                        <div style="font-size: 12px; opacity: 0.9; margin-bottom: 6px;">이번 달 획득</div>
+                                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                                            <div style="font-size: 20px; font-weight: 700;">+580 XP</div>
+                                            <div style="font-size: 12px; opacity: 0.85;">📈 +12% vs 지난달</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 리더보드 순위 -->
+                            <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 48px; margin-bottom: 8px;">🏅</div>
+                                    <div style="font-size: 13px; color: #6b7280; margin-bottom: 4px; font-weight: 600;">반 순위</div>
+                                    <div style="font-size: 40px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 4px;">3<span style="font-size: 24px; color: #6b7280; font-weight: 600;">위</span></div>
+                                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 12px;">전체 28명 중</div>
+                                    <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700;">
+                                        🎯 2위까지 50 XP!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 성취 배지 -->
+                        <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                                <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin: 0;">🏆 성취 배지</h3>
+                                <div style="font-size: 13px; color: #6b7280; font-weight: 600;">12/20 획득</div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 12px;">
+                                <!-- 획득한 배지 -->
+                                <div style="text-align: center;">
+                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);">🔥</div>
+                                    <div style="font-size: 10px; color: #6b7280; font-weight: 600;">7일 연속</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);">📚</div>
+                                    <div style="font-size: 10px; color: #6b7280; font-weight: 600;">첫 10권</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">⭐</div>
+                                    <div style="font-size: 10px; color: #6b7280; font-weight: 600;">퀴즈왕</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);">🎯</div>
+                                    <div style="font-size: 10px; color: #6b7280; font-weight: 600;">완벽한 주</div>
+                                </div>
+                                <!-- 잠금된 배지 -->
+                                <div style="text-align: center; opacity: 0.4;">
+                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 2px dashed #d1d5db;">🔒</div>
+                                    <div style="font-size: 10px; color: #9ca3af; font-weight: 600;">???</div>
+                                </div>
+                                <div style="text-align: center; opacity: 0.4;">
+                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 2px dashed #d1d5db;">🔒</div>
+                                    <div style="font-size: 10px; color: #9ca3af; font-weight: 600;">???</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 핵심 통계 (간단하게) -->
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 12px;">📊 핵심 통계</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px;">
+                                <!-- 총 학습일 -->
+                                <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                    <div style="font-size: 32px; margin-bottom: 6px;">📅</div>
+                                    <div style="font-size: 28px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 4px;">142</div>
+                                    <div style="font-size: 12px; color: #6b7280; font-weight: 600;">총 학습일</div>
+                                </div>
+                                <!-- 평균 정답률 -->
+                                <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                    <div style="font-size: 32px; margin-bottom: 6px;">🎯</div>
+                                    <div style="font-size: 28px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 4px;">83%</div>
+                                    <div style="font-size: 12px; color: #6b7280; font-weight: 600;">평균 정답률</div>
+                                </div>
+                                <!-- 독서 속도 -->
+                                <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                    <div style="font-size: 32px; margin-bottom: 6px;">⚡</div>
+                                    <div style="font-size: 28px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 4px;">85</div>
+                                    <div style="font-size: 12px; color: #6b7280; font-weight: 600;">평균 WPM</div>
+                                </div>
+                                <!-- 완료한 퀴즈 -->
+                                <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                    <div style="font-size: 32px; margin-bottom: 6px;">✅</div>
+                                    <div style="font-size: 28px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 4px;">32</div>
+                                    <div style="font-size: 12px; color: #6b7280; font-weight: 600;">완료한 퀴즈</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 학습 활동 (간단한 카드) -->
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 12px;">📚 학습 활동</h3>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                                <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 12px; padding: 16px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                        <div style="font-size: 12px; color: #92400e; font-weight: 600;">KRS 메인도서</div>
+                                        <div style="font-size: 20px;">📚</div>
+                                    </div>
+                                    <div style="font-size: 24px; font-weight: 800; color: #78350f; margin-bottom: 6px;">18<span style="font-size: 16px; color: #92400e;">/24</span></div>
+                                    <div style="background: rgba(255,255,255,0.4); border-radius: 6px; height: 6px; overflow: hidden;">
+                                        <div style="width: 75%; height: 100%; background: linear-gradient(90deg, #f59e0b, #d97706); border-radius: 6px;"></div>
+                                    </div>
+                                </div>
+                                <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-radius: 12px; padding: 16px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                        <div style="font-size: 12px; color: #1e40af; font-weight: 600;">교과서 짝꿍책</div>
+                                        <div style="font-size: 20px;">📖</div>
+                                    </div>
+                                    <div style="font-size: 24px; font-weight: 800; color: #1e3a8a; margin-bottom: 6px;">16<span style="font-size: 16px; color: #1e40af;">/24</span></div>
+                                    <div style="background: rgba(255,255,255,0.4); border-radius: 6px; height: 6px; overflow: hidden;">
+                                        <div style="width: 67%; height: 100%; background: linear-gradient(90deg, #3b82f6, #2563eb); border-radius: 6px;"></div>
+                                    </div>
+                                </div>
+                                <div style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); border-radius: 12px; padding: 16px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                        <div style="font-size: 12px; color: #9f1239; font-weight: 600;">독후 퀴즈</div>
+                                        <div style="font-size: 20px;">✅</div>
+                                    </div>
+                                    <div style="font-size: 24px; font-weight: 800; color: #881337; margin-bottom: 6px;">평균 85<span style="font-size: 16px; color: #9f1239;">점</span></div>
+                                    <div style="font-size: 11px; color: #9f1239; font-weight: 600;">⭐ 정답률 우수!</div>
+                                </div>
+                                <div style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); border-radius: 12px; padding: 16px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                        <div style="font-size: 12px; color: #166534; font-weight: 600;">AI 어휘</div>
+                                        <div style="font-size: 20px;">🎮</div>
+                                    </div>
+                                    <div style="font-size: 24px; font-weight: 800; color: #14532d; margin-bottom: 6px;">11<span style="font-size: 16px; color: #166534;">/14</span></div>
+                                    <div style="background: rgba(255,255,255,0.4); border-radius: 6px; height: 6px; overflow: hidden;">
+                                        <div style="width: 79%; height: 100%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 6px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 월별 활동 (심플하게) -->
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 12px;">📅 월별 활동</h3>
+                            <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                <div style="display: flex; align-items: end; gap: 8px; height: 120px;">
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
+                                        <div style="width: 100%; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 8px 8px 0 0; height: 40%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700;">5</div>
+                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px; font-weight: 600;">1월</div>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
+                                        <div style="width: 100%; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 8px 8px 0 0; height: 55%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700;">7</div>
+                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px; font-weight: 600;">2월</div>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
+                                        <div style="width: 100%; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 8px 8px 0 0; height: 48%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700;">6</div>
+                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px; font-weight: 600;">3월</div>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
+                                        <div style="width: 100%; background: linear-gradient(180deg, #10b981, #059669); border-radius: 8px 8px 0 0; height: 65%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700;">8</div>
+                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px; font-weight: 600;">4월</div>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
+                                        <div style="width: 100%; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 8px 8px 0 0; height: 48%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700;">6</div>
+                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px; font-weight: 600;">5월</div>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
+                                        <div style="width: 100%; background: linear-gradient(180deg, #1cb0f6, #0073b1); border-radius: 8px 8px 0 0; height: 16%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700; border: 2px solid #0073b1;">2</div>
+                                        <div style="font-size: 11px; color: #1cb0f6; margin-top: 6px; font-weight: 700;">6월</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #e5e7eb;">
+                                    <div style="font-size: 12px; color: #6b7280;">📊 평균 월 6권 독서 중!</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 격려 메시지 (듀오링고 스타일) -->
+                        <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 16px; padding: 24px; color: white; margin-bottom: 20px; position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                            <div style="position: relative; z-index: 1;">
+                                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                                    <div style="width: 56px; height: 56px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">🎉</div>
+                                    <div>
+                                        <div style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">정말 잘하고 있어요!</div>
+                                        <div style="font-size: 14px; opacity: 0.95; font-weight: 600;">이번 주도 목표 달성에 가까워지고 있어요</div>
+                                    </div>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 12px; padding: 16px;">
+                                    <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">✨ 이번 주 하이라이트</div>
+                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 13px; opacity: 0.95;">
+                                        <div>• 연속 12일 학습 🔥</div>
+                                        <div>• 퀴즈 평균 85점 ⭐</div>
+                                        <div>• 독서 속도 +8 WPM 📈</div>
+                                        <div>• 3위 유지 중 🏆</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 다음 마일스톤 -->
+                        <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 20px;">🎯</span>
+                                다음 목표
+                            </h3>
+                            <div style="display: grid; gap: 12px;">
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f9fafb; border-radius: 10px;">
+                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">📚</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 2px;">메인도서 6권 더 읽기</div>
+                                        <div style="font-size: 11px; color: #6b7280;">레벨 완료까지</div>
+                                    </div>
+                                    <div style="font-size: 18px; font-weight: 800; color: #f59e0b;">-6</div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f9fafb; border-radius: 10px;">
+                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff9500, #ff6b00); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">🔥</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 2px;">30일 스트릭 달성</div>
+                                        <div style="font-size: 11px; color: #6b7280;">다음 배지 획득</div>
+                                    </div>
+                                    <div style="font-size: 18px; font-weight: 800; color: #ff9500;">-18</div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f9fafb; border-radius: 10px;">
+                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">🏆</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 2px;">반에서 2위 달성</div>
+                                        <div style="font-size: 11px; color: #6b7280;">50 XP 더 필요</div>
+                                    </div>
+                                    <div style="font-size: 18px; font-weight: 800; color: #10b981;">-50</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3289,6 +3991,395 @@
         let galleryFilter = 'all';
         let gallerySort = 'recent';
 
+        // === 독서로 키재기 마일스톤 ===
+        const USER_CURRENT_STAGE = 6; // 사용자 현재 단계 (세종대왕)
+        let currentMilestoneStage = 0;
+
+        const milestoneData = [
+            {
+                stage: 1,
+                books: 100,
+                height: '1m',
+                emoji: '🧸',
+                title: '대형 곰인형',
+                description: '나랑 덩치가 비슷한 곰인형만큼 읽었어요!',
+                heightPercent: 10
+            },
+            {
+                stage: 2,
+                books: 200,
+                height: '2m',
+                emoji: '🧊',
+                title: '냉장고',
+                description: '우리 집에서 제일 큰 냉장고보다 높아졌네?',
+                heightPercent: 20
+            },
+            {
+                stage: 3,
+                books: 300,
+                height: '3m',
+                emoji: '🏀',
+                title: '농구골대',
+                description: '점프해도 닿지 않는 농구골대까지 쑥!',
+                heightPercent: 30
+            },
+            {
+                stage: 4,
+                books: 400,
+                height: '4m',
+                emoji: '🐘',
+                title: '코끼리',
+                description: '세상에서 가장 큰 동물인 코끼리 키만큼!',
+                heightPercent: 40
+            },
+            {
+                stage: 5,
+                books: 550,
+                height: '5.5m',
+                emoji: '🦒',
+                title: '기린',
+                description: '목이 긴 기린의 머리 위가 보여요.',
+                heightPercent: 50
+            },
+            {
+                stage: 6,
+                books: 1100,
+                height: '11m',
+                emoji: '👑',
+                title: '세종대왕 동상',
+                description: '광화문의 세종대왕님과 하이파이브!',
+                heightPercent: 60
+            },
+            {
+                stage: 7,
+                books: 9300,
+                height: '93m',
+                emoji: '🗽',
+                title: '자유의 여신상',
+                description: '1만 권 임박! 바다 건너 뉴욕까지 왔어요.',
+                heightPercent: 70
+            },
+            {
+                stage: 8,
+                books: 13800,
+                height: '138m',
+                emoji: '🏜️',
+                title: '피라미드',
+                description: '고대 이집트의 거대한 성벽을 정복!',
+                heightPercent: 80
+            },
+            {
+                stage: 9,
+                books: 17000,
+                height: '170m',
+                emoji: '🗼',
+                title: '에펠탑 (전망대)',
+                description: '파리 에펠탑 위에서 구름을 만져봐요.',
+                heightPercent: 90
+            },
+            {
+                stage: 10,
+                books: 20000,
+                height: '200m',
+                emoji: '🏯',
+                title: '남산 서울타워',
+                description: '2만 권 완독! 서울에서 가장 높은 주인공!',
+                heightPercent: 100
+            }
+        ];
+
+        // Get milestone status based on user's current stage
+        function getMilestoneStatus(stageNumber) {
+            if (stageNumber < USER_CURRENT_STAGE) {
+                return 'completed'; // 획득 완료
+            } else if (stageNumber === USER_CURRENT_STAGE) {
+                return 'current'; // 현재단계
+            } else {
+                return 'locked'; // 잠김
+            }
+        }
+
+        function openMilestoneModal() {
+            const modal = document.getElementById('milestone-modal');
+            if (!modal) return;
+
+            // Initialize carousel if not already done
+            if (!modal.querySelector('.milestone-stage')) {
+                initializeMilestoneCarousel();
+            }
+
+            modal.classList.add('show');
+            currentMilestoneStage = 0;
+            updateMilestoneDisplay();
+
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMilestoneModal() {
+            const modal = document.getElementById('milestone-modal');
+            if (!modal) return;
+
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function initializeMilestoneCarousel() {
+            const carousel = document.querySelector('.milestone-carousel');
+            if (!carousel) return;
+
+            let html = '';
+            milestoneData.forEach((milestone, index) => {
+                const status = getMilestoneStatus(milestone.stage);
+                const statusText = status === 'completed' ? '✅ 획득 완료' :
+                                   status === 'current' ? '⭐ 현재단계' :
+                                   '🔒 잠김';
+                const statusClass = `milestone-stage-${status}`;
+
+                html += `
+                    <div class="milestone-stage ${index === 0 ? 'active-stage' : ''} ${statusClass}" data-stage="${milestone.stage}">
+                        <div class="milestone-status-badge">${statusText}</div>
+                        <div class="milestone-stage-visual">
+                            <div class="milestone-height-bar" style="height: ${milestone.heightPercent}%;"></div>
+                            <div class="milestone-emoji">${milestone.emoji}</div>
+                        </div>
+                        <div class="milestone-stage-info">
+                            <div class="milestone-stage-number">Stage ${milestone.stage}</div>
+                            <div class="milestone-stage-title">${milestone.title}</div>
+                            <div class="milestone-stage-stats">
+                                <span class="milestone-books">${milestone.books.toLocaleString()}권</span>
+                                <span class="milestone-height">${milestone.height}</span>
+                            </div>
+                            <p class="milestone-stage-desc">${milestone.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            carousel.innerHTML = html;
+
+            // Initialize indicators
+            const indicators = document.querySelector('.milestone-indicators');
+            if (indicators) {
+                let dotsHtml = '';
+                milestoneData.forEach((_, index) => {
+                    const status = getMilestoneStatus(index + 1);
+                    const dotStatusClass = status === 'completed' ? 'dot-completed' :
+                                          status === 'current' ? 'dot-current' :
+                                          'dot-future';
+                    dotsHtml += `<div class="milestone-dot ${index === 0 ? 'active' : ''} ${dotStatusClass}" onclick="goToMilestone(${index})"></div>`;
+                });
+                indicators.innerHTML = dotsHtml;
+            }
+        }
+
+        function goToMilestone(index) {
+            if (index < 0 || index >= milestoneData.length) return;
+            currentMilestoneStage = index;
+            updateMilestoneDisplay();
+        }
+
+        function nextMilestone() {
+            if (currentMilestoneStage < milestoneData.length - 1) {
+                currentMilestoneStage++;
+                updateMilestoneDisplay();
+            }
+        }
+
+        function prevMilestone() {
+            if (currentMilestoneStage > 0) {
+                currentMilestoneStage--;
+                updateMilestoneDisplay();
+            }
+        }
+
+        function updateMilestoneDisplay() {
+            // Update stage cards
+            const stages = document.querySelectorAll('.milestone-stage');
+            stages.forEach((stage, index) => {
+                if (index === currentMilestoneStage) {
+                    stage.classList.add('active-stage');
+                } else {
+                    stage.classList.remove('active-stage');
+                }
+            });
+
+            // Update dots with status colors
+            const dots = document.querySelectorAll('.milestone-dot');
+            dots.forEach((dot, index) => {
+                const stageNumber = index + 1; // stages are 1-indexed
+                const status = getMilestoneStatus(stageNumber);
+
+                // Remove all status classes
+                dot.classList.remove('dot-completed', 'dot-current', 'dot-future');
+
+                // Add appropriate status class
+                if (status === 'completed') {
+                    dot.classList.add('dot-completed');
+                } else if (status === 'current') {
+                    dot.classList.add('dot-current');
+                } else {
+                    dot.classList.add('dot-future');
+                }
+
+                // Update active state
+                if (index === currentMilestoneStage) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+
+            // Update navigation buttons
+            const prevBtn = document.querySelector('.milestone-prev');
+            const nextBtn = document.querySelector('.milestone-next');
+
+            if (prevBtn) {
+                prevBtn.disabled = currentMilestoneStage === 0;
+            }
+
+            if (nextBtn) {
+                nextBtn.disabled = currentMilestoneStage === milestoneData.length - 1;
+            }
+        }
+
+        // Close modal on outside click and keyboard events
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('milestone-modal');
+            if (modal) {
+                // Close on outside click
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeMilestoneModal();
+                    }
+                });
+
+                // Close on ESC key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && modal.classList.contains('show')) {
+                        closeMilestoneModal();
+                    }
+                });
+
+                // Arrow key navigation
+                document.addEventListener('keydown', function(e) {
+                    if (!modal.classList.contains('show')) return;
+
+                    if (e.key === 'ArrowLeft') {
+                        prevMilestone();
+                    } else if (e.key === 'ArrowRight') {
+                        nextMilestone();
+                    }
+                });
+            }
+        });
+
+        // === KRS 승급 도전 시스템 ===
+        const KRS_DATA = {
+            currentLevel: 'K2-1',
+            targetLevel: 'K2-2',
+            currentScore: 420,
+            requiredScore: 600,
+            maxScore: 1000,
+            completedWeeks: 16,
+            totalWeeks: 24,
+            tiers: [
+                { name: '승급 가능', score: 600, icon: '✅', class: 'baseline', reward: null },
+                { name: '브론즈', score: 700, icon: '🥉', class: 'bronze', reward: 50 },
+                { name: '실버', score: 800, icon: '🥈', class: 'silver', reward: 100 },
+                { name: '골드', score: 900, icon: '🥇', class: 'gold', reward: 200 },
+                { name: '다이아몬드', score: 900, icon: '💎', class: 'diamond', reward: 500 }
+            ]
+        };
+
+        function updateKRSDisplay() {
+            // Update score
+            const scoreElement = document.querySelector('.krs-current-score');
+            if (scoreElement) {
+                scoreElement.innerHTML = `${KRS_DATA.currentScore}<span class="krs-score-unit">점</span>`;
+            }
+
+            // Update progress bar
+            const progressFill = document.querySelector('.krs-progress-fill');
+            if (progressFill) {
+                const percentage = (KRS_DATA.currentScore / KRS_DATA.maxScore) * 100;
+                progressFill.style.width = `${percentage}%`;
+                const label = progressFill.querySelector('.krs-progress-label');
+                if (label) {
+                    label.textContent = `${Math.round(percentage)}%`;
+                }
+            }
+
+            // Update threshold position
+            const threshold = document.querySelector('.krs-progress-threshold');
+            if (threshold) {
+                const thresholdPercentage = (KRS_DATA.requiredScore / KRS_DATA.maxScore) * 100;
+                threshold.style.left = `${thresholdPercentage}%`;
+            }
+
+            // Update remaining score
+            const remaining = KRS_DATA.requiredScore - KRS_DATA.currentScore;
+            const statusElement = document.querySelector('.krs-level-status');
+            if (statusElement) {
+                if (remaining > 0) {
+                    statusElement.innerHTML = `승급까지 <strong>${remaining}점</strong> 남았어요`;
+                } else {
+                    statusElement.innerHTML = `축하합니다! <strong>승급 가능</strong>합니다 🎉`;
+                }
+            }
+
+            // Update checklist
+            const checklistItems = document.querySelectorAll('.krs-checklist-item');
+            if (checklistItems[0]) {
+                const scoreCheck = checklistItems[0].querySelector('i');
+                const scoreStatus = checklistItems[0].querySelector('.krs-checklist-status');
+                if (KRS_DATA.currentScore >= KRS_DATA.requiredScore) {
+                    scoreCheck.className = 'fa-solid fa-check-circle';
+                    scoreCheck.style.color = '#22c55e';
+                    scoreStatus.classList.remove('pending');
+                    scoreStatus.style.color = '#22c55e';
+                } else {
+                    scoreCheck.className = 'fa-regular fa-circle';
+                    scoreCheck.style.color = '#d1d5db';
+                    scoreStatus.classList.add('pending');
+                }
+                scoreStatus.textContent = `${KRS_DATA.currentScore} / ${KRS_DATA.requiredScore}`;
+            }
+
+            if (checklistItems[1]) {
+                const weeksCheck = checklistItems[1].querySelector('i');
+                const weeksStatus = checklistItems[1].querySelector('.krs-checklist-status');
+                if (KRS_DATA.completedWeeks >= KRS_DATA.totalWeeks) {
+                    weeksCheck.className = 'fa-solid fa-check-circle';
+                    weeksCheck.style.color = '#22c55e';
+                    weeksStatus.style.color = '#22c55e';
+                } else {
+                    weeksCheck.className = 'fa-regular fa-circle';
+                    weeksCheck.style.color = '#d1d5db';
+                }
+                weeksStatus.textContent = `${KRS_DATA.completedWeeks} / ${KRS_DATA.totalWeeks}주`;
+            }
+
+            // Update tier cards
+            const tierCards = document.querySelectorAll('.krs-tier-card');
+            tierCards.forEach((card, index) => {
+                const tier = KRS_DATA.tiers[index];
+                if (!tier) return;
+
+                // Unlock/lock based on current score
+                if (KRS_DATA.currentScore >= tier.score) {
+                    card.classList.remove('locked');
+                } else {
+                    card.classList.add('locked');
+                }
+            });
+        }
+
+        // Initialize KRS display when tab is opened
+        document.addEventListener('DOMContentLoaded', function() {
+            updateKRSDisplay();
+        });
+
         // === 올도전 탭 전환 ===
         function switchChallengeTab(tab) {
             document.querySelectorAll('.challenge-subtab').forEach(t => t.classList.remove('active'));
@@ -3474,5 +4565,38 @@
             renderFollowingTab();
         });
     </script>
+
+    <!-- 독서로 키재기 마일스톤 팝업 -->
+    <div id="milestone-modal" class="milestone-modal">
+        <div class="milestone-modal-content">
+            <!-- 닫기 버튼 -->
+            <button class="milestone-close-btn" onclick="closeMilestoneModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- 타이틀 -->
+            <h2 class="milestone-title">어디까지 클 수 있을까? 📚</h2>
+            <p class="milestone-subtitle">책을 읽을수록 점점 더 높이 자라나요!</p>
+
+            <!-- 캐러셀 영역 -->
+            <div class="milestone-carousel">
+                <!-- Stage cards will be generated by JavaScript -->
+            </div>
+
+            <!-- 네비게이션 -->
+            <div class="milestone-nav">
+                <button class="milestone-nav-btn milestone-prev" onclick="prevMilestone()">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="milestone-indicators">
+                    <!-- Dots will be generated by JavaScript -->
+                </div>
+                <button class="milestone-nav-btn milestone-next" onclick="nextMilestone()">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

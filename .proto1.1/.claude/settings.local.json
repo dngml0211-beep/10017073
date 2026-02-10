@@ -22,7 +22,23 @@
       "WebFetch(domain:duoplanet.com)",
       "Bash(ls \"c:\\\\우희\\\\02_기획\\\\_2026 기획\\\\북클럽 3.0 기획자료\\\\.proto1.1\\\\images\\\\thumbnails\"\" 2>/dev/null || echo \"no thumbnails dir \")",
       "WebFetch(domain:product.kyobobook.co.kr)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(git checkout:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"c:\\\\우희\\\\02_기획\\\\_2026 기획\\\\북클럽 3.0 기획자료\\\\.proto1.1\\\\_replace_font.ps1\")",
+      "Bash(del \"c:\\\\우희\\\\02_기획\\\\_2026 기획\\\\북클럽 3.0 기획자료\\\\.proto1.1\\\\_replace_font.ps1\")",
+      "WebFetch(domain:home.oxfordowl.co.uk)",
+      "WebFetch(domain:www.aladin.co.kr)",
+      "WebFetch(domain:www.getepic.com)",
+      "WebFetch(domain:amend-opt-56242877.figma.site)",
+      "Bash(gh api:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\10017073\\\\.claude\\\\notify.ps1\")",
+      "Bash(powershell -File -:*)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -Command:*)",
+      "Bash(git restore:*)",
+      "Bash(ls:*)",
+      "Bash(diff:*)",
+      "Bash(start all-challenge.html)"
     ]
   }
 }

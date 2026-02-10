@@ -147,26 +147,35 @@
             gap: 8px;
         }
 
-        /* === 활동 카드 === */
+        /* === 활동 카드 (가로 1줄 레이아웃) === */
         .activity-card {
             background: white;
             border-radius: 16px;
-            padding: 20px;
+            padding: 18px;
             margin-bottom: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             border: 1px solid #f0f0f0;
             cursor: pointer;
             transition: all 0.2s;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            gap: 20px;
+            max-width: 900px;
         }
         .activity-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0,0,0,0.1);
         }
+        /* 왼쪽: 책 영역 */
         .activity-card-header {
             display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            margin-bottom: 12px;
+            align-items: center;
+            gap: 12px;
+            padding-right: 20px;
+            border-right: 2px solid #f0f0f0;
+            min-width: 240px;
+            flex-shrink: 0;
         }
         .activity-icon {
             width: 48px; height: 48px;
@@ -181,10 +190,11 @@
         .activity-icon.video { background: #fce7f3; color: #ec4899; }
         .activity-icon.debate { background: #dbeafe; color: #3b82f6; }
 
-        /* 책 섬네일 스타일 */
+        /* 책 섬네일 스타일 (2단 레이아웃에 맞게 크기 조정) */
         .activity-book-thumb {
-            width: 60px; height: 80px;
-            border-radius: 8px;
+            width: 70px;
+            height: 90px;
+            border-radius: 10px;
             background: linear-gradient(145deg, #f3f4f6, #e5e7eb);
             border: 1px solid #e5e7eb;
             display: flex;
@@ -193,7 +203,7 @@
             justify-content: center;
             gap: 2px;
             flex-shrink: 0;
-            box-shadow: 2px 2px 6px rgba(0,0,0,0.08);
+            box-shadow: 2px 3px 8px rgba(0,0,0,0.1);
             overflow: hidden;
         }
         .activity-book-thumb i {
@@ -235,13 +245,17 @@
             font-size: 12px;
             color: #9ca3af;
         }
+        /* 오른쪽: 내 활동 영역 */
         .activity-preview {
             background: #f9fafb;
             border-radius: 12px;
-            padding: 14px;
+            padding: 16px;
             font-size: 13px;
             color: #6b7280;
             line-height: 1.6;
+            flex: 1;
+            display: flex;
+            align-items: center;
         }
         .activity-preview.video-preview {
             display: flex;
@@ -289,6 +303,182 @@
             line-height: 1.6;
         }
 
+        /* === 영상 리텔링 개선 스타일 (가로 레이아웃) === */
+        .activity-preview.video-preview-enhanced {
+            padding: 0;
+            overflow: hidden;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: row;
+            gap: 0;
+        }
+        .video-thumbnail-wrapper {
+            position: relative;
+            width: 200px;
+            height: 120px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            flex-shrink: 0;
+        }
+        .video-thumbnail-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .video-play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(2px);
+        }
+        .video-play-overlay i {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ec4899;
+            padding-left: 3px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .video-duration-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+        .video-info {
+            padding: 12px 16px;
+            background: #f9fafb;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .video-scene-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+        .video-desc {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* === 질문렌즈 개선 스타일 (가로 레이아웃) === */
+        .activity-preview.question-preview-enhanced {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+        }
+        .question-card-mini {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #e9d5ff;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.1);
+            flex-shrink: 0;
+        }
+        .question-card-icon {
+            font-size: 20px;
+        }
+        .question-card-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: #7c3aed;
+        }
+        .question-answer {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+        }
+        .answer-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #8b5cf6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .answer-text {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.6;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+        }
+
+        /* === 독서토론 개선 스타일 (가로 레이아웃) === */
+        .activity-preview.debate-preview-enhanced {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+        .debate-card-mini {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #bfdbfe;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+            flex-shrink: 0;
+        }
+        .debate-card-icon {
+            font-size: 20px;
+        }
+        .debate-card-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .debate-opinion {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+        }
+        .opinion-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .opinion-text {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.6;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+        }
+
         /* === 빈 상태 === */
         .empty-state {
             text-align: center;
@@ -328,6 +518,42 @@
         .empty-state-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        /* === 모바일 반응형 (768px 이하) === */
+        @media (max-width: 768px) {
+            .activity-card {
+                flex-direction: column;
+                gap: 0;
+                padding: 0;
+                max-width: 100%;
+            }
+            .activity-card-header {
+                border-right: none;
+                border-bottom: 2px solid #f0f0f0;
+                min-width: auto;
+                padding: 14px 16px;
+            }
+            .activity-book-thumb {
+                width: 60px;
+                height: 80px;
+            }
+            .activity-preview {
+                border-radius: 0;
+            }
+            .activity-preview.question-preview-enhanced,
+            .activity-preview.debate-preview-enhanced {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .activity-preview.video-preview-enhanced {
+                flex-direction: column;
+            }
+            .video-thumbnail-wrapper {
+                width: 100%;
+                height: 180px;
+            }
         }
 
         /* === 새 활동 시작 버튼 === */
@@ -572,6 +798,8 @@
             id: 1, type: 'question', book: '오즈의 마법사', bookEmoji: '🌪️',
             title: '도로시는 왜 에메랄드 성으로 갔을까?',
             preview: '도로시가 집에 가려면 오즈의 마법사를 만나야 한대요. 그래서 노란 벽돌길을 따라 에메랄드 성으로 갔어요!',
+            questionCard: '누구일까?',
+            questionIcon: '❓',
             date: '2024-01-15 14:30'
         },
         {
@@ -579,18 +807,24 @@
             title: '도로시의 모험 이야기',
             preview: '1분 32초',
             thumbnailText: '▶',
+            videoThumbnail: '../images/thumbnails/book_02.png',
+            videoScene: '평화로운 숲속',
             date: '2024-01-15 15:00'
         },
         {
             id: 3, type: 'debate', book: '오즈의 마법사', bookEmoji: '🌪️',
             title: '허수아비에게 정말 뇌가 없었을까?',
             preview: '허수아비는 뇌가 없다고 했지만, 항상 똑똑한 생각을 했어요. 마음이 중요한 것 같아요!',
+            debateCard: '나눠줘야 해!',
+            debateIcon: '💭',
             date: '2024-01-14 16:20'
         },
         {
             id: 4, type: 'question', book: '약속은 즐거워', bookEmoji: '🤝',
             title: '약속을 지키면 왜 좋을까?',
             preview: '친구랑 약속을 지키면 믿음이 생기고, 다음에도 같이 놀 수 있어요!',
+            questionCard: '왜 그럴까?',
+            questionIcon: '🤔',
             date: '2024-01-13 10:15'
         },
         {
@@ -598,18 +832,24 @@
             title: '나의 약속 이야기',
             preview: '2분 15초',
             thumbnailText: '▶',
+            videoThumbnail: '../images/thumbnails/book_03.png',
+            videoScene: '친구와의 약속',
             date: '2024-01-13 11:00'
         },
         {
             id: 6, type: 'question', book: '숭숭이와 나', bookEmoji: '🐾',
             title: '숭숭이는 어떤 친구일까?',
             preview: '숭숭이는 나만 알아보는 특별한 친구예요. 항상 내 옆에 있어줘요.',
+            questionCard: '어떤 걸까?',
+            questionIcon: '🔍',
             date: '2024-01-12 09:30'
         },
         {
             id: 7, type: 'debate', book: '숭숭이와 나', bookEmoji: '🐾',
             title: '상상 친구가 있어도 될까?',
             preview: '상상 친구가 있으면 외롭지 않고, 마음이 편해져요. 하지만 진짜 친구도 중요해요!',
+            debateCard: '괜찮아요!',
+            debateIcon: '👍',
             date: '2024-01-11 14:45'
         },
         {
@@ -617,24 +857,32 @@
             title: '앤과 다이애나의 우정',
             preview: '3분 05초',
             thumbnailText: '▶',
+            videoThumbnail: '../images/thumbnails/book_02.png',
+            videoScene: '우정의 순간',
             date: '2024-01-10 16:00'
         },
         {
             id: 9, type: 'question', book: '빨간머리 앤', bookEmoji: '👧',
             title: '앤은 왜 상상을 좋아할까?',
             preview: '앤은 혼자 있을 때가 많았는데, 상상하면 외롭지 않았대요. 상상은 마음의 친구 같아요!',
+            questionCard: '왜일까?',
+            questionIcon: '❓',
             date: '2024-01-10 15:20'
         },
         {
             id: 10, type: 'debate', book: '빨간머리 앤', bookEmoji: '👧',
             title: '실수해도 괜찮을까?',
             preview: '앤은 실수를 많이 했지만, 그때마다 배우고 더 좋은 사람이 됐어요!',
+            debateCard: '다시 해볼게요!',
+            debateIcon: '💪',
             date: '2024-01-09 11:30'
         },
         {
             id: 11, type: 'question', book: '오즈의 마법사', bookEmoji: '🌪️',
             title: '양철 나무꾼의 소원은?',
             preview: '양철 나무꾼은 심장을 원했어요. 사랑을 느끼고 싶었대요!',
+            questionCard: '무엇일까?',
+            questionIcon: '💭',
             date: '2024-01-08 14:00'
         },
         {
@@ -642,6 +890,8 @@
             title: '친구와 지킨 약속',
             preview: '1분 48초',
             thumbnailText: '▶',
+            videoThumbnail: '../images/thumbnails/book_03.png',
+            videoScene: '약속의 장면',
             date: '2024-01-07 10:30'
         }
     ];
@@ -707,27 +957,49 @@
     function renderActivityCard(activity) {
         let previewHtml = '';
         if (activity.type === 'video') {
+            // 영상 리텔링: 영상 섬네일 이미지 표시
+            const videoThumb = activity.videoThumbnail || '../img/book1.jpg';
             previewHtml = `
-                <div class="activity-preview video-preview">
-                    <div class="video-thumb">${activity.thumbnailText}</div>
-                    <div>
-                        <div style="font-weight:600; color:#374151; margin-bottom:4px;">영상 리텔링</div>
-                        <div>재생 시간: ${activity.preview}</div>
+                <div class="activity-preview video-preview-enhanced">
+                    <div class="video-thumbnail-wrapper">
+                        <img src="${videoThumb}" alt="${activity.videoScene}" onerror="this.src='../img/book1.jpg'">
+                        <div class="video-play-overlay">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <div class="video-duration-badge">${activity.preview}</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-scene-label">📹 ${activity.videoScene || '영상 장면'}</div>
+                        <div class="video-desc">영상 리텔링 완료</div>
                     </div>
                 </div>
             `;
         } else if (activity.type === 'question') {
+            // 질문렌즈: 질문 카드 UI로 표시
             previewHtml = `
-                <div class="activity-preview with-icon">
-                    <div class="preview-icon question"><i class="fa-solid fa-magnifying-glass"></i></div>
-                    <div class="preview-text">"${activity.preview}"</div>
+                <div class="activity-preview question-preview-enhanced">
+                    <div class="question-card-mini">
+                        <div class="question-card-icon">${activity.questionIcon || '❓'}</div>
+                        <div class="question-card-text">${activity.questionCard || '질문'}</div>
+                    </div>
+                    <div class="question-answer">
+                        <div class="answer-label">내 대답:</div>
+                        <div class="answer-text">"${activity.preview}"</div>
+                    </div>
                 </div>
             `;
         } else if (activity.type === 'debate') {
+            // 독서토론: 토론 주제와 선택한 카드 표시
             previewHtml = `
-                <div class="activity-preview with-icon">
-                    <div class="preview-icon debate"><i class="fa-solid fa-comments"></i></div>
-                    <div class="preview-text">"${activity.preview}"</div>
+                <div class="activity-preview debate-preview-enhanced">
+                    <div class="debate-card-mini">
+                        <div class="debate-card-icon">${activity.debateIcon || '💭'}</div>
+                        <div class="debate-card-text">${activity.debateCard || '내 의견'}</div>
+                    </div>
+                    <div class="debate-opinion">
+                        <div class="opinion-label">내 생각:</div>
+                        <div class="opinion-text">"${activity.preview}"</div>
+                    </div>
                 </div>
             `;
         } else {
@@ -841,5 +1113,9 @@
         renderActivities();
     });
     </script>
+
+<!-- Proto Navigation (怨듯넻 Dev Tool) -->
+<link rel="stylesheet" href="../css/proto-nav.css">
+<script src="../js/proto-nav.js"></script>
 </body>
 </html>
