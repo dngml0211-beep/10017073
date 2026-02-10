@@ -1311,6 +1311,797 @@
             color: #c2410c;
         }
 
+        /* === KRS 레벨 리포트 전문 스타일 === */
+        .krs-report-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            color: white;
+        }
+
+        .krs-report-period {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .period-label {
+            font-size: 13px;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        .period-value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .krs-report-level {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .level-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .level-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .level-status.completed {
+            background: #22c55e;
+            color: white;
+        }
+
+        /* 핵심 성과 카드 */
+        .krs-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .krs-summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+
+        .krs-summary-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .summary-icon {
+            font-size: 48px;
+            flex-shrink: 0;
+        }
+
+        .summary-content {
+            flex: 1;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 36px;
+            font-weight: 900;
+            color: #1f2937;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .summary-total {
+            font-size: 20px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .summary-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            border-radius: 4px;
+            transition: width 0.6s ease;
+        }
+
+        .progress-fill.blue {
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 700;
+        }
+
+        .summary-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .meta-badge.score-high {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .meta-badge.score-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .meta-text {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* KRS 추천도서 */
+        .krs-recommended-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: #fbbf24;
+        }
+
+        .recommended-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+        }
+
+        .recommended-stats {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .stat-main {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            color: #fbbf24;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .stat-divider {
+            width: 2px;
+            height: 60px;
+            background: #e5e7eb;
+        }
+
+        .stat-sub {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-total {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .stat-percent {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1f2937;
+        }
+
+        .recommended-ranking {
+            text-align: center;
+        }
+
+        .ranking-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .ranking-badge.top {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+        }
+
+        .ranking-text {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .recommended-progress-ring {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 차트 섹션 */
+        .krs-chart-section {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .chart-container.small {
+            height: 250px;
+        }
+
+        /* 활동별 완료율 차트 가운데 정렬 */
+        .krs-chart-section:has(#activityCompletionChart) .chart-container {
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            margin-bottom: 16px;
+        }
+
+        .krs-chart-section:has(#activityCompletionChart) .chart-container canvas {
+            max-width: 100%;
+        }
+
+        /* 커스텀 범례 (2x2 그리드) */
+        .custom-chart-legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 20px;
+            margin-top: 0;
+            padding: 0 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-label {
+            color: #374151;
+            flex: 1;
+        }
+
+        .legend-value {
+            color: #6b7280;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .krs-chart-section:has(#activityCompletionChart) .chart-container {
+                height: 280px;
+            }
+
+            .custom-chart-legend {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 0 10px;
+            }
+
+            .legend-item {
+                font-size: 12px;
+            }
+        }
+
+        .krs-charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* 분석 섹션 */
+        .krs-analysis-section {
+            margin-bottom: 24px;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .analysis-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .analysis-card.strength {
+            border-left: 4px solid #22c55e;
+        }
+
+        .analysis-card.improvement {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .analysis-header i {
+            font-size: 20px;
+        }
+
+        .analysis-card.strength .analysis-header i {
+            color: #22c55e;
+        }
+
+        .analysis-card.improvement .analysis-header i {
+            color: #3b82f6;
+        }
+
+        .analysis-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .analysis-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .analysis-list li:last-child {
+            border-bottom: none;
+        }
+
+        .list-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        /* 성장 지표 */
+        .krs-growth-section {
+            margin-bottom: 24px;
+        }
+
+        .growth-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .growth-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+
+        .growth-card:hover {
+            transform: scale(1.05);
+        }
+
+        .growth-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .growth-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: #10b981;
+            margin-bottom: 8px;
+        }
+
+        .growth-label {
+            font-size: 14px;
+            color: #1f2937;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .growth-detail {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* 하이라이트 */
+        .krs-highlights-section {
+            margin-bottom: 24px;
+        }
+
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .highlight-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .highlight-badge {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .highlight-badge.gold {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+        }
+
+        .highlight-badge.blue {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .highlight-badge.green {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .highlight-content {
+            flex: 1;
+        }
+
+        .highlight-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .highlight-date {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .highlight-desc {
+            font-size: 13px;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        /* 점수 데이터 카드 */
+        .score-data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .score-data-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .score-data-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-color: #fbbf24;
+        }
+
+        .score-data-card.highlight {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fbbf24;
+        }
+
+        .score-data-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .score-data-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .score-data-label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .score-data-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1f2937;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .score-unit {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-left: 2px;
+        }
+
+        .score-data-change {
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .score-data-change.up {
+            color: #10b981;
+        }
+
+        .score-data-change.down {
+            color: #ef4444;
+        }
+
+        .score-data-change i {
+            font-size: 10px;
+        }
+
+        .score-data-subtitle {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .score-data-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .score-data-card {
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .score-data-icon {
+                font-size: 28px;
+            }
+
+            .score-data-value {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .score-data-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 인증서 */
+        .krs-certificate {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #fbbf24;
+        }
+
+        .certificate-decoration {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(251,191,36,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .certificate-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .certificate-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .certificate-title {
+            font-size: 28px;
+            font-weight: 900;
+            color: #78350f;
+            margin-bottom: 16px;
+        }
+
+        .certificate-text {
+            font-size: 16px;
+            color: #92400e;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .certificate-text strong {
+            color: #78350f;
+            font-weight: 800;
+        }
+
+        .certificate-progress {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+
+        .progress-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .progress-item span:first-child {
+            font-size: 13px;
+            color: #92400e;
+            font-weight: 600;
+        }
+
+        .progress-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #78350f;
+        }
+
+        .certificate-next {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        /* 모바일 반응형 */
+        @media (max-width: 768px) {
+            .krs-summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recommended-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .recommended-stats {
+                flex-direction: column;
+            }
+
+            .stat-divider {
+                width: 60px;
+                height: 2px;
+            }
+
+            .krs-charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .growth-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .highlights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* === 내 책장 탭 스타일 === */
         .bookshelf-tabs {
             display: flex;
@@ -2590,6 +3381,8 @@
             border: none;
         }
     </style>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800 h-screen overflow-hidden">
     <!-- 모바일 햄버거 버튼 -->
@@ -2996,307 +3789,364 @@
                         </div>
                     </div>
 
-                    <!-- ===== KRS 레벨 리포트 (듀오링고 스타일) ===== -->
+                    <!-- ===== KRS 레벨 리포트 (전문적 리포트) ===== -->
                     <div id="report-krs" class="report-content hidden">
-                        <!-- 히어로 섹션: 큰 숫자로 임팩트 -->
-                        <div style="background: linear-gradient(135deg, #1cb0f6 0%, #1899d6 50%, #0073b1 100%); border-radius: 20px; padding: 32px 24px; color: white; margin-bottom: 20px; position: relative; overflow: hidden;">
-                            <div style="position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
-                            <div style="position: absolute; bottom: -60px; left: -60px; width: 250px; height: 250px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
 
-                            <div style="position: relative; z-index: 1;">
-                                <!-- 상단 레벨 배지 -->
-                                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); padding: 8px 16px; border-radius: 20px; margin-bottom: 16px;">
-                                    <span style="font-size: 20px;">🏆</span>
-                                    <span style="font-size: 14px; font-weight: 700;">K1-2 레벨</span>
+                        <!-- 리포트 헤더 -->
+                        <div class="krs-report-header">
+                            <div class="krs-report-period">
+                                <span class="period-label">학습 기간</span>
+                                <span class="period-value">2025년 9월 ~ 2026년 2월 (6개월)</span>
+                            </div>
+                            <div class="krs-report-level">
+                                <div class="level-badge">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                    <span>K1-2 레벨 종합 리포트</span>
                                 </div>
-
-                                <!-- 메인 성과 -->
-                                <div style="margin-bottom: 20px;">
-                                    <div style="font-size: 48px; font-weight: 800; line-height: 1; margin-bottom: 12px;">
-                                        18<span style="font-size: 28px; font-weight: 600; opacity: 0.9;">/24</span>
-                                    </div>
-                                    <div style="font-size: 18px; font-weight: 600; opacity: 0.95;">권 완료! 정말 잘하고 있어요 🎉</div>
-                                </div>
-
-                                <!-- 프로그레스 바 -->
-                                <div style="background: rgba(255,255,255,0.25); border-radius: 16px; height: 16px; overflow: hidden; margin-bottom: 12px;">
-                                    <div style="width: 75%; height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); border-radius: 16px; transition: width 0.8s ease;"></div>
-                                </div>
-
-                                <!-- 하단 정보 -->
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <div style="font-size: 13px; opacity: 0.9;">🎯 다음 레벨까지 6권 남았어요</div>
-                                    <div style="font-size: 16px; font-weight: 700;">75%</div>
-                                </div>
+                                <div class="level-status completed">레벨 완료</div>
                             </div>
                         </div>
 
-                        <!-- 스트릭 & 주간 목표 -->
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
-                            <!-- 일일 스트릭 -->
-                            <div style="background: linear-gradient(135deg, #ff9500 0%, #ff6b00 100%); border-radius: 16px; padding: 20px; color: white; position: relative; overflow: hidden;">
-                                <div style="position: absolute; top: -20px; right: -20px; font-size: 100px; opacity: 0.15;">🔥</div>
-                                <div style="position: relative; z-index: 1;">
-                                    <div style="font-size: 40px; margin-bottom: 8px;">🔥</div>
-                                    <div style="font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 4px;">12</div>
-                                    <div style="font-size: 14px; font-weight: 600; opacity: 0.95;">일 연속 학습중</div>
-                                    <div style="font-size: 12px; opacity: 0.85; margin-top: 8px;">대단해요! 계속 불을 지펴요 🚀</div>
-                                </div>
-                            </div>
-
-                            <!-- 주간 목표 -->
-                            <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
-                                <div style="font-size: 32px; margin-bottom: 8px;">⭐</div>
-                                <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px; font-weight: 600;">이번 주 목표</div>
-                                <div style="font-size: 32px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 8px;">5<span style="font-size: 20px; font-weight: 600; color: #6b7280;">/7</span></div>
-                                <div style="background: #e5e7eb; border-radius: 8px; height: 8px; overflow: hidden;">
-                                    <div style="width: 71%; height: 100%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 8px;"></div>
-                                </div>
-                                <div style="font-size: 12px; color: #10b981; margin-top: 6px; font-weight: 600;">71% 달성</div>
-                            </div>
-                        </div>
-
-                        <!-- XP (경험치) & 리더보드 -->
-                        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; margin-bottom: 20px;">
-                            <!-- 총 XP -->
-                            <div style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); border-radius: 16px; padding: 24px; color: white; position: relative; overflow: hidden;">
-                                <div style="position: absolute; top: -30px; right: -30px; font-size: 140px; opacity: 0.1;">⚡</div>
-                                <div style="position: relative; z-index: 1;">
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                                        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.25); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">⚡</div>
-                                        <div>
-                                            <div style="font-size: 13px; opacity: 0.9; font-weight: 600;">총 획득 XP</div>
-                                            <div style="font-size: 36px; font-weight: 800; line-height: 1;">3,420</div>
+                        <!-- 핵심 성과 요약 -->
+                        <div class="krs-summary-grid">
+                            <div class="krs-summary-card primary">
+                                <div class="summary-icon">📚</div>
+                                <div class="summary-content">
+                                    <div class="summary-label">KRS 메인도서</div>
+                                    <div class="summary-value">22<span class="summary-total">/24</span></div>
+                                    <div class="summary-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 92%;"></div>
                                         </div>
+                                        <span class="progress-text">92% 완료</span>
                                     </div>
-                                    <div style="background: rgba(255,255,255,0.2); border-radius: 10px; padding: 12px; margin-top: 12px;">
-                                        <div style="font-size: 12px; opacity: 0.9; margin-bottom: 6px;">이번 달 획득</div>
-                                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                                            <div style="font-size: 20px; font-weight: 700;">+580 XP</div>
-                                            <div style="font-size: 12px; opacity: 0.85;">📈 +12% vs 지난달</div>
+                                </div>
+                            </div>
+
+                            <div class="krs-summary-card secondary">
+                                <div class="summary-icon">📖</div>
+                                <div class="summary-content">
+                                    <div class="summary-label">교과서 짝꿍책</div>
+                                    <div class="summary-value">20<span class="summary-total">/24</span></div>
+                                    <div class="summary-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill blue" style="width: 83%;"></div>
                                         </div>
+                                        <span class="progress-text">83% 완료</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- 리더보드 순위 -->
-                            <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
-                                <div style="text-align: center;">
-                                    <div style="font-size: 48px; margin-bottom: 8px;">🏅</div>
-                                    <div style="font-size: 13px; color: #6b7280; margin-bottom: 4px; font-weight: 600;">반 순위</div>
-                                    <div style="font-size: 40px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 4px;">3<span style="font-size: 24px; color: #6b7280; font-weight: 600;">위</span></div>
-                                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 12px;">전체 28명 중</div>
-                                    <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700;">
-                                        🎯 2위까지 50 XP!
+                            <div class="krs-summary-card success">
+                                <div class="summary-icon">✅</div>
+                                <div class="summary-content">
+                                    <div class="summary-label">독후 퀴즈</div>
+                                    <div class="summary-value">16<span class="summary-total">/18</span></div>
+                                    <div class="summary-meta">
+                                        <span class="meta-badge score-high">평균 87점</span>
+                                        <span class="meta-text">⭐ 우수</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="krs-summary-card accent">
+                                <div class="summary-icon">🎮</div>
+                                <div class="summary-content">
+                                    <div class="summary-label">AI 어휘 챌린지</div>
+                                    <div class="summary-value">12<span class="summary-total">/14</span></div>
+                                    <div class="summary-meta">
+                                        <span class="meta-badge score-medium">평균 82점</span>
+                                        <span class="meta-text">✨ 양호</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- 성취 배지 -->
-                        <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-                                <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin: 0;">🏆 성취 배지</h3>
-                                <div style="font-size: 13px; color: #6b7280; font-weight: 600;">12/20 획득</div>
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 12px;">
-                                <!-- 획득한 배지 -->
-                                <div style="text-align: center;">
-                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);">🔥</div>
-                                    <div style="font-size: 10px; color: #6b7280; font-weight: 600;">7일 연속</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);">📚</div>
-                                    <div style="font-size: 10px; color: #6b7280; font-weight: 600;">첫 10권</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">⭐</div>
-                                    <div style="font-size: 10px; color: #6b7280; font-weight: 600;">퀴즈왕</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);">🎯</div>
-                                    <div style="font-size: 10px; color: #6b7280; font-weight: 600;">완벽한 주</div>
-                                </div>
-                                <!-- 잠금된 배지 -->
-                                <div style="text-align: center; opacity: 0.4;">
-                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 2px dashed #d1d5db;">🔒</div>
-                                    <div style="font-size: 10px; color: #9ca3af; font-weight: 600;">???</div>
-                                </div>
-                                <div style="text-align: center; opacity: 0.4;">
-                                    <div style="width: 64px; height: 64px; margin: 0 auto 6px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 2px dashed #d1d5db;">🔒</div>
-                                    <div style="font-size: 10px; color: #9ca3af; font-weight: 600;">???</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 핵심 통계 (간단하게) -->
-                        <div style="margin-bottom: 20px;">
-                            <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 12px;">📊 핵심 통계</h3>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px;">
-                                <!-- 총 학습일 -->
-                                <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                    <div style="font-size: 32px; margin-bottom: 6px;">📅</div>
-                                    <div style="font-size: 28px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 4px;">142</div>
-                                    <div style="font-size: 12px; color: #6b7280; font-weight: 600;">총 학습일</div>
-                                </div>
-                                <!-- 평균 정답률 -->
-                                <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                    <div style="font-size: 32px; margin-bottom: 6px;">🎯</div>
-                                    <div style="font-size: 28px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 4px;">83%</div>
-                                    <div style="font-size: 12px; color: #6b7280; font-weight: 600;">평균 정답률</div>
-                                </div>
-                                <!-- 독서 속도 -->
-                                <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                    <div style="font-size: 32px; margin-bottom: 6px;">⚡</div>
-                                    <div style="font-size: 28px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 4px;">85</div>
-                                    <div style="font-size: 12px; color: #6b7280; font-weight: 600;">평균 WPM</div>
-                                </div>
-                                <!-- 완료한 퀴즈 -->
-                                <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                    <div style="font-size: 32px; margin-bottom: 6px;">✅</div>
-                                    <div style="font-size: 28px; font-weight: 800; color: #1f2937; line-height: 1; margin-bottom: 4px;">32</div>
-                                    <div style="font-size: 12px; color: #6b7280; font-weight: 600;">완료한 퀴즈</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 학습 활동 (간단한 카드) -->
-                        <div style="margin-bottom: 20px;">
-                            <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 12px;">📚 학습 활동</h3>
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                                <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 12px; padding: 16px;">
-                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                                        <div style="font-size: 12px; color: #92400e; font-weight: 600;">KRS 메인도서</div>
-                                        <div style="font-size: 20px;">📚</div>
-                                    </div>
-                                    <div style="font-size: 24px; font-weight: 800; color: #78350f; margin-bottom: 6px;">18<span style="font-size: 16px; color: #92400e;">/24</span></div>
-                                    <div style="background: rgba(255,255,255,0.4); border-radius: 6px; height: 6px; overflow: hidden;">
-                                        <div style="width: 75%; height: 100%; background: linear-gradient(90deg, #f59e0b, #d97706); border-radius: 6px;"></div>
-                                    </div>
-                                </div>
-                                <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); border-radius: 12px; padding: 16px;">
-                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                                        <div style="font-size: 12px; color: #1e40af; font-weight: 600;">교과서 짝꿍책</div>
-                                        <div style="font-size: 20px;">📖</div>
-                                    </div>
-                                    <div style="font-size: 24px; font-weight: 800; color: #1e3a8a; margin-bottom: 6px;">16<span style="font-size: 16px; color: #1e40af;">/24</span></div>
-                                    <div style="background: rgba(255,255,255,0.4); border-radius: 6px; height: 6px; overflow: hidden;">
-                                        <div style="width: 67%; height: 100%; background: linear-gradient(90deg, #3b82f6, #2563eb); border-radius: 6px;"></div>
-                                    </div>
-                                </div>
-                                <div style="background: linear-gradient(135deg, #fce7f3, #fbcfe8); border-radius: 12px; padding: 16px;">
-                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                                        <div style="font-size: 12px; color: #9f1239; font-weight: 600;">독후 퀴즈</div>
-                                        <div style="font-size: 20px;">✅</div>
-                                    </div>
-                                    <div style="font-size: 24px; font-weight: 800; color: #881337; margin-bottom: 6px;">평균 85<span style="font-size: 16px; color: #9f1239;">점</span></div>
-                                    <div style="font-size: 11px; color: #9f1239; font-weight: 600;">⭐ 정답률 우수!</div>
-                                </div>
-                                <div style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); border-radius: 12px; padding: 16px;">
-                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                                        <div style="font-size: 12px; color: #166534; font-weight: 600;">AI 어휘</div>
-                                        <div style="font-size: 20px;">🎮</div>
-                                    </div>
-                                    <div style="font-size: 24px; font-weight: 800; color: #14532d; margin-bottom: 6px;">11<span style="font-size: 16px; color: #166534;">/14</span></div>
-                                    <div style="background: rgba(255,255,255,0.4); border-radius: 6px; height: 6px; overflow: hidden;">
-                                        <div style="width: 79%; height: 100%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 6px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 월별 활동 (심플하게) -->
-                        <div style="margin-bottom: 20px;">
-                            <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 12px;">📅 월별 활동</h3>
-                            <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                                <div style="display: flex; align-items: end; gap: 8px; height: 120px;">
-                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
-                                        <div style="width: 100%; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 8px 8px 0 0; height: 40%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700;">5</div>
-                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px; font-weight: 600;">1월</div>
-                                    </div>
-                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
-                                        <div style="width: 100%; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 8px 8px 0 0; height: 55%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700;">7</div>
-                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px; font-weight: 600;">2월</div>
-                                    </div>
-                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
-                                        <div style="width: 100%; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 8px 8px 0 0; height: 48%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700;">6</div>
-                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px; font-weight: 600;">3월</div>
-                                    </div>
-                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
-                                        <div style="width: 100%; background: linear-gradient(180deg, #10b981, #059669); border-radius: 8px 8px 0 0; height: 65%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700;">8</div>
-                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px; font-weight: 600;">4월</div>
-                                    </div>
-                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
-                                        <div style="width: 100%; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 8px 8px 0 0; height: 48%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700;">6</div>
-                                        <div style="font-size: 11px; color: #9ca3af; margin-top: 6px; font-weight: 600;">5월</div>
-                                    </div>
-                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: end;">
-                                        <div style="width: 100%; background: linear-gradient(180deg, #1cb0f6, #0073b1); border-radius: 8px 8px 0 0; height: 16%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 700; border: 2px solid #0073b1;">2</div>
-                                        <div style="font-size: 11px; color: #1cb0f6; margin-top: 6px; font-weight: 700;">6월</div>
-                                    </div>
-                                </div>
-                                <div style="text-align: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #e5e7eb;">
-                                    <div style="font-size: 12px; color: #6b7280;">📊 평균 월 6권 독서 중!</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 격려 메시지 (듀오링고 스타일) -->
-                        <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 16px; padding: 24px; color: white; margin-bottom: 20px; position: relative; overflow: hidden;">
-                            <div style="position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-                            <div style="position: relative; z-index: 1;">
-                                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                                    <div style="width: 56px; height: 56px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">🎉</div>
-                                    <div>
-                                        <div style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">정말 잘하고 있어요!</div>
-                                        <div style="font-size: 14px; opacity: 0.95; font-weight: 600;">이번 주도 목표 달성에 가까워지고 있어요</div>
-                                    </div>
-                                </div>
-                                <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 12px; padding: 16px;">
-                                    <div style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">✨ 이번 주 하이라이트</div>
-                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 13px; opacity: 0.95;">
-                                        <div>• 연속 12일 학습 🔥</div>
-                                        <div>• 퀴즈 평균 85점 ⭐</div>
-                                        <div>• 독서 속도 +8 WPM 📈</div>
-                                        <div>• 3위 유지 중 🏆</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 다음 마일스톤 -->
-                        <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
-                            <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 20px;">🎯</span>
-                                다음 목표
+                        <!-- KRS 추천도서 섹션 -->
+                        <div class="krs-recommended-section">
+                            <h3 class="section-title">
+                                <i class="fa-solid fa-star"></i>
+                                KRS 추천도서 독서 현황
                             </h3>
-                            <div style="display: grid; gap: 12px;">
-                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f9fafb; border-radius: 10px;">
-                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">📚</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 2px;">메인도서 6권 더 읽기</div>
-                                        <div style="font-size: 11px; color: #6b7280;">레벨 완료까지</div>
+                            <div class="recommended-card">
+                                <div class="recommended-stats">
+                                    <div class="stat-main">
+                                        <span class="stat-number">48</span>
+                                        <span class="stat-label">권 완독</span>
                                     </div>
-                                    <div style="font-size: 18px; font-weight: 800; color: #f59e0b;">-6</div>
+                                    <div class="stat-divider"></div>
+                                    <div class="stat-sub">
+                                        <span class="stat-total">총 202권 중</span>
+                                        <span class="stat-percent">23.8%</span>
+                                    </div>
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f9fafb; border-radius: 10px;">
-                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff9500, #ff6b00); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">🔥</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 2px;">30일 스트릭 달성</div>
-                                        <div style="font-size: 11px; color: #6b7280;">다음 배지 획득</div>
+                                <div class="recommended-ranking">
+                                    <div class="ranking-badge top">
+                                        <i class="fa-solid fa-trophy"></i>
+                                        <span>상위 15%</span>
                                     </div>
-                                    <div style="font-size: 18px; font-weight: 800; color: #ff9500;">-18</div>
+                                    <div class="ranking-text">동일 레벨 친구들 중</div>
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #f9fafb; border-radius: 10px;">
-                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">🏆</div>
-                                    <div style="flex: 1;">
-                                        <div style="font-size: 13px; font-weight: 700; color: #1f2937; margin-bottom: 2px;">반에서 2위 달성</div>
-                                        <div style="font-size: 11px; color: #6b7280;">50 XP 더 필요</div>
-                                    </div>
-                                    <div style="font-size: 18px; font-weight: 800; color: #10b981;">-50</div>
+                                <div class="recommended-progress-ring">
+                                    <svg width="120" height="120">
+                                        <circle cx="60" cy="60" r="54" fill="none" stroke="#e5e7eb" stroke-width="8"></circle>
+                                        <circle cx="60" cy="60" r="54" fill="none" stroke="#fbbf24" stroke-width="8"
+                                                stroke-dasharray="339.292" stroke-dashoffset="258"
+                                                stroke-linecap="round" transform="rotate(-90 60 60)"></circle>
+                                        <text x="60" y="65" text-anchor="middle" font-size="24" font-weight="800" fill="#1f2937">24%</text>
+                                    </svg>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- 월별 독서량 그래프 -->
+                        <div class="krs-chart-section">
+                            <h3 class="section-title">
+                                <i class="fa-solid fa-chart-line"></i>
+                                월별 독서량 추이
+                            </h3>
+                            <div class="chart-container">
+                                <canvas id="monthlyReadingChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- 활동별 완료율 & 점수 추이 -->
+                        <div class="krs-charts-grid">
+                            <div class="krs-chart-section">
+                                <h3 class="section-title">
+                                    <i class="fa-solid fa-chart-pie"></i>
+                                    활동별 완료율
+                                </h3>
+                                <div class="chart-container small">
+                                    <canvas id="activityCompletionChart"></canvas>
+                                </div>
+                                <!-- 커스텀 범례 (2x2 그리드) -->
+                                <div class="custom-chart-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background-color: #3b82f6;"></span>
+                                        <span class="legend-label">KRS 메인도서</span>
+                                        <span class="legend-value">91.7%</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background-color: #10b981;"></span>
+                                        <span class="legend-label">교과서 짝꿍책</span>
+                                        <span class="legend-value">83.3%</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background-color: #f59e0b;"></span>
+                                        <span class="legend-label">독후 퀴즈</span>
+                                        <span class="legend-value">88.9%</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background-color: #8b5cf6;"></span>
+                                        <span class="legend-label">AI 어휘 챌린지</span>
+                                        <span class="legend-value">85.7%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="krs-chart-section">
+                                <h3 class="section-title">
+                                    <i class="fa-solid fa-chart-area"></i>
+                                    점수 추이 (퀴즈 & 어휘)
+                                </h3>
+                                <div class="chart-container small">
+                                    <canvas id="scoreTrendChart"></canvas>
+                                </div>
+                                <!-- 점수 상세 데이터 -->
+                                <div class="score-data-grid">
+                                    <div class="score-data-card">
+                                        <div class="score-data-icon">📝</div>
+                                        <div class="score-data-content">
+                                            <div class="score-data-label">독후 퀴즈 평균</div>
+                                            <div class="score-data-value">88.0<span class="score-unit">점</span></div>
+                                            <div class="score-data-change up">
+                                                <i class="fa-solid fa-arrow-up"></i> 지난 달 대비 +3점
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="score-data-card">
+                                        <div class="score-data-icon">💬</div>
+                                        <div class="score-data-content">
+                                            <div class="score-data-label">어휘 챌린지 평균</div>
+                                            <div class="score-data-value">83.7<span class="score-unit">점</span></div>
+                                            <div class="score-data-change up">
+                                                <i class="fa-solid fa-arrow-up"></i> 지난 달 대비 +5점
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="score-data-card highlight">
+                                        <div class="score-data-icon">🏆</div>
+                                        <div class="score-data-content">
+                                            <div class="score-data-label">최고 점수</div>
+                                            <div class="score-data-value">98<span class="score-unit">점</span></div>
+                                            <div class="score-data-subtitle">4월 3주차 독후 퀴즈</div>
+                                        </div>
+                                    </div>
+                                    <div class="score-data-card">
+                                        <div class="score-data-icon">📊</div>
+                                        <div class="score-data-content">
+                                            <div class="score-data-label">목표 달성률</div>
+                                            <div class="score-data-value">92<span class="score-unit">%</span></div>
+                                            <div class="score-data-subtitle">80점 이상 유지 목표</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 강점/약점 분석 -->
+                        <div class="krs-analysis-section">
+                            <h3 class="section-title">
+                                <i class="fa-solid fa-microscope"></i>
+                                학습 분석
+                            </h3>
+                            <div class="analysis-grid">
+                                <div class="analysis-card strength">
+                                    <div class="analysis-header">
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                        <span>강점 영역</span>
+                                    </div>
+                                    <ul class="analysis-list">
+                                        <li>
+                                            <span class="list-icon">📚</span>
+                                            <span>메인도서 읽기 성실도가 매우 높아요</span>
+                                        </li>
+                                        <li>
+                                            <span class="list-icon">🎯</span>
+                                            <span>독후 퀴즈 정답률이 우수해요</span>
+                                        </li>
+                                        <li>
+                                            <span class="list-icon">⭐</span>
+                                            <span>추천도서 읽기도 꾸준히 하고 있어요</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="analysis-card improvement">
+                                    <div class="analysis-header">
+                                        <i class="fa-solid fa-chart-line"></i>
+                                        <span>성장 기회</span>
+                                    </div>
+                                    <ul class="analysis-list">
+                                        <li>
+                                            <span class="list-icon">📖</span>
+                                            <span>짝꿍책 2권만 더 읽으면 완료예요!</span>
+                                        </li>
+                                        <li>
+                                            <span class="list-icon">🎮</span>
+                                            <span>AI 어휘 챌린지를 조금 더 집중해보세요</span>
+                                        </li>
+                                        <li>
+                                            <span class="list-icon">✅</span>
+                                            <span>독후 퀴즈 2개만 더 풀면 완료!</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 성장 지표 -->
+                        <div class="krs-growth-section">
+                            <h3 class="section-title">
+                                <i class="fa-solid fa-seedling"></i>
+                                6개월간 성장 지표
+                            </h3>
+                            <div class="growth-grid">
+                                <div class="growth-card">
+                                    <div class="growth-icon">📈</div>
+                                    <div class="growth-value">+28%</div>
+                                    <div class="growth-label">독서 속도 향상</div>
+                                    <div class="growth-detail">75 → 96 WPM</div>
+                                </div>
+                                <div class="growth-card">
+                                    <div class="growth-icon">🎯</div>
+                                    <div class="growth-value">+15%</div>
+                                    <div class="growth-label">퀴즈 정답률 상승</div>
+                                    <div class="growth-detail">72% → 87%</div>
+                                </div>
+                                <div class="growth-card">
+                                    <div class="growth-icon">📚</div>
+                                    <div class="growth-value">+42권</div>
+                                    <div class="growth-label">총 독서량 증가</div>
+                                    <div class="growth-detail">월 평균 7권</div>
+                                </div>
+                                <div class="growth-card">
+                                    <div class="growth-icon">⏱️</div>
+                                    <div class="growth-value">142일</div>
+                                    <div class="growth-label">총 학습일</div>
+                                    <div class="growth-detail">78% 출석률</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 우수 활동 하이라이트 -->
+                        <div class="krs-highlights-section">
+                            <h3 class="section-title">
+                                <i class="fa-solid fa-sparkles"></i>
+                                우수 활동 하이라이트
+                            </h3>
+                            <div class="highlights-grid">
+                                <div class="highlight-card">
+                                    <div class="highlight-badge gold">
+                                        <i class="fa-solid fa-trophy"></i>
+                                    </div>
+                                    <div class="highlight-content">
+                                        <div class="highlight-title">21일 연속 학습 달성</div>
+                                        <div class="highlight-date">2025년 12월</div>
+                                        <div class="highlight-desc">최장 연속 학습 기록을 세웠어요!</div>
+                                    </div>
+                                </div>
+                                <div class="highlight-card">
+                                    <div class="highlight-badge blue">
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <div class="highlight-content">
+                                        <div class="highlight-title">독후 퀴즈 만점 5회</div>
+                                        <div class="highlight-date">총 16개 퀴즈 중</div>
+                                        <div class="highlight-desc">완벽한 이해력을 보여주었어요!</div>
+                                    </div>
+                                </div>
+                                <div class="highlight-card">
+                                    <div class="highlight-badge green">
+                                        <i class="fa-solid fa-book-open"></i>
+                                    </div>
+                                    <div class="highlight-content">
+                                        <div class="highlight-title">한 달에 10권 독서</div>
+                                        <div class="highlight-date">2026년 1월</div>
+                                        <div class="highlight-desc">목표를 초과 달성했어요!</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 레벨 완료 인증서 스타일 -->
+                        <div class="krs-certificate">
+                            <div class="certificate-decoration"></div>
+                            <div class="certificate-content">
+                                <div class="certificate-icon">🎓</div>
+                                <h2 class="certificate-title">K1-2 레벨 수료 완료!</h2>
+                                <p class="certificate-text">
+                                    6개월간의 열정적인 학습으로<br/>
+                                    <strong>92%의 높은 완료율</strong>을 달성했습니다.
+                                </p>
+                                <div class="certificate-progress">
+                                    <div class="progress-item">
+                                        <span>필수 학습</span>
+                                        <span class="progress-value">38/42 완료</span>
+                                    </div>
+                                    <div class="progress-item">
+                                        <span>추천 학습</span>
+                                        <span class="progress-value">48권 완독</span>
+                                    </div>
+                                </div>
+                                <div class="certificate-next">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                    <span>다음 레벨: K2-1</span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -3791,6 +4641,9 @@
         }
 
         // === 리포트 탭 전환 ===
+        let krsChartsInitialized = false;
+        let monthlyReadingChart, activityCompletionChart, scoreTrendChart;
+
         function switchReportType(type) {
             // 버튼 활성화 상태 변경
             document.querySelectorAll('.report-toggle-btn').forEach(btn => {
@@ -3801,6 +4654,295 @@
                 content.classList.add('hidden');
             });
             document.getElementById('report-' + type).classList.remove('hidden');
+
+            // KRS 리포트 선택 시 차트 초기화
+            if (type === 'krs' && !krsChartsInitialized) {
+                setTimeout(() => {
+                    initKRSCharts();
+                    krsChartsInitialized = true;
+                }, 100);
+            }
+        }
+
+        // === KRS 레벨 리포트 차트 초기화 ===
+        function initKRSCharts() {
+            initMonthlyReadingChart();
+            initActivityCompletionChart();
+            initScoreTrendChart();
+        }
+
+        // 월별 독서량 추이 차트
+        function initMonthlyReadingChart() {
+            const ctx = document.getElementById('monthlyReadingChart');
+            if (!ctx) return;
+
+            // 기존 차트가 있으면 파괴
+            if (monthlyReadingChart) {
+                monthlyReadingChart.destroy();
+            }
+
+            monthlyReadingChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                    datasets: [
+                        {
+                            label: 'KRS 메인도서',
+                            data: [2, 3, 4, 5, 4, 4],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: '교과서 짝꿍책',
+                            data: [2, 3, 3, 4, 4, 4],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'KRS 추천도서',
+                            data: [5, 6, 8, 10, 12, 8],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 15,
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + '권';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 2,
+                                callback: function(value) {
+                                    return value + '권';
+                                },
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 활동 완료율 차트
+        function initActivityCompletionChart() {
+            const ctx = document.getElementById('activityCompletionChart');
+            if (!ctx) return;
+
+            // 기존 차트가 있으면 파괴
+            if (activityCompletionChart) {
+                activityCompletionChart.destroy();
+            }
+
+            activityCompletionChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['KRS 메인도서', '교과서 짝꿍책', '독후 퀴즈', 'AI 어휘 챌린지'],
+                    datasets: [{
+                        data: [91.7, 83.3, 88.9, 85.7], // 22/24, 20/24, 16/18, 12/14
+                        backgroundColor: [
+                            '#3b82f6',
+                            '#10b981',
+                            '#f59e0b',
+                            '#8b5cf6'
+                        ],
+                        borderWidth: 3,
+                        borderColor: '#ffffff',
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false  // 커스텀 범례 사용
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed.toFixed(1) + '%';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+
+        // 점수 추이 차트
+        function initScoreTrendChart() {
+            const ctx = document.getElementById('scoreTrendChart');
+            if (!ctx) return;
+
+            // 기존 차트가 있으면 파괴
+            if (scoreTrendChart) {
+                scoreTrendChart.destroy();
+            }
+
+            scoreTrendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                    datasets: [
+                        {
+                            label: '독후 퀴즈 평균 점수',
+                            data: [82, 85, 88, 90, 92, 91],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointBackgroundColor: '#f59e0b',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2
+                        },
+                        {
+                            label: 'AI 어휘 챌린지 평균 점수',
+                            data: [78, 80, 83, 86, 88, 87],
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointBackgroundColor: '#8b5cf6',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 15,
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + '점';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 70,
+                            max: 100,
+                            ticks: {
+                                stepSize: 5,
+                                callback: function(value) {
+                                    return value + '점';
+                                },
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         // === 내 책장 탭 전환 ===

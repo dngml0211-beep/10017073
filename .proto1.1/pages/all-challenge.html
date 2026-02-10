@@ -129,8 +129,8 @@
 
         /* === 오늘의 도전 영역 === */
         .today-challenge-section {
-            max-width: 700px;
-            margin: 0 auto;
+            width: 100%;
+            padding: 0 20px;
         }
 
         /* 섹션 타이틀 */
@@ -279,6 +279,1289 @@
         .challenge-btn-icon.star {
             background: linear-gradient(135deg, #fde047, #facc15);
             color: #92400e;
+        }
+
+        /* === KRS 승급 도전 (게임화된 스타일) === */
+        .krs-quest-section {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 2px solid #e5e7eb;
+        }
+
+        /* 퀘스트 헤더 */
+        .krs-quest-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 16px;
+            border: 2px solid #3b82f6;
+        }
+
+        .krs-level-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .krs-level-badge i {
+            font-size: 18px;
+        }
+
+        .krs-level-status {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ea580c;
+            padding: 6px 14px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        /* 진행 상황 카드 */
+        .krs-progress-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 2px solid #e5e7eb;
+        }
+
+        .krs-progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .krs-progress-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .krs-progress-score {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .krs-current-score {
+            font-size: 28px;
+            font-weight: 800;
+            color: #3b82f6;
+        }
+
+        .krs-score-divider {
+            font-size: 20px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .krs-target-score {
+            font-size: 18px;
+            font-weight: 700;
+            color: #6b7280;
+        }
+
+        /* 진행률 바 */
+        .krs-progress-bar-container {
+            margin-bottom: 12px;
+        }
+
+        .krs-progress-bar {
+            height: 24px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .krs-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 10px;
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+        }
+
+        .krs-progress-percent {
+            font-size: 14px;
+            font-weight: 700;
+            color: #3b82f6;
+            text-align: right;
+        }
+
+        .krs-remaining-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #fef3c7;
+            border-radius: 12px;
+            border: 2px solid #fbbf24;
+            font-size: 14px;
+            color: #92400e;
+            margin-top: 12px;
+        }
+
+        .krs-remaining-info i {
+            color: #f59e0b;
+        }
+
+        .krs-remaining-info strong {
+            font-weight: 800;
+            color: #ea580c;
+        }
+
+        /* 점수 획득 기준 */
+        .krs-points-guide {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 2px solid #e5e7eb;
+        }
+
+        .krs-guide-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+
+        .krs-points-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .krs-points-card {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .krs-points-card.week1 {
+            border-color: #93c5fd;
+            background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+        }
+
+        .krs-points-card.week2 {
+            border-color: #a5b4fc;
+            background: linear-gradient(135deg, #e0e7ff 0%, #eef2ff 100%);
+        }
+
+        .krs-points-week {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .krs-points-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .krs-points-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .krs-points-label {
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .krs-points-value {
+            font-size: 14px;
+            font-weight: 800;
+            color: #3b82f6;
+        }
+
+        .krs-points-total {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1f2937;
+            padding-top: 8px;
+            border-top: 2px solid rgba(0,0,0,0.1);
+            text-align: right;
+        }
+
+        .krs-cycle-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #4b5563;
+        }
+
+        .krs-cycle-info i {
+            color: #6b7280;
+        }
+
+        .krs-cycle-info strong {
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        /* 보상 카드 */
+        .krs-reward-card {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(251,191,36,0.2);
+            border: 2px solid #fbbf24;
+        }
+
+        .krs-reward-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .krs-reward-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .krs-reward-badge {
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .krs-reward-badge.bronze {
+            background: linear-gradient(135deg, #cd7f32, #d4a574);
+            color: white;
+            box-shadow: 0 2px 8px rgba(205,127,50,0.3);
+        }
+
+        .krs-reward-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .krs-reward-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #fbbf24;
+        }
+
+        .krs-reward-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .krs-reward-text {
+            flex: 1;
+        }
+
+        .krs-reward-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 2px;
+        }
+
+        .krs-reward-desc {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .krs-quest-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #fbbf24;
+        }
+
+        .krs-quest-title-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .krs-quest-badge-icon {
+            font-size: 48px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .krs-quest-title-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .krs-quest-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .krs-quest-subtitle {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .krs-quest-level-tag {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            color: white;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+        }
+
+        /* 진행률 카드 */
+        .krs-quest-progress-card {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #3b82f6;
+        }
+
+        .krs-quest-progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .krs-quest-progress-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .krs-quest-progress-score {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1e40af;
+        }
+
+        .krs-quest-progress-bar {
+            height: 32px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 2px solid #3b82f6;
+            position: relative;
+        }
+
+        .krs-quest-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            transition: width 0.6s ease;
+            box-shadow: 0 0 20px rgba(251,191,36,0.5);
+        }
+
+        .krs-quest-progress-percent {
+            font-size: 14px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .krs-quest-progress-remaining {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .krs-quest-progress-remaining i {
+            color: #f59e0b;
+            font-size: 16px;
+        }
+
+        .krs-quest-progress-remaining strong {
+            font-weight: 800;
+            color: #ea580c;
+        }
+
+        /* 활동 미션 */
+        .krs-quest-missions {
+            margin-bottom: 20px;
+        }
+
+        .krs-quest-missions-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .krs-quest-mission-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .krs-quest-mission-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .krs-quest-mission-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-color: #fbbf24;
+        }
+
+        .krs-quest-mission-card.highlight {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fbbf24;
+            box-shadow: 0 0 20px rgba(251,191,36,0.3);
+        }
+
+        .krs-quest-mission-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .krs-quest-mission-content {
+            flex: 1;
+        }
+
+        .krs-quest-mission-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .krs-quest-mission-xp {
+            font-size: 16px;
+            font-weight: 800;
+            color: #f59e0b;
+        }
+
+        .krs-quest-mission-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .krs-quest-cycle-note {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #4b5563;
+        }
+
+        .krs-quest-cycle-note i {
+            color: #3b82f6;
+        }
+
+        /* 보상 미리보기 */
+        .krs-quest-reward-preview {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 3px solid #fbbf24;
+            box-shadow: 0 0 30px rgba(251,191,36,0.3);
+        }
+
+        .krs-quest-reward-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #92400e;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .krs-quest-reward-title i {
+            color: #f59e0b;
+            font-size: 18px;
+        }
+
+        .krs-quest-reward-items {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .krs-quest-reward-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 24px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #fbbf24;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .krs-quest-reward-icon {
+            font-size: 40px;
+        }
+
+        .krs-quest-reward-divider {
+            font-size: 24px;
+            font-weight: 800;
+            color: #92400e;
+        }
+
+        .krs-quest-reward-message {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #92400e;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 12px;
+        }
+
+        /* 통합 헤더 (배지 + 보상) */
+        .krs-quest-header-unified {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 3px solid #fbbf24;
+            box-shadow: 0 4px 20px rgba(251,191,36,0.3);
+        }
+
+        .krs-quest-header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(251,191,36,0.3);
+        }
+
+        .krs-quest-reward-inline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .krs-quest-reward-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #92400e;
+        }
+
+        .krs-quest-reward-badges {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .krs-reward-badge {
+            padding: 8px 16px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #fbbf24;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            white-space: nowrap;
+        }
+
+        .krs-reward-divider {
+            font-size: 18px;
+            font-weight: 800;
+            color: #92400e;
+        }
+
+        /* KRS 미션 챌린지 아이템 */
+        .challenge-item.krs-mission {
+            background: linear-gradient(135deg, #fffbeb 0%, #fefce8 100%);
+            border-color: #fbbf24;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-item.krs-mission:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251,191,36,0.3);
+            border-color: #f59e0b;
+        }
+
+        /* XP 버튼 */
+        .challenge-btn.xp-btn {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(251,191,36,0.4);
+            border: none;
+        }
+
+        .challenge-btn.xp-btn:hover {
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(251,191,36,0.5);
+        }
+
+        .challenge-btn.xp-btn .challenge-btn-icon.star {
+            font-size: 16px;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+        }
+
+        /* 보라색 아이콘 */
+        .challenge-icon.purple {
+            background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+        }
+
+        /* 퀘스트 푸터 */
+        .krs-quest-footer {
+            margin-top: 20px;
+            padding: 16px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 12px;
+            border: 2px solid #3b82f6;
+            text-align: center;
+        }
+
+        .krs-quest-footer-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+
+        .krs-quest-footer-highlight {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ea580c;
+        }
+
+        /* === A 영역: 6개월 장기 목표 (듀오링고 보라색 보상 스타일) === */
+        .krs-long-term-section {
+            margin-bottom: 32px;
+        }
+
+        .krs-goal-card {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border-radius: 20px;
+            padding: 32px;
+            border: 3px solid #a855f7;
+            box-shadow: 0 4px 16px rgba(168, 85, 247, 0.2);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .krs-goal-card:hover {
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .krs-goal-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .krs-goal-badge-large {
+            font-size: 80px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 4px 12px rgba(168, 85, 247, 0.4));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .krs-goal-info {
+            flex: 1;
+        }
+
+        .krs-goal-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #6b21a8;
+            margin: 0 0 8px 0;
+        }
+
+        .krs-goal-subtitle {
+            font-size: 16px;
+            font-weight: 600;
+            color: #9333ea;
+            margin: 0;
+        }
+
+        .krs-goal-level-tag {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #a855f7, #c084fc);
+            color: white;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        .krs-goal-progress {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 2px solid #e9d5ff;
+            box-shadow: 0 2px 8px rgba(168, 85, 247, 0.08);
+        }
+
+        .krs-goal-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .krs-goal-progress-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #7c3aed;
+        }
+
+        .krs-goal-progress-xp {
+            font-size: 20px;
+            font-weight: 800;
+            color: #6b21a8;
+        }
+
+        .krs-goal-progress-bar {
+            height: 20px;
+            background: #f3e8ff;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 14px;
+            border: 2px solid #e9d5ff;
+        }
+
+        .krs-goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a855f7, #c084fc);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 14px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+        }
+
+        .krs-goal-progress-percent {
+            font-size: 13px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .krs-goal-progress-remaining {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #7c3aed;
+        }
+
+        .krs-goal-progress-remaining i {
+            color: #a855f7;
+            font-size: 18px;
+        }
+
+        .krs-goal-progress-remaining strong {
+            font-weight: 800;
+            color: #6b21a8;
+        }
+
+        .krs-goal-reward {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            border: 2px solid #fbbf24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 16px rgba(251, 191, 36, 0.2);
+        }
+
+        .krs-goal-reward-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #92400e;
+        }
+
+        .krs-goal-reward-items {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .krs-goal-reward-item {
+            padding: 8px 16px;
+            background: white;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #1f2937;
+            border: 2px solid #fbbf24;
+            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15);
+        }
+
+        .krs-goal-reward-divider {
+            font-size: 18px;
+            font-weight: 800;
+            color: #f59e0b;
+        }
+
+        .krs-goal-period {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #7c3aed;
+            border: 2px dashed #c084fc;
+        }
+
+        .krs-goal-period i {
+            font-size: 16px;
+            color: #a855f7;
+        }
+
+        /* === B 영역: 주간 미션 === */
+        .krs-weekly-section {
+            margin-bottom: 32px;
+        }
+
+        .krs-mission-list {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+
+        .krs-mission-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            background: #fafafa;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .krs-mission-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .krs-mission-item:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+
+        .krs-mission-checkbox {
+            flex-shrink: 0;
+            font-size: 24px;
+            color: #9ca3af;
+            transition: all 0.3s ease;
+        }
+
+        .krs-mission-item:hover .krs-mission-checkbox {
+            color: #6b7280;
+            transform: scale(1.1);
+        }
+
+        .krs-mission-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .krs-mission-icon.blue {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border: 2px solid #3b82f6;
+        }
+
+        .krs-mission-icon.green {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 2px solid #10b981;
+        }
+
+        .krs-mission-icon.yellow {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #fbbf24;
+        }
+
+        .krs-mission-icon.purple {
+            background: linear-gradient(135deg, #e9d5ff, #d8b4fe);
+            border: 2px solid #a855f7;
+        }
+
+        .krs-mission-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .krs-mission-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .krs-mission-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .krs-mission-xp {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 12px;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 4px 12px rgba(251,191,36,0.3);
+            flex-shrink: 0;
+        }
+
+        .krs-mission-xp-icon {
+            font-size: 16px;
+            animation: sparkle 2s infinite;
+        }
+
+        .krs-mission-xp-value {
+            font-size: 15px;
+        }
+
+        .krs-weekly-note {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-radius: 12px;
+            border: 2px solid #3b82f6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .krs-weekly-note i {
+            font-size: 16px;
+            color: #3b82f6;
+        }
+
+        /* 모바일 반응형 */
+        @media (max-width: 768px) {
+            .krs-quest-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .krs-quest-header-unified {
+                padding: 16px;
+            }
+
+            .krs-quest-header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .krs-quest-badge-icon {
+                font-size: 36px;
+            }
+
+            .krs-quest-title {
+                font-size: 18px;
+            }
+
+            .krs-quest-title-text h3 {
+                font-size: 18px;
+            }
+
+            .krs-quest-title-text p {
+                font-size: 13px;
+            }
+
+            .krs-quest-level-tag {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+
+            .krs-quest-reward-inline {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .krs-quest-reward-badges {
+                flex-wrap: wrap;
+            }
+
+            .krs-reward-badge {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+
+            .krs-quest-mission-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .krs-quest-reward-items {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .krs-quest-reward-divider {
+                transform: rotate(90deg);
+            }
+
+            /* A 영역 모바일 */
+            .today-challenge-section {
+                padding: 0 16px;
+            }
+
+            .krs-goal-card {
+                padding: 24px;
+            }
+
+            .krs-goal-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 16px;
+            }
+
+            .krs-goal-badge-large {
+                font-size: 64px;
+            }
+
+            .krs-goal-title {
+                font-size: 18px;
+            }
+
+            .krs-goal-subtitle {
+                font-size: 14px;
+            }
+
+            .krs-goal-level-tag {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+
+            .krs-goal-progress {
+                padding: 16px;
+            }
+
+            .krs-goal-progress-label {
+                font-size: 14px;
+            }
+
+            .krs-goal-progress-xp {
+                font-size: 16px;
+            }
+
+            .krs-goal-progress-bar {
+                height: 14px;
+            }
+
+            .krs-goal-progress-percent {
+                font-size: 11px;
+            }
+
+            .krs-goal-progress-remaining {
+                font-size: 13px;
+            }
+
+            .krs-goal-reward {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 14px 16px;
+            }
+
+            .krs-goal-reward-label {
+                font-size: 13px;
+            }
+
+            .krs-goal-reward-items {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .krs-goal-reward-item {
+                font-size: 13px;
+                padding: 5px 12px;
+            }
+
+            .krs-goal-period {
+                font-size: 12px;
+                padding: 10px 14px;
+            }
+
+            /* B 영역 모바일 */
+            .krs-mission-list {
+                padding: 12px;
+            }
+
+            .krs-mission-item {
+                flex-wrap: wrap;
+                gap: 12px;
+                padding: 14px;
+            }
+
+            .krs-mission-checkbox {
+                font-size: 20px;
+            }
+
+            .krs-mission-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .krs-mission-info {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .krs-mission-label {
+                font-size: 11px;
+            }
+
+            .krs-mission-text {
+                font-size: 14px;
+            }
+
+            .krs-mission-xp {
+                padding: 8px 12px;
+            }
+
+            .krs-mission-xp-icon {
+                font-size: 14px;
+            }
+
+            .krs-mission-xp-value {
+                font-size: 13px;
+            }
+
+            .krs-weekly-note {
+                font-size: 13px;
+                padding: 12px 16px;
+            }
         }
 
         /* === 팀 도전 스타일 === */
@@ -1159,75 +2442,149 @@
                 <!-- 오늘의 도전 -->
                 <div id="ctab-today" class="challenge-content">
                     <div class="today-challenge-section">
-                        <!-- 섹션 타이틀 -->
-                        <div class="section-title-bar">
-                            <div class="section-title-main">
-                                <span class="section-title-icon">🔥</span>
-                                <span class="section-title-text">오늘의 도전</span>
-                            </div>
-                            <span class="section-title-count">4/7 완료</span>
-                        </div>
-
                         <!-- 도전 리스트 -->
                         <div class="challenge-list">
-                            <!-- 완료된 도전 -->
-                            <div class="challenge-item completed">
-                                <div class="challenge-icon blue">
-                                    📘
+                        </div>
+
+                        <!-- B 영역: 주간 미션 -->
+                        <div class="krs-weekly-section" style="margin-top: 32px;">
+                            <!-- 섹션 타이틀 -->
+                            <div class="section-title-bar" style="margin-bottom: 16px;">
+                                <div class="section-title-main">
+                                    <span class="section-title-icon">⚡</span>
+                                    <span class="section-title-text">이번 주 미션</span>
                                 </div>
-                                <div class="challenge-info">
-                                    <div class="challenge-label">[KRS 도서]</div>
-                                    <div class="challenge-text">코어북 읽기 완료!</div>
-                                </div>
-                                <button class="challenge-btn done">
-                                    <span class="challenge-btn-icon star">⭐</span>
-                                    완료
-                                </button>
+                                <span class="section-title-count">0/4 완료</span>
                             </div>
 
-                            <!-- 진행중 도전 1 -->
-                            <div class="challenge-item">
-                                <div class="challenge-icon yellow">
-                                    📙
+                            <!-- 미션 리스트 -->
+                            <div class="krs-mission-list">
+                                <!-- 미션 1: 코어북 -->
+                                <div class="krs-mission-item">
+                                    <div class="krs-mission-checkbox">
+                                        <i class="fa-regular fa-square"></i>
+                                    </div>
+                                    <div class="krs-mission-icon blue">📘</div>
+                                    <div class="krs-mission-info">
+                                        <div class="krs-mission-label">[KRS 메인]</div>
+                                        <div class="krs-mission-text">코어북 읽기 + 활동</div>
+                                    </div>
+                                    <div class="krs-mission-xp">
+                                        <span class="krs-mission-xp-icon">⚡</span>
+                                        <span class="krs-mission-xp-value">+20 XP</span>
+                                    </div>
                                 </div>
-                                <div class="challenge-info">
-                                    <div class="challenge-label">[KRS 도서]</div>
-                                    <div class="challenge-text">교과서 짝꿍책 읽기 완료!</div>
+
+                                <!-- 미션 2: 퀴즈 -->
+                                <div class="krs-mission-item">
+                                    <div class="krs-mission-checkbox">
+                                        <i class="fa-regular fa-square"></i>
+                                    </div>
+                                    <div class="krs-mission-icon green">📝</div>
+                                    <div class="krs-mission-info">
+                                        <div class="krs-mission-label">[KRS 퀴즈]</div>
+                                        <div class="krs-mission-text">독서 퀴즈 완료</div>
+                                    </div>
+                                    <div class="krs-mission-xp">
+                                        <span class="krs-mission-xp-icon">⚡</span>
+                                        <span class="krs-mission-xp-value">+10 XP</span>
+                                    </div>
                                 </div>
-                                <button class="challenge-btn orange" onclick="location.href='home.html'">
-                                    <span class="challenge-btn-icon">❓</span>
-                                    도전
-                                </button>
+
+                                <!-- 미션 3: 관리이북 -->
+                                <div class="krs-mission-item">
+                                    <div class="krs-mission-checkbox">
+                                        <i class="fa-regular fa-square"></i>
+                                    </div>
+                                    <div class="krs-mission-icon yellow">📙</div>
+                                    <div class="krs-mission-info">
+                                        <div class="krs-mission-label">[KRS 짝꿍책]</div>
+                                        <div class="krs-mission-text">관리이북 읽기</div>
+                                    </div>
+                                    <div class="krs-mission-xp">
+                                        <span class="krs-mission-xp-icon">⚡</span>
+                                        <span class="krs-mission-xp-value">+10 XP</span>
+                                    </div>
+                                </div>
+
+                                <!-- 미션 4: 리텔링 -->
+                                <div class="krs-mission-item">
+                                    <div class="krs-mission-checkbox">
+                                        <i class="fa-regular fa-square"></i>
+                                    </div>
+                                    <div class="krs-mission-icon purple">🎤</div>
+                                    <div class="krs-mission-info">
+                                        <div class="krs-mission-label">[KRS 리텔링]</div>
+                                        <div class="krs-mission-text">리텔링 활동 완료</div>
+                                    </div>
+                                    <div class="krs-mission-xp">
+                                        <span class="krs-mission-xp-icon">⚡</span>
+                                        <span class="krs-mission-xp-value">+10 XP</span>
+                                    </div>
+                                </div>
                             </div>
 
-                            <!-- 진행중 도전 2 -->
-                            <div class="challenge-item">
-                                <div class="challenge-icon green">
-                                    ✏️
+                            <!-- 주간 안내 -->
+                            <div class="krs-weekly-note">
+                                <i class="fa-solid fa-rotate"></i>
+                                <span>매주 반복되는 미션이에요. 완료하면 장기 목표의 XP를 획득해요!</span>
+                            </div>
+                        </div>
+
+                        <!-- A 영역: 6개월 장기 목표 -->
+                        <div class="krs-long-term-section" style="margin-top: 32px;">
+                            <!-- 섹션 타이틀 -->
+                            <div class="section-title-bar" style="margin-bottom: 16px;">
+                                <div class="section-title-main">
+                                    <span class="section-title-icon">🏆</span>
+                                    <span class="section-title-text">6개월 도전 목표</span>
                                 </div>
-                                <div class="challenge-info">
-                                    <div class="challenge-label">[북클럽]</div>
-                                    <div class="challenge-text">책 읽고 감상문 쓰기</div>
-                                </div>
-                                <button class="challenge-btn orange" onclick="location.href='home.html'">
-                                    <span class="challenge-btn-icon star">2</span>
-                                    도전
-                                </button>
                             </div>
 
-                            <!-- 진행중 도전 3 -->
-                            <div class="challenge-item">
-                                <div class="challenge-icon yellow">
-                                    ⭐
+                            <!-- 목표 카드 -->
+                            <div class="krs-goal-card">
+                                <!-- 헤더: 배지 + 제목 + 레벨 -->
+                                <div class="krs-goal-header">
+                                    <div class="krs-goal-badge-large">🥉</div>
+                                    <div class="krs-goal-info">
+                                        <h3 class="krs-goal-title">브론즈 뱃지 도전!</h3>
+                                        <p class="krs-goal-subtitle">K2-1 레벨 승급을 향해 🚀</p>
+                                    </div>
+                                    <div class="krs-goal-level-tag">Lv. K2-1</div>
                                 </div>
-                                <div class="challenge-info">
-                                    <div class="challenge-label">[북클럽]</div>
-                                    <div class="challenge-text">AI 추천도서 읽기 완료!</div>
+
+                                <!-- 진행률 -->
+                                <div class="krs-goal-progress">
+                                    <div class="krs-goal-progress-header">
+                                        <span class="krs-goal-progress-label">승급 진행률</span>
+                                        <span class="krs-goal-progress-xp">420 / 600 XP</span>
+                                    </div>
+                                    <div class="krs-goal-progress-bar">
+                                        <div class="krs-goal-progress-fill" style="width: 70%;">
+                                            <span class="krs-goal-progress-percent">70%</span>
+                                        </div>
+                                    </div>
+                                    <div class="krs-goal-progress-remaining">
+                                        <i class="fa-solid fa-bolt"></i>
+                                        <span>승급까지 <strong>180 XP</strong> 남았어요!</span>
+                                    </div>
                                 </div>
-                                <button class="challenge-btn orange" onclick="location.href='book-library.html'">
-                                    <span class="challenge-btn-icon star">2</span>
-                                    도전
-                                </button>
+
+                                <!-- 보상 -->
+                                <div class="krs-goal-reward">
+                                    <span class="krs-goal-reward-label">🎁 승급 보상</span>
+                                    <div class="krs-goal-reward-items">
+                                        <span class="krs-goal-reward-item">🏆 K2-2 레벨</span>
+                                        <span class="krs-goal-reward-divider">+</span>
+                                        <span class="krs-goal-reward-item">🥉 브론즈 뱃지</span>
+                                    </div>
+                                </div>
+
+                                <!-- 기간 안내 -->
+                                <div class="krs-goal-period">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                    <span>6개월(24주) 동안 꾸준히 활동하면 달성!</span>
+                                </div>
                             </div>
                         </div>
 

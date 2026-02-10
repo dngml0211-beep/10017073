@@ -76,7 +76,7 @@
             font-weight: 800;
         }
 
-        /* === Main Category Tabs (유아/초등/중등) - Polished Segmented Control === */
+        /* === Main Category Tabs (영아/유아/초저/초고/중등이상) - Polished Segmented Control === */
         .main-category-tabs {
             display: flex;
             gap: 0;
@@ -537,16 +537,22 @@
                         </h1>
                     </div>
 
-                    <!-- Main Category Tabs (유아/초등/중등) -->
+                    <!-- Main Category Tabs (영아/유아/초저/초고/중등이상) -->
                     <div class="main-category-tabs">
                         <button class="main-category-tab" data-category="infant" onclick="switchMainCategory('infant')">
-                            👶 유아
+                            👶 영아
                         </button>
-                        <button class="main-category-tab active" data-category="elementary" onclick="switchMainCategory('elementary')">
-                            🎓 초등
+                        <button class="main-category-tab" data-category="toddler" onclick="switchMainCategory('toddler')">
+                            🧒 유아
                         </button>
-                        <button class="main-category-tab" data-category="middle" onclick="switchMainCategory('middle')">
-                            📚 중등
+                        <button class="main-category-tab active" data-category="lower-elementary" onclick="switchMainCategory('lower-elementary')">
+                            📖 초저
+                        </button>
+                        <button class="main-category-tab" data-category="upper-elementary" onclick="switchMainCategory('upper-elementary')">
+                            📚 초고
+                        </button>
+                        <button class="main-category-tab" data-category="middle-up" onclick="switchMainCategory('middle-up')">
+                            🎓 중등이상
                         </button>
                     </div>
 
@@ -653,17 +659,27 @@
     const booksData = {
         infant: {
             categories: ['전체', '언어', '수/과학', '사회/정서', '예술', '신체/건강'],
-            books: generateBooks(1, '언어', 350, 'PreK', ['전체', '언어', '수/과학', '사회/정서', '예술', '신체/건강']),
-            totalCount: 1024
+            books: generateBooks(1, '언어', 200, 'PreK', ['전체', '언어', '수/과학', '사회/정서', '예술', '신체/건강']),
+            totalCount: 512
         },
-        elementary: {
+        toddler: {
+            categories: ['전체', '언어', '수/과학', '사회/정서', '예술', '신체/건강'],
+            books: generateBooks(501, '언어', 250, 'PreK', ['전체', '언어', '수/과학', '사회/정서', '예술', '신체/건강']),
+            totalCount: 856
+        },
+        'lower-elementary': {
             categories: ['전체', '언어', '사회', '과학', '수학', '예술', '체육', '도덕', '실과'],
-            books: generateBooks(1001, '언어', 500, 'K', ['전체', '언어', '사회', '과학', '수학', '예술', '체육', '도덕', '실과']),
-            totalCount: 5248
+            books: generateBooks(1001, '언어', 300, 'K', ['전체', '언어', '사회', '과학', '수학', '예술', '체육', '도덕', '실과']),
+            totalCount: 2864
         },
-        middle: {
+        'upper-elementary': {
+            categories: ['전체', '언어', '사회', '과학', '수학', '예술', '체육', '도덕', '실과'],
+            books: generateBooks(2001, '언어', 300, 'K', ['전체', '언어', '사회', '과학', '수학', '예술', '체육', '도덕', '실과']),
+            totalCount: 3128
+        },
+        'middle-up': {
             categories: ['전체', '언어', '사회', '과학', '수학', '예술', '체육', '도덕', '기술/가정'],
-            books: generateBooks(2001, '언어', 400, 'K', ['전체', '언어', '사회', '과학', '수학', '예술', '체육', '도덕', '기술/가정']),
+            books: generateBooks(3001, '언어', 400, 'K', ['전체', '언어', '사회', '과학', '수학', '예술', '체육', '도덕', '기술/가정']),
             totalCount: 2156
         }
     };
@@ -671,7 +687,7 @@
     // ============================================================
     //  상태 관리
     // ============================================================
-    let currentMainCategory = 'elementary';
+    let currentMainCategory = 'lower-elementary';
     let currentSubTab = 'category';
     let currentCategory = '전체';
     let favorites = new Set();
@@ -701,7 +717,7 @@
     }
 
     // ============================================================
-    //  메인 카테고리 전환 (유아/초등/중등)
+    //  메인 카테고리 전환 (영아/유아/초저/초고/중등이상)
     // ============================================================
     function switchMainCategory(category) {
         currentMainCategory = category;
