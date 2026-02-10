@@ -1049,7 +1049,6 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
       const t = setTimeout(() => {
         setBuddyVisible(true);
         setStartPage(page);
-        setShowGoalPicker(true);
       }, 800);
       return () => clearTimeout(t);
     }
