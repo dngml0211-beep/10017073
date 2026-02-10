@@ -1814,6 +1814,348 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
   );
 }
 
+const REVIEW_TYPES = [
+  {id:'feeling',   icon:'💭', label:'내 마음',  color:'from-pink-400 to-rose-400',   bg:'bg-pink-50'},
+  {id:'character', icon:'🎭', label:'주인공',   color:'from-purple-400 to-indigo-400',bg:'bg-purple-50'},
+  {id:'question',  icon:'❓', label:'궁금해',   color:'from-amber-400 to-orange-400', bg:'bg-amber-50'},
+  {id:'doodle',    icon:'🎨', label:'자유 그림',color:'from-emerald-400 to-teal-400', bg:'bg-emerald-50'},
+];
+const REVIEW_STICKERS = ['⭐','❤️','🌈','🌸','✨','🎀','🦋','🍀','🎵','🌻','💎','🎪'];
+const REVIEW_DRAW_COLORS = ['#EF4444','#F97316','#FACC15','#22C55E','#3B82F6','#8B5CF6','#EC4899','#000000','#FFFFFF'];
+
+const REPORTS_KEY = 'bookclub3_reports';
+function loadReports() {
+  try { return JSON.parse(localStorage.getItem(REPORTS_KEY) || '[]'); } catch(e) { return []; }
+}
+function persistReports(arr) { localStorage.setItem(REPORTS_KEY, JSON.stringify(arr)); }
+function upsertReport(report) {
+  const arr = loadReports();
+  const idx = arr.findIndex(r => r.id === report.id);
+  if (idx >= 0) arr[idx] = report; else arr.unshift(report);
+  persistReports(arr);
+}
+function removeReport(id) { persistReports(loadReports().filter(r => r.id !== id)); }
+function newId() { return Date.now().toString(36) + Math.random().toString(36).substr(2, 6); }
+
+/* ══════════════════════════════════════
+   감상문 그리기 캔버스 (독립 컴포넌트)
+   ══════════════════════════════════════ */
+function ReviewDrawingCanvas({initialData, onSave, onCancel}) {
+  const cRef = useRef(null), ctxR = useRef(null), containerR = useRef(null);
+  const drawing = useRef(false), hist = useRef([]);
+  const [histLen, setHistLen] = useState(0);
+  const [color, setColor] = useState('#000000');
+  const [tool, setTool] = useState('pen');
+  const [lineW, setLineW] = useState(4);
+  const [toolbarOpen, setToolbarOpen] = useState(true);
+  const initDone = useRef(false);
+
+  useEffect(() => {
+    const cont = containerR.current;
+    if (!cont) return;
+    const initCanvas = () => {
+      const cv = cRef.current;
+      if (!cv || !cont) return;
+      const dpr = window.devicePixelRatio || 1;
+      const w = cont.clientWidth, h = cont.clientHeight;
+      if (w === 0 || h === 0) return;
+      let prevData = null;
+      if (initDone.current) prevData = cv.toDataURL();
+      cv.width = w * dpr; cv.height = h * dpr;
+      cv.style.width = w + 'px'; cv.style.height = h + 'px';
+      const ctx = cv.getContext('2d');
+      ctx.scale(dpr, dpr); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctxR.current = ctx;
+      ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, w, h);
+      if (prevData) {
+        const img = new Image();
+        img.onload = () => ctx.drawImage(img, 0, 0, w, h);
+        img.src = prevData;
+      } else if (initialData) {
+        const img = new Image();
+        img.onload = () => { ctx.drawImage(img, 0, 0, w, h); saveHist(); initDone.current = true; };
+        img.src = initialData;
+      } else {
+        saveHist(); initDone.current = true;
+      }
+    };
+    initCanvas();
+    const ro = new ResizeObserver(() => initCanvas());
+    ro.observe(cont);
+    return () => ro.disconnect();
+  }, []);
+
+  const saveHist = () => {
+    const c = cRef.current; if (!c) return;
+    hist.current.push(c.toDataURL());
+    if (hist.current.length > 30) hist.current.shift();
+    setHistLen(hist.current.length);
+  };
+
+  const undo = () => {
+    if (hist.current.length <= 1) return;
+    hist.current.pop();
+    const last = hist.current[hist.current.length - 1];
+    const img = new Image();
+    img.onload = () => {
+      const c = cRef.current, ctx = ctxR.current, dpr = window.devicePixelRatio || 1;
+      ctx.clearRect(0, 0, c.width / dpr, c.height / dpr);
+      ctx.drawImage(img, 0, 0, c.width / dpr, c.height / dpr);
+      setHistLen(hist.current.length);
+    };
+    img.src = last;
+  };
+
+  const clearCanvas = () => {
+    const c = cRef.current, ctx = ctxR.current;
+    if (!c || !ctx) return;
+    const dpr = window.devicePixelRatio || 1;
+    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, c.width / dpr, c.height / dpr);
+    saveHist();
+  };
+
+  const getPos = (e) => {
+    const r = cRef.current.getBoundingClientRect();
+    const cx = e.touches ? e.touches[0].clientX : e.clientX;
+    const cy = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: cx - r.left, y: cy - r.top };
+  };
+
+  const handleStart = (e) => {
+    e.preventDefault();
+    drawing.current = true;
+    setToolbarOpen(false);
+    const pos = getPos(e), ctx = ctxR.current;
+    ctx.strokeStyle = tool === 'eraser' ? '#FFFFFF' : color;
+    ctx.lineWidth = tool === 'eraser' ? lineW * 3 : lineW;
+    ctx.beginPath(); ctx.moveTo(pos.x, pos.y);
+  };
+
+  const handleMove = (e) => {
+    if (!drawing.current) return;
+    e.preventDefault();
+    const pos = getPos(e);
+    ctxR.current.lineTo(pos.x, pos.y);
+    ctxR.current.stroke();
+  };
+
+  const handleEnd = () => {
+    if (drawing.current) { drawing.current = false; saveHist(); }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-white flex flex-col">
+      <div className="flex items-center justify-between px-3 py-2 bg-white/90 backdrop-blur-sm border-b border-gray-100 shadow-sm z-20">
+        <button onClick={onCancel} className="px-3 py-1.5 rounded-lg bg-gray-100 font-bold text-sm text-gray-600 active:scale-95 transition">← 돌아가기</button>
+        <span className="font-black text-sm text-gray-700">🎨 그리기</span>
+        <button onClick={() => { const c = cRef.current; if (c) onSave(c.toDataURL('image/png')); }}
+          className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold text-sm shadow active:scale-95 transition">
+          ✅ 완료
+        </button>
+      </div>
+      <div ref={containerR} className="flex-1 relative overflow-hidden bg-white">
+        <canvas ref={cRef} className="absolute inset-0" style={{touchAction:'none'}}
+          onPointerDown={handleStart} onPointerMove={handleMove}
+          onPointerUp={handleEnd} onPointerCancel={handleEnd} />
+
+        {/* 툴바 */}
+        <div className={`absolute left-0 right-0 bottom-0 z-10 transition-transform duration-300 ${toolbarOpen ? 'translate-y-0' : 'translate-y-full'}`}>
+          <div className="bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-lg px-3 py-2 space-y-1.5 rounded-t-2xl">
+            <div className="flex items-center gap-1.5 justify-center">
+              {REVIEW_DRAW_COLORS.map(c => (
+                <button key={c} onClick={() => { setColor(c); setTool('pen'); }}
+                  className={`w-8 h-8 rounded-full border-2 transition-all ${color === c && tool === 'pen' ? 'scale-110 border-gray-800 shadow-md' : 'border-gray-200'}`}
+                  style={{backgroundColor: c, boxShadow: c === '#FFFFFF' ? 'inset 0 0 0 1px #ddd' : 'none'}} />
+              ))}
+            </div>
+            <div className="flex items-center gap-1.5 justify-center">
+              <button onClick={() => setTool('pen')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${tool === 'pen' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600'}`}>
+                ✏️ 펜
+              </button>
+              <button onClick={() => setTool('eraser')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${tool === 'eraser' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600'}`}>
+                🧹 지우개
+              </button>
+              <div className="flex items-center gap-1">
+                <span className="text-[10px] text-gray-400">굵기</span>
+                <input type="range" min="2" max="20" value={lineW} onChange={e => setLineW(+e.target.value)} className="w-16 h-1 accent-gray-700" />
+              </div>
+              <button onClick={undo} disabled={histLen <= 1}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-bold ${histLen > 1 ? 'bg-gray-100 text-gray-600' : 'bg-gray-50 text-gray-300'}`}>
+                ↩
+              </button>
+              <button onClick={clearCanvas} className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-red-50 text-red-500">🗑️</button>
+            </div>
+          </div>
+        </div>
+
+        {/* 툴바 토글 */}
+        <button onPointerDown={e => e.stopPropagation()} onClick={() => setToolbarOpen(v => !v)}
+          className={`absolute z-30 right-3 bg-white shadow-xl rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg active:scale-90 transition-all border-2 border-gray-300 ${toolbarOpen ? 'bottom-[88px]' : 'bottom-4'}`}>
+          {toolbarOpen ? '▼' : '🎨'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
+   감상문 미리보기 카드 (독립 컴포넌트)
+   ══════════════════════════════════════ */
+function ReviewPreviewCard({bookName, typeInfo, drawingData, stickers, bodyText}) {
+  return (
+    <div className="bg-white rounded-3xl shadow-xl p-6 max-w-sm w-full anim-pop" style={{borderTop:'5px solid #F59E0B'}}>
+      <div className="flex items-center gap-3 mb-4">
+        <span className="text-3xl">📖</span>
+        <div>
+          <p className="font-black text-gray-700">{bookName}</p>
+          {typeInfo && <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r ${typeInfo.color} text-white mt-1`}>{typeInfo.icon} {typeInfo.label}</span>}
+        </div>
+      </div>
+      {drawingData && <img src={drawingData} className="w-full h-40 object-contain rounded-2xl bg-gray-50 mb-3" alt="그림"/>}
+      {stickers.length > 0 && <div className="flex gap-1 mb-3">{stickers.map((s,i) => <span key={i} className="text-2xl">{s}</span>)}</div>}
+      <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{bodyText}</p>
+      <p className="text-xs text-gray-400 mt-3">{new Date().toLocaleDateString('ko-KR')}</p>
+    </div>
+  );
+}
+
+/* --- Camera Capture (lightweight, for report writer) --- */
+function CameraCapture({ onCapture, onCancel }) {
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' }, width: { ideal: 640 }, height: { ideal: 480 } }, audio: false,
+    }).then(stream => {
+      if (cancelled) { stream.getTracks().forEach(t => t.stop()); return; }
+      streamRef.current = stream;
+      if (videoRef.current) { videoRef.current.srcObject = stream; videoRef.current.play(); }
+      setReady(true);
+    }).catch(() => onCancel());
+    return () => { cancelled = true; if (streamRef.current) streamRef.current.getTracks().forEach(t => t.stop()); };
+  }, []);
+
+  const capture = () => {
+    const v = videoRef.current; if (!v) return;
+    const c = document.createElement('canvas');
+    c.width = v.videoWidth; c.height = v.videoHeight;
+    c.getContext('2d').drawImage(v, 0, 0);
+    if (streamRef.current) streamRef.current.getTracks().forEach(t => t.stop());
+    onCapture(c.toDataURL('image/jpeg', 0.85));
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center gap-4" style={{touchAction:'none'}}>
+      <video ref={videoRef} className="w-72 h-56 rounded-xl object-cover bg-gray-900" autoPlay playsInline muted />
+      {ready ? (
+        <div className="flex items-center gap-4">
+          <button onClick={onCancel} className="px-5 py-2 rounded-lg bg-white/20 text-white text-sm font-semibold">취소</button>
+          <button onClick={capture} className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-lg active:scale-95">
+            <div className="w-12 h-12 rounded-full border-4 border-gray-300" />
+          </button>
+        </div>
+      ) : (
+        <div className="text-white/60 text-sm">카메라 준비 중...</div>
+      )}
+    </div>
+  );
+}
+
+/* --- Crop Modal --- */
+function CropModal({ src, onApply, onCancel }) {
+  const imgRef = useRef(null);
+  const [rect, setRect] = useState({ x: 10, y: 10, w: 80, h: 80 });
+  const [drag, setDrag] = useState(null);
+
+  useEffect(() => {
+    if (!drag) return;
+    const onMove = (e) => {
+      const img = imgRef.current; if (!img) return;
+      const ib = img.getBoundingClientRect();
+      const dx = ((e.clientX - drag.sx) / ib.width) * 100;
+      const dy = ((e.clientY - drag.sy) / ib.height) * 100;
+      const r = drag.sr;
+      let n = { ...r };
+      if (drag.t === 'move') {
+        n.x = Math.max(0, Math.min(100 - r.w, r.x + dx));
+        n.y = Math.max(0, Math.min(100 - r.h, r.y + dy));
+      } else if (drag.t === 'se') {
+        n.w = Math.max(10, Math.min(100 - r.x, r.w + dx));
+        n.h = Math.max(10, Math.min(100 - r.y, r.h + dy));
+      } else if (drag.t === 'nw') {
+        const nx = Math.max(0, Math.min(r.x + r.w - 10, r.x + dx));
+        const ny = Math.max(0, Math.min(r.y + r.h - 10, r.y + dy));
+        n = { x: nx, y: ny, w: r.w - (nx - r.x), h: r.h - (ny - r.y) };
+      } else if (drag.t === 'ne') {
+        const ny = Math.max(0, Math.min(r.y + r.h - 10, r.y + dy));
+        n = { x: r.x, y: ny, w: Math.max(10, Math.min(100 - r.x, r.w + dx)), h: r.h - (ny - r.y) };
+      } else if (drag.t === 'sw') {
+        const nx = Math.max(0, Math.min(r.x + r.w - 10, r.x + dx));
+        n = { x: nx, y: r.y, w: r.w - (nx - r.x), h: Math.max(10, Math.min(100 - r.y, r.h + dy)) };
+      }
+      setRect(n);
+    };
+    const onUp = () => setDrag(null);
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    return () => { window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onUp); };
+  }, [drag]);
+
+  const startDrag = (e, t) => {
+    e.preventDefault(); e.stopPropagation();
+    setDrag({ t, sx: e.clientX, sy: e.clientY, sr: { ...rect } });
+  };
+
+  const apply = () => {
+    const img = imgRef.current; if (!img) return;
+    const c = document.createElement('canvas');
+    const sx = (rect.x / 100) * img.naturalWidth, sy = (rect.y / 100) * img.naturalHeight;
+    const sw = (rect.w / 100) * img.naturalWidth, sh = (rect.h / 100) * img.naturalHeight;
+    c.width = sw; c.height = sh;
+    c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+    onApply(c.toDataURL('image/jpeg', 0.85));
+  };
+
+  const hp = {
+    nw: { left: `${rect.x}%`, top: `${rect.y}%` },
+    ne: { left: `${rect.x + rect.w}%`, top: `${rect.y}%` },
+    sw: { left: `${rect.x}%`, top: `${rect.y + rect.h}%` },
+    se: { left: `${rect.x + rect.w}%`, top: `${rect.y + rect.h}%` },
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center select-none" style={{touchAction:'none'}}>
+      <p className="text-white text-sm font-semibold mb-3">드래그하여 자를 영역을 조정하세요</p>
+      <div className="relative inline-block max-w-[90vw] max-h-[65vh]">
+        <img ref={imgRef} src={src} className="block max-w-[90vw] max-h-[65vh]" />
+        <div className="absolute inset-0">
+          <div className="absolute border-2 border-white/90 border-dashed cursor-move"
+               style={{ left:`${rect.x}%`, top:`${rect.y}%`, width:`${rect.w}%`, height:`${rect.h}%`,
+                        boxShadow:'0 0 0 9999px rgba(0,0,0,0.55)' }}
+               onPointerDown={e => startDrag(e, 'move')} />
+          {['nw','ne','sw','se'].map(h => (
+            <div key={h}
+                 className="absolute w-5 h-5 bg-white rounded-full border-2 border-blue-500 -translate-x-1/2 -translate-y-1/2 cursor-pointer z-10"
+                 style={hp[h]}
+                 onPointerDown={e => startDrag(e, h)} />
+          ))}
+        </div>
+      </div>
+      <div className="flex gap-3 mt-4">
+        <button onClick={onCancel} className="px-5 py-2.5 rounded-lg bg-white/10 text-white text-sm font-semibold">취소</button>
+        <button onClick={apply} className="px-5 py-2.5 rounded-lg bg-blue-500 text-white text-sm font-bold">자르기 적용</button>
+      </div>
+    </div>
+  );
+}
+
+
+/* --- Activity Review Writer (활동툴 감상문쓰기 통합) --- */
 function ReportWriter({ bookName, pageImageSrc, onExit, existingReport }) {
   const reportId = useRef(existingReport?.id || newId()).current;
   const [step, setStep] = useState(existingReport?.reviewType ? 3 : 2); // 2:유형선택, 3:작성, 4:미리보기
