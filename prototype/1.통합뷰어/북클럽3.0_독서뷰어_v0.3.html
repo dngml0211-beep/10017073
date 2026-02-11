@@ -1133,7 +1133,9 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
     }
 
     // 완독
-    if (newPage === totalPages && !triggeredRef.current.has('complete')) {
+    // 완독 (마지막 페이지 또는 마지막-1 페이지)
+    console.log("📄 현재 페이지:", newPage, "/ 전체 페이지:", totalPages);
+    if ((newPage === totalPages || newPage === totalPages - 1) && !triggeredRef.current.has("complete")) {
       triggeredRef.current.add('complete');
       console.log("📚 완독 감지! 모달을 2초 후에 표시합니다.");
       setBuddyState('happy');
