@@ -90,20 +90,12 @@
 
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto px-6 py-8">
-        <!-- Level Badge -->
+        <!-- Level Question -->
         <div class="flex justify-center mb-8">
-            <div class="relative">
-                <!-- Pulse Ring -->
-                <div class="absolute inset-0 bg-brand-primary/30 rounded-full pulse-ring"></div>
-                <!-- Level Circle -->
-                <div class="relative w-28 h-28 bg-gradient-to-br from-brand-primary to-orange-500 rounded-full flex flex-col items-center justify-center shadow-xl border-4 border-white">
-                    <span class="text-white/80 text-xs font-bold">현재 레벨</span>
-                    <span class="font-noto text-3xl text-white">Lv.5</span>
-                </div>
-                <!-- Character -->
-                <div class="absolute -bottom-2 -right-2 w-12 h-12 bg-white rounded-full flex items-center justify-center text-2xl shadow-lg border-2 border-orange-200 bounce-slow">
-                    🐿️
-                </div>
+            <div class="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-3xl px-8 py-6 border-2 border-brand-primary/20 shadow-lg">
+                <h2 class="font-noto text-2xl text-gray-800 text-center">
+                    <span class="text-brand-primary font-bold">나의 독서 레벨</span>은?
+                </h2>
             </div>
         </div>
 
@@ -256,6 +248,37 @@
         </div>
     </main>
 
+    <!-- 또또 캐릭터 팝업 (우측 하단, 큰 캐릭터) -->
+    <div id="ttotto-popup" class="hidden" onclick="hideTtottoPopup()" style="position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.25);display:none;align-items:flex-end;justify-content:flex-end;padding:24px;">
+        <div class="ttotto-container" onclick="event.stopPropagation()" style="position:relative;display:flex;flex-direction:column;align-items:center;animation:ttottoPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);">
+            <!-- 말풍선 (캐릭터 위에 표시) -->
+            <div class="ttotto-speech" style="position:relative;background:white;border-radius:24px;padding:18px 24px;box-shadow:0 8px 32px rgba(0,0,0,0.15);max-width:280px;margin-bottom:16px;animation:speechFadeIn 0.4s ease 0.2s both;">
+                <!-- 말풍선 꼬리 (아래 방향) -->
+                <div style="position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:14px solid white;"></div>
+                <p id="ttotto-message" style="font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:600;color:#374151;line-height:1.6;margin:0;text-align:center;">여기는 KRS 진단평가 화면이야!<br>나랑 같이 진단 평가 해보자!</p>
+            </div>
+            <!-- 또또 캐릭터 (화면 35% 크기) -->
+            <div class="ttotto-character" style="width:35vh;height:35vh;min-width:200px;min-height:200px;max-width:380px;max-height:380px;filter:drop-shadow(0 12px 36px rgba(0,0,0,0.25));animation:ttottoBounce 2s ease-in-out infinite;">
+                <img src="../img/EHEH.png" alt="또또" style="width:100%;height:100%;object-fit:contain;" onerror="this.innerHTML='🐿️'">
+            </div>
+        </div>
+    </div>
+    <style>
+        @keyframes ttottoPopIn {
+            0% { opacity:0; transform:translateY(100px) scale(0.3); }
+            60% { transform:translateY(-20px) scale(1.05); }
+            100% { opacity:1; transform:translateY(0) scale(1); }
+        }
+        @keyframes ttottoBounce {
+            0%, 100% { transform:translateY(0); }
+            50% { transform:translateY(-12px); }
+        }
+        @keyframes speechFadeIn {
+            0% { opacity:0; transform:translateY(10px); }
+            100% { opacity:1; transform:translateY(0); }
+        }
+    </style>
+
     <!-- Scripts -->
     <script src="../js/common.js"></script>
     <script>
@@ -272,6 +295,54 @@
                     break;
             }
         }
+
+        // 또또 팝업 표시 (메시지 변경 가능)
+        function showTtottoPopup(message) {
+            const popup = document.getElementById('ttotto-popup');
+            const messageEl = document.getElementById('ttotto-message');
+
+            if (message && messageEl) {
+                messageEl.innerHTML = message;
+            }
+
+            if (popup) {
+                popup.classList.remove('hidden');
+                popup.style.display = 'flex';
+            }
+        }
+
+        // 또또 팝업 숨기기
+        function hideTtottoPopup() {
+            const popup = document.getElementById('ttotto-popup');
+            if (popup) {
+                popup.classList.add('hidden');
+                popup.style.display = 'none';
+            }
+        }
+
+        // 뒤로가기 클릭 카운터
+        let backClickCount = 0;
+
+        // goBack 함수 오버라이드
+        const originalGoBack = window.goBack;
+        window.goBack = function() {
+            backClickCount++;
+
+            if (backClickCount === 1) {
+                // 첫 번째 클릭: EHEH 팝업 표시
+                showTtottoPopup('잠깐! 진단을 모두 끝내야<br>KRS를 할 수 있어!<br>그래도 나가고 싶으면<br>뒤로가기를 한번 더 눌러줘');
+            } else if (backClickCount >= 2) {
+                // 두 번째 클릭: home2.html로 이동
+                window.location.href = 'home2.html';
+            }
+        };
+
+        // 페이지 로드 시 자동으로 또또 팝업 표시
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                showTtottoPopup('여기는 KRS 진단평가 화면이야!<br>나랑 같이 진단 평가 해보자!');
+            }, 500);
+        });
     </script>
 
 <!-- Proto Navigation (怨듯넻 Dev Tool) -->

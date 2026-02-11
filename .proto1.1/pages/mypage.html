@@ -2396,93 +2396,180 @@
 
         /* 인증서 */
         .krs-certificate {
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%);
             border-radius: 24px;
-            padding: 40px;
+            padding: 0;
             position: relative;
             overflow: hidden;
-            border: 3px solid #fbbf24;
-        }
-
-        .certificate-decoration {
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(251,191,36,0.2) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .certificate-content {
-            position: relative;
-            z-index: 1;
+            box-shadow: 0 8px 32px rgba(251, 191, 36, 0.3);
             text-align: center;
+            border: 3px solid #f59e0b;
+            margin-bottom: 32px;
+        }
+
+        .certificate-header {
+            height: 12px;
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            border-radius: 24px 24px 0 0;
+        }
+
+        .certificate-stars {
+            font-size: 32px;
+            margin: 24px 0 20px 0;
+            letter-spacing: 8px;
+            display: inline-block;
+        }
+
+        .certificate-stars span {
+            display: inline-block;
+            animation: starBounce 1.5s ease-in-out infinite;
+        }
+
+        .certificate-stars span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .certificate-stars span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .certificate-stars span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes starBounce {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-12px) scale(1.1);
+            }
+        }
+
+        .certificate-icon-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
         }
 
         .certificate-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
+            font-size: 80px;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #5b4a7a 0%, #3d2f55 100%);
+            border-radius: 50%;
+            box-shadow: 0 8px 24px rgba(59, 47, 85, 0.3);
         }
 
         .certificate-title {
             font-size: 28px;
             font-weight: 900;
-            color: #78350f;
-            margin-bottom: 16px;
+            color: #f97316;
+            margin-bottom: 20px;
+            padding: 0 32px;
         }
 
         .certificate-text {
             font-size: 16px;
-            color: #92400e;
+            color: #4b5563;
             line-height: 1.8;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
+            padding: 0 40px;
         }
 
         .certificate-text strong {
-            color: #78350f;
+            color: #f97316;
             font-weight: 800;
         }
 
         .certificate-progress {
             display: flex;
             justify-content: center;
-            gap: 32px;
-            margin-bottom: 24px;
+            gap: 48px;
+            margin-bottom: 32px;
+            padding: 0 40px;
         }
 
         .progress-item {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
+            align-items: center;
         }
 
         .progress-item span:first-child {
             font-size: 13px;
-            color: #92400e;
+            color: #6b7280;
             font-weight: 600;
         }
 
         .progress-value {
             font-size: 20px;
             font-weight: 800;
-            color: #78350f;
+            color: #f97316;
         }
 
         .certificate-next {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #fb923c, #f97316);
             color: white;
-            border-radius: 20px;
+            border-radius: 24px;
             font-size: 15px;
             font-weight: 700;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
         }
 
         /* 모바일 반응형 */
         @media (max-width: 768px) {
+            .certificate-stars {
+                font-size: 24px;
+                letter-spacing: 4px;
+            }
+
+            @keyframes starBounce {
+                0%, 100% {
+                    transform: translateY(0) scale(1);
+                }
+                50% {
+                    transform: translateY(-8px) scale(1.1);
+                }
+            }
+
+            .certificate-icon {
+                font-size: 60px;
+                width: 110px;
+                height: 110px;
+            }
+
+            .certificate-title {
+                font-size: 22px;
+                padding: 0 24px;
+            }
+
+            .certificate-text {
+                font-size: 14px;
+                padding: 0 24px;
+                margin-bottom: 24px;
+            }
+
+            .certificate-progress {
+                flex-direction: column;
+                gap: 16px;
+                margin-bottom: 24px;
+                padding: 0 24px;
+            }
+
+            .certificate-next {
+                margin-bottom: 24px;
+            }
+
             .krs-summary-grid {
                 grid-template-columns: 1fr;
             }
@@ -4278,6 +4365,36 @@
                             </div>
                         </div>
 
+                        <!-- 레벨 완료 인증서 스타일 -->
+                        <div class="krs-certificate">
+                            <div class="certificate-header"></div>
+                            <div class="certificate-stars">
+                                <span>⭐</span><span>⭐</span><span>⭐</span>
+                            </div>
+                            <div class="certificate-icon-wrapper">
+                                <div class="certificate-icon">🎓</div>
+                            </div>
+                            <h2 class="certificate-title">K1-2 레벨 수료 완료!</h2>
+                            <p class="certificate-text">
+                                6개월간의 열정적인 학습으로<br/>
+                                <strong>92%의 높은 완료율</strong>을 달성했습니다.
+                            </p>
+                            <div class="certificate-progress">
+                                <div class="progress-item">
+                                    <span>필수 학습</span>
+                                    <span class="progress-value">38/42 완료</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span>추천 학습</span>
+                                    <span class="progress-value">48권 완독</span>
+                                </div>
+                            </div>
+                            <div class="certificate-next">
+                                <i class="fa-solid fa-arrow-right"></i>
+                                <span>다음 레벨: K2-1</span>
+                            </div>
+                        </div>
+
                         <!-- 핵심 성과 요약 -->
                         <div class="krs-summary-grid">
                             <div class="krs-summary-card primary">
@@ -4587,33 +4704,6 @@
                                         <div class="highlight-date">2026년 1월</div>
                                         <div class="highlight-desc">목표를 초과 달성했어요!</div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 레벨 완료 인증서 스타일 -->
-                        <div class="krs-certificate">
-                            <div class="certificate-decoration"></div>
-                            <div class="certificate-content">
-                                <div class="certificate-icon">🎓</div>
-                                <h2 class="certificate-title">K1-2 레벨 수료 완료!</h2>
-                                <p class="certificate-text">
-                                    6개월간의 열정적인 학습으로<br/>
-                                    <strong>92%의 높은 완료율</strong>을 달성했습니다.
-                                </p>
-                                <div class="certificate-progress">
-                                    <div class="progress-item">
-                                        <span>필수 학습</span>
-                                        <span class="progress-value">38/42 완료</span>
-                                    </div>
-                                    <div class="progress-item">
-                                        <span>추천 학습</span>
-                                        <span class="progress-value">48권 완독</span>
-                                    </div>
-                                </div>
-                                <div class="certificate-next">
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                    <span>다음 레벨: K2-1</span>
                                 </div>
                             </div>
                         </div>

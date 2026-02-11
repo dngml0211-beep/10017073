@@ -432,6 +432,13 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slideDown {
+            animation: slideDown 0.4s ease-out;
+        }
 
         /* === Mobile === */
         @media (max-width: 768px) {
@@ -625,6 +632,19 @@
                     </div>
                 </div>
             </section>
+
+            <!-- KRS 신청 완료 안내 -->
+            <div id="krs-application-success-notice" style="display: none;" class="mb-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl shadow-sm animate-slideDown">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white text-xl flex-shrink-0">
+                        ✓
+                    </div>
+                    <div>
+                        <p class="font-noto text-base font-bold text-green-800">KRS 신청 완료!</p>
+                        <p class="text-sm text-green-700">담당 교사분이 연락을 줄 거예요!</p>
+                    </div>
+                </div>
+            </div>
 
             <!-- ===== 1. 이번 주 추천 책 ===== -->
             <section class="mb-8">
@@ -943,7 +963,8 @@
 
         function goToKrsHome() {
             sessionStorage.setItem('selectedApp', 'bookclub-krs');
-            window.location.href = 'home.html';
+            // 무료체험 신청 완료 후 진단테스트 실행
+            window.location.href = 'diagnosis.html';
         }
 
         // ===== KRS 프로그램 신청 모달 (교사에게 신청) =====
@@ -1110,8 +1131,23 @@
             const modal = document.getElementById('krs-complete-modal');
             if (modal) modal.style.display = 'none';
 
-            // KRS 홈으로 이동
-            goToKRSFromTrialEnd();
+            // 무료체험 종료 배너 닫기
+            closeTrialEndBanner();
+
+            // KRS 신청 완료 안내 문구 표시
+            const notice = document.getElementById('krs-application-success-notice');
+            if (notice) {
+                notice.style.display = 'block';
+                // 5초 후 자동으로 숨김
+                setTimeout(() => {
+                    notice.style.opacity = '0';
+                    notice.style.transition = 'opacity 0.5s ease-out';
+                    setTimeout(() => {
+                        notice.style.display = 'none';
+                        notice.style.opacity = '1';
+                    }, 500);
+                }, 5000);
+            }
         }
 
         // ===== Init =====

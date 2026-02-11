@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>북클럽 3.0 - 북클럽 도전</title>
+    <title>북클럽 3.0 - 오늘의 도전</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -127,7 +127,7 @@
             min-height: calc(100vh - 200px);
         }
 
-        /* === 북클럽 도전 영역 === */
+        /* === 오늘의 도전 영역 === */
         .today-challenge-section {
             width: 100%;
             padding: 0 20px;
@@ -1983,6 +1983,16 @@
             color: #1e293b;
         }
 
+        .highlight-emphasis {
+            display: inline-block;
+            padding: 2px 8px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #fbbf24;
+            border-radius: 6px;
+            font-weight: 700;
+            color: #92400e;
+        }
+
         /* 보상 영역 */
         .compact-rewards {
             margin-bottom: 14px;
@@ -2033,6 +2043,88 @@
         .compact-footer i {
             color: #3b82f6;
             font-size: 13px;
+        }
+
+        /* KRS 로드맵 */
+        .krs-roadmap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0;
+            padding: 24px 20px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fef3c7 0%, #ffedd5 100%);
+            border-radius: 12px;
+            border: 1px solid #fdba74;
+        }
+
+        .roadmap-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: white;
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 90px;
+        }
+
+        .roadmap-step.active {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            box-shadow: 0 4px 12px rgba(251, 146, 60, 0.4);
+            transform: scale(1.1);
+        }
+
+        .roadmap-step.active .roadmap-label {
+            color: white;
+            font-weight: 700;
+        }
+
+        .roadmap-icon {
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        .roadmap-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #64748b;
+            white-space: nowrap;
+        }
+
+        .roadmap-arrow {
+            font-size: 12px;
+            color: #fbbf24;
+            font-weight: 400;
+            margin: 0 12px;
+            opacity: 0.5;
+            letter-spacing: 2px;
+            flex-shrink: 0;
+        }
+
+        .roadmap-score {
+            font-size: 10px;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 4px;
+        }
+
+        .roadmap-step.active .roadmap-score {
+            color: white;
+        }
+
+        .roadmap-badge {
+            font-size: 9px;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            padding: 3px 8px;
+            border-radius: 8px;
+            margin-top: 6px;
+            white-space: nowrap;
+            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.4);
         }
 
         .krs-goal-card-game::before {
@@ -3204,6 +3296,44 @@
                 font-size: 12px;
             }
 
+            /* KRS 로드맵 모바일 */
+            .krs-roadmap {
+                gap: 0;
+                padding: 16px 12px;
+                justify-content: space-between;
+            }
+
+            .roadmap-step {
+                padding: 8px 6px;
+                flex: 1;
+                max-width: 65px;
+            }
+
+            .roadmap-icon {
+                font-size: 24px;
+            }
+
+            .roadmap-label {
+                font-size: 9px;
+            }
+
+            .roadmap-arrow {
+                font-size: 10px;
+                margin: 0 6px;
+            }
+
+            .roadmap-score {
+                font-size: 8px;
+                margin-bottom: 3px;
+            }
+
+            .roadmap-badge {
+                font-size: 7px;
+                padding: 2px 5px;
+                border-radius: 5px;
+                margin-top: 4px;
+            }
+
             /* B 영역 모바일 */
             .krs-mission-list {
                 padding: 12px;
@@ -4105,7 +4235,7 @@
                     </div>
                     <div style="margin-left:12px;">
                         <div class="page-header-title">
-                            북클럽 도전
+                            오늘의 도전
                         </div>
                         <div class="page-header-desc">
                             매일 도전하고 친구들과 함께 성장해요
@@ -4118,7 +4248,7 @@
             <div class="challenge-tabs">
                 <button class="challenge-tab active" data-ctab="today" onclick="switchChallengeTab('today')">
                     <i class="fa-solid fa-fire"></i>
-                    북클럽 도전
+                    오늘의 도전
                 </button>
                 <button class="challenge-tab" data-ctab="team" onclick="switchChallengeTab('team')">
                     <i class="fa-solid fa-users"></i>
@@ -4128,7 +4258,7 @@
 
             <!-- 콘텐츠 영역 -->
             <div class="challenge-container">
-                <!-- 북클럽 도전 -->
+                <!-- 오늘의 도전 -->
                 <div id="ctab-today" class="challenge-content">
                     <div class="today-challenge-section">
                         <!-- 도전 리스트 -->
@@ -4141,7 +4271,7 @@
                             <div class="section-title-bar" style="margin-bottom: 16px;">
                                 <div class="section-title-main">
                                     <span class="section-title-icon">⚡</span>
-                                    <span class="section-title-text">북클럽 도전</span>
+                                    <span class="section-title-text">오늘의 도전</span>
                                 </div>
                                 <span class="section-title-count">0/4 완료</span>
                             </div>
@@ -4273,20 +4403,49 @@
                                     </div>
                                 </div>
 
+                                <!-- KRS 로드맵 -->
+                                <div class="krs-roadmap">
+                                    <div class="roadmap-step active">
+                                        <div class="roadmap-score">0점</div>
+                                        <div class="roadmap-icon">🚩</div>
+                                    </div>
+                                    <div class="roadmap-arrow">· · ·</div>
+                                    <div class="roadmap-step">
+                                        <div class="roadmap-score">600점</div>
+                                        <div class="roadmap-icon">🥉</div>
+                                        <div class="roadmap-badge">K2-2 달성</div>
+                                    </div>
+                                    <div class="roadmap-arrow">· · ·</div>
+                                    <div class="roadmap-step">
+                                        <div class="roadmap-score">700점</div>
+                                        <div class="roadmap-icon">🥈</div>
+                                    </div>
+                                    <div class="roadmap-arrow">· · ·</div>
+                                    <div class="roadmap-step">
+                                        <div class="roadmap-score">800점</div>
+                                        <div class="roadmap-icon">🥇</div>
+                                    </div>
+                                    <div class="roadmap-arrow">· · ·</div>
+                                    <div class="roadmap-step">
+                                        <div class="roadmap-score">900점+</div>
+                                        <div class="roadmap-icon">💎</div>
+                                    </div>
+                                </div>
+
                                 <!-- 보완 필요 영역 -->
                                 <div class="compact-missing-section">
                                     <div class="missing-header">
-                                        <span class="missing-icon">⚠️</span>
+                                        <span class="missing-icon">🔥</span>
                                         <span class="missing-title">보완 필요</span>
                                     </div>
                                     <div class="missing-list">
                                         <div class="missing-item">
                                             <span class="missing-week">[11주차]</span>
-                                            <span class="missing-text">독서 퀴즈를 풀어봐요!</span>
+                                            <span class="missing-text">독서 퀴즈 정답률이 <span class="highlight-emphasis">10%</span>예요 다시 풀어서 승급 점수를 올려봐요</span>
                                         </div>
                                         <div class="missing-item">
                                             <span class="missing-week">[12주차]</span>
-                                            <span class="missing-text">AI 어휘 챌린지 해봐요!</span>
+                                            <span class="missing-text">AI 어휘 획득이 <span class="highlight-emphasis">조금 부족</span>했어요! 다시 풀어서 어휘를 더 수집해봐요</span>
                                         </div>
                                     </div>
                                 </div>
@@ -4309,7 +4468,7 @@
                             </div>
                         </div>
 
-                        <!-- 나도 한마디 (북클럽 도전에 배치) -->
+                        <!-- 나도 한마디 (오늘의 도전에 배치) -->
                         <div class="tc-comment-section" style="margin-top: 24px;">
                             <div class="tc-comment-header">
                                 <h3 class="tc-comment-title">💬 나도 한마디 💬</h3>

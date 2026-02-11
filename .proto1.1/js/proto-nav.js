@@ -109,7 +109,7 @@
 
     // ===== ProtoNav 코어 객체 =====
     window.ProtoNav = {
-        isOpen: true,
+        isOpen: false,
         isDragging: false,
         dragStartX: 0,
         dragStartY: 0,
@@ -684,11 +684,11 @@
     function init() {
         injectHTML();
 
-        // 디폴트 펼침
+        // 디폴트 닫힘
         const panel = document.getElementById('proto-nav-panel');
         const btn = document.getElementById('proto-nav-toggle');
-        if (panel) panel.classList.remove('proto-nav-hidden');
-        if (btn) btn.classList.add('active');
+        if (panel) panel.classList.add('proto-nav-hidden');
+        if (btn) btn.classList.remove('active');
 
         // 드래그 초기화
         ProtoNav.initDrag();

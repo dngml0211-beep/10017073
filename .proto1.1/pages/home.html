@@ -891,7 +891,7 @@
                         <input type="text" placeholder="책 제목, 작가 검색..." class="w-64 h-12 bg-white/80 border border-gray-200 rounded-2xl px-5 pr-12 outline-none focus:border-brand-primary focus:bg-white transition-all text-sm">
                         <i class="fa-solid fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                     </div>
-                    <button onclick="openTool('diagnosis')" class="flex flex-col items-center group" title="진단 테스트">
+                    <button onclick="openTool('diagnosis_re')" class="flex flex-col items-center group" title="진단 테스트">
                         <div class="w-12 h-12 bg-gradient-to-br from-brand-primary to-orange-500 rounded-2xl border-2 border-orange-300 flex items-center justify-center text-white hover:shadow-lg group-hover:scale-105 transition-all shadow-md">
                             <i class="fa-solid fa-compass text-lg"></i>
                         </div>
@@ -4541,11 +4541,10 @@ ProtoNav.registerScenarios([
                 // UI 갱신 (switchBookType early return 방지)
                 currentBookType = 'core';
                 switchBookType('textbook');
-                // 접기 + 축하 효과 (switchBookType 내부 타이밍보다 이후에 실행)
+                // 접기 (switchBookType 내부 타이밍보다 이후에 실행)
                 setTimeout(() => {
                     window._protoNavCollapsing = false;
                     if (!isWeekCollapsed) toggleWeekCollapse();
-                    showWeekCompleteCelebration();
                 }, 1200);
                 ProtoNav.toast('주차 전체 완료 (코어+교과서) 적용');
             }},
@@ -4845,26 +4844,13 @@ function checkAndAutoCollapse() {
         // sessionStorage에서 접힌 상태 확인
         const savedCollapseState = sessionStorage.getItem('isWeekCollapsed');
 
-        // 자동 접기 (최초 1회만, 또는 저장된 상태가 접힘일 때)
-        const celebrationKey = 'celebrationShown_week_' + currentWeek;
-        const celebrationShown = sessionStorage.getItem(celebrationKey);
-
         if (savedCollapseState === 'true' && !isWeekCollapsed) {
             // 저장된 상태가 접힘이면 즉시 접기
             toggleWeekCollapse();
-            // 축하 효과 미표시였다면 표시
-            if (!celebrationShown) {
-                setTimeout(() => {
-                    showWeekCompleteCelebration();
-                    sessionStorage.setItem(celebrationKey, 'true');
-                }, 300);
-            }
         } else if (!isWeekCollapsed && savedCollapseState === null) {
-            // 최초 완료 시 자동 접기 + 축하 효과
+            // 최초 완료 시 자동 접기
             setTimeout(() => {
                 toggleWeekCollapse();
-                showWeekCompleteCelebration();
-                sessionStorage.setItem(celebrationKey, 'true');
             }, 600);
         }
     } else {
@@ -4884,55 +4870,6 @@ switchBookType = function(bookType) {
     origSwitchBookType(bookType);
 };
 
-// ===== 1주차 완료 축하 효과 =====
-let _celebrationActive = false;
-function showWeekCompleteCelebration() {
-    const overlay = document.getElementById('week-complete-celebration');
-    if (!overlay || _celebrationActive) return;
-    _celebrationActive = true;
-
-    // 파티클 생성
-    const particleContainer = document.getElementById('celebration-particles');
-    particleContainer.innerHTML = '';
-    const colors = ['#FF9F43', '#FBBF24', '#F472B6', '#A78BFA', '#34D399', '#60A5FA', '#FB923C'];
-    const emojis = ['⭐', '🎉', '✨', '🎊', '💫'];
-
-    for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const size = Math.random() * 10 + 6;
-        const left = Math.random() * 100;
-        const delay = Math.random() * 0.8;
-        const duration = Math.random() * 1.5 + 1.5;
-        particle.style.cssText = `width:${size}px;height:${size}px;background:${color};left:${left}%;top:-${size}px;animation-delay:${delay}s;animation-duration:${duration}s;`;
-        particleContainer.appendChild(particle);
-    }
-    for (let i = 0; i < 10; i++) {
-        const star = document.createElement('div');
-        star.className = 'particle-star';
-        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-        const left = Math.random() * 100;
-        const delay = Math.random() * 0.6;
-        const duration = Math.random() * 1.5 + 2;
-        star.textContent = emoji;
-        star.style.cssText = `left:${left}%;top:-24px;animation-delay:${delay}s;animation-duration:${duration}s;`;
-        particleContainer.appendChild(star);
-    }
-
-    overlay.classList.add('active');
-
-    // 2초 후 사라짐
-    setTimeout(() => {
-        overlay.classList.add('fade-out');
-        setTimeout(() => {
-            overlay.classList.remove('active', 'fade-out');
-            particleContainer.innerHTML = '';
-            _celebrationActive = false;
-        }, 600);
-    }, 2000);
-}
-
 // 페이지 로드 시 주차완료 상태 복원
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
@@ -4950,136 +4887,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 800);
 });
 </script>
-
-<!-- 1주차 완료 축하 오버레이 -->
-<div id="week-complete-celebration" class="celebration-overlay">
-    <div class="celebration-particles" id="celebration-particles"></div>
-    <div class="celebration-character">
-        <img src="../img/EHEH.png" alt="EhEh" class="celebration-img">
-        <div class="celebration-bubble">
-            <p>우와! 1주차 학습을 모두 완료했어, 축하해!</p>
-        </div>
-    </div>
-</div>
-
-<style>
-    .celebration-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-    }
-    .celebration-overlay.active {
-        display: flex;
-    }
-    .celebration-character {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0;
-        animation: celebrationPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        opacity: 0;
-    }
-    .celebration-img {
-        width: 160px;
-        height: auto;
-        filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
-        animation: celebrationBounce 0.8s ease-in-out 0.4s infinite alternate;
-    }
-    .celebration-bubble {
-        margin-top: -8px;
-        background: white;
-        border: 2px solid #FF9F43;
-        border-radius: 20px;
-        padding: 14px 22px;
-        box-shadow: 0 8px 32px rgba(255, 159, 67, 0.25);
-        max-width: 280px;
-        text-align: center;
-        position: relative;
-        animation: celebrationBubbleIn 0.4s ease-out 0.3s forwards;
-        opacity: 0;
-    }
-    .celebration-bubble::before {
-        content: '';
-        position: absolute;
-        top: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0; height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 10px solid #FF9F43;
-    }
-    .celebration-bubble::after {
-        content: '';
-        position: absolute;
-        top: -7px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0; height: 0;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-bottom: 8px solid white;
-    }
-    .celebration-bubble p {
-        font-family: 'Noto Sans KR', sans-serif;
-        font-size: 15px;
-        font-weight: 700;
-        color: #92400e;
-        line-height: 1.5;
-        margin: 0;
-    }
-    /* 파티클 */
-    .celebration-particles {
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-    }
-    .particle {
-        position: absolute;
-        border-radius: 50%;
-        animation: particleFall linear forwards;
-        opacity: 0;
-    }
-    .particle-star {
-        position: absolute;
-        font-size: 20px;
-        animation: particleFall linear forwards;
-        opacity: 0;
-    }
-    /* 사라지는 애니메이션 */
-    .celebration-overlay.fade-out .celebration-character {
-        animation: celebrationFadeOut 0.5s ease-in forwards;
-    }
-    .celebration-overlay.fade-out .celebration-particles {
-        animation: celebrationFadeOut 0.4s ease-in forwards;
-    }
-    @keyframes celebrationPopIn {
-        0% { opacity: 0; transform: scale(0.3) translateY(60px); }
-        60% { opacity: 1; transform: scale(1.08) translateY(-10px); }
-        100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    @keyframes celebrationBounce {
-        0% { transform: translateY(0); }
-        100% { transform: translateY(-8px); }
-    }
-    @keyframes celebrationBubbleIn {
-        0% { opacity: 0; transform: scale(0.8) translateY(10px); }
-        100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    @keyframes celebrationFadeOut {
-        0% { opacity: 1; transform: scale(1); }
-        100% { opacity: 0; transform: scale(0.8) translateY(20px); }
-    }
-    @keyframes particleFall {
-        0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
-        80% { opacity: 1; }
-        100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.5); }
-    }
-</style>
 
 <!-- 빙고 토스트 알림 (overflow-hidden 밖에 배치) -->
 <div id="bingo-toast" class="bingo-toast"></div>
