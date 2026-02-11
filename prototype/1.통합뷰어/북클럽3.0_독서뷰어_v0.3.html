@@ -76,23 +76,48 @@ html,body,#root{width:100%;height:100%;overflow:hidden;background:#fff}
     to { opacity: 1; }
   }
   @keyframes bounce-in {
-    0% { transform: scale(0); opacity: 0; }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); opacity: 1; }
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    50% { transform: scale(1.2) rotate(10deg); }
+    70% { transform: scale(0.9) rotate(-5deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
   }
   @keyframes slide-up {
     from { transform: translateY(30px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
+  @keyframes trophy-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(255, 183, 77, 0.6), 0 0 40px rgba(255, 183, 77, 0.4);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(255, 183, 77, 0.8), 0 0 60px rgba(255, 183, 77, 0.6);
+      transform: scale(1.05);
+    }
+  }
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes float-up {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100px) scale(0.5); opacity: 0; }
+  }
   .animate-fade-in {
     animation: fade-in 0.3s ease-out;
   }
   .animate-bounce-in {
-    animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    animation: bounce-in 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   }
   .animate-slide-up {
     animation: slide-up 0.4s ease-out forwards;
     opacity: 0;
+  }
+  .animate-trophy-glow {
+    animation: trophy-glow 2s ease-in-out infinite;
+  }
+  .animate-sparkle {
+    animation: sparkle 1.5s ease-in-out infinite;
   }
 </style>
 </head>
@@ -575,20 +600,40 @@ function SpeechBubble({ message, buttons, onButton, onClose }) {
    컨페티 이펙트
    ══════════════════════════════════════ */
 function BuddyConfetti() {
-  const colors = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF6EC7','#A855F7'];
-  const pieces = useMemo(() => Array.from({length:40}, (_,i) => ({
-    id:i, left: Math.random()*100, delay: Math.random()*2, dur: 2+Math.random()*2,
-    color: colors[Math.floor(Math.random()*colors.length)], size: 6+Math.random()*8,
-    type: Math.random()>0.5?'circle':'rect'
-  })), []);
+  const colors = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF6EC7','#A855F7','#FFA500','#FF1493','#00CED1','#FFB6C1'];
+  const emojis = ['⭐','✨','🎉','🎊','💫','🌟','⚡','💥','🎈','🎀'];
+
+  const pieces = useMemo(() => Array.from({length:80}, (_,i) => {
+    const isEmoji = Math.random() > 0.7; // 30% 확률로 이모지
+    return {
+      id:i,
+      left: Math.random()*100,
+      delay: Math.random()*2,
+      dur: 2+Math.random()*2,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      size: isEmoji ? 20+Math.random()*10 : 6+Math.random()*10,
+      type: isEmoji ? 'emoji' : (Math.random()>0.5?'circle':'rect'),
+      emoji: isEmoji ? emojis[Math.floor(Math.random()*emojis.length)] : null,
+      rotation: Math.random() * 360
+    };
+  }), []);
+
   return (
     <div className="fixed inset-0 z-[99999] pointer-events-none overflow-hidden">
       {pieces.map(p => (
         <div key={p.id} className="confetti absolute" style={{
-          left:`${p.left}%`, top:'-20px', animationDelay:`${p.delay}s`, animationDuration:`${p.dur}s`,
-          width:p.size, height:p.size, backgroundColor:p.color,
+          left:`${p.left}%`, top:'-20px',
+          animationDelay:`${p.delay}s`,
+          animationDuration:`${p.dur}s`,
+          width: p.type === 'emoji' ? 'auto' : p.size,
+          height: p.type === 'emoji' ? 'auto' : p.size,
+          backgroundColor: p.type === 'emoji' ? 'transparent' : p.color,
           borderRadius: p.type==='circle'?'50%':'2px',
-        }}/>
+          fontSize: p.type === 'emoji' ? p.size : undefined,
+          transform: `rotate(${p.rotation}deg)`
+        }}>
+          {p.type === 'emoji' && p.emoji}
+        </div>
       ))}
     </div>
   );
@@ -1147,9 +1192,13 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
       }
     }
 
-    // 완독 (마지막 페이지)
-    console.log("📄 현재 페이지:", newPage, "/ 전체 페이지:", totalPages);
-    if (newPage === totalPages && !triggeredRef.current.has("complete")) {
+    // 완독 (마지막 페이지) - .proto1.1과 동일한 완독 조건
+    console.log("📄 현재 페이지:", newPage, "/ 전체 페이지:", totalPages, "/ 뷰 모드:", viewMode);
+    const isLastPage = viewMode === 'single'
+      ? newPage >= totalPages
+      : newPage >= totalPages - 1;
+
+    if (isLastPage && !triggeredRef.current.has("complete")) {
       triggeredRef.current.add('complete');
       console.log("📚 완독 감지!");
       setBuddyState('happy');
@@ -1264,13 +1313,15 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
         setBuddyState('happy');
         showBubbleMsg('🎉 목표 달성! 대단해!');
         setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 4000);
+        setTimeout(() => setShowConfetti(false), 5000);
+        // 목표 달성 축하 효과 강화
         break;
       case 'complete':
         setBuddyState('happy');
         showBubbleMsg('🎉🎉🎉 다 읽었다! 정말 대단해!');
         setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 4000);
+        setShowCompletionModal(true);
+        setTimeout(() => setShowConfetti(false), 5000);
         break;
       case 'report':
         setShowReport(true);
@@ -1281,17 +1332,19 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
   // ── 완독 후 액션 ──
   const goToQuiz = () => {
     console.log('Going to quiz page');
-    window.location.href = 'https://dngml0211-beep.github.io/10017073/.proto1.1/pages/quiz.html';
+    // 상대 경로로 변경 (.proto1.1 폴더 내에서 작동)
+    window.location.href = 'quiz.html';
   };
 
   const goToVocabulary = () => {
     console.log('Going to vocabulary challenge');
-    window.location.href = 'https://dngml0211-beep.github.io/10017073/.proto1.1/pages/vocabulary-challenge.html';
+    // 상대 경로로 변경
+    window.location.href = 'vocabulary-challenge.html';
   };
 
   const skipCompletion = () => {
     console.log('Skipping to home page');
-    // 홈으로 돌아가기 (book-viewer.html의 skipQuiz와 동일)
+    // 홈으로 돌아가기
     window.location.href = 'https://dngml0211-beep.github.io/10017073/.proto1.1/pages/home.html';
   };
 
@@ -1930,70 +1983,91 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
 
       {/* 완독 축하 모달 */}
       {showCompletionModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] animate-fade-in">
-          <div className="relative w-full max-w-md mx-4">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] animate-fade-in p-4 overflow-y-auto">
+          <div className="relative w-full max-w-md mx-auto my-auto">
+            {/* 반짝이는 별들 (모달 안쪽으로 조정) */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              <div className="absolute top-2 left-8 text-2xl animate-sparkle" style={{animationDelay: '0s'}}>✨</div>
+              <div className="absolute top-8 right-8 text-xl animate-sparkle" style={{animationDelay: '0.3s'}}>⭐</div>
+              <div className="absolute bottom-36 left-12 text-xl animate-sparkle" style={{animationDelay: '0.6s'}}>💫</div>
+              <div className="absolute bottom-28 right-10 text-2xl animate-sparkle" style={{animationDelay: '0.9s'}}>✨</div>
+              <div className="absolute top-20 left-1/2 text-xl animate-sparkle" style={{animationDelay: '0.4s'}}>🌟</div>
+            </div>
+
             {/* 🎉 완독 배지 */}
-            <div className="text-center mb-4 animate-bounce-in">
-              <div className="w-32 h-32 mx-auto bg-gradient-to-br from-yellow-300 via-amber-400 to-orange-500 rounded-full flex items-center justify-center shadow-2xl">
-                <span className="text-6xl">🏆</span>
+            <div className="text-center mb-3 animate-bounce-in">
+              <div className="relative w-28 h-28 mx-auto">
+                {/* 빛나는 원형 배경 */}
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 via-amber-400 to-orange-500 rounded-full animate-trophy-glow"></div>
+                {/* 트로피 */}
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <span className="text-5xl">🏆</span>
+                </div>
               </div>
-              <h2 className="text-3xl font-black text-white mt-4">완독 축하합니다!</h2>
-              <p className="text-white/80 mt-2">책을 끝까지 읽었어요! 🎉</p>
+              <h2 className="text-3xl font-black text-white mt-4 drop-shadow-lg" style={{textShadow: '0 0 20px rgba(255,255,255,0.5)'}}>완독 축하합니다!</h2>
+              <p className="text-white/90 mt-2 text-base font-semibold">책을 끝까지 읽었어요! 🎉</p>
             </div>
 
             {/* 다음 단계 안내 */}
-            <div className="bg-white/95 rounded-3xl p-6 shadow-2xl animate-slide-up" style={{animationDelay: '0.3s'}}>
+            <div className="bg-white/95 rounded-3xl p-5 shadow-2xl animate-slide-up" style={{animationDelay: '0.3s'}}>
               {/* 📊 독서 리포트 */}
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4 mb-5">
+              <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 rounded-2xl p-4 mb-4 border-2 border-purple-100">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-2xl">📊</span>
-                  <h3 className="font-bold text-gray-800">독서 리포트</h3>
+                  <span className="text-2xl animate-bounce">📊</span>
+                  <h3 className="font-black text-base text-gray-800">독서 리포트</h3>
+                  <span className="ml-auto text-lg">🎉</span>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-white/80 rounded-xl p-3 text-center">
-                    <div className="text-xs text-gray-500 mb-1">읽은 시간</div>
-                    <div className="text-lg font-bold text-indigo-600">
-                      {Math.floor(buddySessionTime / 60)}분
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="bg-white/90 rounded-xl p-3 text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <div className="text-xl mb-1">⏰</div>
+                    <div className="text-[10px] text-gray-500 mb-1 font-semibold">읽은 시간</div>
+                    <div className="text-xl font-black text-indigo-600">
+                      {Math.floor(buddySessionTime / 60)}
                     </div>
+                    <div className="text-[10px] text-gray-400">분</div>
                   </div>
-                  <div className="bg-white/80 rounded-xl p-3 text-center">
-                    <div className="text-xs text-gray-500 mb-1">읽은 페이지</div>
-                    <div className="text-lg font-bold text-purple-600">
-                      {totalPages}쪽
+                  <div className="bg-white/90 rounded-xl p-3 text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <div className="text-xl mb-1">📖</div>
+                    <div className="text-[10px] text-gray-500 mb-1 font-semibold">읽은 페이지</div>
+                    <div className="text-xl font-black text-purple-600">
+                      {totalPages}
                     </div>
+                    <div className="text-[10px] text-gray-400">쪽</div>
                   </div>
-                  <div className="bg-white/80 rounded-xl p-3 text-center">
-                    <div className="text-xs text-gray-500 mb-1">시작 페이지</div>
-                    <div className="text-lg font-bold text-pink-600">
-                      {startPage}쪽
+                  <div className="bg-white/90 rounded-xl p-3 text-center shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200">
+                    <div className="text-xl mb-1">🚀</div>
+                    <div className="text-[10px] text-gray-500 mb-1 font-semibold">시작 페이지</div>
+                    <div className="text-xl font-black text-pink-600">
+                      {startPage}
                     </div>
+                    <div className="text-[10px] text-gray-400">쪽</div>
                   </div>
                 </div>
               </div>
 
-              <p className="text-gray-600 text-sm mb-4">다음 단계로 넘어갈까요?</p>
+              <p className="text-gray-700 text-sm font-semibold mb-3 text-center">✨ 다음 단계로 넘어갈까요? ✨</p>
 
               {/* 독후퀴즈 */}
-              <div className="mb-3 p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl hover:shadow-md transition-all cursor-pointer" onClick={goToQuiz}>
+              <div className="mb-2 p-4 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 rounded-2xl hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer border-2 border-amber-100 animate-slide-up" style={{animationDelay: '0.5s'}} onClick={goToQuiz}>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">❓</div>
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-200 to-orange-300 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 shadow-md">❓</div>
                   <div className="flex-1 text-left">
-                    <p className="font-bold text-lg text-gray-800">독후퀴즈</p>
-                    <p className="text-xs text-gray-500">책 내용을 확인해봐요!</p>
+                    <p className="font-black text-lg text-gray-800 mb-0.5">독후퀴즈</p>
+                    <p className="text-xs text-gray-600 font-medium">책 내용을 확인해봐요! 🎯</p>
                   </div>
-                  <i className="fas fa-chevron-right text-gray-400"></i>
+                  <div className="text-xl">→</div>
                 </div>
               </div>
 
               {/* 어휘챌린지 */}
-              <div className="mb-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl hover:shadow-md transition-all cursor-pointer" onClick={goToVocabulary}>
+              <div className="mb-3 p-4 bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 rounded-2xl hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer border-2 border-blue-100 animate-slide-up" style={{animationDelay: '0.7s'}} onClick={goToVocabulary}>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">📚</div>
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-200 to-indigo-300 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 shadow-md">📚</div>
                   <div className="flex-1 text-left">
-                    <p className="font-bold text-lg text-gray-800">어휘챌린지</p>
-                    <p className="text-xs text-gray-500">새로운 단어를 익혀요!</p>
+                    <p className="font-black text-lg text-gray-800 mb-0.5">어휘챌린지</p>
+                    <p className="text-xs text-gray-600 font-medium">새로운 단어를 익혀요! 💡</p>
                   </div>
-                  <i className="fas fa-chevron-right text-gray-400"></i>
+                  <div className="text-xl">→</div>
                 </div>
               </div>
 
@@ -2815,6 +2889,7 @@ function Launcher({ onSelect }) {
   const pdfRef = useRef(null);
   const [loadingType, setLoadingType] = useState(null);
   const [fetchError, setFetchError] = useState(null);
+  const [isAutoLoading, setIsAutoLoading] = useState(true); // 자동 로드 중 표시
 
   const handleFile = (e, type) => {
     const file = e.target.files[0];
@@ -2839,14 +2914,48 @@ function Launcher({ onSelect }) {
       const bytes = new Uint8Array(binary.length);
       for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
       onSelect('pdf', bytes.buffer, book.fileName);
+      setLoadingType(null);
+      setIsAutoLoading(false);
     } catch (err) {
       console.error('샘플 도서 로드 실패:', err);
       setFetchError('도서 데이터를 로드할 수 없습니다.');
       setLoadingType(null);
+      setIsAutoLoading(false);
+    }
+  };
+
+  // ── .proto1.1 연동: PDF 자동 로드 ──
+  const handlePDFFromURL = async () => {
+    setLoadingType('pdf');
+    setFetchError(null);
+    try {
+      // sessionStorage에서 책 정보 읽기
+      const bookData = sessionStorage.getItem('currentBook');
+      const book = bookData ? JSON.parse(bookData) : { title: '오즈의 마법사' };
+      console.log('📚 로드할 책:', book);
+
+      // PDF 파일 경로 (상대 경로 - .proto1.1/pages/에서 실행)
+      const pdfUrl = '../assets/books/오즈의_마법사.pdf';
+
+      console.log('📄 PDF 로드 시도:', pdfUrl);
+      const response = await fetch(pdfUrl);
+      if (!response.ok) throw new Error('PDF 로드 실패: ' + response.status);
+
+      const arrayBuffer = await response.arrayBuffer();
+      console.log('✅ PDF 로드 성공:', arrayBuffer.byteLength, 'bytes');
+      onSelect('pdf', arrayBuffer, `${book.title}.pdf`);
+      setLoadingType(null);
+      setIsAutoLoading(false);
+    } catch (err) {
+      console.error('PDF 로드 오류:', err);
+      setFetchError('PDF 파일을 불러올 수 없습니다: ' + err.message);
+      setLoadingType(null);
+      setIsAutoLoading(false);
     }
   };
 
   useEffect(() => {
+    // 자동으로 샘플 도서 로드
     handleSampleBook(SAMPLE_BOOKS[0]);
   }, []);
 
@@ -2854,6 +2963,20 @@ function Launcher({ onSelect }) {
     { id: 'pdf', label: '도서 읽기', sub: 'AI 독서 동반자', icon: '📖', action: () => handleSampleBook(SAMPLE_BOOKS[0]) },
   ];
 
+  // ── 자동 로드 중일 때는 로딩 화면만 표시 (버튼 UI 숨김) ──
+  if (isAutoLoading && loadingType) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center bg-white">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-3 border-gray-300 border-t-indigo-600 rounded-full animate-spin" />
+          <span className="text-base text-gray-600 font-semibold">도서를 불러오는 중...</span>
+          <span className="text-sm text-gray-400">잠시만 기다려주세요 📚</span>
+        </div>
+      </div>
+    );
+  }
+
+  // ── 자동 로드 실패 시 에러 메시지와 함께 UI 표시 ──
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-white gap-5 px-8">
       <input ref={pdfRef}  type="file" accept=".pdf"  hidden onChange={e => handleFile(e, 'pdf')} />
@@ -2862,6 +2985,15 @@ function Launcher({ onSelect }) {
         <h1 className="text-xl font-bold text-gray-800 tracking-tight">북클럽 3.0 독서 뷰어 v0.3</h1>
         <p className="text-sm text-gray-400 mt-1">AI와 함께하는 똑똑한 독서</p>
       </div>
+
+      {fetchError && (
+        <div className="text-red-500 text-sm text-center mb-4 px-4 bg-red-50 rounded-lg p-4">
+          <p className="font-semibold mb-2">⚠️ {fetchError}</p>
+          <button onClick={handlePDFFromURL} className="text-blue-500 hover:text-blue-700 underline text-sm font-semibold">
+            다시 시도
+          </button>
+        </div>
+      )}
 
       {loadingType ? (
         <div className="flex flex-col items-center gap-3">
