@@ -1100,6 +1100,20 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
     setBuddyState('reading');
     // 페이지 넘길 때 말풍선 유지 (자동으로 5초 후 사라짐)
 
+    // ── sessionStorage 진행률 저장 ──
+    const bookData = sessionStorage.getItem('currentBook');
+    if (bookData) {
+      try {
+        const book = JSON.parse(bookData);
+        book.currentBookPage = newPage;
+        book.totalPages = totalPages;
+        sessionStorage.setItem('currentBook', JSON.stringify(book));
+        console.log(`💾 진행률 저장: ${newPage}/${totalPages} 페이지`);
+      } catch (e) {
+        console.error('진행률 저장 오류:', e);
+      }
+    }
+
     // 빠른 넘김 (앞으로만 = 건너뛰기 가능, 뒤로 = 복습이므로 무시)
     if (elapsed < 3000 && dir === 'forward') {
       setFastFlipCount(c => {
@@ -1143,6 +1157,35 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
       setShowConfetti(true);  // 폭죽 시작!
       setShowCompletionModal(true);
       setTimeout(() => setShowConfetti(false), 5000);  // 5초간 폭죽
+
+      // ── sessionStorage 완독 상태 저장 (다시읽기 모드 고려) ──
+      const bookData = sessionStorage.getItem('currentBook');
+      const isReReadingMode = sessionStorage.getItem('isReReadingMode') === 'true';
+
+      if (bookData) {
+        try {
+          const book = JSON.parse(bookData);
+
+          if (isReReadingMode || book.isReReading) {
+            // 다시 읽기 모드: 임시 진행상태만 업데이트
+            console.log('🔄 다시 읽기 모드 - 임시 진행률만 저장');
+            const rereadKey = 'rereadProgress_' + (book.week || 'unknown') + '_' + (book.bookType || 'core');
+            const rereadProgress = JSON.parse(sessionStorage.getItem(rereadKey) || '{}');
+            rereadProgress.bookCompleted = true;
+            rereadProgress.completedAt = new Date().toISOString();
+            sessionStorage.setItem(rereadKey, JSON.stringify(rereadProgress));
+          } else {
+            // 최초 읽기: completed 상태 변경
+            console.log('✅ 최초 읽기 완료 - 완독 상태 저장');
+            book.completed = true;
+            book.completedAt = new Date().toISOString();
+          }
+
+          sessionStorage.setItem('currentBook', JSON.stringify(book));
+        } catch (e) {
+          console.error('완독 상태 저장 오류:', e);
+        }
+      }
     }
   }, [totalPages, startPage, readingGoal, showBubbleMsg]);
 
@@ -1247,8 +1290,9 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
   };
 
   const skipCompletion = () => {
-    setShowCompletionModal(false);
-    alert('나중에 다시 도전해보세요! 😊');
+    console.log('Skipping to home page');
+    // 홈으로 돌아가기 (book-viewer.html의 skipQuiz와 동일)
+    window.location.href = 'https://dngml0211-beep.github.io/10017073/.proto1.1/pages/home.html';
   };
 
 
@@ -1304,6 +1348,33 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
       })
       .catch(() => setError('PDF 파일을 읽을 수 없습니다.'));
   }, [fileData]);
+
+  // ── sessionStorage 통합: .proto1.1 시스템과 연동 ──
+  useEffect(() => {
+    const bookData = sessionStorage.getItem('currentBook');
+    if (bookData) {
+      try {
+        const book = JSON.parse(bookData);
+        console.log('📚 sessionStorage에서 책 정보 로드:', book);
+
+        // 저장된 페이지로 이동 (있으면)
+        if (book.currentBookPage && book.currentBookPage > 1) {
+          setPage(book.currentBookPage);
+          console.log(`📖 저장된 페이지로 이동: ${book.currentBookPage}페이지`);
+        }
+
+        // 시작 페이지 기록
+        if (!book.startPage) {
+          book.startPage = page;
+          setStartPage(page);
+        } else {
+          setStartPage(book.startPage);
+        }
+      } catch (e) {
+        console.error('sessionStorage 파싱 오류:', e);
+      }
+    }
+  }, [pdfDoc]); // PDF 로드 완료 후 실행
 
   // Render page(s) to canvas — single & spread support
   const renderOnePage = useCallback((pageNum, canvasEl, availW, ch) => {
