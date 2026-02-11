@@ -64,7 +64,7 @@
                 <span>&#9654; 웅진북클럽 KRS</span>
                 <span class="proto-nav-cat-badge">상태 적용</span>
             </button>
-            <div class="proto-nav-options proto-nav-collapsed">
+            <div class="proto-nav-options">
                 <button onclick="ProtoNav.applyStateScenario('krs-week1-start')">
                     <i class="fa-solid fa-play"></i> 1주차 시작
                 </button>
@@ -82,47 +82,18 @@
                 <span>&#9654; 웅진북클럽</span>
                 <span class="proto-nav-cat-badge">무료체험</span>
             </button>
-            <div class="proto-nav-options proto-nav-collapsed">
+            <div class="proto-nav-options">
                 <button onclick="ProtoNav.applyStateScenario('bookclub-before-trial')">
                     <i class="fa-solid fa-clock"></i> 무체 신청 전
-                </button>
-                <button onclick="ProtoNav.applyStateScenario('bookclub-trial-complete')">
-                    <i class="fa-solid fa-check"></i> 무체 신청 완료
                 </button>
                 <button onclick="ProtoNav.applyStateScenario('bookclub-trial-end')">
                     <i class="fa-solid fa-flag-checkered"></i> 무체 종료
                 </button>
-            </div>
-        </div>
-
-        <div class="proto-nav-category">
-            <button class="proto-nav-cat-btn" onclick="ProtoNav.toggleCategory(this)">
-                <span>&#9654; 북클럽 B2C</span>
-                <span class="proto-nav-cat-badge">B2C</span>
-            </button>
-            <div class="proto-nav-options proto-nav-collapsed">
-                <button onclick="ProtoNav.applyStateScenario('b2c-state1')">
-                    <i class="fa-solid fa-circle"></i> 상태 1 (준비중)
+                <button onclick="ProtoNav.applyStateScenario('bookclub-trial-complete')">
+                    <i class="fa-solid fa-check"></i> 무체 신청 완료(진행중)
                 </button>
             </div>
         </div>
-
-        <!-- 공통 유틸리티 -->
-        <div class="proto-nav-category">
-            <button class="proto-nav-cat-btn" onclick="ProtoNav.toggleCategory(this)">
-                <span>&#9654; 유틸리티</span>
-                <span class="proto-nav-cat-badge">도구</span>
-            </button>
-            <div class="proto-nav-options proto-nav-collapsed">
-                <button onclick="ProtoNav.commonScenario.fullReset()">
-                    <i class="fa-solid fa-trash-can"></i> 전체 리셋
-                </button>
-                <button onclick="ProtoNav.commonScenario.goHome()">
-                    <i class="fa-solid fa-house"></i> 홈으로 이동
-                </button>
-            </div>
-        </div>
-
         <div class="proto-nav-footer">Proto v1.1 | Dev Mode | ${pageName}</div>
     </div>
 </div>`;
@@ -333,11 +304,6 @@
                     break;
                 case 'bookclub-trial-end':
                     this.applyBookclubTrialEnd();
-                    break;
-
-                // 북클럽 B2C
-                case 'b2c-state1':
-                    this.applyB2CState1();
                     break;
 
                 default:
@@ -619,37 +585,37 @@
         },
 
         applyBookclubTrialComplete() {
-            console.log('[ProtoNav] 웅진북클럽 무체 신청 완료');
+            console.log('[ProtoNav] 웅진북클럽 무체 신청 완료 → KRS 홈 (1주차 시작) 이동');
+            this.toast('✅ 무체 신청 완료! KRS 1주차가 시작됩니다');
 
-            if (pageName === 'home2') {
-                sessionStorage.setItem('trialApplied', 'true');
-                sessionStorage.removeItem('trialEnded');
-                this.toast('✅ 무체 신청 완료 상태 적용');
-                location.reload();
-            } else {
-                sessionStorage.setItem('protoNavStateOnLoad', 'bookclub-trial-complete');
-                window.location.href = window.location.pathname.includes('/pages/') ? 'home2.html' : 'pages/home2.html';
-            }
+            // 무체 신청 완료 플래그 설정
+            sessionStorage.setItem('trialApplied', 'true');
+            sessionStorage.removeItem('trialEnded');
+
+            // 웅진북클럽 KRS로 앱 상태 변경
+            sessionStorage.setItem('selectedApp', 'bookclub-krs');
+            sessionStorage.removeItem('hideLibraryMenu');
+
+            // 1주차 시작 상태 플래그 설정
+            sessionStorage.setItem('protoNavStateOnLoad', 'krs-week1-start');
+
+            // KRS 홈(home.html)으로 이동
+            window.location.href = window.location.pathname.includes('/pages/') ? 'home.html' : 'pages/home.html';
         },
 
         applyBookclubTrialEnd() {
             console.log('[ProtoNav] 웅진북클럽 무체 종료');
 
+            // 무체 종료 플래그 설정
+            sessionStorage.setItem('trialApplied', 'true');
+            sessionStorage.setItem('trialEnded', 'true');
+
             if (pageName === 'home2') {
-                sessionStorage.setItem('trialApplied', 'true');
-                sessionStorage.setItem('trialEnded', 'true');
                 this.toast('✅ 무체 종료 상태 적용');
                 location.reload();
             } else {
-                sessionStorage.setItem('protoNavStateOnLoad', 'bookclub-trial-end');
                 window.location.href = window.location.pathname.includes('/pages/') ? 'home2.html' : 'pages/home2.html';
             }
-        },
-
-        // === 북클럽 B2C 상태 적용 함수들 ===
-        applyB2CState1() {
-            console.log('[ProtoNav] 북클럽 B2C 상태 1');
-            this.toast('⚠️ 북클럽 B2C 기능 준비중');
         },
 
         /**

@@ -215,20 +215,16 @@
         #carousel-wrapper {
             max-height: 900px;
             overflow: hidden;
-            transform-origin: top;
             transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
                         opacity 0.5s ease,
-                        padding 0.5s ease,
-                        transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+                        padding 0.5s ease;
             opacity: 1;
-            transform: scaleY(1);
         }
         #carousel-wrapper.week-done-collapsed {
             max-height: 0 !important;
             opacity: 0;
             padding-top: 0 !important;
             padding-bottom: 0 !important;
-            transform: scaleY(0);
         }
         /* 헤더 보상 영역도 접기 */
         .header-rewards-group {
@@ -397,12 +393,6 @@
 
         /* 추천도서 강조 (주차완료 시) */
         .recommend-highlight {
-            animation: recommendPulse 2s ease-in-out;
-        }
-        @keyframes recommendPulse {
-            0% { transform: scale(0.97); opacity: 0.7; }
-            50% { transform: scale(1.01); }
-            100% { transform: scale(1); opacity: 1; }
         }
 
         /* === 추천도서 넷플릭스 스타일 === */
@@ -1269,7 +1259,7 @@
                             </div>
                         </div>
                     <!-- 별딱지 빙고 Modal (풀스크린) -->
-            <div id="bingo-modal" class="hidden" style="position:absolute;inset:0;z-index:50;display:none;flex-direction:column;background:linear-gradient(180deg,#FFF8F0 0%,#FFECD2 40%,#FCE1C4 100%);border-radius:1.5rem;overflow:hidden;">
+            <div id="bingo-modal" class="hidden" style="position:fixed;inset:0;z-index:9000;display:none;flex-direction:column;background:linear-gradient(180deg,#FFF8F0 0%,#FFECD2 40%,#FCE1C4 100%);overflow:hidden;">
                 <!-- 바닥 패턴 장식 -->
                 <div style="position:absolute;inset:0;opacity:0.06;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><rect width=%2260%22 height=%2260%22 fill=%22none%22/><circle cx=%2230%22 cy=%2230%22 r=%224%22 fill=%22%23C87533%22/></svg>');pointer-events:none;z-index:0;"></div>
                 <div class="bingo-modal-content" style="flex:1;display:flex;flex-direction:column;position:relative;overflow:hidden;">
@@ -1948,12 +1938,15 @@
                 }
             </style>
 
-            <!-- Netflix-Style Recommendations Section -->
+            <!-- Elegant Recommendations Section -->
             <section class="netflix-recommendations" id="recommend-section">
                 <!-- Section Header -->
                 <div class="netflix-header">
                     <div class="netflix-title-wrapper">
-                        <h2 class="netflix-title">우희를 위한 추천 도서</h2>
+                        <div class="title-icon-wrapper">
+                            <span class="title-sparkle">✨</span>
+                            <h2 class="netflix-title">우희를 위한 추천 도서</h2>
+                        </div>
                         <p class="netflix-subtitle">AI가 학습 패턴을 분석해 골라낸 맞춤 책</p>
                     </div>
                     <button class="netflix-view-all" onclick="alert('전체 추천 도서 보기 (준비중)')">
@@ -1962,25 +1955,33 @@
                     </button>
                 </div>
 
-                <!-- Books Grid Container (가로형 2권 고정) -->
+                <!-- Books Grid Container -->
                 <div class="netflix-books-grid">
-                    <!-- Book Card 1 - 가로형 -->
+                    <!-- Book Card 1 -->
                     <div class="netflix-book-card-horizontal">
                         <div class="netflix-card-thumbnail">
-                            <img src="../images/thumbnails/book_02.png" alt="숲속 친구들" onerror="this.src='https://via.placeholder.com/200x300/10b981/white?text=숲속+친구들'">
-                            <span class="netflix-card-badge">K1-1</span>
-                            <div class="netflix-card-match">92% 일치</div>
+                            <img src="../img/book-recommend-1.svg" alt="숲속 친구들">
+                            <div class="netflix-card-match">
+                                <i class="fa-solid fa-heart"></i>
+                                <span>92%</span>
+                            </div>
                         </div>
                         <div class="netflix-card-info">
                             <div class="netflix-card-ai-reason">
-                                <i class="fa-solid fa-sparkles"></i>
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
                                 <span>코어북 주제와 연결된 책이에요</span>
                             </div>
                             <div class="netflix-card-header">
                                 <h3>숲속 친구들</h3>
                                 <div class="netflix-card-meta">
-                                    <span class="netflix-duration">📖 15분</span>
-                                    <span class="netflix-genre">자연·동물</span>
+                                    <span class="meta-badge orange">
+                                        <i class="fa-solid fa-clock"></i>
+                                        15분
+                                    </span>
+                                    <span class="meta-badge green">
+                                        <i class="fa-solid fa-tag"></i>
+                                        자연·동물
+                                    </span>
                                 </div>
                             </div>
                             <p class="netflix-card-desc">동물 친구들의 따뜻한 우정 이야기. 이번 주 코어북의 '우정' 주제를 더 깊이 탐구해보세요.</p>
@@ -1991,32 +1992,38 @@
                             </div>
                             <div class="netflix-card-actions">
                                 <a href="https://g10016775-cpu.github.io/junghwan/prototype/%EB%B6%81%ED%81%B4%EB%9F%BD3.0_%ED%86%B5%ED%95%A9%EB%B7%B0%EC%96%B4_v0.2.html" target="_blank" class="netflix-btn-primary">
-                                    <i class="fa-solid fa-book-open"></i> 읽기
+                                    <i class="fa-solid fa-book-open"></i>
+                                    <span>읽기 시작</span>
                                 </a>
-                                <button class="netflix-btn-secondary" onclick="alert('책 정보 더보기')">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Book Card 2 - 가로형 -->
+                    <!-- Book Card 2 -->
                     <div class="netflix-book-card-horizontal">
                         <div class="netflix-card-thumbnail">
-                            <img src="../images/thumbnails/book_03.png" alt="우주 탐험대" onerror="this.src='https://via.placeholder.com/200x300/7c3aed/white?text=우주+탐험대'">
-                            <span class="netflix-card-badge">K2-1</span>
-                            <div class="netflix-card-match">88% 일치</div>
+                            <img src="../img/book-recommend-2.svg" alt="우주 탐험대">
+                            <div class="netflix-card-match purple">
+                                <i class="fa-solid fa-star"></i>
+                                <span>88%</span>
+                            </div>
                         </div>
                         <div class="netflix-card-info">
-                            <div class="netflix-card-ai-reason">
-                                <i class="fa-solid fa-sparkles"></i>
+                            <div class="netflix-card-ai-reason purple">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
                                 <span>모험을 좋아하는 우희에게 추천해요</span>
                             </div>
                             <div class="netflix-card-header">
                                 <h3>우주 탐험대</h3>
                                 <div class="netflix-card-meta">
-                                    <span class="netflix-duration">📖 20분</span>
-                                    <span class="netflix-genre">과학·모험</span>
+                                    <span class="meta-badge purple">
+                                        <i class="fa-solid fa-clock"></i>
+                                        20분
+                                    </span>
+                                    <span class="meta-badge blue">
+                                        <i class="fa-solid fa-tag"></i>
+                                        과학·모험
+                                    </span>
                                 </div>
                             </div>
                             <p class="netflix-card-desc">신비로운 우주를 여행하는 모험 이야기. 상상력을 키우고 과학 지식도 함께 배워요.</p>
@@ -2026,12 +2033,94 @@
                                 <span>과학</span>
                             </div>
                             <div class="netflix-card-actions">
-                                <a href="https://g10016775-cpu.github.io/junghwan/prototype/%EB%B6%81%ED%81%B4%EB%9F%BD3.0_%ED%86%B5%ED%95%A9%EB%B7%B0%EC%96%B4_v0.2.html" target="_blank" class="netflix-btn-primary">
-                                    <i class="fa-solid fa-book-open"></i> 읽기
+                                <a href="https://g10016775-cpu.github.io/junghwan/prototype/%EB%B6%81%ED%81%B4%EB%9F%BD3.0_%ED%86%B5%ED%95%A9%EB%B7%B0%EC%96%B4_v0.2.html" target="_blank" class="netflix-btn-primary purple">
+                                    <i class="fa-solid fa-book-open"></i>
+                                    <span>읽기 시작</span>
                                 </a>
-                                <button class="netflix-btn-secondary" onclick="alert('책 정보 더보기')">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book Card 3 - Hidden by default, shown when week is collapsed -->
+                    <div class="netflix-book-card-horizontal extra-book" style="display: none;">
+                        <div class="netflix-card-thumbnail">
+                            <img src="../img/book-recommend-3.svg" alt="마법의 정원">
+                            <div class="netflix-card-match pink">
+                                <i class="fa-solid fa-sparkles"></i>
+                                <span>85%</span>
+                            </div>
+                        </div>
+                        <div class="netflix-card-info">
+                            <div class="netflix-card-ai-reason pink">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span>창의력을 키우는 환상 동화예요</span>
+                            </div>
+                            <div class="netflix-card-header">
+                                <h3>마법의 정원</h3>
+                                <div class="netflix-card-meta">
+                                    <span class="meta-badge pink">
+                                        <i class="fa-solid fa-clock"></i>
+                                        18분
+                                    </span>
+                                    <span class="meta-badge purple">
+                                        <i class="fa-solid fa-tag"></i>
+                                        판타지·마법
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="netflix-card-desc">신비로운 마법 정원에서 펼쳐지는 모험. 상상력과 창의력이 자라나는 이야기예요.</p>
+                            <div class="netflix-card-tags">
+                                <span>판타지</span>
+                                <span>창의력</span>
+                                <span>마법</span>
+                            </div>
+                            <div class="netflix-card-actions">
+                                <a href="https://g10016775-cpu.github.io/junghwan/prototype/%EB%B6%81%ED%81%B4%EB%9F%BD3.0_%ED%86%B5%ED%95%A9%EB%B7%B0%EC%96%B4_v0.2.html" target="_blank" class="netflix-btn-primary pink">
+                                    <i class="fa-solid fa-book-open"></i>
+                                    <span>읽기 시작</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book Card 4 - Hidden by default, shown when week is collapsed -->
+                    <div class="netflix-book-card-horizontal extra-book" style="display: none;">
+                        <div class="netflix-card-thumbnail">
+                            <img src="../img/book-recommend-4.svg" alt="바다 탐험가">
+                            <div class="netflix-card-match teal">
+                                <i class="fa-solid fa-fish"></i>
+                                <span>82%</span>
+                            </div>
+                        </div>
+                        <div class="netflix-card-info">
+                            <div class="netflix-card-ai-reason teal">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span>자연을 사랑하는 우희에게 추천해요</span>
+                            </div>
+                            <div class="netflix-card-header">
+                                <h3>바다 탐험가</h3>
+                                <div class="netflix-card-meta">
+                                    <span class="meta-badge teal">
+                                        <i class="fa-solid fa-clock"></i>
+                                        16분
+                                    </span>
+                                    <span class="meta-badge blue">
+                                        <i class="fa-solid fa-tag"></i>
+                                        자연·해양
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="netflix-card-desc">깊고 넓은 바다 속 세계를 탐험하는 이야기. 해양 생물과 환경을 배워요.</p>
+                            <div class="netflix-card-tags">
+                                <span>자연</span>
+                                <span>해양</span>
+                                <span>탐험</span>
+                            </div>
+                            <div class="netflix-card-actions">
+                                <a href="https://g10016775-cpu.github.io/junghwan/prototype/%EB%B6%81%ED%81%B4%EB%9F%BD3.0_%ED%86%B5%ED%95%A9%EB%B7%B0%EC%96%B4_v0.2.html" target="_blank" class="netflix-btn-primary teal">
+                                    <i class="fa-solid fa-book-open"></i>
+                                    <span>읽기 시작</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -2039,17 +2128,18 @@
             </section>
 
             <style>
-            /* Netflix-Style Recommendations */
+            /* ===== Elegant Recommendations Section ===== */
             .netflix-recommendations {
                 margin-bottom: 3rem;
                 padding: 0;
             }
 
+            /* Section Header */
             .netflix-header {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 1.5rem;
+                margin-bottom: 2rem;
                 padding: 0 4px;
             }
 
@@ -2057,76 +2147,125 @@
                 flex: 1;
             }
 
+            .title-icon-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 6px;
+            }
+
+            .title-sparkle {
+                font-size: 24px;
+                animation: sparkle 2s ease-in-out infinite;
+            }
+
+            @keyframes sparkle {
+                0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+                50% { opacity: 0.7; transform: scale(1.1) rotate(15deg); }
+            }
+
             .netflix-title {
                 font-family: 'Noto Sans KR', sans-serif;
-                font-size: 24px;
+                font-size: 26px;
                 font-weight: 800;
                 color: #1a1a2e;
-                margin: 0 0 4px 0;
+                margin: 0;
                 letter-spacing: -0.5px;
+                background: linear-gradient(135deg, #FF9F43 0%, #f97316 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
             }
 
             .netflix-subtitle {
                 font-size: 14px;
                 color: #9ca3af;
                 margin: 0;
+                font-weight: 500;
             }
 
             .netflix-view-all {
                 display: flex;
                 align-items: center;
                 gap: 6px;
-                padding: 8px 16px;
-                background: white;
-                border: 1.5px solid #e5e7eb;
-                border-radius: 20px;
+                padding: 10px 18px;
+                background: linear-gradient(135deg, #FFF5EB 0%, #FFE4CC 100%);
+                border: 2px solid #FFD4A3;
+                border-radius: 24px;
                 font-size: 14px;
-                font-weight: 600;
-                color: #6b7280;
+                font-weight: 700;
+                color: #FF9F43;
                 cursor: pointer;
-                transition: all 0.2s;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
 
             .netflix-view-all:hover {
-                background: #f9fafb;
-                border-color: #d1d5db;
-                color: #374151;
-                transform: translateY(-1px);
+                background: linear-gradient(135deg, #FFE4CC 0%, #FFD4A3 100%);
+                border-color: #FFBA7A;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 16px rgba(255, 159, 67, 0.2);
             }
 
-            /* Books Grid Container (PC: 가로 2권 배치, 모바일: 세로 배치) */
+            /* Books Grid Container */
             .netflix-books-grid {
-                display: flex;
-                flex-direction: row;
-                gap: 16px;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
                 padding: 0 4px;
             }
 
-            /* 가로형 Book Card */
+            /* When only 2 books (default state) - 1x2 layout */
+            .netflix-books-grid:not(.expanded) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* When 4 books (expanded state) - 2x2 layout */
+            .netflix-books-grid.expanded {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Book Card - Elegant Horizontal Layout */
             .netflix-book-card-horizontal {
                 display: flex;
                 flex: 1;
                 background: white;
-                border-radius: 20px;
+                border-radius: 24px;
                 overflow: hidden;
-                border: 2px solid #e5e7eb;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                transition: all 0.3s ease;
-                height: 200px;
+                border: 2px solid transparent;
+                box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                height: 260px;
                 min-width: 0;
+                position: relative;
+            }
+
+            .netflix-book-card-horizontal::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: 24px;
+                padding: 2px;
+                background: linear-gradient(135deg, #FFE4CC 0%, #C7D2FE 100%);
+                -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                opacity: 0;
+                transition: opacity 0.4s;
             }
 
             .netflix-book-card-horizontal:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-                border-color: #d1d5db;
+                transform: translateY(-6px);
+                box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
             }
 
-            /* 책 썸네일 영역 (왼쪽) */
+            .netflix-book-card-horizontal:hover::before {
+                opacity: 1;
+            }
+
+            /* Thumbnail Area */
             .netflix-card-thumbnail {
                 position: relative;
-                flex: 0 0 140px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                flex: 0 0 160px;
                 overflow: hidden;
             }
 
@@ -2134,121 +2273,233 @@
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             }
 
-            .netflix-card-badge {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-                background: rgba(0, 0, 0, 0.8);
-                color: white;
-                padding: 4px 10px;
-                border-radius: 12px;
-                font-size: 11px;
-                font-weight: 700;
-                backdrop-filter: blur(10px);
-                letter-spacing: 0.3px;
+            .netflix-book-card-horizontal:hover .netflix-card-thumbnail img {
+                transform: scale(1.05);
             }
 
+            /* Match Badge */
             .netflix-card-match {
                 position: absolute;
-                bottom: 10px;
-                left: 10px;
-                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                color: white;
-                padding: 4px 10px;
-                border-radius: 12px;
-                font-size: 11px;
+                top: 12px;
+                right: 12px;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(12px);
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-size: 12px;
                 font-weight: 800;
-                backdrop-filter: blur(10px);
-                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+                color: #FF9F43;
+                box-shadow: 0 4px 12px rgba(255, 159, 67, 0.2);
             }
 
-            /* 책 정보 영역 (오른쪽) */
+            .netflix-card-match i {
+                font-size: 11px;
+            }
+
+            .netflix-card-match.purple {
+                color: #8b5cf6;
+                box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+            }
+
+            .netflix-card-match.pink {
+                color: #F472B6;
+                box-shadow: 0 4px 12px rgba(244, 114, 182, 0.2);
+            }
+
+            .netflix-card-match.teal {
+                color: #14B8A6;
+                box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2);
+            }
+
+            /* Card Info Area */
             .netflix-card-info {
                 flex: 1;
-                padding: 16px 18px;
+                padding: 20px;
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
+                gap: 10px;
                 overflow: hidden;
             }
 
+            /* AI Reason Badge */
+            .netflix-card-ai-reason {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 12px;
+                background: linear-gradient(135deg, #FFF5EB 0%, #FFE4CC 100%);
+                border-radius: 12px;
+                border: 1px solid #FFD4A3;
+            }
+
+            .netflix-card-ai-reason.purple {
+                background: linear-gradient(135deg, #F0F4FF 0%, #E0E7FF 100%);
+                border-color: #C7D2FE;
+            }
+
+            .netflix-card-ai-reason.pink {
+                background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E6 100%);
+                border-color: #FFC1CC;
+            }
+
+            .netflix-card-ai-reason.teal {
+                background: linear-gradient(135deg, #F0FDFA 0%, #CCFBF1 100%);
+                border-color: #99F6E4;
+            }
+
+            .netflix-card-ai-reason i {
+                color: #FF9F43;
+                font-size: 14px;
+                flex-shrink: 0;
+            }
+
+            .netflix-card-ai-reason.purple i {
+                color: #8b5cf6;
+            }
+
+            .netflix-card-ai-reason.pink i {
+                color: #F472B6;
+            }
+
+            .netflix-card-ai-reason.teal i {
+                color: #14B8A6;
+            }
+
+            .netflix-card-ai-reason span {
+                font-size: 11px;
+                font-weight: 700;
+                color: #92400e;
+                line-height: 1.4;
+            }
+
+            .netflix-card-ai-reason.purple span {
+                color: #5b21b6;
+            }
+
+            .netflix-card-ai-reason.pink span {
+                color: #831843;
+            }
+
+            .netflix-card-ai-reason.teal span {
+                color: #134e4a;
+            }
+
+            /* Card Header */
             .netflix-card-header h3 {
                 font-family: 'Noto Sans KR', sans-serif;
-                font-size: 17px;
-                font-weight: 700;
+                font-size: 19px;
+                font-weight: 800;
                 color: #1a1a2e;
-                margin: 0 0 6px 0;
+                margin: 0 0 8px 0;
                 line-height: 1.3;
             }
 
             .netflix-card-meta {
                 display: flex;
                 align-items: center;
-                gap: 10px;
-                margin-bottom: 8px;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-bottom: 6px;
             }
 
-            .netflix-duration, .netflix-genre {
+            /* Meta Badges */
+            .meta-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 5px 10px;
+                border-radius: 12px;
                 font-size: 11px;
-                color: #6b7280;
-                font-weight: 500;
+                font-weight: 700;
+                border: 1.5px solid;
             }
 
+            .meta-badge i {
+                font-size: 10px;
+            }
+
+            .meta-badge.orange {
+                background: #FFF5EB;
+                color: #FF9F43;
+                border-color: #FFD4A3;
+            }
+
+            .meta-badge.green {
+                background: #F0FDF4;
+                color: #10b981;
+                border-color: #86efac;
+            }
+
+            .meta-badge.purple {
+                background: #F0F4FF;
+                color: #8b5cf6;
+                border-color: #C7D2FE;
+            }
+
+            .meta-badge.blue {
+                background: #EFF6FF;
+                color: #3b82f6;
+                border-color: #93C5FD;
+            }
+
+            .meta-badge.pink {
+                background: #FFF0F5;
+                color: #F472B6;
+                border-color: #FFC1CC;
+            }
+
+            .meta-badge.teal {
+                background: #F0FDFA;
+                color: #14B8A6;
+                border-color: #99F6E4;
+            }
+
+            /* Description */
             .netflix-card-desc {
                 font-size: 12px;
-                line-height: 1.5;
+                line-height: 1.6;
                 color: #6b7280;
-                margin: 0 0 8px 0;
+                margin: 0;
                 display: -webkit-box;
                 -webkit-line-clamp: 2;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
             }
 
+            /* Tags */
             .netflix-card-tags {
                 display: flex;
-                gap: 5px;
+                gap: 6px;
                 flex-wrap: wrap;
-                margin-bottom: 10px;
             }
 
             .netflix-card-tags span {
-                padding: 3px 8px;
-                background: #f3f4f6;
+                padding: 4px 10px;
+                background: #f9fafb;
                 color: #6b7280;
-                border-radius: 10px;
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
                 font-size: 10px;
                 font-weight: 600;
+                transition: all 0.2s;
             }
 
-            .netflix-card-ai-reason {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                padding: 8px 10px;
-                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-                border-radius: 10px;
-                margin-bottom: 10px;
+            .netflix-card-tags span:hover {
+                background: #f3f4f6;
+                border-color: #d1d5db;
             }
 
-            .netflix-card-ai-reason i {
-                color: #f59e0b;
-                font-size: 13px;
-                flex-shrink: 0;
-            }
-
-            .netflix-card-ai-reason span {
-                font-size: 11px;
-                font-weight: 600;
-                color: #92400e;
-                line-height: 1.3;
-            }
-
+            /* Action Buttons */
             .netflix-card-actions {
                 display: flex;
                 gap: 8px;
+                margin-top: auto;
             }
 
             .netflix-btn-primary {
@@ -2256,44 +2507,58 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                gap: 6px;
-                padding: 9px 16px;
-                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                gap: 8px;
+                padding: 12px 20px;
+                background: linear-gradient(135deg, #FF9F43 0%, #f97316 100%);
                 color: white;
                 border: none;
-                border-radius: 10px;
-                font-size: 12px;
-                font-weight: 700;
+                border-radius: 14px;
+                font-size: 13px;
+                font-weight: 800;
                 cursor: pointer;
-                transition: all 0.2s;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 text-decoration: none;
-                box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+                box-shadow: 0 4px 16px rgba(255, 159, 67, 0.3);
             }
 
             .netflix-btn-primary:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+                box-shadow: 0 8px 24px rgba(255, 159, 67, 0.4);
+                background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
             }
 
-            .netflix-btn-secondary {
-                width: 36px;
-                height: 36px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: #f3f4f6;
-                color: #6b7280;
-                border: none;
-                border-radius: 10px;
-                font-size: 15px;
-                cursor: pointer;
-                transition: all 0.2s;
-                flex-shrink: 0;
+            .netflix-btn-primary.purple {
+                background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+                box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
             }
 
-            .netflix-btn-secondary:hover {
-                background: #e5e7eb;
-                color: #374151;
+            .netflix-btn-primary.purple:hover {
+                background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+                box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+            }
+
+            .netflix-btn-primary.pink {
+                background: linear-gradient(135deg, #F472B6 0%, #EC4899 100%);
+                box-shadow: 0 4px 16px rgba(244, 114, 182, 0.3);
+            }
+
+            .netflix-btn-primary.pink:hover {
+                background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+                box-shadow: 0 8px 24px rgba(244, 114, 182, 0.4);
+            }
+
+            .netflix-btn-primary.teal {
+                background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%);
+                box-shadow: 0 4px 16px rgba(20, 184, 166, 0.3);
+            }
+
+            .netflix-btn-primary.teal:hover {
+                background: linear-gradient(135deg, #14B8A6 0%, #0F766E 100%);
+                box-shadow: 0 8px 24px rgba(20, 184, 166, 0.4);
+            }
+
+            .netflix-btn-primary i {
+                font-size: 13px;
             }
 
             @media (max-width: 768px) {
@@ -2305,13 +2570,14 @@
                     font-size: 12px;
                 }
 
-                /* 모바일에서 세로 배치 */
-                .netflix-books-grid {
-                    flex-direction: column;
+                /* 모바일에서 세로 배치 (1열) */
+                .netflix-books-grid,
+                .netflix-books-grid.expanded {
+                    grid-template-columns: 1fr;
                 }
 
                 .netflix-book-card-horizontal {
-                    height: 180px;
+                    height: 210px;
                 }
 
                 .netflix-card-thumbnail {
@@ -3550,6 +3816,10 @@
                 initBingoBoard();
             }
             const modal = document.getElementById('bingo-modal');
+            // body 직접 자식으로 이동 (부모 overflow/transform이 fixed 포지셔닝 방해 방지)
+            if (modal.parentElement !== document.body) {
+                document.body.appendChild(modal);
+            }
             modal.classList.remove('hidden');
             modal.style.display = 'flex';
             renderBingoGrid();
@@ -4254,9 +4524,29 @@ ProtoNav.registerScenarios([
                 textProg.bookCompleted = true; textProg.quizCompleted = true; textProg.quizScore = 100;
                 textProg.weekCompleted = true; textProg.allComplete = true;
                 saveWeekProgress(textProg, textKey);
-                switchBookType('textbook');
                 sessionStorage.setItem('weekAllComplete_' + currentWeek, 'true');
-                setTimeout(() => { if (typeof applyWeekAllCompleteState === 'function') applyWeekAllCompleteState(); }, 600);
+                // 이미 접혀있으면 먼저 펼치기
+                if (isWeekCollapsed) {
+                    isWeekCollapsed = false;
+                    const w = document.getElementById('carousel-wrapper');
+                    if (w) { w.classList.remove('week-done-collapsed'); w.style.maxHeight = ''; }
+                    const tb = document.getElementById('book-type-tabs');
+                    if (tb) tb.style.display = '';
+                    const banner = document.getElementById('week-done-banner');
+                    if (banner) banner.classList.remove('visible');
+                }
+                sessionStorage.removeItem('isWeekCollapsed');
+                // checkAndAutoCollapse의 자동 접기/축하 차단 (Proto Nav이 직접 처리)
+                window._protoNavCollapsing = true;
+                // UI 갱신 (switchBookType early return 방지)
+                currentBookType = 'core';
+                switchBookType('textbook');
+                // 접기 + 축하 효과 (switchBookType 내부 타이밍보다 이후에 실행)
+                setTimeout(() => {
+                    window._protoNavCollapsing = false;
+                    if (!isWeekCollapsed) toggleWeekCollapse();
+                    showWeekCompleteCelebration();
+                }, 1200);
                 ProtoNav.toast('주차 전체 완료 (코어+교과서) 적용');
             }},
             { icon: 'fa-star', label: '추천도서 읽기 완료', onClick: () => {
@@ -4470,6 +4760,9 @@ function toggleWeekCollapse() {
         if (toggleCompleted) toggleCompleted.classList.remove('collapsed');
         if (tabs) tabs.style.display = '';
         if (banner) banner.classList.remove('visible');
+
+        // 추천도서 2권으로 축소
+        toggleRecommendedBooks(false);
     } else {
         // 접기 - 족자처럼 아래에서 위로 말려 올라감
         isWeekCollapsed = true;
@@ -4490,9 +4783,47 @@ function toggleWeekCollapse() {
         const tp = getWeekProgress(currentWeek + '_textbook');
         if (cp && cp.allComplete && tp && tp.allComplete) {
             if (banner) banner.classList.add('visible');
+
+            // 추천도서 4권으로 확장
+            toggleRecommendedBooks(true);
         }
     }
 }
+
+// 추천도서 2권/4권 토글 함수
+function toggleRecommendedBooks(expand) {
+    const grid = document.querySelector('.netflix-books-grid');
+    const extraBooks = document.querySelectorAll('.extra-book');
+
+    if (expand) {
+        // 4권으로 확장
+        if (grid) grid.classList.add('expanded');
+        extraBooks.forEach(book => {
+            book.style.display = 'flex';
+        });
+    } else {
+        // 2권으로 축소
+        if (grid) grid.classList.remove('expanded');
+        extraBooks.forEach(book => {
+            book.style.display = 'none';
+        });
+    }
+}
+
+// 페이지 로드 시 추천도서 상태 초기화
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        // 주차가 접혀있고 완료 상태인지 확인
+        const savedCollapseState = sessionStorage.getItem('isWeekCollapsed');
+        const cp = getWeekProgress(currentWeek + '_core');
+        const tp = getWeekProgress(currentWeek + '_textbook');
+
+        if (savedCollapseState === 'true' && cp && cp.allComplete && tp && tp.allComplete) {
+            // 추천도서 4권 표시
+            toggleRecommendedBooks(true);
+        }
+    }, 100);
+});
 
 // 주차 전체 완료 시 자동으로 접기
 function checkAndAutoCollapse() {
@@ -4508,17 +4839,32 @@ function checkAndAutoCollapse() {
         // 완료 화면의 버튼만 표시
         if (toggleBtnCompleted) toggleBtnCompleted.style.display = 'flex';
 
+        // Proto Nav이 직접 접기/축하를 처리 중이면 자동 접기 건너뜀
+        if (window._protoNavCollapsing) return;
+
         // sessionStorage에서 접힌 상태 확인
         const savedCollapseState = sessionStorage.getItem('isWeekCollapsed');
 
         // 자동 접기 (최초 1회만, 또는 저장된 상태가 접힘일 때)
+        const celebrationKey = 'celebrationShown_week_' + currentWeek;
+        const celebrationShown = sessionStorage.getItem(celebrationKey);
+
         if (savedCollapseState === 'true' && !isWeekCollapsed) {
             // 저장된 상태가 접힘이면 즉시 접기
             toggleWeekCollapse();
+            // 축하 효과 미표시였다면 표시
+            if (!celebrationShown) {
+                setTimeout(() => {
+                    showWeekCompleteCelebration();
+                    sessionStorage.setItem(celebrationKey, 'true');
+                }, 300);
+            }
         } else if (!isWeekCollapsed && savedCollapseState === null) {
-            // 최초 완료 시 자동 접기
+            // 최초 완료 시 자동 접기 + 축하 효과
             setTimeout(() => {
                 toggleWeekCollapse();
+                showWeekCompleteCelebration();
+                sessionStorage.setItem(celebrationKey, 'true');
             }, 600);
         }
     } else {
@@ -4538,6 +4884,55 @@ switchBookType = function(bookType) {
     origSwitchBookType(bookType);
 };
 
+// ===== 1주차 완료 축하 효과 =====
+let _celebrationActive = false;
+function showWeekCompleteCelebration() {
+    const overlay = document.getElementById('week-complete-celebration');
+    if (!overlay || _celebrationActive) return;
+    _celebrationActive = true;
+
+    // 파티클 생성
+    const particleContainer = document.getElementById('celebration-particles');
+    particleContainer.innerHTML = '';
+    const colors = ['#FF9F43', '#FBBF24', '#F472B6', '#A78BFA', '#34D399', '#60A5FA', '#FB923C'];
+    const emojis = ['⭐', '🎉', '✨', '🎊', '💫'];
+
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const size = Math.random() * 10 + 6;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 0.8;
+        const duration = Math.random() * 1.5 + 1.5;
+        particle.style.cssText = `width:${size}px;height:${size}px;background:${color};left:${left}%;top:-${size}px;animation-delay:${delay}s;animation-duration:${duration}s;`;
+        particleContainer.appendChild(particle);
+    }
+    for (let i = 0; i < 10; i++) {
+        const star = document.createElement('div');
+        star.className = 'particle-star';
+        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+        const left = Math.random() * 100;
+        const delay = Math.random() * 0.6;
+        const duration = Math.random() * 1.5 + 2;
+        star.textContent = emoji;
+        star.style.cssText = `left:${left}%;top:-24px;animation-delay:${delay}s;animation-duration:${duration}s;`;
+        particleContainer.appendChild(star);
+    }
+
+    overlay.classList.add('active');
+
+    // 2초 후 사라짐
+    setTimeout(() => {
+        overlay.classList.add('fade-out');
+        setTimeout(() => {
+            overlay.classList.remove('active', 'fade-out');
+            particleContainer.innerHTML = '';
+            _celebrationActive = false;
+        }, 600);
+    }, 2000);
+}
+
 // 페이지 로드 시 주차완료 상태 복원
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
@@ -4555,6 +4950,136 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 800);
 });
 </script>
+
+<!-- 1주차 완료 축하 오버레이 -->
+<div id="week-complete-celebration" class="celebration-overlay">
+    <div class="celebration-particles" id="celebration-particles"></div>
+    <div class="celebration-character">
+        <img src="../img/EHEH.png" alt="EhEh" class="celebration-img">
+        <div class="celebration-bubble">
+            <p>우와! 1주차 학습을 모두 완료했어, 축하해!</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .celebration-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+    .celebration-overlay.active {
+        display: flex;
+    }
+    .celebration-character {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        animation: celebrationPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        opacity: 0;
+    }
+    .celebration-img {
+        width: 160px;
+        height: auto;
+        filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
+        animation: celebrationBounce 0.8s ease-in-out 0.4s infinite alternate;
+    }
+    .celebration-bubble {
+        margin-top: -8px;
+        background: white;
+        border: 2px solid #FF9F43;
+        border-radius: 20px;
+        padding: 14px 22px;
+        box-shadow: 0 8px 32px rgba(255, 159, 67, 0.25);
+        max-width: 280px;
+        text-align: center;
+        position: relative;
+        animation: celebrationBubbleIn 0.4s ease-out 0.3s forwards;
+        opacity: 0;
+    }
+    .celebration-bubble::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0; height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #FF9F43;
+    }
+    .celebration-bubble::after {
+        content: '';
+        position: absolute;
+        top: -7px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0; height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid white;
+    }
+    .celebration-bubble p {
+        font-family: 'Noto Sans KR', sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: #92400e;
+        line-height: 1.5;
+        margin: 0;
+    }
+    /* 파티클 */
+    .celebration-particles {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        animation: particleFall linear forwards;
+        opacity: 0;
+    }
+    .particle-star {
+        position: absolute;
+        font-size: 20px;
+        animation: particleFall linear forwards;
+        opacity: 0;
+    }
+    /* 사라지는 애니메이션 */
+    .celebration-overlay.fade-out .celebration-character {
+        animation: celebrationFadeOut 0.5s ease-in forwards;
+    }
+    .celebration-overlay.fade-out .celebration-particles {
+        animation: celebrationFadeOut 0.4s ease-in forwards;
+    }
+    @keyframes celebrationPopIn {
+        0% { opacity: 0; transform: scale(0.3) translateY(60px); }
+        60% { opacity: 1; transform: scale(1.08) translateY(-10px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes celebrationBounce {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-8px); }
+    }
+    @keyframes celebrationBubbleIn {
+        0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes celebrationFadeOut {
+        0% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(0.8) translateY(20px); }
+    }
+    @keyframes particleFall {
+        0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+        80% { opacity: 1; }
+        100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.5); }
+    }
+</style>
 
 <!-- 빙고 토스트 알림 (overflow-hidden 밖에 배치) -->
 <div id="bingo-toast" class="bingo-toast"></div>
