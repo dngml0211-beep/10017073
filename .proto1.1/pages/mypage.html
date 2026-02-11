@@ -2434,6 +2434,7 @@
 
         .certificate-stars {
             font-size: 24px;
+            margin-top: 20px;
             margin-bottom: 12px;
             letter-spacing: 6px;
             display: inline-block;
@@ -2461,7 +2462,7 @@
                 transform: translateY(0) scale(1);
             }
             50% {
-                transform: translateY(-12px) scale(1.1);
+                transform: translateY(-8px) scale(1.1);
             }
         }
 
@@ -2505,7 +2506,7 @@
 
         .certificate-progress {
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             gap: 32px;
             margin-bottom: 16px;
             padding: 0;
@@ -4738,75 +4739,32 @@
                         </div>
 
                         <!-- 레벨 완료 인증서 스타일 -->
-                        <div class="krs-certificate-new">
-                            <!-- 왼쪽: 장식 영역 -->
-                            <div class="certificate-decoration">
-                                <div class="decoration-dot dot-1"></div>
-                                <div class="decoration-dot dot-2"></div>
-                                <div class="decoration-dot dot-3"></div>
-                                <div class="decoration-dot dot-4"></div>
-
-                                <div class="certificate-stars">
-                                    <span>⭐</span><span>⭐</span><span>⭐</span>
-                                </div>
-
-                                <div class="certificate-badge">
-                                    <div class="badge-icon">
-                                        <i class="fa-solid fa-graduation-cap"></i>
-                                    </div>
-                                </div>
-
-                                <h3 class="decoration-title">Congratulations!</h3>
-                                <p class="decoration-subtitle">멋진 성과입니다!</p>
+                        <div class="krs-certificate">
+                            <div class="certificate-header"></div>
+                            <div class="certificate-stars">
+                                <span>⭐</span><span>⭐</span><span>⭐</span>
                             </div>
-
-                            <!-- 오른쪽: 정보 영역 -->
-                            <div class="certificate-info">
-                                <div class="info-header">
-                                    <h2 class="info-title">K1-2 레벨 수료 완료!</h2>
-                                    <div class="info-trophy">🏆</div>
+                            <div class="certificate-icon-wrapper">
+                                <div class="certificate-icon">🎓</div>
+                            </div>
+                            <h2 class="certificate-title">K1-2 레벨 수료 완료!</h2>
+                            <p class="certificate-text">
+                                6개월간의 열정적인 학습으로<br/>
+                                <strong>92%의 높은 완료율</strong>을 달성했습니다.
+                            </p>
+                            <div class="certificate-progress">
+                                <div class="progress-item">
+                                    <span>필수 학습</span>
+                                    <span class="progress-value">38/42 완료</span>
                                 </div>
-
-                                <p class="info-description">
-                                    6개월간의 열정적인 학습 여정이 마무리되었습니다.
-                                </p>
-
-                                <div class="completion-section">
-                                    <div class="completion-header">
-                                        <span class="completion-label">전체 완료율</span>
-                                        <span class="completion-percent">92%</span>
-                                    </div>
-                                    <div class="completion-bar">
-                                        <div class="completion-fill" style="width: 92%"></div>
-                                    </div>
-                                    <p class="completion-hint">100%까지 얼마 남지 않았어요!</p>
+                                <div class="progress-item">
+                                    <span>추천 학습</span>
+                                    <span class="progress-value">48권 완독</span>
                                 </div>
-
-                                <div class="stats-section">
-                                    <div class="stat-item">
-                                        <div class="stat-icon">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                        </div>
-                                        <div class="stat-content">
-                                            <span class="stat-label">필수 학습</span>
-                                            <span class="stat-value">38<span class="stat-total">/42</span></span>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-icon">
-                                            <i class="fa-solid fa-book"></i>
-                                        </div>
-                                        <div class="stat-content">
-                                            <span class="stat-label">추천 학습</span>
-                                            <span class="stat-value">48<span class="stat-total">권</span></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <button class="next-level-btn">
-                                    다음 레벨 (K2-1) 시작하기
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </button>
+                            </div>
+                            <div class="certificate-next">
+                                <i class="fa-solid fa-arrow-right"></i>
+                                <span>다음 레벨: K2-1</span>
                             </div>
                         </div>
 

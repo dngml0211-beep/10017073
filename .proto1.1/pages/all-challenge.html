@@ -88,6 +88,9 @@
             padding: 16px 24px;
             background: #f9fafb;
             border-bottom: 1px solid #e5e7eb;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .challenge-tab {
             flex: 1;
@@ -125,6 +128,9 @@
             padding: 24px;
             background: #f9fafb;
             min-height: calc(100vh - 200px);
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* === 오늘의 도전 영역 === */
@@ -1797,12 +1803,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fbbf24 100%);
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%);
             border-radius: 50%;
-            border: 4px solid #f59e0b;
-            box-shadow: 0 0 30px rgba(245, 158, 11, 0.6), 0 8px 24px rgba(245, 158, 11, 0.4);
+            border: 3px dashed #9ca3af;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             position: relative;
-            animation: rewardPulse 2s ease-in-out infinite;
+            opacity: 0.7;
+            filter: grayscale(0.3);
         }
 
         @keyframes rewardPulse {
@@ -1817,23 +1824,22 @@
         }
 
         .reward-badge-icon::before {
-            content: '✨';
+            content: '🔒';
             position: absolute;
             top: -8px;
             right: -8px;
-            font-size: 24px;
-            animation: sparkleRotate 3s linear infinite;
+            font-size: 20px;
+            opacity: 0.6;
         }
 
         .reward-badge-icon::after {
             content: '';
             position: absolute;
             inset: -8px;
-            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #f59e0b 100%);
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 50%, #e5e7eb 100%);
             border-radius: 50%;
-            opacity: 0.2;
+            opacity: 0.15;
             z-index: -1;
-            animation: glowPulse 2s ease-in-out infinite;
         }
 
         @keyframes sparkleRotate {
@@ -1859,13 +1865,14 @@
         .reward-badge-label {
             font-size: 14px;
             font-weight: 800;
-            color: white;
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #6b7280;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
             padding: 6px 16px;
             border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
+            border: 2px solid #d1d5db;
         }
 
         .reward-badge-label::before {
@@ -1875,8 +1882,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
-            animation: shimmer 3s infinite;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
         }
 
         @keyframes shimmer {
@@ -2352,8 +2358,7 @@
         .levelup-modal-content {
             position: relative;
             width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
+            max-width: 520px;
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -2407,11 +2412,7 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
-        .levelup-modal-body {
-            padding: 24px;
-            max-height: calc(80vh - 72px);
-            overflow-y: auto;
-        }
+        /* levelup-modal-body는 단계별 네비게이션 스타일에서 재정의됨 */
 
         /* 티어표 스타일 */
         .levelup-tier-section {
@@ -2600,6 +2601,163 @@
         .points-notice i {
             font-size: 16px;
             margin-top: 1px;
+        }
+
+        /* 단계별 네비게이션 스타일 */
+        .levelup-modal-content {
+            display: flex;
+            flex-direction: column;
+            max-height: 85vh;
+        }
+
+        .levelup-modal-body {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            min-height: 420px;
+            padding: 24px;
+        }
+
+        .levelup-steps-container {
+            height: 100%;
+            min-height: 420px;
+            position: relative;
+        }
+
+        .levelup-step {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 420px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(30px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .levelup-step.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        /* 점수 얻는 방법 - 2단 그리드 */
+        .levelup-points-content-compact {
+            margin-top: 8px;
+        }
+
+        .points-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .points-column {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .points-summary-compact {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 14px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .summary-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .summary-row i {
+            color: #f59e0b;
+            font-size: 14px;
+        }
+
+        .summary-row strong {
+            color: #f97316;
+        }
+
+        .points-notice-compact {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid #ef4444;
+            font-size: 12px;
+            color: #dc2626;
+            line-height: 1.5;
+        }
+
+        .points-notice-compact i {
+            font-size: 14px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        /* 네비게이션 푸터 */
+        .levelup-modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .levelup-step-indicator {
+            display: flex;
+            gap: 8px;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d5db;
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+        }
+
+        .levelup-nav-btn-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            border: none;
+            color: white;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+        }
+
+        .levelup-nav-btn-circle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+        }
+
+        .levelup-nav-btn-circle:active {
+            transform: scale(0.95);
         }
 
         .krs-goal-card-game::before {
@@ -3313,7 +3471,14 @@
 
         .krs-mission-xp-icon {
             font-size: 16px;
-            animation: sparkle 2s infinite;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .krs-mission-xp-icon svg {
+            width: 16px;
+            height: 16px;
         }
 
         .krs-mission-xp-value {
@@ -4856,7 +5021,7 @@
         <div id="sidebar-container"></div>
 
         <!-- Main Content -->
-        <main class="flex-1 h-full overflow-y-auto">
+        <main class="flex-1 h-full overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
             <!-- 페이지 헤더 -->
             <div class="page-header">
                 <div class="flex items-center gap-16px">
@@ -4916,8 +5081,12 @@
                                         <div class="krs-mission-text">코어북 읽기 + 활동</div>
                                     </div>
                                     <div class="krs-mission-xp">
-                                        <span class="krs-mission-xp-icon">⚡</span>
-                                        <span class="krs-mission-xp-value">+20 XP</span>
+                                        <span class="krs-mission-xp-icon">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 2L3 9H8L7 14L13 7H8L9 2Z" fill="white" stroke="white" stroke-width="0.5" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span class="krs-mission-xp-value">+20점</span>
                                     </div>
                                 </div>
 
@@ -4929,8 +5098,12 @@
                                         <div class="krs-mission-text">독서 퀴즈 완료</div>
                                     </div>
                                     <div class="krs-mission-xp">
-                                        <span class="krs-mission-xp-icon">⚡</span>
-                                        <span class="krs-mission-xp-value">+10 XP</span>
+                                        <span class="krs-mission-xp-icon">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 2L3 9H8L7 14L13 7H8L9 2Z" fill="white" stroke="white" stroke-width="0.5" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span class="krs-mission-xp-value">+10점</span>
                                     </div>
                                 </div>
 
@@ -4942,8 +5115,12 @@
                                         <div class="krs-mission-text">관리이북 읽기</div>
                                     </div>
                                     <div class="krs-mission-xp">
-                                        <span class="krs-mission-xp-icon">⚡</span>
-                                        <span class="krs-mission-xp-value">+10 XP</span>
+                                        <span class="krs-mission-xp-icon">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 2L3 9H8L7 14L13 7H8L9 2Z" fill="white" stroke="white" stroke-width="0.5" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span class="krs-mission-xp-value">+10점</span>
                                     </div>
                                 </div>
 
@@ -4955,8 +5132,12 @@
                                         <div class="krs-mission-text">리텔링 활동 완료</div>
                                     </div>
                                     <div class="krs-mission-xp">
-                                        <span class="krs-mission-xp-icon">⚡</span>
-                                        <span class="krs-mission-xp-value">+10 XP</span>
+                                        <span class="krs-mission-xp-icon">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M9 2L3 9H8L7 14L13 7H8L9 2Z" fill="white" stroke="white" stroke-width="0.5" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span class="krs-mission-xp-value">+10점</span>
                                     </div>
                                 </div>
                             </div>
@@ -5031,7 +5212,7 @@
                                         </div>
 
                                         <div class="compact-xp">
-                                            <span class="xp-current">420</span> / <span class="xp-total">600 XP</span>
+                                            <span class="xp-current">420</span> / <span class="xp-total">600점</span>
                                             <span class="xp-percent">(70%)</span>
                                         </div>
                                     </div>
@@ -5039,7 +5220,7 @@
                                     <!-- 우측: 보상 메달 -->
                                     <div class="compact-reward-badge">
                                         <div class="reward-badge-icon">🥉</div>
-                                        <div class="reward-badge-label">보상</div>
+                                        <div class="reward-badge-label">목표 보상</div>
                                     </div>
                                 </div>
 
@@ -5124,16 +5305,6 @@
                                             <div class="roadmap-score">900점+</div>
                                             <div class="roadmap-label">다이아</div>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <!-- 보상 영역 -->
-                                <div class="compact-rewards">
-                                    <div class="compact-reward-title">🎁 레벨업 보상</div>
-                                    <div class="compact-reward-list">
-                                        <span class="compact-reward-item">🏆 K2-2 레벨</span>
-                                        <span class="compact-reward-divider">•</span>
-                                        <span class="compact-reward-item">📜 K2-1 수료증</span>
                                     </div>
                                 </div>
 
@@ -5237,7 +5408,7 @@
                             <span class="tc-mission-badge">✨ 이번 주 팀 미션</span>
                             <div class="tc-mission-icon">👥</div>
                             <h3 class="tc-mission-title">책 10권 읽기</h3>
-                            <div class="tc-mission-reward">⭐ 별 2개 + xp 100</div>
+                            <div class="tc-mission-reward">⭐ 별 2개 + 100점</div>
                             <!-- 다음 주 미션 미리보기 -->
                             <div class="tc-next-preview" id="next-mission-preview">
                                 <p class="tc-next-preview-label">📅 다음 주 미션</p>
@@ -5268,7 +5439,7 @@
                                 <div class="tc-featured-result">
                                     <span class="tc-result-success">미션 성공</span>
                                 </div>
-                                <p class="tc-featured-reward">⭐ 별 2개 + xp 10</p>
+                                <p class="tc-featured-reward">⭐ 별 2개 + 10점</p>
                             </div>
 
                             <!-- 팀원 그리드 -->
@@ -5341,7 +5512,7 @@
                             <button class="tc-refresh-btn" onclick="refreshMissions()">
                                 <i class="fa-solid fa-rotate"></i>
                                 <span>새로 불러오기</span>
-                                <span style="color:#92400E;">xp 50</span>
+                                <span style="color:#92400E;">50점</span>
                             </button>
                         </div>
                         <div class="tc-next-grid" id="mission-grid">
@@ -5506,7 +5677,7 @@
         // XP 확인 및 차감
         let xp = parseInt(localStorage.getItem('userXP') || '500');
         if (xp < 50) {
-            showRefreshToast('XP가 부족합니다!', 'error');
+            showRefreshToast('포인트가 부족합니다!', 'error');
             return;
         }
         xp -= 50;
@@ -5554,7 +5725,7 @@
 
         grid.innerHTML = html;
 
-        showRefreshToast('새로운 미션을 불러왔어요! (xp -50)', 'success');
+        showRefreshToast('새로운 미션을 불러왔어요! (-50점)', 'success');
     }
 
     function showRefreshToast(message, type) {
@@ -5769,7 +5940,7 @@
     });
     </script>
 
-<!-- 레벨업 정보 모달 -->
+<!-- 레벨업 정보 모달 (단계별 네비게이션) -->
 <div id="levelup-info-modal" class="levelup-modal" style="display: none;">
     <div class="levelup-modal-overlay" onclick="closeLevelUpInfoModal()"></div>
     <div class="levelup-modal-content">
@@ -5779,114 +5950,168 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
+
         <div class="levelup-modal-body">
-            <!-- 승급 티어표 -->
-            <div class="levelup-tier-section">
-                <h4 class="levelup-section-title">📊 승급 점수 기준</h4>
-                <div class="levelup-tier-table">
-                    <div class="tier-row">
-                        <div class="tier-icon">🥉</div>
-                        <div class="tier-name">브론즈</div>
-                        <div class="tier-score">600점</div>
-                    </div>
-                    <div class="tier-row">
-                        <div class="tier-icon">🥈</div>
-                        <div class="tier-name">실버</div>
-                        <div class="tier-score">700점</div>
-                    </div>
-                    <div class="tier-row">
-                        <div class="tier-icon">🥇</div>
-                        <div class="tier-name">골드</div>
-                        <div class="tier-score">800점</div>
-                    </div>
-                    <div class="tier-row">
-                        <div class="tier-icon">💎</div>
-                        <div class="tier-name">다이아몬드</div>
-                        <div class="tier-score">900점+</div>
+            <!-- 스텝 컨테이너 -->
+            <div class="levelup-steps-container">
+                <!-- 스텝 1: 점수 얻는 방법 -->
+                <div class="levelup-step active" data-step="1">
+                    <h4 class="levelup-section-title">✨ 점수 얻는 방법</h4>
+                    <div class="levelup-points-content-compact">
+                        <div class="points-grid">
+                            <div class="points-column">
+                                <div class="points-week-title">1주차 / 3주차</div>
+                                <div class="points-item">
+                                    <span class="points-activity">코어북 읽기</span>
+                                    <span class="points-value">10점</span>
+                                </div>
+                                <div class="points-item">
+                                    <span class="points-activity">독서퀴즈</span>
+                                    <span class="points-value">10점</span>
+                                </div>
+                                <div class="points-item">
+                                    <span class="points-activity">독서 활동</span>
+                                    <span class="points-value">10점</span>
+                                </div>
+                            </div>
+                            <div class="points-column">
+                                <div class="points-week-title">2주차 / 4주차</div>
+                                <div class="points-item">
+                                    <span class="points-activity">관리이북 읽기</span>
+                                    <span class="points-value">10점</span>
+                                </div>
+                                <div class="points-item">
+                                    <span class="points-activity">독서퀴즈</span>
+                                    <span class="points-value">10점</span>
+                                </div>
+                                <div class="points-item">
+                                    <span class="points-activity">리텔링 활동</span>
+                                    <span class="points-value">10점</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="points-summary-compact">
+                            <div class="summary-row">
+                                <i class="fa-solid fa-calendar-check"></i>
+                                <span>24주차 완료 시 <strong>720점</strong></span>
+                            </div>
+                            <div class="summary-row">
+                                <i class="fa-solid fa-trophy"></i>
+                                <span>승급 조건 <strong>600점</strong> (퀴즈 50%)</span>
+                            </div>
+                        </div>
+                        <div class="points-notice-compact">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span>단, 600점을 채워도, 코어북/관리이북 학습 종료가 되지 않았다면 승급 불가</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 점수 얻는 방법 (접기/펼치기) -->
-            <div class="levelup-points-section">
-                <button onclick="togglePointsDetail()" class="levelup-points-toggle">
-                    <span class="toggle-icon" id="points-toggle-icon">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </span>
-                    <span class="toggle-text">점수 얻는 방법</span>
-                </button>
-                <div id="points-detail-content" class="levelup-points-detail" style="display: none;">
-                    <div class="points-week-group">
-                        <div class="points-week-title">1주차 / 3주차</div>
-                        <div class="points-item">
-                            <span class="points-activity">코어북 읽기</span>
-                            <span class="points-value">10점</span>
+                <!-- 스텝 2: 티어표 기준 -->
+                <div class="levelup-step" data-step="2">
+                    <h4 class="levelup-section-title">📊 티어표 기준</h4>
+                    <div class="levelup-tier-table">
+                        <div class="tier-row">
+                            <div class="tier-icon">🥉</div>
+                            <div class="tier-name">브론즈</div>
+                            <div class="tier-score">600점</div>
                         </div>
-                        <div class="points-item">
-                            <span class="points-activity">독서퀴즈</span>
-                            <span class="points-value">10점</span>
+                        <div class="tier-row">
+                            <div class="tier-icon">🥈</div>
+                            <div class="tier-name">실버</div>
+                            <div class="tier-score">700점</div>
                         </div>
-                        <div class="points-item">
-                            <span class="points-activity">독서 활동</span>
-                            <span class="points-value">10점</span>
+                        <div class="tier-row">
+                            <div class="tier-icon">🥇</div>
+                            <div class="tier-name">골드</div>
+                            <div class="tier-score">800점</div>
                         </div>
-                    </div>
-                    <div class="points-week-group">
-                        <div class="points-week-title">2주차 / 4주차</div>
-                        <div class="points-item">
-                            <span class="points-activity">관리이북 읽기</span>
-                            <span class="points-value">10점</span>
-                        </div>
-                        <div class="points-item">
-                            <span class="points-activity">독서퀴즈</span>
-                            <span class="points-value">10점</span>
-                        </div>
-                        <div class="points-item">
-                            <span class="points-activity">리텔링 활동</span>
-                            <span class="points-value">10점</span>
-                        </div>
-                    </div>
-                    <div class="points-summary">
-                        <div class="summary-item">
-                            <i class="fa-solid fa-calendar-check"></i>
-                            <span>24주차(6개월) 총 필수 학습 완료 시 <strong>720점</strong></span>
-                        </div>
-                        <div class="summary-item">
-                            <i class="fa-solid fa-trophy"></i>
-                            <span>승급 점수 조건: 독서퀴즈 50% 맞췄을 때 총 <strong>600점</strong></span>
-                        </div>
-                        <div class="points-notice">
-                            <i class="fa-solid fa-circle-exclamation"></i>
-                            <span>단, 600점을 채워도 코어북/관리이북 학습 종료가 되지 않았다면 승급할 수 없습니다.</span>
+                        <div class="tier-row">
+                            <div class="tier-icon">💎</div>
+                            <div class="tier-name">다이아몬드</div>
+                            <div class="tier-score">900점+</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- 네비게이션 영역 (인디케이터 + 버튼) -->
+        <div class="levelup-modal-footer">
+            <button onclick="prevLevelUpStep()" class="levelup-nav-btn-circle prev-btn" style="opacity: 0.3; pointer-events: none;">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <!-- 스텝 인디케이터 -->
+            <div class="levelup-step-indicator">
+                <div class="step-dot active" data-step="1"></div>
+                <div class="step-dot" data-step="2"></div>
+            </div>
+
+            <button onclick="nextLevelUpStep()" class="levelup-nav-btn-circle next-btn">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
     </div>
 </div>
 
 <script>
+    let currentLevelUpStep = 1;
+
     function openLevelUpInfoModal() {
         document.getElementById('levelup-info-modal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        currentLevelUpStep = 1;
+        updateLevelUpStep();
     }
 
     function closeLevelUpInfoModal() {
         document.getElementById('levelup-info-modal').style.display = 'none';
         document.body.style.overflow = 'auto';
+        currentLevelUpStep = 1;
     }
 
-    function togglePointsDetail() {
-        const content = document.getElementById('points-detail-content');
-        const icon = document.getElementById('points-toggle-icon');
+    function nextLevelUpStep() {
+        if (currentLevelUpStep < 2) {
+            currentLevelUpStep++;
+            updateLevelUpStep();
+        }
+    }
 
-        if (content.style.display === 'none') {
-            content.style.display = 'block';
-            icon.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
+    function prevLevelUpStep() {
+        if (currentLevelUpStep > 1) {
+            currentLevelUpStep--;
+            updateLevelUpStep();
+        }
+    }
+
+    function updateLevelUpStep() {
+        const steps = document.querySelectorAll('.levelup-step');
+        const dots = document.querySelectorAll('.step-dot');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+
+        // 모든 스텝 비활성화
+        steps.forEach(step => step.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+
+        // 현재 스텝 활성화
+        const currentStep = document.querySelector(`.levelup-step[data-step="${currentLevelUpStep}"]`);
+        const currentDot = document.querySelector(`.step-dot[data-step="${currentLevelUpStep}"]`);
+        if (currentStep) currentStep.classList.add('active');
+        if (currentDot) currentDot.classList.add('active');
+
+        // 버튼 표시/숨김
+        if (currentLevelUpStep === 1) {
+            prevBtn.style.opacity = '0.3';
+            prevBtn.style.pointerEvents = 'none';
+            nextBtn.style.opacity = '1';
+            nextBtn.style.pointerEvents = 'auto';
         } else {
-            content.style.display = 'none';
-            icon.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+            prevBtn.style.opacity = '1';
+            prevBtn.style.pointerEvents = 'auto';
+            nextBtn.style.opacity = '0.3';
+            nextBtn.style.pointerEvents = 'none';
         }
     }
 </script>

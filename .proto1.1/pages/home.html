@@ -2638,7 +2638,7 @@
             <div class="ttotto-speech" style="position:relative;background:white;border-radius:24px;padding:18px 24px;box-shadow:0 8px 32px rgba(0,0,0,0.15);max-width:280px;margin-bottom:16px;animation:speechFadeIn 0.4s ease 0.2s both;">
                 <!-- 말풍선 꼬리 (아래 방향) -->
                 <div style="position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:14px solid white;"></div>
-                <p style="font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:600;color:#374151;line-height:1.6;margin:0;text-align:center;">1주차 학습을 완료해서,<br>추천 책이 많아졌어!!<br>추천 책을 읽어보자!!</p>
+                <p style="font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:600;color:#374151;line-height:1.6;margin:0;text-align:center;">우와~ 추천 책이 많아졌는걸~?<br>이제부터는 자유롭게<br>책을 읽어보자!</p>
             </div>
             <!-- 또또 캐릭터 (화면 35% 크기) -->
             <div class="ttotto-character" style="width:35vh;height:35vh;min-width:200px;min-height:200px;max-width:380px;max-height:380px;filter:drop-shadow(0 12px 36px rgba(0,0,0,0.25));animation:ttottoBounce 2s ease-in-out infinite;">
@@ -4833,14 +4833,10 @@ function toggleRecommendedBooks(expand) {
             book.style.display = 'flex';
         });
 
-        // EHEH 캐릭터 팝업 표시 (최초 1회만)
-        const hasShownRecommendPopup = sessionStorage.getItem('hasShownRecommendPopup_week_' + currentWeek);
-        if (!hasShownRecommendPopup) {
-            setTimeout(() => {
-                showTtottoRecommendPopup();
-                sessionStorage.setItem('hasShownRecommendPopup_week_' + currentWeek, 'true');
-            }, 800);
-        }
+        // EHEH 캐릭터 팝업 표시 (추천책 4권이 될 때마다 표시)
+        setTimeout(() => {
+            showTtottoRecommendPopup();
+        }, 800);
     } else {
         // 2권으로 축소
         if (grid) grid.classList.remove('expanded');
