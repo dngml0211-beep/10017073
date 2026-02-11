@@ -572,14 +572,15 @@
         applyBookclubBeforeTrial() {
             console.log('[ProtoNav] 웅진북클럽 무체 신청 전');
 
+            // 초기 상태로 리셋
+            sessionStorage.removeItem('trialApplied');
+            sessionStorage.removeItem('trialEnded');
+            sessionStorage.setItem('protoNavStateOnLoad', 'bookclub-before-trial');
+
             if (pageName === 'home2') {
-                // 초기 상태로 리셋
-                sessionStorage.removeItem('trialApplied');
-                sessionStorage.removeItem('trialEnded');
                 this.toast('✅ 무체 신청 전 상태 적용');
                 location.reload();
             } else {
-                sessionStorage.setItem('protoNavStateOnLoad', 'bookclub-before-trial');
                 window.location.href = window.location.pathname.includes('/pages/') ? 'home2.html' : 'pages/home2.html';
             }
         },

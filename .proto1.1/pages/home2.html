@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>북클럽 3.0 - 홈</title>
 
+    <!-- Critical CSS for instant banner display -->
+    <style>
+        /* Banner critical styles - loaded before any external CSS */
+        #trial-banner-section {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        #trial-banner-section.hide {
+            display: none !important;
+        }
+        .krs-banner {
+            background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 40%, #4C1D95 100%);
+            border-radius: 1.25rem;
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            color: white;
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -82,43 +103,28 @@
             border-radius: 50%;
         }
 
-        /* === KRS Promo Banner (무체 신청 완료 후) === */
-        .krs-promo-banner {
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #EC4899 100%);
-            border-radius: 1.25rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            border: 1.5px solid rgba(255,255,255,0.15);
-            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+        /* === 배너 섹션 표시/숨김 처리 === */
+        /* trial-banner는 기본 표시, 다른 상태일 때만 숨김 */
+        #trial-banner-section {
+            display: block;
+            opacity: 1;
+            visibility: visible;
         }
-        .krs-promo-banner:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 48px rgba(79, 70, 229, 0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+        #trial-banner-section.hide {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
         }
-        .krs-promo-banner:active {
-            transform: translateY(-1px);
+        /* trial-end-banner는 기본 숨김 */
+        #trial-end-banner-section {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
         }
-        .krs-promo-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -15%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .krs-promo-banner::after {
-            content: '';
-            position: absolute;
-            bottom: -40%;
-            left: 5%;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
-            border-radius: 50%;
+        #trial-end-banner-section.show {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
         }
 
         /* === Netflix Style KRS Banner (무체 종료) === */
@@ -486,7 +492,7 @@
             </header>
 
             <!-- ===== KRS 1주일 무료체험 배너 ===== -->
-            <section class="mb-8" id="trial-banner-section" style="display: none;">
+            <section class="mb-8" id="trial-banner-section">
                 <div class="krs-banner p-6 md:p-7 text-white" onclick="showTrialModal()">
                     <div class="relative z-10 flex items-center justify-between gap-4">
                         <div class="flex-1">
@@ -510,58 +516,27 @@
                 </div>
             </section>
 
-            <!-- ===== KRS 프로그램 홍보 배너 (무체 신청 완료 후) ===== -->
-            <section class="mb-8" id="krs-promo-banner-section" style="display: none;">
-                <div class="krs-promo-banner p-6 md:p-7 text-white" onclick="showKrsApplicationModal()">
-                    <div class="relative z-10">
-                        <div class="flex items-start justify-between gap-4 mb-4">
-                            <div class="flex-1">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span class="bg-gradient-to-r from-cyan-400 to-blue-400 text-xs font-bold px-3 py-1 rounded-full shadow-sm">🤖 AI 독서 시스템</span>
-                                    <span class="bg-gradient-to-r from-pink-400 to-rose-400 text-xs font-bold px-3 py-1 rounded-full shadow-sm">✨ 프리미엄</span>
-                                </div>
-                                <h3 class="font-noto text-2xl md:text-3xl mb-2 font-black drop-shadow-sm">
-                                    KRS로 독서 습관을<br class="md:hidden"> 완성하세요
-                                </h3>
-                                <p class="text-sm md:text-base opacity-95 leading-relaxed mb-4">
-                                    AI가 분석한 맞춤형 커리큘럼으로 독서 실력이 쑥쑥!<br>
-                                    <span class="opacity-85 text-xs">실시간 성장 리포트 · 개인별 학습 분석 · 독서 레벨 관리</span>
-                                </p>
-                            </div>
-                            <div class="text-5xl md:text-6xl flex-shrink-0 drop-shadow-lg">
-                                📚
-                            </div>
-                        </div>
+            <!-- Immediate state application script (runs before DOMContentLoaded) -->
+            <script>
+                (function() {
+                    // Check proto nav state and apply immediately to prevent flicker
+                    const protoState = sessionStorage.getItem('protoNavStateOnLoad');
+                    const trialApplied = sessionStorage.getItem('trialApplied') === 'true';
+                    const trialEnded = sessionStorage.getItem('trialEnded') === 'true';
+                    const banner = document.getElementById('trial-banner-section');
 
-                        <!-- KRS 핵심 기능 강조 -->
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
-                            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-2.5 text-center">
-                                <div class="text-2xl mb-1">🎯</div>
-                                <p class="text-xs font-bold">맞춤 커리큘럼</p>
-                            </div>
-                            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-2.5 text-center">
-                                <div class="text-2xl mb-1">📊</div>
-                                <p class="text-xs font-bold">성장 리포트</p>
-                            </div>
-                            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-2.5 text-center">
-                                <div class="text-2xl mb-1">🔍</div>
-                                <p class="text-xs font-bold">질문렌즈</p>
-                            </div>
-                            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-2.5 text-center">
-                                <div class="text-2xl mb-1">🎬</div>
-                                <p class="text-xs font-bold">영상 리텔링</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between">
-                            <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-extrabold shadow-lg transition-all hover:scale-105" style="background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%); color: #1E293B;">
-                                <i class="fa-solid fa-paper-plane"></i> 담당 교사님께 신청하기
-                            </div>
-                            <p class="text-xs opacity-75 hidden md:block">👉 클릭하여 신청서 보내기</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                    if (banner) {
+                        // Apply state immediately based on session flags
+                        if (trialEnded || trialApplied) {
+                            banner.classList.add('hide');
+                        } else if (protoState === 'bookclub-before-trial') {
+                            banner.classList.remove('hide');
+                            // Clear the flag after applying
+                            sessionStorage.removeItem('protoNavStateOnLoad');
+                        }
+                    }
+                })();
+            </script>
 
             <!-- ===== KRS 프리미엄 전환 배너 (무체 종료 후) - 넷플릭스 스타일 ===== -->
             <section class="mb-8" id="trial-end-banner-section" style="display: none;">
@@ -954,7 +929,7 @@
                     <h3 class="font-noto text-xl text-gray-800 mb-2">신청 완료!</h3>
                     <p class="text-sm text-gray-500 mb-6 leading-relaxed">
                         신청이 완료되었습니다!<br>
-                        <span class="text-brand-primary font-bold">KRS 홈 화면</span>으로 이동합니다.
+                        <span class="text-brand-primary font-bold">KRS 진단평가 화면</span>으로 이동합니다.
                     </p>
                     <button onclick="goToKrsHome()" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-primary to-brand-dark text-white font-bold hover:shadow-lg transition-all">확인</button>
                 `;
@@ -1165,24 +1140,20 @@
             const trialApplied = sessionStorage.getItem('trialApplied') === 'true';
             const trialEnded = sessionStorage.getItem('trialEnded') === 'true';
             const trialBanner = document.getElementById('trial-banner-section');
-            const promoBanner = document.getElementById('krs-promo-banner-section');
             const endBanner = document.getElementById('trial-end-banner-section');
 
             if (trialEnded) {
                 // 무체 종료: 넷플릭스 스타일 KRS 전환 배너 표시
-                if (trialBanner) trialBanner.style.display = 'none';
-                if (promoBanner) promoBanner.style.display = 'none';
-                if (endBanner) endBanner.style.display = 'block';
+                if (trialBanner) trialBanner.classList.add('hide');
+                if (endBanner) endBanner.classList.add('show');
             } else if (trialApplied) {
-                // 무체 신청 완료: 홍보 배너 표시
-                if (trialBanner) trialBanner.style.display = 'none';
-                if (promoBanner) promoBanner.style.display = 'block';
-                if (endBanner) endBanner.style.display = 'none';
+                // 무체 신청 완료: 배너 숨김 (홍보 배너 삭제됨)
+                if (trialBanner) trialBanner.classList.add('hide');
+                if (endBanner) endBanner.classList.remove('show');
             } else {
-                // 무체 신청 전: 무료체험 배너 표시
-                if (trialBanner) trialBanner.style.display = 'block';
-                if (promoBanner) promoBanner.style.display = 'none';
-                if (endBanner) endBanner.style.display = 'none';
+                // 무체 신청 전: 무료체험 배너 표시 (기본 표시 상태 유지)
+                if (trialBanner) trialBanner.classList.remove('hide');
+                if (endBanner) endBanner.classList.remove('show');
             }
 
             // 콘텐츠 렌더링
