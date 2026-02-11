@@ -978,6 +978,7 @@ function PDFBookViewer({ fileData, fileName, onExit }) {
   const [showStretchGuide, setShowStretchGuide] = useState(false);
   const [showBreakTimer, setShowBreakTimer] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
+  useEffect(() => { console.log("🔄 showCompletionModal 변경됨:", showCompletionModal); }, [showCompletionModal]);
   const [breakTimeLeft, setBreakTimeLeft] = useState(60);
   const gazeTimerRef = useRef(null);
   const gazeStageRef = useRef(0);
