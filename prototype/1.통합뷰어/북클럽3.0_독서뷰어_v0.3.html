@@ -2797,9 +2797,13 @@ function App() {
   };
 
   const handleExit = () => {
-    setMode(null);
-    setFileData(null);
-    setFileName('');
+    if (document.referrer) {
+      window.history.back();
+    } else {
+      setMode(null);
+      setFileData(null);
+      setFileName('');
+    }
   };
 
   if (!mode) return <Launcher onSelect={handleSelect} />;
