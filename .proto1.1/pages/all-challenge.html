@@ -1781,6 +1781,113 @@
             z-index: -1;
         }
 
+        .compact-reward-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .reward-badge-icon {
+            font-size: 54px;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fbbf24 100%);
+            border-radius: 50%;
+            border: 4px solid #f59e0b;
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.6), 0 8px 24px rgba(245, 158, 11, 0.4);
+            position: relative;
+            animation: rewardPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes rewardPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.6), 0 8px 24px rgba(245, 158, 11, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 40px rgba(245, 158, 11, 0.8), 0 12px 32px rgba(245, 158, 11, 0.5);
+            }
+        }
+
+        .reward-badge-icon::before {
+            content: '✨';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 24px;
+            animation: sparkleRotate 3s linear infinite;
+        }
+
+        .reward-badge-icon::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #f59e0b 100%);
+            border-radius: 50%;
+            opacity: 0.2;
+            z-index: -1;
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkleRotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.4;
+                transform: scale(1.1);
+            }
+        }
+
+        .reward-badge-label {
+            font-size: 14px;
+            font-weight: 800;
+            color: white;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            padding: 6px 16px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reward-badge-label::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
         .compact-info {
             flex: 1;
         }
@@ -2049,82 +2156,450 @@
         .krs-roadmap {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             gap: 0;
-            padding: 24px 20px;
+            padding: 32px 20px;
             margin-bottom: 16px;
-            background: linear-gradient(135deg, #fef3c7 0%, #ffedd5 100%);
-            border-radius: 12px;
-            border: 1px solid #fdba74;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            position: relative;
         }
 
         .roadmap-step {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
-            padding: 12px 14px;
-            border-radius: 10px;
-            background: white;
-            transition: all 0.3s ease;
-            flex: 1;
-            max-width: 90px;
+            position: relative;
+            z-index: 2;
         }
 
-        .roadmap-step.active {
+        .roadmap-current-badge {
+            position: absolute;
+            top: 8px;
             background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 14px;
+            white-space: nowrap;
             box-shadow: 0 4px 12px rgba(251, 146, 60, 0.4);
-            transform: scale(1.1);
+            z-index: 10;
+            transform: translateX(-50%);
         }
 
-        .roadmap-step.active .roadmap-label {
-            color: white;
-            font-weight: 700;
+        .roadmap-current-badge::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #f97316;
+        }
+
+        .roadmap-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 3px solid #e5e7eb;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .roadmap-step.active .roadmap-icon-wrapper {
+            border-color: #f97316;
+            border-width: 3px;
+            background: white;
+        }
+
+        .roadmap-step.inactive .roadmap-icon-wrapper {
+            border-color: #e5e7eb;
+            opacity: 0.5;
         }
 
         .roadmap-icon {
-            font-size: 32px;
+            font-size: 24px;
             line-height: 1;
         }
 
-        .roadmap-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: #64748b;
-            white-space: nowrap;
-        }
-
-        .roadmap-arrow {
-            font-size: 12px;
-            color: #fbbf24;
-            font-weight: 400;
-            margin: 0 12px;
-            opacity: 0.5;
-            letter-spacing: 2px;
-            flex-shrink: 0;
+        .roadmap-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
         }
 
         .roadmap-score {
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 700;
-            color: #92400e;
-            margin-bottom: 4px;
+            color: #1f2937;
         }
 
-        .roadmap-step.active .roadmap-score {
-            color: white;
+        .roadmap-step.inactive .roadmap-score {
+            color: #9ca3af;
+        }
+
+        .roadmap-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            white-space: nowrap;
+        }
+
+        .roadmap-step.inactive .roadmap-label {
+            color: #d1d5db;
         }
 
         .roadmap-badge {
             font-size: 9px;
-            font-weight: 700;
-            color: white;
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            padding: 3px 8px;
-            border-radius: 8px;
-            margin-top: 6px;
+            font-weight: 600;
+            color: #92400e;
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 6px;
+            margin-top: 4px;
             white-space: nowrap;
-            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.4);
+        }
+
+        .roadmap-line-container {
+            flex: 1;
+            height: 12px;
+            margin: 0 -2px;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 1;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .roadmap-line-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: #e5e7eb;
+        }
+
+        .roadmap-line-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #fb923c 0%, #f97316 100%);
+            transition: width 0.5s ease;
+        }
+
+        /* 레벨업 정보 버튼 */
+        .levelup-info-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #38bdf8;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0284c7;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .levelup-info-btn:hover {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+        }
+
+        .levelup-info-btn i {
+            font-size: 16px;
+        }
+
+        /* 레벨업 정보 모달 */
+        .levelup-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .levelup-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .levelup-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .levelup-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+        }
+
+        .levelup-modal-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .levelup-modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .levelup-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .levelup-modal-body {
+            padding: 24px;
+            max-height: calc(80vh - 72px);
+            overflow-y: auto;
+        }
+
+        /* 티어표 스타일 */
+        .levelup-tier-section {
+            margin-bottom: 24px;
+        }
+
+        .levelup-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 16px 0;
+        }
+
+        .levelup-tier-table {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: linear-gradient(135deg, #fef3c7 0%, #ffedd5 100%);
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .tier-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .tier-icon {
+            font-size: 28px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .tier-name {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .tier-score {
+            font-size: 16px;
+            font-weight: 700;
+            color: #f97316;
+        }
+
+        /* 점수 얻는 방법 스타일 */
+        .levelup-points-section {
+            background: #f9fafb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .levelup-points-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .levelup-points-toggle:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        .toggle-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .levelup-points-detail {
+            padding: 20px;
+            animation: expandDown 0.3s ease;
+        }
+
+        @keyframes expandDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 1000px;
+            }
+        }
+
+        .points-week-group {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed #e5e7eb;
+        }
+
+        .points-week-group:last-of-type {
+            border-bottom: none;
+        }
+
+        .points-week-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 12px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .points-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .points-activity {
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .points-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #f97316;
+        }
+
+        .points-summary {
+            margin-top: 20px;
+            padding: 16px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 12px;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .summary-item i {
+            color: #f59e0b;
+            margin-top: 2px;
+            font-size: 16px;
+        }
+
+        .summary-item strong {
+            color: #f97316;
+            font-weight: 700;
+        }
+
+        .points-notice {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 16px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #ef4444;
+            font-size: 12px;
+            color: #dc2626;
+            line-height: 1.5;
+        }
+
+        .points-notice i {
+            font-size: 16px;
+            margin-top: 1px;
         }
 
         .krs-goal-card-game::before {
@@ -3191,6 +3666,28 @@
                 height: 86px;
             }
 
+            .compact-reward-badge {
+                gap: 8px;
+            }
+
+            .reward-badge-icon {
+                font-size: 46px;
+                width: 94px;
+                height: 94px;
+                border-width: 3px;
+            }
+
+            .reward-badge-icon::before {
+                font-size: 20px;
+                top: -6px;
+                right: -6px;
+            }
+
+            .reward-badge-label {
+                font-size: 13px;
+                padding: 5px 14px;
+            }
+
             .compact-info {
                 width: 100%;
             }
@@ -3298,19 +3795,152 @@
 
             /* KRS 로드맵 모바일 */
             .krs-roadmap {
+                padding: 28px 12px;
                 gap: 0;
-                padding: 16px 12px;
-                justify-content: space-between;
             }
 
-            .roadmap-step {
-                padding: 8px 6px;
-                flex: 1;
-                max-width: 65px;
+            .roadmap-current-badge {
+                font-size: 11px;
+                padding: 5px 12px;
+                top: 6px;
+                border-radius: 12px;
+            }
+
+            .roadmap-current-badge::after {
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 6px solid #f97316;
+                bottom: -5px;
+            }
+
+            .roadmap-icon-wrapper {
+                width: 44px;
+                height: 44px;
+                border-width: 2px;
+            }
+
+            .roadmap-step.active .roadmap-icon-wrapper {
+                border-width: 2px;
             }
 
             .roadmap-icon {
+                font-size: 20px;
+            }
+
+            .roadmap-score {
+                font-size: 11px;
+            }
+
+            .roadmap-label {
+                font-size: 10px;
+            }
+
+            .roadmap-badge {
+                font-size: 8px;
+                padding: 2px 5px;
+            }
+
+            .roadmap-line-container {
+                height: 10px;
+                margin-bottom: 52px;
+                border-radius: 5px;
+            }
+
+            /* 레벨업 정보 버튼 모바일 */
+            .levelup-info-btn {
+                font-size: 12px;
+                padding: 7px 12px;
+                gap: 5px;
+            }
+
+            .levelup-info-btn i {
+                font-size: 14px;
+            }
+
+            /* 레벨업 정보 모달 모바일 */
+            .levelup-modal-content {
+                width: 95%;
+                max-height: 90vh;
+            }
+
+            .levelup-modal-header {
+                padding: 16px 20px;
+            }
+
+            .levelup-modal-header h3 {
+                font-size: 16px;
+            }
+
+            .levelup-modal-close {
+                font-size: 20px;
+                width: 28px;
+                height: 28px;
+            }
+
+            .levelup-modal-body {
+                padding: 20px;
+                max-height: calc(90vh - 60px);
+            }
+
+            .levelup-section-title {
+                font-size: 14px;
+            }
+
+            .tier-row {
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .tier-icon {
                 font-size: 24px;
+                width: 36px;
+            }
+
+            .tier-name {
+                font-size: 14px;
+            }
+
+            .tier-score {
+                font-size: 14px;
+            }
+
+            .levelup-points-toggle {
+                font-size: 14px;
+                padding: 12px 14px;
+            }
+
+            .levelup-points-detail {
+                padding: 16px;
+            }
+
+            .points-week-title {
+                font-size: 13px;
+                padding: 5px 10px;
+            }
+
+            .points-item {
+                padding: 8px 10px;
+            }
+
+            .points-activity {
+                font-size: 13px;
+            }
+
+            .points-value {
+                font-size: 13px;
+            }
+
+            .points-summary {
+                padding: 14px;
+            }
+
+            .summary-item {
+                font-size: 12px;
+            }
+
+            .points-notice {
+                font-size: 11px;
+                padding: 10px;
             }
 
             .roadmap-label {
@@ -4340,13 +4970,17 @@
                                     <span class="section-title-icon">🎯</span>
                                     <span class="section-title-text">나의 레벨업 여정</span>
                                 </div>
+                                <button onclick="openLevelUpInfoModal()" class="levelup-info-btn">
+                                    <i class="fa-solid fa-circle-question"></i>
+                                    어떻게 레벨업 할 수 있어요?
+                                </button>
                             </div>
 
                             <!-- 토스 스타일 목표 카드 (컴팩트) -->
                             <div class="toss-goal-card-compact">
                                 <!-- 메인 정보 영역 -->
                                 <div class="compact-main">
-                                    <!-- 왼쪽: 메달 -->
+                                    <!-- 왼쪽: 시작 메달 -->
                                     <div class="compact-badge">🚩</div>
 
                                     <!-- 중앙: 진행 정보 -->
@@ -4401,34 +5035,11 @@
                                             <span class="xp-percent">(70%)</span>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- KRS 로드맵 -->
-                                <div class="krs-roadmap">
-                                    <div class="roadmap-step active">
-                                        <div class="roadmap-score">0점</div>
-                                        <div class="roadmap-icon">🚩</div>
-                                    </div>
-                                    <div class="roadmap-arrow">· · ·</div>
-                                    <div class="roadmap-step">
-                                        <div class="roadmap-score">600점</div>
-                                        <div class="roadmap-icon">🥉</div>
-                                        <div class="roadmap-badge">K2-2 달성</div>
-                                    </div>
-                                    <div class="roadmap-arrow">· · ·</div>
-                                    <div class="roadmap-step">
-                                        <div class="roadmap-score">700점</div>
-                                        <div class="roadmap-icon">🥈</div>
-                                    </div>
-                                    <div class="roadmap-arrow">· · ·</div>
-                                    <div class="roadmap-step">
-                                        <div class="roadmap-score">800점</div>
-                                        <div class="roadmap-icon">🥇</div>
-                                    </div>
-                                    <div class="roadmap-arrow">· · ·</div>
-                                    <div class="roadmap-step">
-                                        <div class="roadmap-score">900점+</div>
-                                        <div class="roadmap-icon">💎</div>
+                                    <!-- 우측: 보상 메달 -->
+                                    <div class="compact-reward-badge">
+                                        <div class="reward-badge-icon">🥉</div>
+                                        <div class="reward-badge-label">보상</div>
                                     </div>
                                 </div>
 
@@ -4450,6 +5061,72 @@
                                     </div>
                                 </div>
 
+                                <!-- KRS 로드맵 -->
+                                <div class="krs-roadmap" data-current-score="420" data-next-milestone="600">
+                                    <!-- 현재 위치 배지 (동적 위치) -->
+                                    <div class="roadmap-current-badge" style="left: 17.5%;">내 위치: 420</div>
+
+                                    <div class="roadmap-step active">
+                                        <div class="roadmap-icon-wrapper">
+                                            <div class="roadmap-icon">🚩</div>
+                                        </div>
+                                        <div class="roadmap-info">
+                                            <div class="roadmap-score">0점</div>
+                                            <div class="roadmap-label">시작</div>
+                                        </div>
+                                    </div>
+                                    <div class="roadmap-line-container">
+                                        <div class="roadmap-line-bg"></div>
+                                        <div class="roadmap-line-progress" style="width: 70%;"></div>
+                                    </div>
+                                    <div class="roadmap-step">
+                                        <div class="roadmap-icon-wrapper">
+                                            <div class="roadmap-icon">🥉</div>
+                                        </div>
+                                        <div class="roadmap-info">
+                                            <div class="roadmap-score">600점</div>
+                                            <div class="roadmap-label">브론즈</div>
+                                            <div class="roadmap-badge">K2-2 달성</div>
+                                        </div>
+                                    </div>
+                                    <div class="roadmap-line-container">
+                                        <div class="roadmap-line-bg"></div>
+                                    </div>
+                                    <div class="roadmap-step inactive">
+                                        <div class="roadmap-icon-wrapper">
+                                            <div class="roadmap-icon">🥈</div>
+                                        </div>
+                                        <div class="roadmap-info">
+                                            <div class="roadmap-score">700점</div>
+                                            <div class="roadmap-label">실버</div>
+                                        </div>
+                                    </div>
+                                    <div class="roadmap-line-container">
+                                        <div class="roadmap-line-bg"></div>
+                                    </div>
+                                    <div class="roadmap-step inactive">
+                                        <div class="roadmap-icon-wrapper">
+                                            <div class="roadmap-icon">🏆</div>
+                                        </div>
+                                        <div class="roadmap-info">
+                                            <div class="roadmap-score">800점</div>
+                                            <div class="roadmap-label">골드</div>
+                                        </div>
+                                    </div>
+                                    <div class="roadmap-line-container">
+                                        <div class="roadmap-line-bg"></div>
+                                    </div>
+                                    <div class="roadmap-step inactive">
+                                        <div class="roadmap-icon-wrapper">
+                                            <div class="roadmap-icon">💎</div>
+                                        </div>
+                                        <div class="roadmap-info">
+                                            <div class="roadmap-score">900점+</div>
+                                            <div class="roadmap-label">다이아</div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- 보상 영역 -->
                                 <div class="compact-rewards">
                                     <div class="compact-reward-title">🎁 레벨업 보상</div>
@@ -4460,11 +5137,6 @@
                                     </div>
                                 </div>
 
-                                <!-- 하단 안내 -->
-                                <div class="compact-footer">
-                                    <i class="fa-solid fa-calendar-check"></i>
-                                    <span>6개월 동안 꾸준히 활동하면 달성</span>
-                                </div>
                             </div>
                         </div>
 
@@ -5096,6 +5768,128 @@
         }
     });
     </script>
+
+<!-- 레벨업 정보 모달 -->
+<div id="levelup-info-modal" class="levelup-modal" style="display: none;">
+    <div class="levelup-modal-overlay" onclick="closeLevelUpInfoModal()"></div>
+    <div class="levelup-modal-content">
+        <div class="levelup-modal-header">
+            <h3>어떻게 레벨업 할 수 있어요?</h3>
+            <button onclick="closeLevelUpInfoModal()" class="levelup-modal-close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="levelup-modal-body">
+            <!-- 승급 티어표 -->
+            <div class="levelup-tier-section">
+                <h4 class="levelup-section-title">📊 승급 점수 기준</h4>
+                <div class="levelup-tier-table">
+                    <div class="tier-row">
+                        <div class="tier-icon">🥉</div>
+                        <div class="tier-name">브론즈</div>
+                        <div class="tier-score">600점</div>
+                    </div>
+                    <div class="tier-row">
+                        <div class="tier-icon">🥈</div>
+                        <div class="tier-name">실버</div>
+                        <div class="tier-score">700점</div>
+                    </div>
+                    <div class="tier-row">
+                        <div class="tier-icon">🥇</div>
+                        <div class="tier-name">골드</div>
+                        <div class="tier-score">800점</div>
+                    </div>
+                    <div class="tier-row">
+                        <div class="tier-icon">💎</div>
+                        <div class="tier-name">다이아몬드</div>
+                        <div class="tier-score">900점+</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 점수 얻는 방법 (접기/펼치기) -->
+            <div class="levelup-points-section">
+                <button onclick="togglePointsDetail()" class="levelup-points-toggle">
+                    <span class="toggle-icon" id="points-toggle-icon">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+                    <span class="toggle-text">점수 얻는 방법</span>
+                </button>
+                <div id="points-detail-content" class="levelup-points-detail" style="display: none;">
+                    <div class="points-week-group">
+                        <div class="points-week-title">1주차 / 3주차</div>
+                        <div class="points-item">
+                            <span class="points-activity">코어북 읽기</span>
+                            <span class="points-value">10점</span>
+                        </div>
+                        <div class="points-item">
+                            <span class="points-activity">독서퀴즈</span>
+                            <span class="points-value">10점</span>
+                        </div>
+                        <div class="points-item">
+                            <span class="points-activity">독서 활동</span>
+                            <span class="points-value">10점</span>
+                        </div>
+                    </div>
+                    <div class="points-week-group">
+                        <div class="points-week-title">2주차 / 4주차</div>
+                        <div class="points-item">
+                            <span class="points-activity">관리이북 읽기</span>
+                            <span class="points-value">10점</span>
+                        </div>
+                        <div class="points-item">
+                            <span class="points-activity">독서퀴즈</span>
+                            <span class="points-value">10점</span>
+                        </div>
+                        <div class="points-item">
+                            <span class="points-activity">리텔링 활동</span>
+                            <span class="points-value">10점</span>
+                        </div>
+                    </div>
+                    <div class="points-summary">
+                        <div class="summary-item">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span>24주차(6개월) 총 필수 학습 완료 시 <strong>720점</strong></span>
+                        </div>
+                        <div class="summary-item">
+                            <i class="fa-solid fa-trophy"></i>
+                            <span>승급 점수 조건: 독서퀴즈 50% 맞췄을 때 총 <strong>600점</strong></span>
+                        </div>
+                        <div class="points-notice">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span>단, 600점을 채워도 코어북/관리이북 학습 종료가 되지 않았다면 승급할 수 없습니다.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openLevelUpInfoModal() {
+        document.getElementById('levelup-info-modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLevelUpInfoModal() {
+        document.getElementById('levelup-info-modal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    function togglePointsDetail() {
+        const content = document.getElementById('points-detail-content');
+        const icon = document.getElementById('points-toggle-icon');
+
+        if (content.style.display === 'none') {
+            content.style.display = 'block';
+            icon.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
+        } else {
+            content.style.display = 'none';
+            icon.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+        }
+    }
+</script>
 
 <!-- Proto Navigation (공통 Dev Tool) -->
 <link rel="stylesheet" href="../css/proto-nav.css">

@@ -2404,19 +2404,38 @@
             box-shadow: 0 8px 32px rgba(251, 191, 36, 0.3);
             text-align: center;
             border: 3px solid #f59e0b;
-            margin-bottom: 32px;
+            margin-bottom: 22px;
         }
 
         .certificate-header {
-            height: 12px;
+            height: 8px;
             background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
             border-radius: 24px 24px 0 0;
         }
 
+        .certificate-body {
+            display: flex;
+            gap: 32px;
+            padding: 20px 32px;
+            align-items: center;
+        }
+
+        .certificate-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .certificate-right {
+            flex: 1;
+            text-align: left;
+        }
+
         .certificate-stars {
-            font-size: 32px;
-            margin: 24px 0 20px 0;
-            letter-spacing: 8px;
+            font-size: 24px;
+            margin-bottom: 12px;
+            letter-spacing: 6px;
             display: inline-block;
         }
 
@@ -2449,13 +2468,12 @@
         .certificate-icon-wrapper {
             display: flex;
             justify-content: center;
-            margin-bottom: 24px;
         }
 
         .certificate-icon {
-            font-size: 80px;
-            width: 140px;
-            height: 140px;
+            font-size: 60px;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2465,19 +2483,19 @@
         }
 
         .certificate-title {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 900;
             color: #f97316;
-            margin-bottom: 20px;
-            padding: 0 32px;
+            margin-bottom: 12px;
+            padding: 0;
         }
 
         .certificate-text {
-            font-size: 16px;
+            font-size: 14px;
             color: #4b5563;
-            line-height: 1.8;
-            margin-bottom: 32px;
-            padding: 0 40px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            padding: 0;
         }
 
         .certificate-text strong {
@@ -2487,10 +2505,10 @@
 
         .certificate-progress {
             display: flex;
-            justify-content: center;
-            gap: 48px;
-            margin-bottom: 32px;
-            padding: 0 40px;
+            justify-content: flex-start;
+            gap: 32px;
+            margin-bottom: 16px;
+            padding: 0;
         }
 
         .progress-item {
@@ -2526,6 +2544,251 @@
             box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
         }
 
+        /* 새로운 수료증 디자인 */
+        .krs-certificate-new {
+            display: flex;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            margin-bottom: 32px;
+        }
+
+        .certificate-decoration {
+            flex: 0 0 400px;
+            background: linear-gradient(135deg, #9333ea 0%, #7c3aed 50%, #6d28d9 100%);
+            padding: 48px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .decoration-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .decoration-dot.dot-1 {
+            width: 60px;
+            height: 60px;
+            top: 30px;
+            left: 30px;
+        }
+
+        .decoration-dot.dot-2 {
+            width: 40px;
+            height: 40px;
+            bottom: 80px;
+            left: 50px;
+        }
+
+        .decoration-dot.dot-3 {
+            width: 80px;
+            height: 80px;
+            bottom: 40px;
+            right: 40px;
+        }
+
+        .decoration-dot.dot-4 {
+            width: 30px;
+            height: 30px;
+            top: 80px;
+            right: 60px;
+        }
+
+        .certificate-badge {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 24px 0;
+            box-shadow: 0 12px 32px rgba(91, 33, 182, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+
+        .badge-icon {
+            font-size: 64px;
+            color: white;
+        }
+
+        .decoration-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+            margin: 20px 0 8px 0;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .decoration-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .certificate-info {
+            flex: 1;
+            background: white;
+            padding: 48px 40px;
+        }
+
+        .info-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .info-title {
+            font-size: 28px;
+            font-weight: 900;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .info-trophy {
+            font-size: 32px;
+        }
+
+        .info-description {
+            font-size: 15px;
+            color: #64748b;
+            margin: 0 0 32px 0;
+            line-height: 1.6;
+        }
+
+        .completion-section {
+            margin-bottom: 32px;
+        }
+
+        .completion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .completion-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .completion-percent {
+            font-size: 36px;
+            font-weight: 900;
+            color: #5b21b6;
+        }
+
+        .completion-bar {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .completion-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7c3aed 0%, #5b21b6 100%);
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+
+        .completion-hint {
+            font-size: 13px;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .stats-section {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .stat-icon i {
+            font-size: 18px;
+            color: #f59e0b;
+        }
+
+        .stat-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .stat-total {
+            font-size: 14px;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+
+        .next-level-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 8px 24px rgba(249, 115, 22, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .next-level-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(249, 115, 22, 0.5);
+        }
+
+        .next-level-btn i {
+            font-size: 18px;
+        }
+
         /* 모바일 반응형 */
         @media (max-width: 768px) {
             .certificate-stars {
@@ -2542,21 +2805,40 @@
                 }
             }
 
+            .certificate-body {
+                flex-direction: column;
+                gap: 20px;
+                padding: 16px 20px;
+            }
+
+            .certificate-left {
+                width: 100%;
+            }
+
+            .certificate-right {
+                text-align: center;
+            }
+
             .certificate-icon {
-                font-size: 60px;
-                width: 110px;
-                height: 110px;
+                font-size: 50px;
+                width: 90px;
+                height: 90px;
             }
 
             .certificate-title {
-                font-size: 22px;
-                padding: 0 24px;
+                font-size: 20px;
+                padding: 0;
             }
 
             .certificate-text {
-                font-size: 14px;
-                padding: 0 24px;
-                margin-bottom: 24px;
+                font-size: 13px;
+                padding: 0;
+                margin-bottom: 14px;
+            }
+
+            .certificate-progress {
+                justify-content: center;
+                gap: 24px;
             }
 
             .certificate-progress {
@@ -2568,6 +2850,96 @@
 
             .certificate-next {
                 margin-bottom: 24px;
+            }
+
+            /* 새로운 수료증 모바일 */
+            .krs-certificate-new {
+                flex-direction: column;
+            }
+
+            .certificate-decoration {
+                flex: none;
+                padding: 32px 24px;
+            }
+
+            .decoration-dot.dot-1 {
+                width: 40px;
+                height: 40px;
+                top: 20px;
+                left: 20px;
+            }
+
+            .decoration-dot.dot-2 {
+                width: 30px;
+                height: 30px;
+                bottom: 60px;
+                left: 30px;
+            }
+
+            .decoration-dot.dot-3 {
+                width: 60px;
+                height: 60px;
+                bottom: 30px;
+                right: 30px;
+            }
+
+            .decoration-dot.dot-4 {
+                width: 25px;
+                height: 25px;
+                top: 60px;
+                right: 40px;
+            }
+
+            .certificate-badge {
+                width: 110px;
+                height: 110px;
+            }
+
+            .badge-icon {
+                font-size: 52px;
+            }
+
+            .decoration-title {
+                font-size: 26px;
+            }
+
+            .decoration-subtitle {
+                font-size: 13px;
+            }
+
+            .certificate-info {
+                padding: 32px 24px;
+            }
+
+            .info-title {
+                font-size: 22px;
+            }
+
+            .info-trophy {
+                font-size: 28px;
+            }
+
+            .info-description {
+                font-size: 14px;
+                margin-bottom: 24px;
+            }
+
+            .completion-percent {
+                font-size: 32px;
+            }
+
+            .completion-bar {
+                height: 10px;
+            }
+
+            .stats-section {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .next-level-btn {
+                padding: 14px 20px;
+                font-size: 15px;
             }
 
             .krs-summary-grid {
@@ -4366,32 +4738,75 @@
                         </div>
 
                         <!-- 레벨 완료 인증서 스타일 -->
-                        <div class="krs-certificate">
-                            <div class="certificate-header"></div>
-                            <div class="certificate-stars">
-                                <span>⭐</span><span>⭐</span><span>⭐</span>
-                            </div>
-                            <div class="certificate-icon-wrapper">
-                                <div class="certificate-icon">🎓</div>
-                            </div>
-                            <h2 class="certificate-title">K1-2 레벨 수료 완료!</h2>
-                            <p class="certificate-text">
-                                6개월간의 열정적인 학습으로<br/>
-                                <strong>92%의 높은 완료율</strong>을 달성했습니다.
-                            </p>
-                            <div class="certificate-progress">
-                                <div class="progress-item">
-                                    <span>필수 학습</span>
-                                    <span class="progress-value">38/42 완료</span>
+                        <div class="krs-certificate-new">
+                            <!-- 왼쪽: 장식 영역 -->
+                            <div class="certificate-decoration">
+                                <div class="decoration-dot dot-1"></div>
+                                <div class="decoration-dot dot-2"></div>
+                                <div class="decoration-dot dot-3"></div>
+                                <div class="decoration-dot dot-4"></div>
+
+                                <div class="certificate-stars">
+                                    <span>⭐</span><span>⭐</span><span>⭐</span>
                                 </div>
-                                <div class="progress-item">
-                                    <span>추천 학습</span>
-                                    <span class="progress-value">48권 완독</span>
+
+                                <div class="certificate-badge">
+                                    <div class="badge-icon">
+                                        <i class="fa-solid fa-graduation-cap"></i>
+                                    </div>
                                 </div>
+
+                                <h3 class="decoration-title">Congratulations!</h3>
+                                <p class="decoration-subtitle">멋진 성과입니다!</p>
                             </div>
-                            <div class="certificate-next">
-                                <i class="fa-solid fa-arrow-right"></i>
-                                <span>다음 레벨: K2-1</span>
+
+                            <!-- 오른쪽: 정보 영역 -->
+                            <div class="certificate-info">
+                                <div class="info-header">
+                                    <h2 class="info-title">K1-2 레벨 수료 완료!</h2>
+                                    <div class="info-trophy">🏆</div>
+                                </div>
+
+                                <p class="info-description">
+                                    6개월간의 열정적인 학습 여정이 마무리되었습니다.
+                                </p>
+
+                                <div class="completion-section">
+                                    <div class="completion-header">
+                                        <span class="completion-label">전체 완료율</span>
+                                        <span class="completion-percent">92%</span>
+                                    </div>
+                                    <div class="completion-bar">
+                                        <div class="completion-fill" style="width: 92%"></div>
+                                    </div>
+                                    <p class="completion-hint">100%까지 얼마 남지 않았어요!</p>
+                                </div>
+
+                                <div class="stats-section">
+                                    <div class="stat-item">
+                                        <div class="stat-icon">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                        </div>
+                                        <div class="stat-content">
+                                            <span class="stat-label">필수 학습</span>
+                                            <span class="stat-value">38<span class="stat-total">/42</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-icon">
+                                            <i class="fa-solid fa-book"></i>
+                                        </div>
+                                        <div class="stat-content">
+                                            <span class="stat-label">추천 학습</span>
+                                            <span class="stat-value">48<span class="stat-total">권</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button class="next-level-btn">
+                                    다음 레벨 (K2-1) 시작하기
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
                             </div>
                         </div>
 
@@ -4723,9 +5138,6 @@
                         </button>
                         <button class="bookshelf-tab" data-shelf="favorites" onclick="switchBookshelfTab('favorites')">
                             💛 찜한 도서 <span class="count" id="count-favorites">0</span>
-                        </button>
-                        <button class="bookshelf-tab" data-shelf="offline" onclick="switchBookshelfTab('offline')">
-                            📚 우리 아이 책장 <span class="count" id="count-offline">12</span>
                         </button>
                     </div>
 
